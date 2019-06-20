@@ -1,5 +1,5 @@
 #include "imgui_lua.hpp"
-#include "../imgui/imgui_stdlib.h"
+#include "../imgui/misc/cpp/imgui_stdlib.h"
 #include "scripting/lua-bindings/manual/CCLuaEngine.h"
 #include "scripting/lua-bindings/manual/LuaBasicConversions.h"
 #include "lua_imgui_auto.hpp"
