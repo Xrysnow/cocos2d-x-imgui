@@ -62,6 +62,8 @@ if(BUILD_LUA_LIBS)
 endif()
 
 add_library(${LIB_NAME} STATIC ${SOURCE} ${HEADER})
+add_dependencies(${LIB_NAME} cocos2d)
+use_cocos2dx_compile_define(${LIB_NAME})
 
 # set_target_properties(${LIB_NAME}
     # PROPERTIES
