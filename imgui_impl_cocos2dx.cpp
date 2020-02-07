@@ -145,11 +145,13 @@ void ImGui_ImplCocos2dx_RenderDrawData(ImDrawData* draw_data)
 		IM_ASSERT(vsize > 0);
 		auto vbuffer = backend::Device::getInstance()->newBuffer(
 			vsize, BufferType::VERTEX, BufferUsage::STATIC);
+		vbuffer->autorelease();
 		vbuffer->updateData(cmd_list->VtxBuffer.Data, vsize);
 		const auto isize = cmd_list->IdxBuffer.Size * sizeof(ImDrawIdx);
 		IM_ASSERT(isize > 0);
 		auto ibuffer = backend::Device::getInstance()->newBuffer(
 			isize, BufferType::INDEX, BufferUsage::STATIC);
+		ibuffer->autorelease();
 		ibuffer->updateData(cmd_list->IdxBuffer.Data, isize);
 
         for (int cmd_i = 0; cmd_i < cmd_list->CmdBuffer.Size; cmd_i++)
