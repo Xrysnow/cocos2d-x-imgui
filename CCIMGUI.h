@@ -8,6 +8,7 @@ class CCIMGUI
 	void init();
 public:
 	static CCIMGUI* getInstance();
+	static void setOnInit(const std::function<void(CCIMGUI*)>& callBack);
 	void update();
 	void addCallback(const std::function<void()>& callBack, const std::string& name);
 	void removeCallback(const std::string& name);
@@ -47,6 +48,8 @@ public:
 	ImWchar* addGlyphRanges(const std::string& key, const std::vector<ImWchar>& ranges);
 
 private:
+	static std::function<void(CCIMGUI*)> _onInit;
+	
     std::unordered_map<std::string, std::function<void()>> _callPiplines;
     std::unordered_map<unsigned int, int> _usedTextureIdMap;
     std::unordered_map<cocos2d::Texture2D*, int> _usedCCTextureIdMap;

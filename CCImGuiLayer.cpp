@@ -19,14 +19,8 @@ ImGuiLayer* ImGuiLayer::create()
 
 bool ImGuiLayer::init()
 {
-    // super init first
-	if (!Layer::init())
-    {
-        return false;
-    }
-
-    setGLProgram(GLProgramCache::getInstance()->getGLProgram(GLProgram::SHADER_NAME_POSITION_COLOR));
-
+	if (!Layer::init() || !CCIMGUI::getInstance())
+		return false;
 	// note: when at the first click to focus the window, this will not take effect
     auto listener = EventListenerTouchOneByOne::create();
     listener->setSwallowTouches(true);
@@ -39,24 +33,19 @@ bool ImGuiLayer::init()
 
 void ImGuiLayer::visit(Renderer *renderer, const Mat4 &parentTransform, uint32_t parentFlags)
 {
-    Layer::visit(renderer, parentTransform, parentFlags);
-    _command.init(_globalZOrder);
-    _command.func = CC_CALLBACK_0(ImGuiLayer::onDraw, this);
-    Director::getInstance()->getRenderer()->addCommand(&_command);
+	if (!_visible)
+		return;
+	Layer::visit(renderer, parentTransform, parentFlags);
+	onDraw();
 }
 
 void ImGuiLayer::onDraw()
 {
-    getGLProgram()->use();
-
     // create frame
     ImGui_ImplCocos2dx_NewFrame();
-
     // draw all gui
     CCIMGUI::getInstance()->update();
-
     // render
-    glUseProgram(0);
     ImGui::Render();
     ImGui_ImplCocos2dx_RenderDrawData(ImGui::GetDrawData());
 }

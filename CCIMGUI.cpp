@@ -3,6 +3,7 @@
 
 using namespace cocos2d;
 static CCIMGUI* _instance = nullptr;
+std::function<void(CCIMGUI*)> CCIMGUI::_onInit;
 
 void CCIMGUI::init()
 {
@@ -15,8 +16,15 @@ CCIMGUI* CCIMGUI::getInstance()
 	{
 		_instance = new (std::nothrow) CCIMGUI();
 		_instance->init();
+		if (_onInit)
+			_onInit(_instance);
 	}
 	return _instance;
+}
+
+void CCIMGUI::setOnInit(const std::function<void(CCIMGUI*)>& callBack)
+{
+	_onInit = callBack;
 }
 
 void CCIMGUI::update()
@@ -48,7 +56,7 @@ void CCIMGUI::removeCallback(const std::string& name)
 		_callPiplines.erase(iter);
 }
 
-static std::tuple<ImVec2, ImVec2> getTextureUV(cocos2d::Sprite* sp)
+static std::tuple<ImVec2, ImVec2> getTextureUV(Sprite* sp)
 {
 	ImVec2 uv0, uv1;
 	if (!sp || !sp->getTexture())
@@ -64,8 +72,8 @@ static std::tuple<ImVec2, ImVec2> getTextureUV(cocos2d::Sprite* sp)
 	return { uv0,uv1 };
 }
 
-void CCIMGUI::image(cocos2d::Texture2D* tex, const ImVec2& size, const ImVec2& uv0, const ImVec2& uv1, const ImVec4& tint_col,
-	const ImVec4& border_col)
+void CCIMGUI::image(Texture2D* tex, const ImVec2& size, const ImVec2& uv0, const ImVec2& uv1,
+	const ImVec4& tint_col, const ImVec4& border_col)
 {
 	if (!tex)
 		return;
@@ -82,11 +90,11 @@ void CCIMGUI::image(cocos2d::Texture2D* tex, const ImVec2& size, const ImVec2& u
 	else
 		id = ++it->second;
 	ImGui::PushID(id);
-	ImGui::Image((ImTextureID)tex->getName(), size_, uv0, uv1, tint_col, border_col);
+	ImGui::Image((ImTextureID)tex, size_, uv0, uv1, tint_col, border_col);
 	ImGui::PopID();
 }
 
-void CCIMGUI::image(cocos2d::Sprite* sprite, const ImVec2& size, const ImVec4& tint_col, const ImVec4& border_col)
+void CCIMGUI::image(Sprite* sprite, const ImVec2& size, const ImVec4& tint_col, const ImVec4& border_col)
 {
 	if (!sprite || !sprite->getTexture())
 		return;
@@ -106,11 +114,11 @@ void CCIMGUI::image(cocos2d::Sprite* sprite, const ImVec2& size, const ImVec4& t
 	else
 		id = ++it->second;
 	ImGui::PushID(id);
-	ImGui::Image((ImTextureID)sprite->getTexture()->getName(), size_, uv0, uv1, tint_col, border_col);
+	ImGui::Image((ImTextureID)sprite->getTexture(), size_, uv0, uv1, tint_col, border_col);
 	ImGui::PopID();
 }
 
-bool CCIMGUI::imageButton(cocos2d::Texture2D* tex, const ImVec2& size, const ImVec2& uv0, const ImVec2& uv1,
+bool CCIMGUI::imageButton(Texture2D* tex, const ImVec2& size, const ImVec2& uv0, const ImVec2& uv1,
 	int frame_padding, const ImVec4& bg_col, const ImVec4& tint_col)
 {
 	if (!tex)
@@ -128,13 +136,13 @@ bool CCIMGUI::imageButton(cocos2d::Texture2D* tex, const ImVec2& size, const ImV
 	else
 		id = ++it->second;
 	ImGui::PushID(id);
-	const auto ret = ImGui::ImageButton((ImTextureID)tex->getName(),
+	const auto ret = ImGui::ImageButton((ImTextureID)tex,
 		size_, uv0, uv1, frame_padding, bg_col, tint_col);
 	ImGui::PopID();
 	return ret;
 }
 
-bool CCIMGUI::imageButton(cocos2d::Sprite* sprite, const ImVec2& size, int frame_padding, const ImVec4& bg_col,
+bool CCIMGUI::imageButton(Sprite* sprite, const ImVec2& size, int frame_padding, const ImVec4& bg_col,
 	const ImVec4& tint_col)
 {
 	if (!sprite || !sprite->getTexture())
@@ -155,13 +163,13 @@ bool CCIMGUI::imageButton(cocos2d::Sprite* sprite, const ImVec2& size, int frame
 	else
 		id = ++it->second;
 	ImGui::PushID(id);
-	const auto ret = ImGui::ImageButton((ImTextureID)sprite->getTexture()->getName(),
+	const auto ret = ImGui::ImageButton((ImTextureID)sprite->getTexture(),
 		size_, uv0, uv1, frame_padding, bg_col, tint_col);
 	ImGui::PopID();
 	return ret;
 }
 
-std::tuple<ImTextureID, int> CCIMGUI::useTexture(cocos2d::Texture2D* texture)
+std::tuple<ImTextureID, int> CCIMGUI::useTexture(Texture2D* texture)
 {
 	if (!texture)
 		return { nullptr,0 };
@@ -174,10 +182,10 @@ std::tuple<ImTextureID, int> CCIMGUI::useTexture(cocos2d::Texture2D* texture)
 	}
 	else
 		id = ++it->second;
-	return { (ImTextureID)texture->getName(),id };
+	return { (ImTextureID)texture,id };
 }
 
-std::tuple<ImTextureID, ImVec2, ImVec2, int> CCIMGUI::useSprite(cocos2d::Sprite* sprite)
+std::tuple<ImTextureID, ImVec2, ImVec2, int> CCIMGUI::useSprite(Sprite* sprite)
 {
 	if (!sprite || !sprite->getTexture())
 		return { nullptr,{},{},0 };
@@ -192,7 +200,7 @@ std::tuple<ImTextureID, ImVec2, ImVec2, int> CCIMGUI::useSprite(cocos2d::Sprite*
 		id = ++it->second;
 	ImVec2 uv0, uv1;
 	std::tie(uv0, uv1) = getTextureUV(sprite);
-	return { (ImTextureID)sprite->getTexture()->getName(),uv0,uv1,id };
+	return { (ImTextureID)sprite->getTexture(),uv0,uv1,id };
 }
 
 ImWchar* CCIMGUI::addGlyphRanges(const std::string& key, const std::vector<ImWchar>& ranges)

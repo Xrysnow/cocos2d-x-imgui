@@ -40,7 +40,11 @@ set(SOURCE
 )
 
 if(BUILD_LUA_LIBS)
-    include_directories(lua-bindings)
+    include_directories(
+        lua-bindings
+        ${COCOS2DX_ROOT_PATH}/external/lua/luajit/include
+        ${COCOS2DX_ROOT_PATH}/external/lua/tolua
+    )
     list(APPEND HEADER
         lua-bindings/imgui_lua.hpp
         lua-bindings/lua_imguiDrawList_auto.hpp
@@ -64,6 +68,10 @@ endif()
 add_library(${LIB_NAME} STATIC ${SOURCE} ${HEADER})
 add_dependencies(${LIB_NAME} cocos2d)
 use_cocos2dx_compile_define(${LIB_NAME})
+
+if(BUILD_LUA_LIBS)
+    target_compile_definitions(${LIB_NAME} PUBLIC _USRLUASTATIC)
+endif()
 
 # set_target_properties(${LIB_NAME}
     # PROPERTIES

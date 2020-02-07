@@ -1404,25 +1404,28 @@ end
 	}
 	lua_pop(L, 1);
 
-	CCIMGUI::getInstance()->addCallback([=]() {
-        lua_getglobal(L, "imgui");
-        lua_getfield(L, -1, "draw");
-        if (lua_isfunction(L, -1))
-        {
-			if (lua_pcall(L, 0, 0, 0))
+	CCIMGUI::setOnInit([=](CCIMGUI* ins)
+	{
+		ins->addCallback([=]()
+		{
+			lua_getglobal(L, "imgui");
+			lua_getfield(L, -1, "draw");
+			if (lua_isfunction(L, -1))
 			{
-				// ... t(imgui) str
-				lua_setfield(L, -2, "error");
-				//CCLOG("__luadraw__ error: %s", lua_tostring(L, -1));
+				if (lua_pcall(L, 0, 0, 0))
+				{
+					// ... t(imgui) str
+					lua_setfield(L, -2, "error");
+					//CCLOG("__luadraw__ error: %s", lua_tostring(L, -1));
+				}
+				else
+				{
+					lua_pushnil(L);
+					lua_setfield(L, -2, "error");
+				}
 			}
-			else
-			{
-				lua_pushnil(L);
-				lua_setfield(L, -2, "error");
-			}
-        }
-    }, "__luadraw__");
-
+		}, "__luadraw__");
+	});
     return 0;
 }
 
