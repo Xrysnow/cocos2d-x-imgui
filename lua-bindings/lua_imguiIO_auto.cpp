@@ -3126,11 +3126,6 @@ tolua_lerror:
     return 0;
 #endif
 }
-static int lua_x_imguiIO_ImGuiIO_finalize(lua_State* tolua_S)
-{
-    printf("luabindings: finalizing LUA object (ImGuiIO)");
-    return 0;
-}
 
 // patch 20190602
 
@@ -3263,72 +3258,6 @@ int lua_x_imguiPatch1_ImGuiIO_setConfigDockingWithShift(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
 	tolua_lerror:
 				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch1_ImGuiIO_getConfigDockingWithShift'.", &tolua_err);
-				return 0;
-#endif
-}
-int lua_x_imguiPatch1_ImGuiIO_getConfigDockingTabBarOnSingleWindows(lua_State* tolua_S)
-{
-	ImGuiIO* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-	tolua_Error tolua_err;
-	if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiIO", 0, &tolua_err)) goto tolua_lerror;
-#endif
-
-	cobj = (ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
-
-#if COCOS2D_DEBUG >= 1
-	if (!cobj)
-	{
-		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiPatch1_ImGuiIO_getConfigDockingTabBarOnSingleWindows'", nullptr);
-		return 0;
-	}
-#endif
-
-	tolua_pushboolean(tolua_S, (bool)cobj->ConfigDockingTabBarOnSingleWindows);
-
-	return 1;
-#if COCOS2D_DEBUG >= 1
-	tolua_lerror:
-				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch1_ImGuiIO_getConfigDockingTabBarOnSingleWindows'.", &tolua_err);
-				return 0;
-#endif
-}
-int lua_x_imguiPatch1_ImGuiIO_setConfigDockingTabBarOnSingleWindows(lua_State* tolua_S)
-{
-	int argc = 0;
-	ImGuiIO* cobj = nullptr;
-	bool ok = true;
-
-#if COCOS2D_DEBUG >= 1
-	tolua_Error tolua_err;
-	if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiIO", 0, &tolua_err)) goto tolua_lerror;
-#endif
-
-	cobj = (ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
-
-#if COCOS2D_DEBUG >= 1
-	if (!cobj)
-	{
-		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiPatch1_ImGuiIO_setConfigDockingTabBarOnSingleWindows'", nullptr);
-		return 0;
-	}
-#endif
-	argc = lua_gettop(tolua_S) - 1;
-
-	if (1 == argc)
-	{
-		bool arg0;
-		ok &= luaval_to_boolean(tolua_S, 2, &arg0, "imgui.ImGuiIO:ConfigDockingTabBarOnSingleWindows");
-		cobj->ConfigDockingTabBarOnSingleWindows = arg0;
-		return 0;
-	}
-
-	CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiIO:ConfigDockingTabBarOnSingleWindows", argc, 1);
-	return 0;
-
-#if COCOS2D_DEBUG >= 1
-	tolua_lerror:
-				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch1_ImGuiIO_getConfigDockingTabBarOnSingleWindows'.", &tolua_err);
 				return 0;
 #endif
 }
@@ -3728,10 +3657,140 @@ int lua_x_imguiPatch1_ImGuiIO_setMouseHoveredViewport(lua_State* tolua_S)
 				return 0;
 #endif
 }
-static int lua_x_imguiPatch1_ImGuiIO_finalize(lua_State* tolua_S)
+
+// patch 20200207
+
+int lua_x_imguiPatch2_ImGuiIO_getConfigDockingAlwaysTabBar(lua_State* tolua_S)
 {
-	printf("luabindings: finalizing LUA object (ImGuiIO)");
+	ImGuiIO* cobj = nullptr;
+#if COCOS2D_DEBUG >= 1
+	tolua_Error tolua_err;
+	if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiIO", 0, &tolua_err)) goto tolua_lerror;
+#endif
+
+	cobj = (ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
+
+#if COCOS2D_DEBUG >= 1
+	if (!cobj)
+	{
+		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiPatch2_ImGuiIO_getConfigDockingAlwaysTabBar'", nullptr);
+		return 0;
+	}
+#endif
+
+	tolua_pushboolean(tolua_S, (bool)cobj->ConfigDockingAlwaysTabBar);
+
+	return 1;
+#if COCOS2D_DEBUG >= 1
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImGuiIO_getConfigDockingAlwaysTabBar'.", &tolua_err);
+				return 0;
+#endif
+}
+int lua_x_imguiPatch2_ImGuiIO_setConfigDockingAlwaysTabBar(lua_State* tolua_S)
+{
+	int argc = 0;
+	ImGuiIO* cobj = nullptr;
+	bool ok = true;
+
+#if COCOS2D_DEBUG >= 1
+	tolua_Error tolua_err;
+	if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiIO", 0, &tolua_err)) goto tolua_lerror;
+#endif
+
+	cobj = (ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
+
+#if COCOS2D_DEBUG >= 1
+	if (!cobj)
+	{
+		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiPatch2_ImGuiIO_setConfigDockingAlwaysTabBar'", nullptr);
+		return 0;
+	}
+#endif
+	argc = lua_gettop(tolua_S) - 1;
+
+	if (1 == argc)
+	{
+		bool arg0;
+		ok &= luaval_to_boolean(tolua_S, 2, &arg0, "imgui.ImGuiIO:ConfigDockingAlwaysTabBar");
+		cobj->ConfigDockingAlwaysTabBar = arg0;
+		return 0;
+	}
+
+	CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiIO:ConfigDockingAlwaysTabBar", argc, 1);
 	return 0;
+
+#if COCOS2D_DEBUG >= 1
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImGuiIO_getConfigDockingAlwaysTabBar'.", &tolua_err);
+				return 0;
+#endif
+}
+int lua_x_imguiPatch2_ImGuiIO_getConfigWindowsMemoryCompactTimer(lua_State* tolua_S)
+{
+	ImGuiIO* cobj = nullptr;
+#if COCOS2D_DEBUG >= 1
+	tolua_Error tolua_err;
+	if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiIO", 0, &tolua_err)) goto tolua_lerror;
+#endif
+
+	cobj = (ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
+
+#if COCOS2D_DEBUG >= 1
+	if (!cobj)
+	{
+		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiPatch2_ImGuiIO_getConfigWindowsMemoryCompactTimer'", nullptr);
+		return 0;
+	}
+#endif
+
+	tolua_pushnumber(tolua_S, (lua_Number)cobj->ConfigWindowsMemoryCompactTimer);
+
+	return 1;
+#if COCOS2D_DEBUG >= 1
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImGuiIO_getConfigWindowsMemoryCompactTimer'.", &tolua_err);
+				return 0;
+#endif
+}
+int lua_x_imguiPatch2_ImGuiIO_setConfigWindowsMemoryCompactTimer(lua_State* tolua_S)
+{
+	int argc = 0;
+	ImGuiIO* cobj = nullptr;
+	bool ok = true;
+
+#if COCOS2D_DEBUG >= 1
+	tolua_Error tolua_err;
+	if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiIO", 0, &tolua_err)) goto tolua_lerror;
+#endif
+
+	cobj = (ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
+
+#if COCOS2D_DEBUG >= 1
+	if (!cobj)
+	{
+		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiPatch2_ImGuiIO_setConfigWindowsMemoryCompactTimer'", nullptr);
+		return 0;
+	}
+#endif
+	argc = lua_gettop(tolua_S) - 1;
+
+	if (1 == argc)
+	{
+		double arg0;
+		ok &= luaval_to_number(tolua_S, 2, &arg0, "imgui.ImGuiIO:ConfigWindowsMemoryCompactTimer");
+		cobj->ConfigWindowsMemoryCompactTimer = arg0;
+		return 0;
+	}
+
+	CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiIO:ConfigWindowsMemoryCompactTimer", argc, 1);
+	return 0;
+
+#if COCOS2D_DEBUG >= 1
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImGuiIO_getConfigWindowsMemoryCompactTimer'.", &tolua_err);
+				return 0;
+#endif
 }
 
 int lua_register_x_imguiIO_ImGuiIO(lua_State* tolua_S)
@@ -3792,13 +3851,16 @@ int lua_register_x_imguiIO_ImGuiIO(lua_State* tolua_S)
 		// patch 20190602
 		tolua_variable(tolua_S, "ConfigDockingNoSplit", lua_x_imguiPatch1_ImGuiIO_getConfigDockingNoSplit, lua_x_imguiPatch1_ImGuiIO_setConfigDockingNoSplit);
 		tolua_variable(tolua_S, "ConfigDockingWithShift", lua_x_imguiPatch1_ImGuiIO_getConfigDockingWithShift, lua_x_imguiPatch1_ImGuiIO_setConfigDockingWithShift);
-		tolua_variable(tolua_S, "ConfigDockingTabBarOnSingleWindows", lua_x_imguiPatch1_ImGuiIO_getConfigDockingTabBarOnSingleWindows, lua_x_imguiPatch1_ImGuiIO_setConfigDockingTabBarOnSingleWindows);
 		tolua_variable(tolua_S, "ConfigDockingTransparentPayload", lua_x_imguiPatch1_ImGuiIO_getConfigDockingTransparentPayload, lua_x_imguiPatch1_ImGuiIO_setConfigDockingTransparentPayload);
 		tolua_variable(tolua_S, "ConfigViewportsNoAutoMerge", lua_x_imguiPatch1_ImGuiIO_getConfigViewportsNoAutoMerge, lua_x_imguiPatch1_ImGuiIO_setConfigViewportsNoAutoMerge);
 		tolua_variable(tolua_S, "ConfigViewportsNoTaskBarIcon", lua_x_imguiPatch1_ImGuiIO_getConfigViewportsNoTaskBarIcon, lua_x_imguiPatch1_ImGuiIO_setConfigViewportsNoTaskBarIcon);
 		tolua_variable(tolua_S, "ConfigViewportsNoDecoration", lua_x_imguiPatch1_ImGuiIO_getConfigViewportsNoDecoration, lua_x_imguiPatch1_ImGuiIO_setConfigViewportsNoDecoration);
 		tolua_variable(tolua_S, "ConfigViewportsNoDefaultParent", lua_x_imguiPatch1_ImGuiIO_getConfigViewportsNoDefaultParent, lua_x_imguiPatch1_ImGuiIO_setConfigViewportsNoDefaultParent);
 		tolua_variable(tolua_S, "MouseHoveredViewport", lua_x_imguiPatch1_ImGuiIO_getMouseHoveredViewport, lua_x_imguiPatch1_ImGuiIO_setMouseHoveredViewport);
+
+		// patch 20200207
+		tolua_variable(tolua_S, "ConfigDockingAlwaysTabBar", lua_x_imguiPatch2_ImGuiIO_getConfigDockingAlwaysTabBar, lua_x_imguiPatch2_ImGuiIO_setConfigDockingAlwaysTabBar);
+		tolua_variable(tolua_S, "ConfigWindowsMemoryCompactTimer", lua_x_imguiPatch2_ImGuiIO_getConfigWindowsMemoryCompactTimer, lua_x_imguiPatch2_ImGuiIO_setConfigWindowsMemoryCompactTimer);
 	tolua_endmodule(tolua_S);
     std::string typeName = typeid(ImGuiIO).name();
     g_luaType[typeName] = "imgui.ImGuiIO";

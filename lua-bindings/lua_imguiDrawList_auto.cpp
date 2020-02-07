@@ -2238,10 +2238,152 @@ tolua_lerror:
     return 0;
 #endif
 }
-static int lua_x_imguiDrawList_ImDrawList_finalize(lua_State* tolua_S)
+
+// patch 20200207
+
+int lua_x_imguiPatch2_ImDrawList_AddNgonFilled(lua_State* tolua_S)
 {
-    printf("luabindings: finalizing LUA object (ImDrawList)");
-    return 0;
+	int argc = 0;
+	ImDrawList* cobj = nullptr;
+	bool ok = true;
+
+#if COCOS2D_DEBUG >= 1
+	tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+	if (!tolua_isusertype(tolua_S, 1, "imgui.ImDrawList", 0, &tolua_err)) goto tolua_lerror;
+#endif
+
+	cobj = (ImDrawList*)tolua_tousertype(tolua_S, 1, 0);
+
+#if COCOS2D_DEBUG >= 1
+	if (!cobj)
+	{
+		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiPatch2_ImDrawList_AddNgonFilled'", nullptr);
+		return 0;
+	}
+#endif
+
+	argc = lua_gettop(tolua_S) - 1;
+	if (argc == 4)
+	{
+		ImVec2 arg0;
+		double arg1;
+		unsigned int arg2;
+		int arg3;
+
+		ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "imgui.ImDrawList:AddNgonFilled");
+
+		ok &= luaval_to_number(tolua_S, 3, &arg1, "imgui.ImDrawList:AddNgonFilled");
+
+		ok &= luaval_to_uint32(tolua_S, 4, &arg2, "imgui.ImDrawList:AddNgonFilled");
+
+		ok &= luaval_to_int32(tolua_S, 5, (int *)&arg3, "imgui.ImDrawList:AddNgonFilled");
+		if (!ok)
+		{
+			tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiPatch2_ImDrawList_AddNgonFilled'", nullptr);
+			return 0;
+		}
+		cobj->AddNgonFilled(arg0, arg1, arg2, arg3);
+		lua_settop(tolua_S, 1);
+		return 1;
+	}
+	luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImDrawList:AddNgonFilled", argc, 4);
+	return 0;
+
+#if COCOS2D_DEBUG >= 1
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImDrawList_AddNgonFilled'.", &tolua_err);
+#endif
+
+				return 0;
+}
+int lua_x_imguiPatch2_ImDrawList_AddNgon(lua_State* tolua_S)
+{
+	int argc = 0;
+	ImDrawList* cobj = nullptr;
+	bool ok = true;
+
+#if COCOS2D_DEBUG >= 1
+	tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+	if (!tolua_isusertype(tolua_S, 1, "imgui.ImDrawList", 0, &tolua_err)) goto tolua_lerror;
+#endif
+
+	cobj = (ImDrawList*)tolua_tousertype(tolua_S, 1, 0);
+
+#if COCOS2D_DEBUG >= 1
+	if (!cobj)
+	{
+		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiPatch2_ImDrawList_AddNgon'", nullptr);
+		return 0;
+	}
+#endif
+
+	argc = lua_gettop(tolua_S) - 1;
+	if (argc == 4)
+	{
+		ImVec2 arg0;
+		double arg1;
+		unsigned int arg2;
+		int arg3;
+
+		ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "imgui.ImDrawList:AddNgon");
+
+		ok &= luaval_to_number(tolua_S, 3, &arg1, "imgui.ImDrawList:AddNgon");
+
+		ok &= luaval_to_uint32(tolua_S, 4, &arg2, "imgui.ImDrawList:AddNgon");
+
+		ok &= luaval_to_int32(tolua_S, 5, (int *)&arg3, "imgui.ImDrawList:AddNgon");
+		if (!ok)
+		{
+			tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiPatch2_ImDrawList_AddNgon'", nullptr);
+			return 0;
+		}
+		cobj->AddNgon(arg0, arg1, arg2, arg3);
+		lua_settop(tolua_S, 1);
+		return 1;
+	}
+	if (argc == 5)
+	{
+		ImVec2 arg0;
+		double arg1;
+		unsigned int arg2;
+		int arg3;
+		double arg4;
+
+		ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "imgui.ImDrawList:AddNgon");
+
+		ok &= luaval_to_number(tolua_S, 3, &arg1, "imgui.ImDrawList:AddNgon");
+
+		ok &= luaval_to_uint32(tolua_S, 4, &arg2, "imgui.ImDrawList:AddNgon");
+
+		ok &= luaval_to_int32(tolua_S, 5, (int *)&arg3, "imgui.ImDrawList:AddNgon");
+
+		ok &= luaval_to_number(tolua_S, 6, &arg4, "imgui.ImDrawList:AddNgon");
+		if (!ok)
+		{
+			tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiPatch2_ImDrawList_AddNgon'", nullptr);
+			return 0;
+		}
+		cobj->AddNgon(arg0, arg1, arg2, arg3, arg4);
+		lua_settop(tolua_S, 1);
+		return 1;
+	}
+	luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImDrawList:AddNgon", argc, 4);
+	return 0;
+
+#if COCOS2D_DEBUG >= 1
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImDrawList_AddNgon'.", &tolua_err);
+#endif
+
+				return 0;
 }
 
 int lua_register_x_imguiDrawList_ImDrawList(lua_State* tolua_S)
@@ -2283,7 +2425,11 @@ int lua_register_x_imguiDrawList_ImDrawList(lua_State* tolua_S)
         tolua_function(tolua_S,"addRectFilled",lua_x_imguiDrawList_ImDrawList_AddRectFilled);
         tolua_variable(tolua_S,"Flags", lua_x_imguiDrawList_ImDrawList_getFlags, lua_x_imguiDrawList_ImDrawList_setFlags);
         tolua_variable(tolua_S,"_OwnerName", lua_x_imguiDrawList_ImDrawList_get_OwnerName, lua_x_imguiDrawList_ImDrawList_set_OwnerName);
-    tolua_endmodule(tolua_S);
+
+		// patch 20200207
+		tolua_function(tolua_S, "addNgonFilled", lua_x_imguiPatch2_ImDrawList_AddNgonFilled);
+		tolua_function(tolua_S, "addNgon", lua_x_imguiPatch2_ImDrawList_AddNgon);
+	tolua_endmodule(tolua_S);
     std::string typeName = typeid(ImDrawList).name();
     g_luaType[typeName] = "imgui.ImDrawList";
     g_typeCast["ImDrawList"] = "imgui.ImDrawList";

@@ -2169,11 +2169,6 @@ int lua_x_imguiStyle_ImGuiStyle_setCurveTessellationTol(lua_State* tolua_S)
 				return 0;
 #endif
 }
-static int lua_x_imguiStyle_ImGuiStyle_finalize(lua_State* tolua_S)
-{
-	printf("luabindings: finalizing LUA object (ImGuiStyle)");
-	return 0;
-}
 
 // patch 20190602
 
@@ -2243,10 +2238,140 @@ int lua_x_imguiPatch1_ImGuiStyle_setWindowMenuButtonPosition(lua_State* tolua_S)
 				return 0;
 #endif
 }
-static int lua_x_imguiPatch1_ImGuiStyle_finalize(lua_State* tolua_S)
+
+// patch 20200207
+
+int lua_x_imguiPatch2_ImGuiStyle_getColorButtonPosition(lua_State* tolua_S)
 {
-	printf("luabindings: finalizing LUA object (ImGuiStyle)");
+	ImGuiStyle* cobj = nullptr;
+#if COCOS2D_DEBUG >= 1
+	tolua_Error tolua_err;
+	if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiStyle", 0, &tolua_err)) goto tolua_lerror;
+#endif
+
+	cobj = (ImGuiStyle*)tolua_tousertype(tolua_S, 1, 0);
+
+#if COCOS2D_DEBUG >= 1
+	if (!cobj)
+	{
+		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiPatch2_ImGuiStyle_getColorButtonPosition'", nullptr);
+		return 0;
+	}
+#endif
+
+	tolua_pushnumber(tolua_S, (lua_Number)cobj->ColorButtonPosition);
+
+	return 1;
+#if COCOS2D_DEBUG >= 1
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImGuiStyle_getColorButtonPosition'.", &tolua_err);
+				return 0;
+#endif
+}
+int lua_x_imguiPatch2_ImGuiStyle_setColorButtonPosition(lua_State* tolua_S)
+{
+	int argc = 0;
+	ImGuiStyle* cobj = nullptr;
+	bool ok = true;
+
+#if COCOS2D_DEBUG >= 1
+	tolua_Error tolua_err;
+	if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiStyle", 0, &tolua_err)) goto tolua_lerror;
+#endif
+
+	cobj = (ImGuiStyle*)tolua_tousertype(tolua_S, 1, 0);
+
+#if COCOS2D_DEBUG >= 1
+	if (!cobj)
+	{
+		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiPatch2_ImGuiStyle_setColorButtonPosition'", nullptr);
+		return 0;
+	}
+#endif
+	argc = lua_gettop(tolua_S) - 1;
+
+	if (1 == argc)
+	{
+		int arg0;
+		ok &= luaval_to_int32(tolua_S, 2, (int *)&arg0, "imgui.ImGuiStyle:ColorButtonPosition");
+		cobj->ColorButtonPosition = arg0;
+		return 0;
+	}
+
+	CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiStyle:ColorButtonPosition", argc, 1);
 	return 0;
+
+#if COCOS2D_DEBUG >= 1
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImGuiStyle_getColorButtonPosition'.", &tolua_err);
+				return 0;
+#endif
+}
+int lua_x_imguiPatch2_ImGuiStyle_getCircleSegmentMaxError(lua_State* tolua_S)
+{
+	ImGuiStyle* cobj = nullptr;
+#if COCOS2D_DEBUG >= 1
+	tolua_Error tolua_err;
+	if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiStyle", 0, &tolua_err)) goto tolua_lerror;
+#endif
+
+	cobj = (ImGuiStyle*)tolua_tousertype(tolua_S, 1, 0);
+
+#if COCOS2D_DEBUG >= 1
+	if (!cobj)
+	{
+		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiPatch2_ImGuiStyle_getCircleSegmentMaxError'", nullptr);
+		return 0;
+	}
+#endif
+
+	tolua_pushnumber(tolua_S, (lua_Number)cobj->CircleSegmentMaxError);
+
+	return 1;
+#if COCOS2D_DEBUG >= 1
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImGuiStyle_getCircleSegmentMaxError'.", &tolua_err);
+				return 0;
+#endif
+}
+int lua_x_imguiPatch2_ImGuiStyle_setCircleSegmentMaxError(lua_State* tolua_S)
+{
+	int argc = 0;
+	ImGuiStyle* cobj = nullptr;
+	bool ok = true;
+
+#if COCOS2D_DEBUG >= 1
+	tolua_Error tolua_err;
+	if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiStyle", 0, &tolua_err)) goto tolua_lerror;
+#endif
+
+	cobj = (ImGuiStyle*)tolua_tousertype(tolua_S, 1, 0);
+
+#if COCOS2D_DEBUG >= 1
+	if (!cobj)
+	{
+		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiPatch2_ImGuiStyle_setCircleSegmentMaxError'", nullptr);
+		return 0;
+	}
+#endif
+	argc = lua_gettop(tolua_S) - 1;
+
+	if (1 == argc)
+	{
+		double arg0;
+		ok &= luaval_to_number(tolua_S, 2, &arg0, "imgui.ImGuiStyle:CircleSegmentMaxError");
+		cobj->CircleSegmentMaxError = arg0;
+		return 0;
+	}
+
+	CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiStyle:CircleSegmentMaxError", argc, 1);
+	return 0;
+
+#if COCOS2D_DEBUG >= 1
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImGuiStyle_getCircleSegmentMaxError'.", &tolua_err);
+				return 0;
+#endif
 }
 
 int lua_register_x_imguiStyle_ImGuiStyle(lua_State* tolua_S)
@@ -2292,6 +2417,10 @@ int lua_register_x_imguiStyle_ImGuiStyle(lua_State* tolua_S)
 	// patch 20190602
 	tolua_variable(tolua_S, "WindowMenuButtonPosition", lua_x_imguiPatch1_ImGuiStyle_getWindowMenuButtonPosition, lua_x_imguiPatch1_ImGuiStyle_setWindowMenuButtonPosition);
 
+	// patch 20200207
+	tolua_variable(tolua_S, "ColorButtonPosition", lua_x_imguiPatch2_ImGuiStyle_getColorButtonPosition, lua_x_imguiPatch2_ImGuiStyle_setColorButtonPosition);
+	tolua_variable(tolua_S, "CircleSegmentMaxError", lua_x_imguiPatch2_ImGuiStyle_getCircleSegmentMaxError, lua_x_imguiPatch2_ImGuiStyle_setCircleSegmentMaxError);
+	
 	tolua_endmodule(tolua_S);
 	std::string typeName = typeid(ImGuiStyle).name();
 	g_luaType[typeName] = "imgui.ImGuiStyle";

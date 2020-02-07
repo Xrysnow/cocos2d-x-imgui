@@ -931,10 +931,74 @@ tolua_lerror:
     return 0;
 #endif
 }
-static int lua_x_imguiFont_ImFontConfig_finalize(lua_State* tolua_S)
+
+// patch 20200207
+
+int lua_x_imguiPatch2_ImFontConfig_getEllipsisChar(lua_State* tolua_S)
 {
-    printf("luabindings: finalizing LUA object (ImFontConfig)");
-    return 0;
+	ImFontConfig* cobj = nullptr;
+#if COCOS2D_DEBUG >= 1
+	tolua_Error tolua_err;
+	if (!tolua_isusertype(tolua_S, 1, "imgui.ImFontConfig", 0, &tolua_err)) goto tolua_lerror;
+#endif
+
+	cobj = (ImFontConfig*)tolua_tousertype(tolua_S, 1, 0);
+
+#if COCOS2D_DEBUG >= 1
+	if (!cobj)
+	{
+		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiPatch2_ImFontConfig_getEllipsisChar'", nullptr);
+		return 0;
+	}
+#endif
+
+	tolua_pushnumber(tolua_S, (lua_Number)cobj->EllipsisChar);
+
+	return 1;
+#if COCOS2D_DEBUG >= 1
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImFontConfig_getEllipsisChar'.", &tolua_err);
+				return 0;
+#endif
+}
+int lua_x_imguiPatch2_ImFontConfig_setEllipsisChar(lua_State* tolua_S)
+{
+	int argc = 0;
+	ImFontConfig* cobj = nullptr;
+	bool ok = true;
+
+#if COCOS2D_DEBUG >= 1
+	tolua_Error tolua_err;
+	if (!tolua_isusertype(tolua_S, 1, "imgui.ImFontConfig", 0, &tolua_err)) goto tolua_lerror;
+#endif
+
+	cobj = (ImFontConfig*)tolua_tousertype(tolua_S, 1, 0);
+
+#if COCOS2D_DEBUG >= 1
+	if (!cobj)
+	{
+		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiPatch2_ImFontConfig_setEllipsisChar'", nullptr);
+		return 0;
+	}
+#endif
+	argc = lua_gettop(tolua_S) - 1;
+
+	if (1 == argc)
+	{
+		unsigned short arg0;
+		ok &= luaval_to_ushort(tolua_S, 2, &arg0, "imgui.ImFontConfig:EllipsisChar");
+		cobj->EllipsisChar = arg0;
+		return 0;
+	}
+
+	CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImFontConfig:EllipsisChar", argc, 1);
+	return 0;
+
+#if COCOS2D_DEBUG >= 1
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImFontConfig_getEllipsisChar'.", &tolua_err);
+				return 0;
+#endif
 }
 
 int lua_register_x_imguiFont_ImFontConfig(lua_State* tolua_S)
@@ -957,7 +1021,10 @@ int lua_register_x_imguiFont_ImFontConfig(lua_State* tolua_S)
         tolua_variable(tolua_S,"MergeMode", lua_x_imguiFont_ImFontConfig_getMergeMode, lua_x_imguiFont_ImFontConfig_setMergeMode);
         tolua_variable(tolua_S,"RasterizerFlags", lua_x_imguiFont_ImFontConfig_getRasterizerFlags, lua_x_imguiFont_ImFontConfig_setRasterizerFlags);
         tolua_variable(tolua_S,"RasterizerMultiply", lua_x_imguiFont_ImFontConfig_getRasterizerMultiply, lua_x_imguiFont_ImFontConfig_setRasterizerMultiply);
-    tolua_endmodule(tolua_S);
+
+		// patch 20200207
+		tolua_variable(tolua_S, "EllipsisChar", lua_x_imguiPatch2_ImFontConfig_getEllipsisChar, lua_x_imguiPatch2_ImFontConfig_setEllipsisChar);
+	tolua_endmodule(tolua_S);
     std::string typeName = typeid(ImFontConfig).name();
     g_luaType[typeName] = "imgui.ImFontConfig";
     g_typeCast["ImFontConfig"] = "imgui.ImFontConfig";
@@ -1624,11 +1691,6 @@ tolua_lerror:
     return 0;
 #endif
 }
-static int lua_x_imguiFont_ImFontGlyph_finalize(lua_State* tolua_S)
-{
-    printf("luabindings: finalizing LUA object (ImFontGlyph)");
-    return 0;
-}
 
 int lua_register_x_imguiFont_ImFontGlyph(lua_State* tolua_S)
 {
@@ -1653,607 +1715,536 @@ int lua_register_x_imguiFont_ImFontGlyph(lua_State* tolua_S)
     return 1;
 }
 
-int lua_x_imguiFont_CustomRect_IsPacked(lua_State* tolua_S)
+// patch 20200207
+
+int lua_x_imguiPatch2_ImFontAtlasCustomRect_IsPacked(lua_State* tolua_S)
 {
-    int argc = 0;
-	ImFontAtlas::CustomRect* cobj = nullptr;
-    bool ok  = true;
+	int argc = 0;
+	ImFontAtlasCustomRect* cobj = nullptr;
+	bool ok = true;
 
 #if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
+	tolua_Error tolua_err;
 #endif
 
 
 #if COCOS2D_DEBUG >= 1
-    if (!tolua_isusertype(tolua_S,1,"imgui.CustomRect",0,&tolua_err)) goto tolua_lerror;
+	if (!tolua_isusertype(tolua_S, 1, "imgui.ImFontAtlasCustomRect", 0, &tolua_err)) goto tolua_lerror;
 #endif
 
-    cobj = (ImFontAtlas::CustomRect*)tolua_tousertype(tolua_S,1,0);
+	cobj = (ImFontAtlasCustomRect*)tolua_tousertype(tolua_S, 1, 0);
 
 #if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiFont_CustomRect_IsPacked'", nullptr);
-        return 0;
-    }
+	if (!cobj)
+	{
+		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiPatch2_ImFontAtlasCustomRect_IsPacked'", nullptr);
+		return 0;
+	}
 #endif
 
-    argc = lua_gettop(tolua_S)-1;
-    if (argc == 0) 
-    {
-        if(!ok)
-        {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imguiFont_CustomRect_IsPacked'", nullptr);
-            return 0;
-        }
-        bool ret = cobj->IsPacked();
-        tolua_pushboolean(tolua_S,(bool)ret);
-        return 1;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.CustomRect:IsPacked",argc, 0);
-    return 0;
+	argc = lua_gettop(tolua_S) - 1;
+	if (argc == 0)
+	{
+		if (!ok)
+		{
+			tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiPatch2_ImFontAtlasCustomRect_IsPacked'", nullptr);
+			return 0;
+		}
+		bool ret = cobj->IsPacked();
+		tolua_pushboolean(tolua_S, (bool)ret);
+		return 1;
+	}
+	luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImFontAtlasCustomRect:IsPacked", argc, 0);
+	return 0;
 
 #if COCOS2D_DEBUG >= 1
-    tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiFont_CustomRect_IsPacked'.",&tolua_err);
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImFontAtlasCustomRect_IsPacked'.", &tolua_err);
 #endif
 
-    return 0;
+				return 0;
 }
-int lua_x_imguiFont_CustomRect_getID(lua_State* tolua_S)
+int lua_x_imguiPatch2_ImFontAtlasCustomRect_getID(lua_State* tolua_S)
 {
-    ImFontAtlas::CustomRect* cobj = nullptr;
+	ImFontAtlasCustomRect* cobj = nullptr;
 #if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S,1,"imgui.CustomRect",0,&tolua_err)) goto tolua_lerror;
-#endif
-    
-    cobj = (ImFontAtlas::CustomRect*)tolua_tousertype(tolua_S,1,0);
-
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiFont_CustomRect_getID'", nullptr);
-        return 0;
-    }
+	tolua_Error tolua_err;
+	if (!tolua_isusertype(tolua_S, 1, "imgui.ImFontAtlasCustomRect", 0, &tolua_err)) goto tolua_lerror;
 #endif
 
-    tolua_pushnumber(tolua_S,(lua_Number)cobj->ID);
-
-    return 1;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiFont_CustomRect_getID'.",&tolua_err);
-    return 0;
-#endif
-}
-int lua_x_imguiFont_CustomRect_setID(lua_State* tolua_S)
-{
-    int argc = 0;
-    ImFontAtlas::CustomRect* cobj = nullptr;
-    bool ok  = true;
+	cobj = (ImFontAtlasCustomRect*)tolua_tousertype(tolua_S, 1, 0);
 
 #if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S,1,"imgui.CustomRect",0,&tolua_err)) goto tolua_lerror;
+	if (!cobj)
+	{
+		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiPatch2_ImFontAtlasCustomRect_getID'", nullptr);
+		return 0;
+	}
 #endif
 
-    cobj = (ImFontAtlas::CustomRect*)tolua_tousertype(tolua_S,1,0);
+	tolua_pushnumber(tolua_S, (lua_Number)cobj->ID);
 
+	return 1;
 #if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiFont_CustomRect_setID'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-
-    if (1 == argc)
-    {
-        unsigned int arg0;
-        ok &= luaval_to_uint32(tolua_S, 2,&arg0, "imgui.CustomRect:ID");
-        cobj->ID = arg0;
-        return 0;
-    }
-
-    CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "imgui.CustomRect:ID",argc, 1);
-    return 0;
-
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiFont_CustomRect_getID'.",&tolua_err);
-    return 0;
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImFontAtlasCustomRect_getID'.", &tolua_err);
+				return 0;
 #endif
 }
-int lua_x_imguiFont_CustomRect_getWidth(lua_State* tolua_S)
+int lua_x_imguiPatch2_ImFontAtlasCustomRect_setID(lua_State* tolua_S)
 {
-    ImFontAtlas::CustomRect* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S,1,"imgui.CustomRect",0,&tolua_err)) goto tolua_lerror;
-#endif
-    
-    cobj = (ImFontAtlas::CustomRect*)tolua_tousertype(tolua_S,1,0);
+	int argc = 0;
+	ImFontAtlasCustomRect* cobj = nullptr;
+	bool ok = true;
 
 #if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiFont_CustomRect_getWidth'", nullptr);
-        return 0;
-    }
+	tolua_Error tolua_err;
+	if (!tolua_isusertype(tolua_S, 1, "imgui.ImFontAtlasCustomRect", 0, &tolua_err)) goto tolua_lerror;
 #endif
 
-    tolua_pushnumber(tolua_S,(lua_Number)cobj->Width);
+	cobj = (ImFontAtlasCustomRect*)tolua_tousertype(tolua_S, 1, 0);
 
-    return 1;
 #if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiFont_CustomRect_getWidth'.",&tolua_err);
-    return 0;
+	if (!cobj)
+	{
+		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiPatch2_ImFontAtlasCustomRect_setID'", nullptr);
+		return 0;
+	}
+#endif
+	argc = lua_gettop(tolua_S) - 1;
+
+	if (1 == argc)
+	{
+		unsigned int arg0;
+		ok &= luaval_to_uint32(tolua_S, 2, &arg0, "imgui.ImFontAtlasCustomRect:ID");
+		cobj->ID = arg0;
+		return 0;
+	}
+
+	CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImFontAtlasCustomRect:ID", argc, 1);
+	return 0;
+
+#if COCOS2D_DEBUG >= 1
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImFontAtlasCustomRect_getID'.", &tolua_err);
+				return 0;
 #endif
 }
-int lua_x_imguiFont_CustomRect_setWidth(lua_State* tolua_S)
+int lua_x_imguiPatch2_ImFontAtlasCustomRect_getWidth(lua_State* tolua_S)
 {
-    int argc = 0;
-    ImFontAtlas::CustomRect* cobj = nullptr;
-    bool ok  = true;
-
+	ImFontAtlasCustomRect* cobj = nullptr;
 #if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S,1,"imgui.CustomRect",0,&tolua_err)) goto tolua_lerror;
+	tolua_Error tolua_err;
+	if (!tolua_isusertype(tolua_S, 1, "imgui.ImFontAtlasCustomRect", 0, &tolua_err)) goto tolua_lerror;
 #endif
 
-    cobj = (ImFontAtlas::CustomRect*)tolua_tousertype(tolua_S,1,0);
+	cobj = (ImFontAtlasCustomRect*)tolua_tousertype(tolua_S, 1, 0);
 
 #if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiFont_CustomRect_setWidth'", nullptr);
-        return 0;
-    }
+	if (!cobj)
+	{
+		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiPatch2_ImFontAtlasCustomRect_getWidth'", nullptr);
+		return 0;
+	}
 #endif
-    argc = lua_gettop(tolua_S) - 1;
 
-    if (1 == argc)
-    {
-        unsigned short arg0;
-        ok &= luaval_to_ushort(tolua_S, 2, &arg0, "imgui.CustomRect:Width");
-        cobj->Width = arg0;
-        return 0;
-    }
+	tolua_pushnumber(tolua_S, (lua_Number)cobj->Width);
 
-    CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "imgui.CustomRect:Width",argc, 1);
-    return 0;
-
+	return 1;
 #if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiFont_CustomRect_getWidth'.",&tolua_err);
-    return 0;
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImFontAtlasCustomRect_getWidth'.", &tolua_err);
+				return 0;
 #endif
 }
-int lua_x_imguiFont_CustomRect_getHeight(lua_State* tolua_S)
+int lua_x_imguiPatch2_ImFontAtlasCustomRect_setWidth(lua_State* tolua_S)
 {
-    ImFontAtlas::CustomRect* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S,1,"imgui.CustomRect",0,&tolua_err)) goto tolua_lerror;
-#endif
-    
-    cobj = (ImFontAtlas::CustomRect*)tolua_tousertype(tolua_S,1,0);
+	int argc = 0;
+	ImFontAtlasCustomRect* cobj = nullptr;
+	bool ok = true;
 
 #if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiFont_CustomRect_getHeight'", nullptr);
-        return 0;
-    }
+	tolua_Error tolua_err;
+	if (!tolua_isusertype(tolua_S, 1, "imgui.ImFontAtlasCustomRect", 0, &tolua_err)) goto tolua_lerror;
 #endif
 
-    tolua_pushnumber(tolua_S,(lua_Number)cobj->Height);
+	cobj = (ImFontAtlasCustomRect*)tolua_tousertype(tolua_S, 1, 0);
 
-    return 1;
 #if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiFont_CustomRect_getHeight'.",&tolua_err);
-    return 0;
+	if (!cobj)
+	{
+		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiPatch2_ImFontAtlasCustomRect_setWidth'", nullptr);
+		return 0;
+	}
+#endif
+	argc = lua_gettop(tolua_S) - 1;
+
+	if (1 == argc)
+	{
+		unsigned short arg0;
+		ok &= luaval_to_ushort(tolua_S, 2, &arg0, "imgui.ImFontAtlasCustomRect:Width");
+		cobj->Width = arg0;
+		return 0;
+	}
+
+	CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImFontAtlasCustomRect:Width", argc, 1);
+	return 0;
+
+#if COCOS2D_DEBUG >= 1
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImFontAtlasCustomRect_getWidth'.", &tolua_err);
+				return 0;
 #endif
 }
-int lua_x_imguiFont_CustomRect_setHeight(lua_State* tolua_S)
+int lua_x_imguiPatch2_ImFontAtlasCustomRect_getHeight(lua_State* tolua_S)
 {
-    int argc = 0;
-    ImFontAtlas::CustomRect* cobj = nullptr;
-    bool ok  = true;
-
+	ImFontAtlasCustomRect* cobj = nullptr;
 #if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S,1,"imgui.CustomRect",0,&tolua_err)) goto tolua_lerror;
+	tolua_Error tolua_err;
+	if (!tolua_isusertype(tolua_S, 1, "imgui.ImFontAtlasCustomRect", 0, &tolua_err)) goto tolua_lerror;
 #endif
 
-    cobj = (ImFontAtlas::CustomRect*)tolua_tousertype(tolua_S,1,0);
+	cobj = (ImFontAtlasCustomRect*)tolua_tousertype(tolua_S, 1, 0);
 
 #if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiFont_CustomRect_setHeight'", nullptr);
-        return 0;
-    }
+	if (!cobj)
+	{
+		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiPatch2_ImFontAtlasCustomRect_getHeight'", nullptr);
+		return 0;
+	}
 #endif
-    argc = lua_gettop(tolua_S) - 1;
 
-    if (1 == argc)
-    {
-        unsigned short arg0;
-        ok &= luaval_to_ushort(tolua_S, 2, &arg0, "imgui.CustomRect:Height");
-        cobj->Height = arg0;
-        return 0;
-    }
+	tolua_pushnumber(tolua_S, (lua_Number)cobj->Height);
 
-    CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "imgui.CustomRect:Height",argc, 1);
-    return 0;
-
+	return 1;
 #if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiFont_CustomRect_getHeight'.",&tolua_err);
-    return 0;
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImFontAtlasCustomRect_getHeight'.", &tolua_err);
+				return 0;
 #endif
 }
-int lua_x_imguiFont_CustomRect_getX(lua_State* tolua_S)
+int lua_x_imguiPatch2_ImFontAtlasCustomRect_setHeight(lua_State* tolua_S)
 {
-    ImFontAtlas::CustomRect* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S,1,"imgui.CustomRect",0,&tolua_err)) goto tolua_lerror;
-#endif
-    
-    cobj = (ImFontAtlas::CustomRect*)tolua_tousertype(tolua_S,1,0);
+	int argc = 0;
+	ImFontAtlasCustomRect* cobj = nullptr;
+	bool ok = true;
 
 #if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiFont_CustomRect_getX'", nullptr);
-        return 0;
-    }
+	tolua_Error tolua_err;
+	if (!tolua_isusertype(tolua_S, 1, "imgui.ImFontAtlasCustomRect", 0, &tolua_err)) goto tolua_lerror;
 #endif
 
-    tolua_pushnumber(tolua_S,(lua_Number)cobj->X);
+	cobj = (ImFontAtlasCustomRect*)tolua_tousertype(tolua_S, 1, 0);
 
-    return 1;
 #if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiFont_CustomRect_getX'.",&tolua_err);
-    return 0;
+	if (!cobj)
+	{
+		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiPatch2_ImFontAtlasCustomRect_setHeight'", nullptr);
+		return 0;
+	}
+#endif
+	argc = lua_gettop(tolua_S) - 1;
+
+	if (1 == argc)
+	{
+		unsigned short arg0;
+		ok &= luaval_to_ushort(tolua_S, 2, &arg0, "imgui.ImFontAtlasCustomRect:Height");
+		cobj->Height = arg0;
+		return 0;
+	}
+
+	CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImFontAtlasCustomRect:Height", argc, 1);
+	return 0;
+
+#if COCOS2D_DEBUG >= 1
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImFontAtlasCustomRect_getHeight'.", &tolua_err);
+				return 0;
 #endif
 }
-int lua_x_imguiFont_CustomRect_setX(lua_State* tolua_S)
+int lua_x_imguiPatch2_ImFontAtlasCustomRect_getX(lua_State* tolua_S)
 {
-    int argc = 0;
-    ImFontAtlas::CustomRect* cobj = nullptr;
-    bool ok  = true;
-
+	ImFontAtlasCustomRect* cobj = nullptr;
 #if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S,1,"imgui.CustomRect",0,&tolua_err)) goto tolua_lerror;
+	tolua_Error tolua_err;
+	if (!tolua_isusertype(tolua_S, 1, "imgui.ImFontAtlasCustomRect", 0, &tolua_err)) goto tolua_lerror;
 #endif
 
-    cobj = (ImFontAtlas::CustomRect*)tolua_tousertype(tolua_S,1,0);
+	cobj = (ImFontAtlasCustomRect*)tolua_tousertype(tolua_S, 1, 0);
 
 #if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiFont_CustomRect_setX'", nullptr);
-        return 0;
-    }
+	if (!cobj)
+	{
+		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiPatch2_ImFontAtlasCustomRect_getX'", nullptr);
+		return 0;
+	}
 #endif
-    argc = lua_gettop(tolua_S) - 1;
 
-    if (1 == argc)
-    {
-        unsigned short arg0;
-        ok &= luaval_to_ushort(tolua_S, 2, &arg0, "imgui.CustomRect:X");
-        cobj->X = arg0;
-        return 0;
-    }
+	tolua_pushnumber(tolua_S, (lua_Number)cobj->X);
 
-    CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "imgui.CustomRect:X",argc, 1);
-    return 0;
-
+	return 1;
 #if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiFont_CustomRect_getX'.",&tolua_err);
-    return 0;
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImFontAtlasCustomRect_getX'.", &tolua_err);
+				return 0;
 #endif
 }
-int lua_x_imguiFont_CustomRect_getY(lua_State* tolua_S)
+int lua_x_imguiPatch2_ImFontAtlasCustomRect_setX(lua_State* tolua_S)
 {
-    ImFontAtlas::CustomRect* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S,1,"imgui.CustomRect",0,&tolua_err)) goto tolua_lerror;
-#endif
-    
-    cobj = (ImFontAtlas::CustomRect*)tolua_tousertype(tolua_S,1,0);
+	int argc = 0;
+	ImFontAtlasCustomRect* cobj = nullptr;
+	bool ok = true;
 
 #if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiFont_CustomRect_getY'", nullptr);
-        return 0;
-    }
+	tolua_Error tolua_err;
+	if (!tolua_isusertype(tolua_S, 1, "imgui.ImFontAtlasCustomRect", 0, &tolua_err)) goto tolua_lerror;
 #endif
 
-    tolua_pushnumber(tolua_S,(lua_Number)cobj->Y);
+	cobj = (ImFontAtlasCustomRect*)tolua_tousertype(tolua_S, 1, 0);
 
-    return 1;
 #if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiFont_CustomRect_getY'.",&tolua_err);
-    return 0;
+	if (!cobj)
+	{
+		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiPatch2_ImFontAtlasCustomRect_setX'", nullptr);
+		return 0;
+	}
+#endif
+	argc = lua_gettop(tolua_S) - 1;
+
+	if (1 == argc)
+	{
+		unsigned short arg0;
+		ok &= luaval_to_ushort(tolua_S, 2, &arg0, "imgui.ImFontAtlasCustomRect:X");
+		cobj->X = arg0;
+		return 0;
+	}
+
+	CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImFontAtlasCustomRect:X", argc, 1);
+	return 0;
+
+#if COCOS2D_DEBUG >= 1
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImFontAtlasCustomRect_getX'.", &tolua_err);
+				return 0;
 #endif
 }
-int lua_x_imguiFont_CustomRect_setY(lua_State* tolua_S)
+int lua_x_imguiPatch2_ImFontAtlasCustomRect_getY(lua_State* tolua_S)
 {
-    int argc = 0;
-    ImFontAtlas::CustomRect* cobj = nullptr;
-    bool ok  = true;
-
+	ImFontAtlasCustomRect* cobj = nullptr;
 #if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S,1,"imgui.CustomRect",0,&tolua_err)) goto tolua_lerror;
+	tolua_Error tolua_err;
+	if (!tolua_isusertype(tolua_S, 1, "imgui.ImFontAtlasCustomRect", 0, &tolua_err)) goto tolua_lerror;
 #endif
 
-    cobj = (ImFontAtlas::CustomRect*)tolua_tousertype(tolua_S,1,0);
+	cobj = (ImFontAtlasCustomRect*)tolua_tousertype(tolua_S, 1, 0);
 
 #if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiFont_CustomRect_setY'", nullptr);
-        return 0;
-    }
+	if (!cobj)
+	{
+		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiPatch2_ImFontAtlasCustomRect_getY'", nullptr);
+		return 0;
+	}
 #endif
-    argc = lua_gettop(tolua_S) - 1;
 
-    if (1 == argc)
-    {
-        unsigned short arg0;
-        ok &= luaval_to_ushort(tolua_S, 2, &arg0, "imgui.CustomRect:Y");
-        cobj->Y = arg0;
-        return 0;
-    }
+	tolua_pushnumber(tolua_S, (lua_Number)cobj->Y);
 
-    CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "imgui.CustomRect:Y",argc, 1);
-    return 0;
-
+	return 1;
 #if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiFont_CustomRect_getY'.",&tolua_err);
-    return 0;
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImFontAtlasCustomRect_getY'.", &tolua_err);
+				return 0;
 #endif
 }
-int lua_x_imguiFont_CustomRect_getGlyphAdvanceX(lua_State* tolua_S)
+int lua_x_imguiPatch2_ImFontAtlasCustomRect_setY(lua_State* tolua_S)
 {
-    ImFontAtlas::CustomRect* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S,1,"imgui.CustomRect",0,&tolua_err)) goto tolua_lerror;
-#endif
-    
-    cobj = (ImFontAtlas::CustomRect*)tolua_tousertype(tolua_S,1,0);
+	int argc = 0;
+	ImFontAtlasCustomRect* cobj = nullptr;
+	bool ok = true;
 
 #if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiFont_CustomRect_getGlyphAdvanceX'", nullptr);
-        return 0;
-    }
+	tolua_Error tolua_err;
+	if (!tolua_isusertype(tolua_S, 1, "imgui.ImFontAtlasCustomRect", 0, &tolua_err)) goto tolua_lerror;
 #endif
 
-    tolua_pushnumber(tolua_S,(lua_Number)cobj->GlyphAdvanceX);
+	cobj = (ImFontAtlasCustomRect*)tolua_tousertype(tolua_S, 1, 0);
 
-    return 1;
 #if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiFont_CustomRect_getGlyphAdvanceX'.",&tolua_err);
-    return 0;
+	if (!cobj)
+	{
+		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiPatch2_ImFontAtlasCustomRect_setY'", nullptr);
+		return 0;
+	}
+#endif
+	argc = lua_gettop(tolua_S) - 1;
+
+	if (1 == argc)
+	{
+		unsigned short arg0;
+		ok &= luaval_to_ushort(tolua_S, 2, &arg0, "imgui.ImFontAtlasCustomRect:Y");
+		cobj->Y = arg0;
+		return 0;
+	}
+
+	CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImFontAtlasCustomRect:Y", argc, 1);
+	return 0;
+
+#if COCOS2D_DEBUG >= 1
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImFontAtlasCustomRect_getY'.", &tolua_err);
+				return 0;
 #endif
 }
-int lua_x_imguiFont_CustomRect_setGlyphAdvanceX(lua_State* tolua_S)
+int lua_x_imguiPatch2_ImFontAtlasCustomRect_getGlyphAdvanceX(lua_State* tolua_S)
 {
-    int argc = 0;
-    ImFontAtlas::CustomRect* cobj = nullptr;
-    bool ok  = true;
-
+	ImFontAtlasCustomRect* cobj = nullptr;
 #if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S,1,"imgui.CustomRect",0,&tolua_err)) goto tolua_lerror;
+	tolua_Error tolua_err;
+	if (!tolua_isusertype(tolua_S, 1, "imgui.ImFontAtlasCustomRect", 0, &tolua_err)) goto tolua_lerror;
 #endif
 
-    cobj = (ImFontAtlas::CustomRect*)tolua_tousertype(tolua_S,1,0);
+	cobj = (ImFontAtlasCustomRect*)tolua_tousertype(tolua_S, 1, 0);
 
 #if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiFont_CustomRect_setGlyphAdvanceX'", nullptr);
-        return 0;
-    }
+	if (!cobj)
+	{
+		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiPatch2_ImFontAtlasCustomRect_getGlyphAdvanceX'", nullptr);
+		return 0;
+	}
 #endif
-    argc = lua_gettop(tolua_S) - 1;
 
-    if (1 == argc)
-    {
-        double arg0;
-        ok &= luaval_to_number(tolua_S, 2,&arg0, "imgui.CustomRect:GlyphAdvanceX");
-        cobj->GlyphAdvanceX = arg0;
-        return 0;
-    }
+	tolua_pushnumber(tolua_S, (lua_Number)cobj->GlyphAdvanceX);
 
-    CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "imgui.CustomRect:GlyphAdvanceX",argc, 1);
-    return 0;
-
+	return 1;
 #if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiFont_CustomRect_getGlyphAdvanceX'.",&tolua_err);
-    return 0;
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImFontAtlasCustomRect_getGlyphAdvanceX'.", &tolua_err);
+				return 0;
 #endif
 }
-int lua_x_imguiFont_CustomRect_getGlyphOffset(lua_State* tolua_S)
+int lua_x_imguiPatch2_ImFontAtlasCustomRect_setGlyphAdvanceX(lua_State* tolua_S)
 {
-    ImFontAtlas::CustomRect* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S,1,"imgui.CustomRect",0,&tolua_err)) goto tolua_lerror;
-#endif
-    
-    cobj = (ImFontAtlas::CustomRect*)tolua_tousertype(tolua_S,1,0);
+	int argc = 0;
+	ImFontAtlasCustomRect* cobj = nullptr;
+	bool ok = true;
 
 #if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiFont_CustomRect_getGlyphOffset'", nullptr);
-        return 0;
-    }
+	tolua_Error tolua_err;
+	if (!tolua_isusertype(tolua_S, 1, "imgui.ImFontAtlasCustomRect", 0, &tolua_err)) goto tolua_lerror;
 #endif
 
-    ImVec2_to_luaval(tolua_S, cobj->GlyphOffset);
+	cobj = (ImFontAtlasCustomRect*)tolua_tousertype(tolua_S, 1, 0);
 
-    return 1;
 #if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiFont_CustomRect_getGlyphOffset'.",&tolua_err);
-    return 0;
+	if (!cobj)
+	{
+		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiPatch2_ImFontAtlasCustomRect_setGlyphAdvanceX'", nullptr);
+		return 0;
+	}
+#endif
+	argc = lua_gettop(tolua_S) - 1;
+
+	if (1 == argc)
+	{
+		double arg0;
+		ok &= luaval_to_number(tolua_S, 2, &arg0, "imgui.ImFontAtlasCustomRect:GlyphAdvanceX");
+		cobj->GlyphAdvanceX = arg0;
+		return 0;
+	}
+
+	CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImFontAtlasCustomRect:GlyphAdvanceX", argc, 1);
+	return 0;
+
+#if COCOS2D_DEBUG >= 1
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImFontAtlasCustomRect_getGlyphAdvanceX'.", &tolua_err);
+				return 0;
 #endif
 }
-int lua_x_imguiFont_CustomRect_setGlyphOffset(lua_State* tolua_S)
+int lua_x_imguiPatch2_ImFontAtlasCustomRect_getGlyphOffset(lua_State* tolua_S)
 {
-    int argc = 0;
-    ImFontAtlas::CustomRect* cobj = nullptr;
-    bool ok  = true;
-
+	ImFontAtlasCustomRect* cobj = nullptr;
 #if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S,1,"imgui.CustomRect",0,&tolua_err)) goto tolua_lerror;
+	tolua_Error tolua_err;
+	if (!tolua_isusertype(tolua_S, 1, "imgui.ImFontAtlasCustomRect", 0, &tolua_err)) goto tolua_lerror;
 #endif
 
-    cobj = (ImFontAtlas::CustomRect*)tolua_tousertype(tolua_S,1,0);
+	cobj = (ImFontAtlasCustomRect*)tolua_tousertype(tolua_S, 1, 0);
 
 #if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiFont_CustomRect_setGlyphOffset'", nullptr);
-        return 0;
-    }
+	if (!cobj)
+	{
+		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiPatch2_ImFontAtlasCustomRect_getGlyphOffset'", nullptr);
+		return 0;
+	}
 #endif
-    argc = lua_gettop(tolua_S) - 1;
 
-    if (1 == argc)
-    {
-        ImVec2 arg0;
-        ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "imgui.CustomRect:GlyphOffset");
-        cobj->GlyphOffset = arg0;
-        return 0;
-    }
+	ImVec2_to_luaval(tolua_S, cobj->GlyphOffset);
 
-    CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "imgui.CustomRect:GlyphOffset",argc, 1);
-    return 0;
-
+	return 1;
 #if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiFont_CustomRect_getGlyphOffset'.",&tolua_err);
-    return 0;
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImFontAtlasCustomRect_getGlyphOffset'.", &tolua_err);
+				return 0;
 #endif
 }
-int lua_x_imguiFont_CustomRect_getFont(lua_State* tolua_S)
+int lua_x_imguiPatch2_ImFontAtlasCustomRect_setGlyphOffset(lua_State* tolua_S)
 {
-    ImFontAtlas::CustomRect* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S,1,"imgui.CustomRect",0,&tolua_err)) goto tolua_lerror;
-#endif
-    
-    cobj = (ImFontAtlas::CustomRect*)tolua_tousertype(tolua_S,1,0);
+	int argc = 0;
+	ImFontAtlasCustomRect* cobj = nullptr;
+	bool ok = true;
 
 #if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiFont_CustomRect_getFont'", nullptr);
-        return 0;
-    }
+	tolua_Error tolua_err;
+	if (!tolua_isusertype(tolua_S, 1, "imgui.ImFontAtlasCustomRect", 0, &tolua_err)) goto tolua_lerror;
 #endif
 
-    #pragma warning NO CONVERSION FROM NATIVE FOR ImFont*;
+	cobj = (ImFontAtlasCustomRect*)tolua_tousertype(tolua_S, 1, 0);
 
-    return 1;
 #if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiFont_CustomRect_getFont'.",&tolua_err);
-    return 0;
+	if (!cobj)
+	{
+		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiPatch2_ImFontAtlasCustomRect_setGlyphOffset'", nullptr);
+		return 0;
+	}
+#endif
+	argc = lua_gettop(tolua_S) - 1;
+
+	if (1 == argc)
+	{
+		ImVec2 arg0;
+		ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "imgui.ImFontAtlasCustomRect:GlyphOffset");
+		cobj->GlyphOffset = arg0;
+		return 0;
+	}
+
+	CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImFontAtlasCustomRect:GlyphOffset", argc, 1);
+	return 0;
+
+#if COCOS2D_DEBUG >= 1
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImFontAtlasCustomRect_getGlyphOffset'.", &tolua_err);
+				return 0;
 #endif
 }
-int lua_x_imguiFont_CustomRect_setFont(lua_State* tolua_S)
+
+int lua_register_x_imguiPatch2_ImFontAtlasCustomRect(lua_State* tolua_S)
 {
-    int argc = 0;
-    ImFontAtlas::CustomRect* cobj = nullptr;
-    bool ok  = true;
+    tolua_usertype(tolua_S,"imgui.ImFontAtlasCustomRect");
+    tolua_cclass(tolua_S,"ImFontAtlasCustomRect","imgui.ImFontAtlasCustomRect","",nullptr);
 
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S,1,"imgui.CustomRect",0,&tolua_err)) goto tolua_lerror;
-#endif
-
-    cobj = (ImFontAtlas::CustomRect*)tolua_tousertype(tolua_S,1,0);
-
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiFont_CustomRect_setFont'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-
-    if (1 == argc)
-    {
-        ImFont* arg0;
-        #pragma warning NO CONVERSION TO NATIVE FOR ImFont*
-		ok = false;
-        cobj->Font = arg0;
-        return 0;
-    }
-
-    CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "imgui.CustomRect:Font",argc, 1);
-    return 0;
-
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiFont_CustomRect_getFont'.",&tolua_err);
-    return 0;
-#endif
-}
-static int lua_x_imguiFont_CustomRect_finalize(lua_State* tolua_S)
-{
-    printf("luabindings: finalizing LUA object (CustomRect)");
-    return 0;
-}
-
-int lua_register_x_imguiFont_CustomRect(lua_State* tolua_S)
-{
-    tolua_usertype(tolua_S,"imgui.CustomRect");
-    tolua_cclass(tolua_S,"CustomRect","imgui.CustomRect","",nullptr);
-
-    tolua_beginmodule(tolua_S,"CustomRect");
-        tolua_function(tolua_S,"IsPacked",lua_x_imguiFont_CustomRect_IsPacked);
-        tolua_variable(tolua_S,"ID", lua_x_imguiFont_CustomRect_getID, lua_x_imguiFont_CustomRect_setID);
-        tolua_variable(tolua_S,"Width", lua_x_imguiFont_CustomRect_getWidth, lua_x_imguiFont_CustomRect_setWidth);
-        tolua_variable(tolua_S,"Height", lua_x_imguiFont_CustomRect_getHeight, lua_x_imguiFont_CustomRect_setHeight);
-        tolua_variable(tolua_S,"X", lua_x_imguiFont_CustomRect_getX, lua_x_imguiFont_CustomRect_setX);
-        tolua_variable(tolua_S,"Y", lua_x_imguiFont_CustomRect_getY, lua_x_imguiFont_CustomRect_setY);
-        tolua_variable(tolua_S,"GlyphAdvanceX", lua_x_imguiFont_CustomRect_getGlyphAdvanceX, lua_x_imguiFont_CustomRect_setGlyphAdvanceX);
-        tolua_variable(tolua_S,"GlyphOffset", lua_x_imguiFont_CustomRect_getGlyphOffset, lua_x_imguiFont_CustomRect_setGlyphOffset);
-        tolua_variable(tolua_S,"Font", lua_x_imguiFont_CustomRect_getFont, lua_x_imguiFont_CustomRect_setFont);
+    tolua_beginmodule(tolua_S,"ImFontAtlasCustomRect");
+        tolua_function(tolua_S,"IsPacked",lua_x_imguiPatch2_ImFontAtlasCustomRect_IsPacked);
+        tolua_variable(tolua_S,"ID", lua_x_imguiPatch2_ImFontAtlasCustomRect_getID, lua_x_imguiPatch2_ImFontAtlasCustomRect_setID);
+        tolua_variable(tolua_S,"Width", lua_x_imguiPatch2_ImFontAtlasCustomRect_getWidth, lua_x_imguiPatch2_ImFontAtlasCustomRect_setWidth);
+        tolua_variable(tolua_S,"Height", lua_x_imguiPatch2_ImFontAtlasCustomRect_getHeight, lua_x_imguiPatch2_ImFontAtlasCustomRect_setHeight);
+        tolua_variable(tolua_S,"X", lua_x_imguiPatch2_ImFontAtlasCustomRect_getX, lua_x_imguiPatch2_ImFontAtlasCustomRect_setX);
+        tolua_variable(tolua_S,"Y", lua_x_imguiPatch2_ImFontAtlasCustomRect_getY, lua_x_imguiPatch2_ImFontAtlasCustomRect_setY);
+        tolua_variable(tolua_S,"GlyphAdvanceX", lua_x_imguiPatch2_ImFontAtlasCustomRect_getGlyphAdvanceX, lua_x_imguiPatch2_ImFontAtlasCustomRect_setGlyphAdvanceX);
+        tolua_variable(tolua_S,"GlyphOffset", lua_x_imguiPatch2_ImFontAtlasCustomRect_getGlyphOffset, lua_x_imguiPatch2_ImFontAtlasCustomRect_setGlyphOffset);
     tolua_endmodule(tolua_S);
-    std::string typeName = typeid(ImFontAtlas::CustomRect).name();
-    g_luaType[typeName] = "imgui.CustomRect";
-    g_typeCast["CustomRect"] = "imgui.CustomRect";
+    std::string typeName = typeid(ImFontAtlasCustomRect).name();
+    g_luaType[typeName] = "imgui.ImFontAtlasCustomRect";
+    g_typeCast["ImFontAtlasCustomRect"] = "imgui.ImFontAtlasCustomRect";
     return 1;
 }
 
@@ -2574,8 +2565,8 @@ int lua_x_imguiFont_ImFontAtlas_GetCustomRectByIndex(lua_State* tolua_S)
             tolua_error(tolua_S,"invalid arguments in function 'lua_x_imguiFont_ImFontAtlas_GetCustomRectByIndex'", nullptr);
             return 0;
         }
-        const ImFontAtlas::CustomRect* ret = cobj->GetCustomRectByIndex(arg0);
-        object_to_luaval<ImFontAtlas::CustomRect>(tolua_S, "imgui.CustomRect",(ImFontAtlas::CustomRect*)ret);
+        const ImFontAtlasCustomRect* ret = cobj->GetCustomRectByIndex(arg0);
+        object_to_luaval<ImFontAtlasCustomRect>(tolua_S, "imgui.ImFontAtlasCustomRect",(ImFontAtlasCustomRect*)ret);
         return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImFontAtlas:GetCustomRectByIndex",argc, 1);
@@ -3068,11 +3059,6 @@ tolua_lerror:
     tolua_error(tolua_S,"#ferror in function 'lua_x_imguiFont_ImFontAtlas_getTexGlyphPadding'.",&tolua_err);
     return 0;
 #endif
-}
-static int lua_x_imguiFont_ImFontAtlas_finalize(lua_State* tolua_S)
-{
-    printf("luabindings: finalizing LUA object (ImFontAtlas)");
-    return 0;
 }
 
 int lua_register_x_imguiFont_ImFontAtlas(lua_State* tolua_S)
@@ -4204,10 +4190,74 @@ tolua_lerror:
     return 0;
 #endif
 }
-static int lua_x_imguiFont_ImFont_finalize(lua_State* tolua_S)
+
+// patch 20200207
+
+int lua_x_imguiPatch2_ImFont_getEllipsisChar(lua_State* tolua_S)
 {
-    printf("luabindings: finalizing LUA object (ImFont)");
-    return 0;
+	ImFont* cobj = nullptr;
+#if COCOS2D_DEBUG >= 1
+	tolua_Error tolua_err;
+	if (!tolua_isusertype(tolua_S, 1, "imgui.ImFont", 0, &tolua_err)) goto tolua_lerror;
+#endif
+
+	cobj = (ImFont*)tolua_tousertype(tolua_S, 1, 0);
+
+#if COCOS2D_DEBUG >= 1
+	if (!cobj)
+	{
+		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiPatch2_ImFont_getEllipsisChar'", nullptr);
+		return 0;
+	}
+#endif
+
+	tolua_pushnumber(tolua_S, (lua_Number)cobj->EllipsisChar);
+
+	return 1;
+#if COCOS2D_DEBUG >= 1
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImFont_getEllipsisChar'.", &tolua_err);
+				return 0;
+#endif
+}
+int lua_x_imguiPatch2_ImFont_setEllipsisChar(lua_State* tolua_S)
+{
+	int argc = 0;
+	ImFont* cobj = nullptr;
+	bool ok = true;
+
+#if COCOS2D_DEBUG >= 1
+	tolua_Error tolua_err;
+	if (!tolua_isusertype(tolua_S, 1, "imgui.ImFont", 0, &tolua_err)) goto tolua_lerror;
+#endif
+
+	cobj = (ImFont*)tolua_tousertype(tolua_S, 1, 0);
+
+#if COCOS2D_DEBUG >= 1
+	if (!cobj)
+	{
+		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiPatch2_ImFont_setEllipsisChar'", nullptr);
+		return 0;
+	}
+#endif
+	argc = lua_gettop(tolua_S) - 1;
+
+	if (1 == argc)
+	{
+		unsigned short arg0;
+		ok &= luaval_to_ushort(tolua_S, 2, &arg0, "imgui.ImFont:EllipsisChar");
+		cobj->EllipsisChar = arg0;
+		return 0;
+	}
+
+	CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImFont:EllipsisChar", argc, 1);
+	return 0;
+
+#if COCOS2D_DEBUG >= 1
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImFont_getEllipsisChar'.", &tolua_err);
+				return 0;
+#endif
 }
 
 int lua_register_x_imguiFont_ImFont(lua_State* tolua_S)
@@ -4234,7 +4284,10 @@ int lua_register_x_imguiFont_ImFont(lua_State* tolua_S)
         tolua_variable(tolua_S,"Descent", lua_x_imguiFont_ImFont_getDescent, lua_x_imguiFont_ImFont_setDescent);
         tolua_variable(tolua_S,"MetricsTotalSurface", lua_x_imguiFont_ImFont_getMetricsTotalSurface, lua_x_imguiFont_ImFont_setMetricsTotalSurface);
         tolua_variable(tolua_S,"DirtyLookupTables", lua_x_imguiFont_ImFont_getDirtyLookupTables, lua_x_imguiFont_ImFont_setDirtyLookupTables);
-    tolua_endmodule(tolua_S);
+
+		// patch 20200207
+		tolua_variable(tolua_S, "EllipsisChar", lua_x_imguiPatch2_ImFont_getEllipsisChar, lua_x_imguiPatch2_ImFont_setEllipsisChar);
+	tolua_endmodule(tolua_S);
     std::string typeName = typeid(ImFont).name();
     g_luaType[typeName] = "imgui.ImFont";
     g_typeCast["ImFont"] = "imgui.ImFont";
@@ -4250,7 +4303,7 @@ TOLUA_API int register_all_x_imguiFont(lua_State* tolua_S)
 	lua_register_x_imguiFont_ImFontAtlas(tolua_S);
 	lua_register_x_imguiFont_ImFontGlyph(tolua_S);
 	lua_register_x_imguiFont_ImFont(tolua_S);
-	lua_register_x_imguiFont_CustomRect(tolua_S);
+	lua_register_x_imguiPatch2_ImFontAtlasCustomRect(tolua_S);
 	lua_register_x_imguiFont_ImFontConfig(tolua_S);
 
 	tolua_endmodule(tolua_S);

@@ -6331,65 +6331,54 @@ int lua_x_imgui_ImGui_SetKeyboardFocusHere(lua_State* tolua_S)
 }
 int lua_x_imgui_ImGui_IsMouseDragging(lua_State* tolua_S)
 {
-    int argc = 0;
-    bool ok  = true;
+	int argc = 0;
+	bool ok = true;
 
 #if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
+	tolua_Error tolua_err;
 #endif
 
 #if COCOS2D_DEBUG >= 1
-    if (!tolua_isusertable(tolua_S,1,"imgui.ImGui",0,&tolua_err)) goto tolua_lerror;
+	if (!tolua_isusertable(tolua_S, 1, "imgui.ImGui", 0, &tolua_err)) goto tolua_lerror;
 #endif
 
-    argc = lua_gettop(tolua_S) - 1;
+	argc = lua_gettop(tolua_S) - 1;
 
-    if (argc == 0)
-    {
-        if(!ok)
-        {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_IsMouseDragging'", nullptr);
-            return 0;
-        }
-        bool ret = ImGui::IsMouseDragging();
-        tolua_pushboolean(tolua_S,(bool)ret);
-        return 1;
-    }
-    if (argc == 1)
-    {
-        int arg0;
-        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "imgui.ImGui:IsMouseDragging");
-        if(!ok)
-        {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_IsMouseDragging'", nullptr);
-            return 0;
-        }
-        bool ret = ImGui::IsMouseDragging(arg0);
-        tolua_pushboolean(tolua_S,(bool)ret);
-        return 1;
-    }
-    if (argc == 2)
-    {
-        int arg0;
-        double arg1;
-        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "imgui.ImGui:IsMouseDragging");
-        ok &= luaval_to_number(tolua_S, 3,&arg1, "imgui.ImGui:IsMouseDragging");
-        if(!ok)
-        {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_IsMouseDragging'", nullptr);
-            return 0;
-        }
-        bool ret = ImGui::IsMouseDragging(arg0, arg1);
-        tolua_pushboolean(tolua_S,(bool)ret);
-        return 1;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:IsMouseDragging",argc, 0);
-    return 0;
+	if (argc == 1)
+	{
+		int arg0;
+		ok &= luaval_to_int32(tolua_S, 2, (int *)&arg0, "imgui.ImGui:IsMouseDragging");
+		if (!ok)
+		{
+			tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiPatch2_ImGui_IsMouseDragging'", nullptr);
+			return 0;
+		}
+		bool ret = ImGui::IsMouseDragging(arg0);
+		tolua_pushboolean(tolua_S, (bool)ret);
+		return 1;
+	}
+	if (argc == 2)
+	{
+		int arg0;
+		double arg1;
+		ok &= luaval_to_int32(tolua_S, 2, (int *)&arg0, "imgui.ImGui:IsMouseDragging");
+		ok &= luaval_to_number(tolua_S, 3, &arg1, "imgui.ImGui:IsMouseDragging");
+		if (!ok)
+		{
+			tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiPatch2_ImGui_IsMouseDragging'", nullptr);
+			return 0;
+		}
+		bool ret = ImGui::IsMouseDragging(arg0, arg1);
+		tolua_pushboolean(tolua_S, (bool)ret);
+		return 1;
+	}
+	luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:IsMouseDragging", argc, 1);
+	return 0;
 #if COCOS2D_DEBUG >= 1
-    tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_imgui_ImGui_IsMouseDragging'.",&tolua_err);
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImGui_IsMouseDragging'.", &tolua_err);
 #endif
-    return 0;
+				return 0;
 }
 int lua_x_imgui_ImGui_TextColored(lua_State* tolua_S)
 {
@@ -8086,11 +8075,6 @@ int lua_x_imgui_ImGui_BeginChildFrame(lua_State* tolua_S)
 #endif
     return 0;
 }
-static int lua_x_imgui_ImGui_finalize(lua_State* tolua_S)
-{
-    printf("luabindings: finalizing LUA object (ImGui)");
-    return 0;
-}
 
 // patch 20190602
 
@@ -8743,10 +8727,140 @@ int lua_x_imguiPatch1_ImGui_GetBackgroundDrawList(lua_State* tolua_S)
 #endif
 				return 0;
 }
-static int lua_x_imguiPatch1_ImGui_finalize(lua_State* tolua_S)
+
+// patch 20200207
+
+int lua_x_imguiPatch2_ImGui_SetScrollHereX(lua_State* tolua_S)
 {
-	printf("luabindings: finalizing LUA object (ImGui)");
+	int argc = 0;
+	bool ok = true;
+
+#if COCOS2D_DEBUG >= 1
+	tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+	if (!tolua_isusertable(tolua_S, 1, "imgui.ImGui", 0, &tolua_err)) goto tolua_lerror;
+#endif
+
+	argc = lua_gettop(tolua_S) - 1;
+
+	if (argc == 0)
+	{
+		if (!ok)
+		{
+			tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiPatch2_ImGui_SetScrollHereX'", nullptr);
+			return 0;
+		}
+		ImGui::SetScrollHereX();
+		lua_settop(tolua_S, 1);
+		return 1;
+	}
+	if (argc == 1)
+	{
+		double arg0;
+		ok &= luaval_to_number(tolua_S, 2, &arg0, "imgui.ImGui:SetScrollHereX");
+		if (!ok)
+		{
+			tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiPatch2_ImGui_SetScrollHereX'", nullptr);
+			return 0;
+		}
+		ImGui::SetScrollHereX(arg0);
+		lua_settop(tolua_S, 1);
+		return 1;
+	}
+	luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:SetScrollHereX", argc, 0);
 	return 0;
+#if COCOS2D_DEBUG >= 1
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImGui_SetScrollHereX'.", &tolua_err);
+#endif
+				return 0;
+}
+int lua_x_imguiPatch2_ImGui_IsItemToggledOpen(lua_State* tolua_S)
+{
+	int argc = 0;
+	bool ok = true;
+
+#if COCOS2D_DEBUG >= 1
+	tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+	if (!tolua_isusertable(tolua_S, 1, "imgui.ImGui", 0, &tolua_err)) goto tolua_lerror;
+#endif
+
+	argc = lua_gettop(tolua_S) - 1;
+
+	if (argc == 0)
+	{
+		if (!ok)
+		{
+			tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiPatch2_ImGui_IsItemToggledOpen'", nullptr);
+			return 0;
+		}
+		bool ret = ImGui::IsItemToggledOpen();
+		tolua_pushboolean(tolua_S, (bool)ret);
+		return 1;
+	}
+	luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:IsItemToggledOpen", argc, 0);
+	return 0;
+#if COCOS2D_DEBUG >= 1
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImGui_IsItemToggledOpen'.", &tolua_err);
+#endif
+				return 0;
+}
+int lua_x_imguiPatch2_ImGui_SetScrollFromPosX(lua_State* tolua_S)
+{
+	int argc = 0;
+	bool ok = true;
+
+#if COCOS2D_DEBUG >= 1
+	tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+	if (!tolua_isusertable(tolua_S, 1, "imgui.ImGui", 0, &tolua_err)) goto tolua_lerror;
+#endif
+
+	argc = lua_gettop(tolua_S) - 1;
+
+	if (argc == 1)
+	{
+		double arg0;
+		ok &= luaval_to_number(tolua_S, 2, &arg0, "imgui.ImGui:SetScrollFromPosX");
+		if (!ok)
+		{
+			tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiPatch2_ImGui_SetScrollFromPosX'", nullptr);
+			return 0;
+		}
+		ImGui::SetScrollFromPosX(arg0);
+		lua_settop(tolua_S, 1);
+		return 1;
+	}
+	if (argc == 2)
+	{
+		double arg0;
+		double arg1;
+		ok &= luaval_to_number(tolua_S, 2, &arg0, "imgui.ImGui:SetScrollFromPosX");
+		ok &= luaval_to_number(tolua_S, 3, &arg1, "imgui.ImGui:SetScrollFromPosX");
+		if (!ok)
+		{
+			tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiPatch2_ImGui_SetScrollFromPosX'", nullptr);
+			return 0;
+		}
+		ImGui::SetScrollFromPosX(arg0, arg1);
+		lua_settop(tolua_S, 1);
+		return 1;
+	}
+	luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:SetScrollFromPosX", argc, 1);
+	return 0;
+#if COCOS2D_DEBUG >= 1
+	tolua_lerror:
+				tolua_error(tolua_S, "#ferror in function 'lua_x_imguiPatch2_ImGui_SetScrollFromPosX'.", &tolua_err);
+#endif
+				return 0;
 }
 
 TOLUA_API std::vector<luaL_Reg> register_all_x_imgui(lua_State* tolua_S)
@@ -8971,6 +9085,11 @@ TOLUA_API std::vector<luaL_Reg> register_all_x_imgui(lua_State* tolua_S)
 		{ "getWindowDrawList", lua_x_imguiPatch1_ImGui_GetWindowDrawList },
 		{ "getForegroundDrawList", lua_x_imguiPatch1_ImGui_GetForegroundDrawList },
 		{ "getBackgroundDrawList", lua_x_imguiPatch1_ImGui_GetBackgroundDrawList },
+
+		// patch 20200207
+		{ "setScrollHereX", lua_x_imguiPatch2_ImGui_SetScrollHereX },
+		{ "isItemToggledOpen", lua_x_imguiPatch2_ImGui_IsItemToggledOpen },
+		{ "setScrollFromPosX", lua_x_imguiPatch2_ImGui_SetScrollFromPosX },
 	};
 	return f;
 }
