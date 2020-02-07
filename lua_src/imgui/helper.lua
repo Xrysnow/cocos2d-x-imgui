@@ -49,14 +49,18 @@ local listener1
 local listener2
 
 ---@return cc.Layer
-function imgui.on()
+function imgui.on(target)
     local get = imgui.get()
     if get then
         return get
     end
     local la = imgui.create()
-    local sc = dir:getRunningScene()
-    sc:addChild(la, 1, layerName)
+    if target then
+        target:addChild(la, 1, layerName)
+    else
+        local sc = dir:getRunningScene()
+        sc:addChild(la, 1, layerName)
+    end
     if listener1 or listener2 then
         return la
     end

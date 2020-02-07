@@ -1,5 +1,5 @@
 ---@class im.Widget:cc.Node
-local M = class('imgui.widget', cc.Node)
+local M = class('imgui.Widget', cc.Node)
 
 function M:ctor(...)
     self._param = { ... }
@@ -43,7 +43,9 @@ function M:getReturn(idx)
 end
 
 function M:setHandler(f)
-    self._handler = f
+    self._handler = function()
+        f()
+    end
 end
 
 function M:setContentSize(size)
@@ -97,19 +99,25 @@ function M.Bullet()
 end
 
 ---@return im.Button
-function M.Button(label_or_id, size_or_dir, style)
+function M.Button(label_or_id, onClick, size_or_dir, style)
     local ret = require('imgui.widgets.Button')(label_or_id, size_or_dir)
     if style then
         ret:setStyle(style)
+    end
+    if onClick then
+        ret:setOnClick(onClick)
     end
     return ret
 end
 
 ---@return im.Checkbox
-function M.Checkbox(label, checked, onCheck)
+function M.Checkbox(label, checked, onChange, onCheck)
     local ret = require('imgui.widgets.Checkbox')(label, checked)
+    if onChange then
+        ret:setOnChange(onChange)
+    end
     if onCheck then
-        ret:setOnClick(onCheck)
+        ret:setOnCheck(onCheck)
     end
     return ret
 end
@@ -342,7 +350,10 @@ function M.propertyInput(label, data, k, params)
             else
                 ret, ret2 = im.inputFloatN(label, v, step, step_fast, params.format or '%.3f', flags)
             end
-            data[k] = { x = ret2[1], y = ret2[2], z = ret2[3], w = ret2[4] }
+            data[k].x = ret2[1]
+            data[k].y = ret2[2]
+            data[k].z = ret2[3]
+            data[k].w = ret2[4]
         elseif is_color then
             local col = im.color(val)
             ret, ret2 = im.colorEdit4(label, { col.x, col.y, col.z, col.w }, flags)

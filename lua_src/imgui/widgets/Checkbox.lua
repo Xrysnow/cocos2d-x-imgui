@@ -36,13 +36,23 @@ function M:setOnCheck(f)
     return self
 end
 
+function M:setOnChange(f)
+    self._onchange = f
+    return self
+end
+
 function M:_handler()
     imgui.pushID(tostring(self))
     self._ret = { imgui.checkbox(unpack(self._param)) }
     imgui.popID()
-    self._param[2] = self._ret[2]
-    if self._ret[1] and self._oncheck then
+    local last = self._param[2]
+    local curr = self._ret[2]
+    self._param[2] = curr
+    if curr and self._oncheck then
         self:_oncheck()
+    end
+    if last ~= curr then
+        self:_onchange(curr)
     end
     base._handler(self)
 end
