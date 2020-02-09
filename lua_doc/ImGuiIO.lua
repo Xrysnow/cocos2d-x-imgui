@@ -339,10 +339,10 @@ ImGuiIO.ConfigDockingWithShift = nil
 
 --------------------------------
 
----  [BETA] Make every single floating window display within a docking node.
+--- [BETA] [FIXME: This currently creates regression with auto-sizing and general overhead] Make every single floating window display within a docking node.
 --- = false
 ---@type boolean
-ImGuiIO.ConfigDockingTabBarOnSingleWindows = nil
+ImGuiIO.ConfigDockingAlwaysTabBar = nil
 
 --------------------------------
 
@@ -384,6 +384,13 @@ ImGuiIO.ConfigViewportsNoDefaultParent = nil
 ---  (Optional) When using multiple viewports: viewport the OS mouse cursor is hovering _IGNORING_ viewports with the ImGuiViewportFlags_NoInputs flag, and _REGARDLESS_ of whether another viewport is focused. Set io.BackendFlags |= ImGuiBackendFlags_HasMouseHoveredViewport if you can provide this info. If you don't imgui will infer the value using the rectangles and last focused time of the viewports it knows about (ignoring other OS windows).
 ---@type number
 ImGuiIO.MouseHoveredViewport = nil
+
+--------------------------------
+
+--- [BETA] Compact window memory usage when unused. Set to -1.0f to disable.
+--- = 60.0f
+---@type number
+ImGuiIO.ConfigWindowsMemoryCompactTimer = nil
 
 
 return nil

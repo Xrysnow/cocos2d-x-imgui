@@ -310,6 +310,29 @@ end
 
 --------------------------------
 
+--- 
+---@param center ImVec2
+---@param radius number
+---@param col number
+---@param num_segments number
+---@return imgui.ImDrawList
+function ImDrawList:AddNgonFilled(center, radius, col, num_segments)
+end
+
+--------------------------------
+
+--- 
+---@param center ImVec2
+---@param radius number
+---@param col number
+---@param num_segments number
+---@param thickness number
+---@return imgui.ImDrawList
+function ImDrawList:AddNgon(center, radius, col, num_segments, thickness)
+end
+
+--------------------------------
+
 ---  Flags, you may poke into these to adjust anti-aliasing settings per-primitive. 
 ---@type number
 ImDrawList.Flags = nil

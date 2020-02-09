@@ -1,16 +1,16 @@
 
 --------------------------------
--- @module CustomRect
+-- @module ImFontAtlasCustomRect
 -- @parent_module imgui
 
----@class imgui.CustomRect
-local CustomRect = {}
-imgui.CustomRect = CustomRect
+---@class imgui.ImFontAtlasCustomRect
+local ImFontAtlasCustomRect = {}
+imgui.ImFontAtlasCustomRect = ImFontAtlasCustomRect
 --------------------------------
 
 --- 
 ---@return boolean
-function CustomRect:IsPacked()
+function ImFontAtlasCustomRect:IsPacked()
 end
 
 --------------------------------
@@ -18,56 +18,56 @@ end
 --- User ID. Use <0x10000 to map into a font glyph, >=0x10000 for other/internal/custom texture data.
 --- Input
 ---@type number
-CustomRect.ID = nil
+ImFontAtlasCustomRect.ID = nil
 
 --------------------------------
 
 --- Desired rectangle dimension
 --- Input
 ---@type number
-CustomRect.Width = nil
+ImFontAtlasCustomRect.Width = nil
 
 --------------------------------
 
 --- Desired rectangle dimension
 --- Input
 ---@type number
-CustomRect.Height = nil
+ImFontAtlasCustomRect.Height = nil
 
 --------------------------------
 
 --- Packed position in Atlas
 --- Output
 ---@type number
-CustomRect.X = nil
+ImFontAtlasCustomRect.X = nil
 
 --------------------------------
 
 --- Packed position in Atlas
 --- Output
 ---@type number
-CustomRect.Y = nil
+ImFontAtlasCustomRect.Y = nil
 
 --------------------------------
 
 --- For custom font glyphs only (ID<0x10000): glyph xadvance
 --- Input
 ---@type number
-CustomRect.GlyphAdvanceX = nil
+ImFontAtlasCustomRect.GlyphAdvanceX = nil
 
 --------------------------------
 
 --- For custom font glyphs only (ID<0x10000): glyph display offset
 --- Input
 ---@type ImVec2
-CustomRect.GlyphOffset = nil
+ImFontAtlasCustomRect.GlyphOffset = nil
 
 --------------------------------
 
 --- For custom font glyphs only (ID<0x10000): target font
 --- Input
 ---@type ImFont
-CustomRect.Font = nil
+ImFontAtlasCustomRect.Font = nil
 
 
 return nil

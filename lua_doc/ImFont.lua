@@ -151,5 +151,14 @@ ImFont.MetricsTotalSurface = nil
 ---@type boolean
 ImFont.DirtyLookupTables = nil
 
+--------------------------------
+
+--- Character used for ellipsis rendering.
+--- = -1
+--- out
+--- 2
+---@type number
+ImFont.EllipsisChar = nil
+
 
 return nil

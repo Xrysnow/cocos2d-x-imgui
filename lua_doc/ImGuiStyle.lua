@@ -214,5 +214,18 @@ ImGuiStyle.CurveTessellationTol = nil
 ---@type number
 ImGuiStyle.WindowMenuButtonPosition = nil
 
+--------------------------------
+-- patch 20200207
+--------------------------------
+
+--- Side of the color button in the ColorEdit4 widget (left/right). Defaults to ImGuiDir_Right.
+---@type number
+ImGuiStyle.ColorButtonPosition = nil
+
+--------------------------------
+
+--- Maximum error (in pixels) allowed when using AddCircle()/AddCircleFilled() or drawing rounded corner rectangles with no explicit segment count specified. Decrease for higher quality but more geometry.
+---@type number
+ImGuiStyle.CircleSegmentMaxError = nil
 
 return nil

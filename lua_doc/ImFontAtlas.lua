@@ -51,7 +51,7 @@ end
 
 --- 
 ---@param index number
----@return imgui.CustomRect
+---@return imgui.ImFontAtlasCustomRect
 function ImFontAtlas:GetCustomRectByIndex(index)
 end
 

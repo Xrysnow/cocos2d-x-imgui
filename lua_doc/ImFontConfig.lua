@@ -102,5 +102,12 @@ ImFontConfig.RasterizerFlags = nil
 ---@type number
 ImFontConfig.RasterizerMultiply = nil
 
+--------------------------------
+
+--- Explicitly specify unicode codepoint of ellipsis character. When fonts are being merged first specified ellipsis will be used.
+--- -1
+---@type number
+ImFontConfig.EllipsisChar = nil
+
 
 return nil
