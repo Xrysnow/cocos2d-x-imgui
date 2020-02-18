@@ -1060,6 +1060,14 @@ static int imgui_getStyle(lua_State *L) {
 	return 1;
 }
 
+static int imgui_setStyleColor(lua_State *L) {
+	const auto idx = luaL_checkinteger(L, 1);
+	if (idx < 0 || idx >= ImGuiCol_COUNT)
+		return luaL_error(L, "invalid parameter #1");
+	ImGui::GetStyle().Colors[idx] = _luaval_to_imvec4(L, 2);
+	return 0;
+}
+
 // Settings/.Ini Utilities
 
 static int imgui_saveIniSettingsToMemory(lua_State *L) {
@@ -1146,7 +1154,7 @@ static const luaL_Reg imgui_methods[] = {
     M(addFontTTF),
 
 	// Style
-    M(getStyle),
+    M(getStyle), M(setStyleColor),
 
 	// Settings/.Ini Utilities
 	M(saveIniSettingsToMemory),
