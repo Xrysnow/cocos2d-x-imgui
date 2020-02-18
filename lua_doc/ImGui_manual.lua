@@ -600,6 +600,12 @@ end
 function imgui.getStyle()
 end
 
+---
+---@param idx number
+---@param col ImVec4
+function imgui.setStyleColor(idx, col)
+end
+
 --- return a zero-terminated string with the .ini data which you can save by your own mean. call when io.WantSaveIniSettings is set, then save data by your own mean and clear io.WantSaveIniSettings.
 ---@return string
 function imgui.saveIniSettingsToMemory()
