@@ -521,7 +521,7 @@ bool ImGui_ImplCocos2dx_Init(bool install_callbacks)
 	cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(e, 1);
 	auto e2 = cocos2d::EventListenerKeyboard::create();
 	using KeyCode = cocos2d::EventKeyboard::KeyCode;
-	e2->onKeyPressed = [](auto k, auto ev)
+	e2->onKeyPressed = [](KeyCode k, cocos2d::Event* ev)
 	{
 		auto& _io = ImGui::GetIO();
 		_io.KeysDown[(int)k] = true;
@@ -531,7 +531,7 @@ bool ImGui_ImplCocos2dx_Init(bool install_callbacks)
 		_io.KeyAlt = _io.KeysDown[(int)KeyCode::KEY_LEFT_ALT] || _io.KeysDown[(int)KeyCode::KEY_RIGHT_ALT];
 		_io.KeySuper = _io.KeysDown[(int)KeyCode::KEY_HYPER];
 	};
-	e2->onKeyReleased = [](auto k, auto ev)
+	e2->onKeyReleased = [](KeyCode k, cocos2d::Event* ev)
 	{
 		auto& _io = ImGui::GetIO();
 		_io.KeysDown[(int)k] = false;
