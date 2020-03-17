@@ -617,7 +617,8 @@ static int imgui_inputFloatN(lua_State *L) {
 	float step = lua_opt_number(args, 3, 0.f);
 	float step_fast = lua_opt_number(args, 4, 0.f);
     lua_pushboolean(L,
-		ImGui::InputScalarN(label, ImGuiDataType_Float, arr.data(), arr.size(),
+		ImGui::InputScalarN(label,
+			ImGuiDataType_Float, arr.data(), arr.size(),
 			step > 0.0f ? &step : nullptr,
 			step_fast > 0.0f ? &step_fast : nullptr,
 			lua_opt_string(args, 5, "%.3f"),
@@ -646,8 +647,8 @@ static int imgui_inputIntN(lua_State *L) {
     lua_pushboolean(L,
 		ImGui::InputScalarN(luaL_checkstring(L, 1),
 			ImGuiDataType_S32, arr.data(), arr.size(),
-			step > 0.0f ? &step : nullptr,
-			step_fast > 0.0f ? &step_fast : nullptr,
+			step > 0 ? &step : nullptr,
+			step_fast > 0 ? &step_fast : nullptr,
 			"%d",
 			lua_opt_int(args, 5, 0)));
 	ccvector_int_to_luaval(L, arr);
@@ -731,7 +732,8 @@ static int imgui_listBox(lua_State *L) {
 	std::vector<std::string> arr;
 	luaval_to_std_vector_string(L, 3, &arr);
 	std::vector<const char*> items;
-	for (auto&& str : arr)
+	items.reserve(arr.size());
+	for (auto& str : arr)
 		items.push_back(str.c_str());
 	lua_pushboolean(L,
 		ImGui::ListBox(label, &current_item, items.data(), items.size(),
@@ -1022,7 +1024,7 @@ static int imgui_addFontTTF(lua_State *L) {
 	cfg.FontDataOwnedByAtlas = false;
 	if (cfg.Name[0] == 0)
 	{
-		auto name = path +", " + std::to_string((int)size_pixels);
+		auto name = path + ", " + std::to_string((int)size_pixels);
 		if (name.size() > sizeof(cfg.Name))
 			name = name.substr(name.size() - sizeof(cfg.Name));
 		std::memcpy(cfg.Name, name.c_str(), name.size());
@@ -1090,8 +1092,8 @@ static int imgui_createLayer(lua_State *L) {
 
 #define M(n) {#n, imgui_##n}
 static const luaL_Reg imgui_methods[] = {
-    // Main
-    M(showStyleEditor),
+	// Main
+	M(showStyleEditor),
 
 	// Demo, Debug, Information
 	M(showDemoWindow), M(showAboutWindow), M(showMetricsWindow),
@@ -1100,12 +1102,12 @@ static const luaL_Reg imgui_methods[] = {
 	M(styleColorsDark), M(styleColorsClassic), M(styleColorsLight),
 
 	// Window
-    {"endToLua", imgui_end}, M(begin), M(beginChild), M(endChild),
+	{"endToLua", imgui_end}, M(begin), M(beginChild), M(endChild),
 
 	// Parameters stacks (shared)
 	M(pushFont), M(getFont), M(pushStyleColor), M(pushStyleVar),
 
-    // Widgets
+	// Widgets
     M(image), M(imageButton), M(collapsingHeader), M(checkbox),
 	M(checkboxFlags), M(radioButton), M(combo),
 
