@@ -38,23 +38,23 @@ static GLFWkeyfun           g_PrevUserCallbackKey = nullptr;
 static GLFWcharfun          g_PrevUserCallbackChar = nullptr;
 #endif // CC_PLATFORM_PC
 
-static std::string ATTR_NAME_POSITION = "Position";
-static std::string ATTR_NAME_TEXCOORD = "UV";
-static std::string ATTR_NAME_COLOR = "Color";
-static IndexFormat INDEX_FORMAT = sizeof(ImDrawIdx) == 2 ? IndexFormat::U_SHORT : IndexFormat::U_INT;
-static VertexLayout VERTEX_LAYOUT;
-
-// Uniforms location
-static UniformLocation g_UniformLocationTex;
-static UniformLocation g_UniformLocationProjMtx;
-// Vertex attributes location
-static int g_AttribLocationVtxPos;
-static int g_AttribLocationVtxUV;
-static int g_AttribLocationVtxColor;
-
+struct ProgramInfo
+{
+	Program* program = nullptr;
+	// Uniforms location
+	UniformLocation texture;
+	UniformLocation projection;
+	// Vertex attributes location
+	int position = 0;
+	int uv = 0;
+	int color = 0;
+	VertexLayout layout;
+};
+static ProgramInfo g_ProgramInfo;
+static ProgramInfo g_ProgramFontInfo;
 static Texture2D* g_FontTexture = nullptr;
-static Program* g_Program = nullptr;
 static Mat4 g_Projection;
+constexpr IndexFormat g_IndexFormat = sizeof(ImDrawIdx) == 2 ? IndexFormat::U_SHORT : IndexFormat::U_INT;
 
 static std::vector<std::shared_ptr<CallbackCommand>> g_CallbackCommands;
 static std::vector<std::shared_ptr<CustomCommand>> g_CustomCommands;
@@ -90,14 +90,14 @@ static void ImGui_ImplCocos2dx_SetupRenderState(ImDrawData* draw_data, int fb_wi
 	Mat4::createOrthographicOffCenter(L, R, B, T, -1.f, 1.f, &g_Projection);
 }
 
-typedef struct SavedRenderState
+struct SavedRenderState
 {
 	backend::CullMode cull;
 	Viewport vp;
 	ScissorRect scissorRect;
 	bool scissorTest;
 	bool depthTest;
-} SavedRenderState;
+};
 static SavedRenderState g_SavedRenderState;
 
 void ImGui_ImplCocos2dx_RenderDrawData(ImDrawData* draw_data)
@@ -202,18 +202,19 @@ void ImGui_ImplCocos2dx_RenderDrawData(ImDrawData* draw_data)
                 	auto cmd = std::make_shared<CustomCommand>();
 					g_CustomCommands.push_back(cmd);
 					cmd->init(0.f, BlendFunc::ALPHA_NON_PREMULTIPLIED);
+					const auto pinfo = tex == g_FontTexture ? &g_ProgramFontInfo : &g_ProgramInfo;
 					// create new ProgramState
-					auto state = new ProgramState(g_Program);
+					auto state = new ProgramState(pinfo->program);
 					state->autorelease();
 					g_ProgramStates.pushBack(state);
 					auto& desc = cmd->getPipelineDescriptor();
 					desc.programState = state;
 					// setup attributes for ImDrawVert
-					*desc.programState->getVertexLayout() = VERTEX_LAYOUT;
-					desc.programState->setUniform(g_UniformLocationProjMtx, &g_Projection, sizeof(Mat4));
-					desc.programState->setTexture(g_UniformLocationTex, 0, tex->getBackendTexture());
+					*desc.programState->getVertexLayout() = pinfo->layout;
+					desc.programState->setUniform(pinfo->projection, &g_Projection, sizeof(Mat4));
+					desc.programState->setTexture(pinfo->texture, 0, tex->getBackendTexture());
 					// set vertex/index buffer
-					cmd->setIndexBuffer(ibuffer, INDEX_FORMAT);
+					cmd->setIndexBuffer(ibuffer, g_IndexFormat);
 					cmd->setVertexBuffer(vbuffer);
 					cmd->setDrawType(CustomCommand::DrawType::ELEMENT);
 					cmd->setPrimitiveType(PrimitiveType::TRIANGLE);
@@ -318,15 +319,14 @@ bool ImGui_ImplCocos2dx_CreateFontsTexture()
 	// because it is more likely to be compatible with user's existing shaders.
 	// If your ImTextureId represent a higher-level concept than just a GL texture id,
 	// consider calling GetTexDataAsAlpha8() instead to save on GPU memory.
-    io.Fonts->GetTexDataAsRGBA32(&pixels, &width, &height);
-	//LOG("imgui: create fonts texture of %d x %d", width, height);
+	io.Fonts->GetTexDataAsAlpha8(&pixels, &width, &height);
 
-	if(!g_FontTexture)
-		g_FontTexture = new Texture2D();
+	CC_SAFE_RELEASE(g_FontTexture);
+	g_FontTexture = new Texture2D();
 
 	g_FontTexture->setAntiAliasTexParameters();
-	g_FontTexture->initWithData(pixels, width*height * 4,
-		backend::PixelFormat::RGBA8888, width, height, Size(width, height));
+	g_FontTexture->initWithData(pixels, width*height,
+		backend::PixelFormat::A8, width, height, Size(width, height));
 	io.Fonts->TexID = (ImTextureID)g_FontTexture;
     return true;
 }
@@ -342,67 +342,84 @@ void ImGui_ImplCocos2dx_DestroyFontsTexture()
 
 bool ImGui_ImplCocos2dx_CreateDeviceObjects()
 {
-    static auto vertex_shader_glsl_120 =
-        "uniform mat4 ProjMtx;\n"
-        "attribute vec2 Position;\n"
-        "attribute vec2 UV;\n"
-        "attribute vec4 Color;\n"
-        "varying vec2 Frag_UV;\n"
-        "varying vec4 Frag_Color;\n"
-        "void main()\n"
-        "{\n"
-        "    Frag_UV = UV;\n"
-        "    Frag_Color = Color;\n"
-        "    gl_Position = ProjMtx * vec4(Position.xy,0,1);\n"
-        "}\n";
+	static auto vertex_shader =
+		"uniform mat4 u_MVPMatrix;\n"
+		"attribute vec2 a_position;\n"
+		"attribute vec2 a_texCoord;\n"
+		"attribute vec4 a_color;\n"
+		"varying vec2 v_texCoord;\n"
+		"varying vec4 v_fragmentColor;\n"
+		"void main()\n"
+		"{\n"
+		"    v_texCoord = a_texCoord;\n"
+		"    v_fragmentColor = a_color;\n"
+		"    gl_Position = u_MVPMatrix * vec4(a_position.xy, 0.0, 1.0);\n"
+		"}\n";
+	static auto fragment_shader =
+		"#ifdef GL_ES\n"
+		"    precision mediump float;\n"
+		"#endif\n"
+		"uniform sampler2D u_texture;\n"
+		"varying vec2 v_texCoord;\n"
+		"varying vec4 v_fragmentColor;\n"
+		"void main()\n"
+		"{\n"
+		"    gl_FragColor = v_fragmentColor * texture2D(u_texture, v_texCoord.st);\n"
+		"}\n";
+	static auto fragment_shader_font =
+		"#ifdef GL_ES\n"
+		"    precision mediump float;\n"
+		"#endif\n"
+		"uniform sampler2D u_texture;\n"
+		"varying vec2 v_texCoord;\n"
+		"varying vec4 v_fragmentColor;\n"
+		"void main()\n"
+		"{\n"
+		"    float a = texture2D(u_texture, v_texCoord.st).a;\n"
+		"    gl_FragColor = vec4(v_fragmentColor.rgb, v_fragmentColor.a * a);\n"
+		"}\n";
 
-	static auto fragment_shader_glsl_120 =
-        "#ifdef GL_ES\n"
-        "    precision mediump float;\n"
-        "#endif\n"
-        "uniform sampler2D Texture;\n"
-        "varying vec2 Frag_UV;\n"
-        "varying vec4 Frag_Color;\n"
-        "void main()\n"
-        "{\n"
-        "    gl_FragColor = Frag_Color * texture2D(Texture, Frag_UV.st);\n"
-        "}\n";
-
-	auto vertex_shader = vertex_shader_glsl_120;
-	auto fragment_shader = fragment_shader_glsl_120;
-
-	g_Program = backend::Device::getInstance()->newProgram(vertex_shader, fragment_shader);
-	IM_ASSERT(g_Program);
-	if (!g_Program)
+	CC_SAFE_RELEASE(g_ProgramInfo.program);
+	CC_SAFE_RELEASE(g_ProgramFontInfo.program);
+	g_ProgramInfo.program = backend::Device::getInstance()->newProgram(
+		vertex_shader, fragment_shader);
+	g_ProgramFontInfo.program = backend::Device::getInstance()->newProgram(
+		vertex_shader, fragment_shader_font);
+	IM_ASSERT(g_ProgramInfo.program);
+	IM_ASSERT(g_ProgramFontInfo.program);
+	if (!g_ProgramInfo.program || !g_ProgramFontInfo.program)
 		return false;
 
-	g_UniformLocationTex = g_Program->getUniformLocation("Texture");
-    g_UniformLocationProjMtx = g_Program->getUniformLocation("ProjMtx");
-    g_AttribLocationVtxPos = g_Program->getAttributeLocation(ATTR_NAME_POSITION);
-    g_AttribLocationVtxUV = g_Program->getAttributeLocation(ATTR_NAME_TEXCOORD);
-    g_AttribLocationVtxColor = g_Program->getAttributeLocation(ATTR_NAME_COLOR);
-	IM_ASSERT(bool(g_UniformLocationTex));
-	IM_ASSERT(bool(g_UniformLocationProjMtx));
-	IM_ASSERT(g_AttribLocationVtxPos >= 0);
-	IM_ASSERT(g_AttribLocationVtxUV >= 0);
-	IM_ASSERT(g_AttribLocationVtxColor >= 0);
-
-	VERTEX_LAYOUT.setAttribute(ATTR_NAME_POSITION, g_AttribLocationVtxPos,
-		VertexFormat::FLOAT2, 0, false);
-	VERTEX_LAYOUT.setAttribute(ATTR_NAME_TEXCOORD, g_AttribLocationVtxUV,
-		VertexFormat::FLOAT2, offsetof(ImDrawVert, uv), false);
-	VERTEX_LAYOUT.setAttribute(ATTR_NAME_COLOR, g_AttribLocationVtxColor,
-		VertexFormat::UBYTE4, offsetof(ImDrawVert, col), true);
-	VERTEX_LAYOUT.setLayout(sizeof(ImDrawVert));
+	for (auto& p : { &g_ProgramInfo,&g_ProgramFontInfo })
+	{
+		p->texture = p->program->getUniformLocation(TEXTURE);
+		p->projection = p->program->getUniformLocation(MVP_MATRIX);
+		p->position = p->program->getAttributeLocation(POSITION);
+		p->uv = p->program->getAttributeLocation(TEXCOORD);
+		p->color = p->program->getAttributeLocation(COLOR);
+		IM_ASSERT(bool(p->texture));
+		IM_ASSERT(bool(p->projection));
+		IM_ASSERT(p->position >= 0);
+		IM_ASSERT(p->uv >= 0);
+		IM_ASSERT(p->color >= 0);
+		auto& layout = p->layout;
+		layout.setAttribute("a_position", p->position,
+			VertexFormat::FLOAT2, 0, false);
+		layout.setAttribute("a_texCoord", p->uv,
+			VertexFormat::FLOAT2, offsetof(ImDrawVert, uv), false);
+		layout.setAttribute("a_color", p->color,
+			VertexFormat::UBYTE4, offsetof(ImDrawVert, col), true);
+		layout.setLayout(sizeof(ImDrawVert));
+	}
 
     ImGui_ImplCocos2dx_CreateFontsTexture();
-
     return true;
 }
 
 void ImGui_ImplCocos2dx_DestroyDeviceObjects()
 {
-	CC_SAFE_RELEASE_NULL(g_Program);
+	CC_SAFE_RELEASE_NULL(g_ProgramInfo.program);
+	CC_SAFE_RELEASE_NULL(g_ProgramFontInfo.program);
     ImGui_ImplCocos2dx_DestroyFontsTexture();
 }
 
