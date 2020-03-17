@@ -24,7 +24,9 @@ bool ImGuiLayer::init()
 	// note: when at the first click to focus the window, this will not take effect
     auto listener = EventListenerTouchOneByOne::create();
     listener->setSwallowTouches(true);
-    listener->onTouchBegan = [](Touch* touch, Event*) -> bool {
+    listener->onTouchBegan = [this](Touch* touch, Event*) -> bool {
+		if (!_visible)
+			return false;
         return ImGui::IsAnyWindowHovered();
     };
     getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
