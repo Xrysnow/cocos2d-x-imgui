@@ -91,7 +91,12 @@ void ImVec4_to_luaval(lua_State* L, const ImVec4& val)
 
 ImFontConfig lua_toImFontConfig(lua_State* L, int lo)
 {
-#define get_field(_K, _F) lua_getfield(L, lo, #_K); if(!lua_isnil(L, -1)) (&ret)->##_K = _F(L, -1);
+#define get_field(_K, _F)\
+	lua_getfield(L, lo, #_K);\
+	if(!lua_isnil(L, -1)) {\
+		(&ret)->_K = _F(L, -1); }\
+	lua_pop(L, 1);
+
 	ImFontConfig ret;
 	if (lua_istable(L, lo))
 	{
