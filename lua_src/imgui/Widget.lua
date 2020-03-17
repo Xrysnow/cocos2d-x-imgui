@@ -314,8 +314,13 @@ function M.propertyInput(label, data, k, params)
     im.setNextItemWidth(-1)
     local int = params.int
     local step, step_fast = params.step, params.step_fast
-    step = step or 0
-    step_fast = step_fast or 0
+    if int then
+        step = step or 1
+        step_fast = step_fast or 100
+    else
+        step = step or 0
+        step_fast = step_fast or 0
+    end
     local flags = params.flags or 0
     im.pushID('wi.pinput.' .. id)
     label = ''
@@ -354,6 +359,7 @@ function M.propertyInput(label, data, k, params)
             data[k].y = ret2[2]
             data[k].z = ret2[3]
             data[k].w = ret2[4]
+            --TODO: limit
         elseif is_color then
             local col = im.color(val)
             ret, ret2 = im.colorEdit4(label, { col.x, col.y, col.z, col.w }, flags)
@@ -366,6 +372,13 @@ function M.propertyInput(label, data, k, params)
             ret, data[k] = im.inputInt(label, val, step, step_fast, flags)
         else
             ret, data[k] = im.inputFloat(label, val, step, step_fast, params.format or '%.3f', flags)
+        end
+        -- limit
+        if params.min and data[k] < params.min then
+            data[k] = params.min
+        end
+        if params.max and data[k] > params.max then
+            data[k] = params.max
         end
     elseif vtype == 'boolean' then
         if params.bool_show then
@@ -432,12 +445,16 @@ function M.propertyConst(label, value, params)
     else
         str = string.format(fmt, val)
     end
-    local textcolor = im.getStyleColorVec4(im.Col.Text)
-    local p = im.getCursorScreenPos()
-    local pa = im.getStyle().FramePadding
-    p = cc.pAdd(p, pa)
-    local dl = im.getWindowDrawList()
-    dl:addText(p, im.colorConvertFloat4ToU32(textcolor), str)
+    --local textcolor = im.getStyleColorVec4(im.Col.Text)
+    --local p = im.getCursorScreenPos()
+    --local pa = im.getStyle().FramePadding
+    --p = cc.pAdd(p, pa)
+    --local dl = im.getWindowDrawList()
+    --dl:addText(p, im.colorConvertFloat4ToU32(textcolor), str)
+
+    im.alignTextToFramePadding()
+    --im.setCursorPosY(im.getCursorPosY() + im.getStyle().FramePadding.y)
+    im.textWrapped(str)
 
     im.nextColumn()
 end

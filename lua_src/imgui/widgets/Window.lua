@@ -53,9 +53,9 @@ function M:setContentSize(size)
 end
 
 function M:getContentSize()
-    local pos = self._size_
-    if pos then
-        return cc.size(pos.x, pos.y)
+    local size = self._size_
+    if size then
+        return cc.size(size.x, size.y)
     else
         return base.getContentSize(self)
     end

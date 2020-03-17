@@ -104,8 +104,10 @@ end
 
 function imgui.off()
     dir:getRunningScene():removeChildByName(layerName)
-    dir:getScheduler():unscheduleScriptEntry(_globalSchedule)
-    _globalSchedule = nil
+    if _globalSchedule then
+        dir:getScheduler():unscheduleScriptEntry(_globalSchedule)
+        _globalSchedule = nil
+    end
 end
 
 function imgui.isVisible()
