@@ -264,6 +264,37 @@ static int imgui_pushStyleVar(lua_State *L) {
 
 // Widgets
 
+static int imgui_ccNode(lua_State *L) {
+	const int args = lua_gettop(L);
+	cocos2d::Node* node = nullptr;
+	if (luaval_to_object(L, 1, "cc.Node", &node))
+	{
+		if (!node)
+			return 0;
+		CCIMGUI::getInstance()->node(node,
+			lua_opt_imv4(args, 2, ImVec4(1, 1, 1, 1)),
+			lua_opt_imv4(args, 3, ImVec4(0, 0, 0, 0)));
+		return 0;
+	}
+	return 0;
+}
+static int imgui_ccNodeButton(lua_State *L) {
+	const int args = lua_gettop(L);
+	cocos2d::Node* node = nullptr;
+	if (luaval_to_object(L, 1, "cc.Node", &node))
+	{
+		if (!node)
+			return 0;
+		lua_pushboolean(L,
+			CCIMGUI::getInstance()->nodeButton(node,
+				lua_opt_int(args, 2, -1),
+				lua_opt_imv4(args, 3, ImVec4(0, 0, 0, 0)),
+				lua_opt_imv4(args, 4, ImVec4(1, 1, 1, 1)))
+		);
+		return 1;
+	}
+	return 0;
+}
 static int imgui_image(lua_State *L) {
 	const int args = lua_gettop(L);
 	cocos2d::Texture2D* tex = nullptr;
@@ -1108,6 +1139,7 @@ static const luaL_Reg imgui_methods[] = {
 	M(pushFont), M(getFont), M(pushStyleColor), M(pushStyleVar),
 
 	// Widgets
+	M(ccNode), M(ccNodeButton),
     M(image), M(imageButton), M(collapsingHeader), M(checkbox),
 	M(checkboxFlags), M(radioButton), M(combo),
 

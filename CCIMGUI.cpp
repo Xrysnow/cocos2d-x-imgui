@@ -30,11 +30,8 @@ void CCIMGUI::setOnInit(const std::function<void(CCIMGUI*)>& callBack)
 void CCIMGUI::update()
 {
 	// clear things from last frame
-    _usedTextureIdMap.clear();
-	_usedCCTextureIdMap.clear();
-	_usedCCSpriteIdMap.clear();
-	_usedCCTexture.clear();
-	_usedCCSprite.clear();
+	usedCCRefIdMap.clear();
+	usedCCRef.clear();
 	// drawing commands
 	auto iter = _callPiplines.begin();
 	for (; iter != _callPiplines.end(); ++iter)
@@ -80,16 +77,7 @@ void CCIMGUI::image(Texture2D* tex, const ImVec2& size, const ImVec2& uv0, const
 	auto size_ = size;
 	if (size_.x <= 0.f) size_.x = tex->getPixelsWide();
 	if (size_.y <= 0.f) size_.y = tex->getPixelsHigh();
-	int id = 0;
-	const auto it = _usedCCTextureIdMap.find(tex);
-	if (it == _usedCCTextureIdMap.end())
-	{
-		_usedCCTextureIdMap[tex] = 0;
-		_usedCCTexture.pushBack(tex);
-	}
-	else
-		id = ++it->second;
-	ImGui::PushID(id);
+	ImGui::PushID(getCCRefId(tex));
 	ImGui::Image((ImTextureID)tex, size_, uv0, uv1, tint_col, border_col);
 	ImGui::PopID();
 }
@@ -104,16 +92,7 @@ void CCIMGUI::image(Sprite* sprite, const ImVec2& size, const ImVec4& tint_col, 
 	if (size_.y <= 0.f) size_.y = rect.size.height;
 	ImVec2 uv0, uv1;
 	std::tie(uv0, uv1) = getTextureUV(sprite);
-	int id = 0;
-	const auto it = _usedCCSpriteIdMap.find(sprite);
-	if (it == _usedCCSpriteIdMap.end())
-	{
-		_usedCCSpriteIdMap[sprite] = 0;
-		_usedCCSprite.pushBack(sprite);
-	}
-	else
-		id = ++it->second;
-	ImGui::PushID(id);
+	ImGui::PushID(getCCRefId(sprite));
 	ImGui::Image((ImTextureID)sprite->getTexture(), size_, uv0, uv1, tint_col, border_col);
 	ImGui::PopID();
 }
@@ -126,16 +105,7 @@ bool CCIMGUI::imageButton(Texture2D* tex, const ImVec2& size, const ImVec2& uv0,
 	auto size_ = size;
 	if (size_.x <= 0.f) size_.x = tex->getPixelsWide();
 	if (size_.y <= 0.f) size_.y = tex->getPixelsHigh();
-	int id = 0;
-	const auto it = _usedCCTextureIdMap.find(tex);
-	if (it == _usedCCTextureIdMap.end())
-	{
-		_usedCCTextureIdMap[tex] = 0;
-		_usedCCTexture.pushBack(tex);
-	}
-	else
-		id = ++it->second;
-	ImGui::PushID(id);
+	ImGui::PushID(getCCRefId(tex));
 	const auto ret = ImGui::ImageButton((ImTextureID)tex,
 		size_, uv0, uv1, frame_padding, bg_col, tint_col);
 	ImGui::PopID();
@@ -153,18 +123,43 @@ bool CCIMGUI::imageButton(Sprite* sprite, const ImVec2& size, int frame_padding,
 	if (size_.y <= 0.f) size_.y = rect.size.height;
 	ImVec2 uv0, uv1;
 	std::tie(uv0, uv1) = getTextureUV(sprite);
-	int id = 0;
-	const auto it = _usedCCSpriteIdMap.find(sprite);
-	if (it == _usedCCSpriteIdMap.end())
-	{
-		_usedCCSpriteIdMap[sprite] = 0;
-		_usedCCSprite.pushBack(sprite);
-	}
-	else
-		id = ++it->second;
-	ImGui::PushID(id);
+	ImGui::PushID(getCCRefId(sprite));
 	const auto ret = ImGui::ImageButton((ImTextureID)sprite->getTexture(),
 		size_, uv0, uv1, frame_padding, bg_col, tint_col);
+	ImGui::PopID();
+	return ret;
+}
+
+void CCIMGUI::node(Node* node, const ImVec4& tint_col, const ImVec4& border_col)
+{
+	if (!node)
+		return;
+	const auto size = node->getContentSize();
+	const auto pos = ImGui::GetCursorScreenPos();
+	Mat4 tr;
+	tr.m[5] = -1;
+	tr.m[12] = pos.x;
+	tr.m[13] = pos.y + size.height;
+	node->setNodeToParentTransform(tr);
+	ImGui::PushID(getCCRefId(node));
+	ImGui::Image((ImTextureID)node, ImVec2(size.width, size.height), ImVec2(0, 0), ImVec2(1, 1), tint_col, border_col);
+	ImGui::PopID();
+}
+
+bool CCIMGUI::nodeButton(Node* node, int frame_padding, const ImVec4& bg_col, const ImVec4& tint_col)
+{
+	if (!node)
+		return false;
+	const auto size = node->getContentSize();
+	const auto pos = ImGui::GetCursorScreenPos();
+	Mat4 tr;
+	tr.m[5] = -1;
+	tr.m[12] = pos.x;
+	tr.m[13] = pos.y + size.height;
+	node->setNodeToParentTransform(tr);
+	ImGui::PushID(getCCRefId(node));
+	const auto ret = ImGui::ImageButton((ImTextureID)node,
+		ImVec2(size.width, size.height), ImVec2(0, 0), ImVec2(1, 1), frame_padding, bg_col, tint_col);
 	ImGui::PopID();
 	return ret;
 }
@@ -173,34 +168,16 @@ std::tuple<ImTextureID, int> CCIMGUI::useTexture(Texture2D* texture)
 {
 	if (!texture)
 		return { nullptr,0 };
-	int id = 0;
-	const auto it = _usedCCTextureIdMap.find(texture);
-	if (it == _usedCCTextureIdMap.end())
-	{
-		_usedCCTextureIdMap[texture] = 0;
-		_usedCCTexture.pushBack(texture);
-	}
-	else
-		id = ++it->second;
-	return { (ImTextureID)texture,id };
+	return { (ImTextureID)texture,getCCRefId(texture) };
 }
 
 std::tuple<ImTextureID, ImVec2, ImVec2, int> CCIMGUI::useSprite(Sprite* sprite)
 {
 	if (!sprite || !sprite->getTexture())
 		return { nullptr,{},{},0 };
-	int id = 0;
-	const auto it = _usedCCSpriteIdMap.find(sprite);
-	if (it == _usedCCSpriteIdMap.end())
-	{
-		_usedCCSpriteIdMap[sprite] = 0;
-		_usedCCSprite.pushBack(sprite);
-	}
-	else
-		id = ++it->second;
 	ImVec2 uv0, uv1;
 	std::tie(uv0, uv1) = getTextureUV(sprite);
-	return { (ImTextureID)sprite->getTexture(),uv0,uv1,id };
+	return { (ImTextureID)sprite->getTexture(),uv0,uv1,getCCRefId(sprite) };
 }
 
 ImWchar* CCIMGUI::addGlyphRanges(const std::string& key, const std::vector<ImWchar>& ranges)
@@ -213,4 +190,18 @@ ImWchar* CCIMGUI::addGlyphRanges(const std::string& key, const std::vector<ImWch
 	if (ranges.empty())
 		glyphRanges[key].push_back(0);
 	return glyphRanges[key].data();
+}
+
+int CCIMGUI::getCCRefId(Ref* p)
+{
+	int id = 0;
+	const auto it = usedCCRefIdMap.find(p);
+	if (it == usedCCRefIdMap.end())
+	{
+		usedCCRefIdMap[p] = 0;
+		usedCCRef.pushBack(p);
+	}
+	else
+		id = ++it->second;
+	return id;
 }

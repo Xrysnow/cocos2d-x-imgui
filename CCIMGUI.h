@@ -42,21 +42,29 @@ public:
 		const ImVec4& bg_col = ImVec4(0, 0, 0, 0),
 		const ImVec4& tint_col = ImVec4(1, 1, 1, 1));
 
+	void node(
+		cocos2d::Node* node,
+		const ImVec4& tint_col = ImVec4(1, 1, 1, 1),
+		const ImVec4& border_col = ImVec4(0, 0, 0, 0));
+	bool nodeButton(
+		cocos2d::Node* node,
+		int frame_padding = -1,
+		const ImVec4& bg_col = ImVec4(0, 0, 0, 0),
+		const ImVec4& tint_col = ImVec4(1, 1, 1, 1));
+
 	std::tuple<ImTextureID, int> useTexture(cocos2d::Texture2D* texture);
 	std::tuple<ImTextureID, ImVec2, ImVec2, int> useSprite(cocos2d::Sprite* sprite);
 
 	ImWchar* addGlyphRanges(const std::string& key, const std::vector<ImWchar>& ranges);
 
 private:
+	int getCCRefId(cocos2d::Ref* p);
 	static std::function<void(CCIMGUI*)> _onInit;
 	
     std::unordered_map<std::string, std::function<void()>> _callPiplines;
-    std::unordered_map<unsigned int, int> _usedTextureIdMap;
-    std::unordered_map<cocos2d::Texture2D*, int> _usedCCTextureIdMap;
-    std::unordered_map<cocos2d::Sprite*, int> _usedCCSpriteIdMap;
+    std::unordered_map<cocos2d::Ref*, int> usedCCRefIdMap;
 	// cocos objects should be retained until next frame
-    cocos2d::Vector<cocos2d::Texture2D*> _usedCCTexture;
-	cocos2d::Vector<cocos2d::Sprite*> _usedCCSprite;
+    cocos2d::Vector<cocos2d::Ref*> usedCCRef;
 
 	std::unordered_map<std::string, std::vector<ImWchar>> glyphRanges;
 };

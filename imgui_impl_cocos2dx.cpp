@@ -198,28 +198,42 @@ void ImGui_ImplCocos2dx_RenderDrawData(ImDrawData* draw_data)
 							clip_rect.w - clip_rect.y);
 					};
 					renderer->addCommand(callback.get());
-					auto tex = (Texture2D*)pcmd->TextureId;
-                	auto cmd = std::make_shared<CustomCommand>();
-					g_CustomCommands.push_back(cmd);
-					cmd->init(0.f, BlendFunc::ALPHA_NON_PREMULTIPLIED);
-					const auto pinfo = tex == g_FontTexture ? &g_ProgramFontInfo : &g_ProgramInfo;
-					// create new ProgramState
-					auto state = new ProgramState(pinfo->program);
-					state->autorelease();
-					g_ProgramStates.pushBack(state);
-					auto& desc = cmd->getPipelineDescriptor();
-					desc.programState = state;
-					// setup attributes for ImDrawVert
-					*desc.programState->getVertexLayout() = pinfo->layout;
-					desc.programState->setUniform(pinfo->projection, &g_Projection, sizeof(Mat4));
-					desc.programState->setTexture(pinfo->texture, 0, tex->getBackendTexture());
-					// set vertex/index buffer
-					cmd->setIndexBuffer(ibuffer, g_IndexFormat);
-					cmd->setVertexBuffer(vbuffer);
-					cmd->setDrawType(CustomCommand::DrawType::ELEMENT);
-					cmd->setPrimitiveType(PrimitiveType::TRIANGLE);
-					cmd->setIndexDrawInfo(ibuffer_offset, pcmd->ElemCount);
-					renderer->addCommand(cmd.get());
+
+					if (typeid(*((Ref*)pcmd->TextureId)) == typeid(Texture2D))
+					{
+						auto tex = (Texture2D*)pcmd->TextureId;
+                		auto cmd = std::make_shared<CustomCommand>();
+						g_CustomCommands.push_back(cmd);
+						cmd->init(0.f, BlendFunc::ALPHA_NON_PREMULTIPLIED);
+						const auto pinfo = tex == g_FontTexture ? &g_ProgramFontInfo : &g_ProgramInfo;
+						// create new ProgramState
+						auto state = new ProgramState(pinfo->program);
+						state->autorelease();
+						g_ProgramStates.pushBack(state);
+						auto& desc = cmd->getPipelineDescriptor();
+						desc.programState = state;
+						// setup attributes for ImDrawVert
+						*desc.programState->getVertexLayout() = pinfo->layout;
+						desc.programState->setUniform(pinfo->projection, &g_Projection, sizeof(Mat4));
+						desc.programState->setTexture(pinfo->texture, 0, tex->getBackendTexture());
+						// set vertex/index buffer
+						cmd->setIndexBuffer(ibuffer, g_IndexFormat);
+						cmd->setVertexBuffer(vbuffer);
+						cmd->setDrawType(CustomCommand::DrawType::ELEMENT);
+						cmd->setPrimitiveType(PrimitiveType::TRIANGLE);
+						cmd->setIndexDrawInfo(ibuffer_offset, pcmd->ElemCount);
+						renderer->addCommand(cmd.get());						
+					}
+					else
+					{
+						auto node = (Node*)pcmd->TextureId;
+						const auto tr = node->getNodeToParentTransform();
+						node->setVisible(true);
+						node->setNodeToParentTransform(tr);
+						const auto& proj = Director::getInstance()->getMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_PROJECTION);
+						node->visit(Director::getInstance()->getRenderer(), proj.getInversed() * g_Projection, 0);
+						node->setVisible(false);
+					}
                 }
             }
 			ibuffer_offset += pcmd->ElemCount;
