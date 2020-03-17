@@ -632,8 +632,8 @@ static int imgui_inputInt(lua_State *L) {
     int v = luaL_checkinteger(L, 2);
     lua_pushboolean(L,
 		ImGui::InputInt(label, &v,
-			lua_opt_number(args, 3, 0.f),
-			lua_opt_number(args, 4, 0.f),
+			lua_opt_int(args, 3, 1),
+			lua_opt_int(args, 4, 100),
 			lua_opt_int(args, 5, 0)));
     lua_pushinteger(L, v);
     return 2;
