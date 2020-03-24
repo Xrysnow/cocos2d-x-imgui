@@ -54,6 +54,7 @@ public:
 
 	std::tuple<ImTextureID, int> useTexture(cocos2d::Texture2D* texture);
 	std::tuple<ImTextureID, ImVec2, ImVec2, int> useSprite(cocos2d::Sprite* sprite);
+	std::tuple<ImTextureID, ImVec2, ImVec2, int> useNode(cocos2d::Node* node, const ImVec2& pos);
 
 	ImWchar* addGlyphRanges(const std::string& key, const std::vector<ImWchar>& ranges);
 

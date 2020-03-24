@@ -180,6 +180,19 @@ std::tuple<ImTextureID, ImVec2, ImVec2, int> CCIMGUI::useSprite(Sprite* sprite)
 	return { (ImTextureID)sprite->getTexture(),uv0,uv1,getCCRefId(sprite) };
 }
 
+std::tuple<ImTextureID, ImVec2, ImVec2, int> CCIMGUI::useNode(Node* node, const ImVec2& pos)
+{
+	if (!node)
+		return { nullptr,{},{},0 };
+	const auto size = node->getContentSize();
+	Mat4 tr;
+	tr.m[5] = -1;
+	tr.m[12] = pos.x;
+	tr.m[13] = pos.y + size.height;
+	node->setNodeToParentTransform(tr);
+	return { (ImTextureID)node,pos,ImVec2(pos.x + size.width,pos.y + size.height),getCCRefId(node) };
+}
+
 ImWchar* CCIMGUI::addGlyphRanges(const std::string& key, const std::vector<ImWchar>& ranges)
 {
 	auto it = glyphRanges.find(key);

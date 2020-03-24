@@ -1204,6 +1204,27 @@ static const luaL_Reg imgui_methods[] = {
     {NULL,  NULL}
 };
 
+static int drawlist_addCCNode(lua_State *L)
+{
+	auto cobj = (ImDrawList*)tolua_tousertype(L, 1, nullptr);
+	if (!cobj) return 0;
+	ImTextureID tid;
+	ImVec2 pmin, pmax;
+	int id;
+	cocos2d::Node* node = nullptr;
+	if (luaval_to_object(L, 2, "cc.Node", &node))
+	{
+		if (!node) return 0;
+		std::tie(tid, pmin, pmax, id) = CCIMGUI::getInstance()->useNode(node, _luaval_to_imvec2(L, 3));
+		if (!tid) return 0;
+		cobj->AddImage(
+			tid,
+			pmin,
+			pmax);
+		return 0;
+	}
+	return 0;
+}
 static int drawlist_addText(lua_State *L)
 {
 	auto cobj = (ImDrawList*)tolua_tousertype(L, 1, nullptr);
@@ -1403,6 +1424,7 @@ static int drawlist_addConvexPolyFilled(lua_State *L)
 #undef M
 #define M(n) {#n, drawlist_##n}
 static const luaL_Reg drawlist_methods[] = {
+	M(addCCNode),
 	M(addText),
 	M(addImage),
 	M(addImageQuad),
