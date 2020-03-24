@@ -32,8 +32,8 @@ function M:isClosed()
     end
 end
 
-function M:setFlags(flags)
-    self:setParam(self:isClosable() and 3 or 2, flags)
+function M:setFlags(flag, ...)
+    self:setParam(self:isClosable() and 3 or 2, bit.band(flag, ...))
     return self
 end
 

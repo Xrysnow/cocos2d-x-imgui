@@ -27,8 +27,8 @@ function M:getString()
     return self:getParam(2)
 end
 
-function M:setFlags(flags)
-    self:setParam(3, flags)
+function M:setFlags(flag, ...)
+    self:setParam(3, bit.band(flag, ...))
     return self
 end
 

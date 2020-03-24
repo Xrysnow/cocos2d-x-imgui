@@ -17,8 +17,8 @@ function M:getLabel()
     return self:getParam(1)
 end
 
-function M:setFlags(flags)
-    self:setParam(2, flags)
+function M:setFlags(flag, ...)
+    self:setParam(2, bit.band(flag, ...))
     return self
 end
 
