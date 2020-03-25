@@ -1,4 +1,5 @@
 --
+local cc = cc
 local dir = cc.Director:getInstance()
 local fu = cc.FileUtils:getInstance()
 local _iniFile = 'imgui.ini'
@@ -203,17 +204,23 @@ function imgui.size(...)
     return cc.p(0, 0)
 end
 
+---
+---@param imVec4 ImVec4
+---@return color4b_table
 function imgui.tocc4b(imVec4)
-    return cc.c4b(
-            imVec4.x * 255,
-            imVec4.y * 255,
-            imVec4.z * 255,
-            imVec4.w * 255
-    )
+    return {
+        r = imVec4.x * 255,
+        g = imVec4.y * 255,
+        b = imVec4.z * 255,
+        a = imVec4.w * 255
+    }
 end
 
+---
+---@param imVec2 ImVec2
+---@return size_table
 function imgui.toccsize(imVec2)
-    return cc.size(imVec2.x, imVec2.y)
+    return { width = imVec2.x, height = imVec2.y }
 end
 
 function imgui.getColorU32(idx, alpha_mul)
