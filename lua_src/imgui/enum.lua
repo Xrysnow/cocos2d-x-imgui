@@ -373,16 +373,6 @@ im.BackendFlags = ImGuiBackendFlags
 ImGuiBackendFlags.None = 0
 ImGuiBackendFlags.HasGamepad = 2 ^ 0   --- Back-end supports gamepad and currently has one connected.
 ImGuiBackendFlags.HasMouseCursors = 2 ^ 1   --- Back-end supports honoring GetMouseCursor() value to change the OS cursor shape.
-ImGuiBackendFlags.HasSetMousePos = 2 ^ 2    --- Back-end supports io.WantSetMousePos requests to reposition the OS mouse position (only used if ImGuiConfigFlags.NavEnableSetMousePos is set).
-
---------------------------------------------------
-
-local ImGuiBackendFlags = {}
---- Back-end capabilities flags stored in io.BackendFlags. Set by imgui_impl_xxx or custom back-end.
-im.ImGuiBackendFlags = ImGuiBackendFlags
---- Back-end capabilities flags stored in io.BackendFlags. Set by imgui_impl_xxx or custom back-end.
-im.BackendFlags = ImGuiBackendFlags
-
 ImGuiBackendFlags.HasSetMousePos = 2 ^ 2   --- Back-end Platform supports io.WantSetMousePos requests to reposition the OS mouse position (only used if ImGuiConfigFlags_NavEnableSetMousePos is set).
 ImGuiBackendFlags.RendererHasVtxOffset = 2 ^ 3   --- Back-end Renderer supports ImDrawCmd::VtxOffset. This enables output of large meshes (64K+ vertices) while still using 16-bits indices.
 
