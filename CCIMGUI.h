@@ -56,6 +56,12 @@ public:
 	std::tuple<ImTextureID, ImVec2, ImVec2, int> useSprite(cocos2d::Sprite* sprite);
 	std::tuple<ImTextureID, ImVec2, ImVec2, int> useNode(cocos2d::Node* node, const ImVec2& pos);
 
+	static void setNodeColor(cocos2d::Node* node, const ImVec4& col);
+	static void setNodeColor(cocos2d::Node* node, ImGuiCol col);
+	static void setLabelColor(cocos2d::Label* label, const ImVec4& col);
+	static void setLabelColor(cocos2d::Label* label, bool disabled = false);
+	static void setLabelColor(cocos2d::Label* label, ImGuiCol col);
+
 	ImWchar* addGlyphRanges(const std::string& key, const std::vector<ImWchar>& ranges);
 
 private:

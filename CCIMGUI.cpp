@@ -193,6 +193,42 @@ std::tuple<ImTextureID, ImVec2, ImVec2, int> CCIMGUI::useNode(Node* node, const 
 	return { (ImTextureID)node,pos,ImVec2(pos.x + size.width,pos.y + size.height),getCCRefId(node) };
 }
 
+void CCIMGUI::setNodeColor(Node* node, const ImVec4& col)
+{
+	if (node)
+	{
+		node->setColor({ uint8_t(col.x * 255),uint8_t(col.y * 255),uint8_t(col.z * 255) });
+		node->setOpacity(uint8_t(col.w * 255));
+	}
+}
+
+void CCIMGUI::setNodeColor(Node* node, ImGuiCol col)
+{
+	if (node && 0 <= col && col < ImGuiCol_COUNT)
+		setNodeColor(node, ImGui::GetStyleColorVec4(col));
+}
+
+void CCIMGUI::setLabelColor(Label* label, const ImVec4& col)
+{
+	if (label)
+	{
+		label->setTextColor(
+			{ uint8_t(col.x * 255),uint8_t(col.y * 255),uint8_t(col.z * 255),uint8_t(col.w * 255) });
+	}
+}
+
+void CCIMGUI::setLabelColor(Label* label, bool disabled)
+{
+	if (label)
+		setLabelColor(label, ImGui::GetStyleColorVec4(disabled ? ImGuiCol_TextDisabled : ImGuiCol_Text));
+}
+
+void CCIMGUI::setLabelColor(Label* label, ImGuiCol col)
+{
+	if (label && 0 <= col && col < ImGuiCol_COUNT)
+		setLabelColor(label, ImGui::GetStyleColorVec4(col));
+}
+
 ImWchar* CCIMGUI::addGlyphRanges(const std::string& key, const std::vector<ImWchar>& ranges)
 {
 	auto it = glyphRanges.find(key);
