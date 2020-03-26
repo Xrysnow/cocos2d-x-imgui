@@ -163,6 +163,11 @@ function M.TabBar(id, flags)
     return require('imgui.widgets.TabBar')(id, flags)
 end
 
+---@return im.TabItem
+function M.TabItem(name, open, flags)
+    return require('imgui.widgets.TabItem')(name, open, flags)
+end
+
 ---@return im.Text
 function M.Text(string, color, style)
     local ret = require('imgui.widgets.Text')(string)
