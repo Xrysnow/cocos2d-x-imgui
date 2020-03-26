@@ -264,37 +264,6 @@ static int imgui_pushStyleVar(lua_State *L) {
 
 // Widgets
 
-static int imgui_ccNode(lua_State *L) {
-	const int args = lua_gettop(L);
-	cocos2d::Node* node = nullptr;
-	if (luaval_to_object(L, 1, "cc.Node", &node))
-	{
-		if (!node)
-			return 0;
-		CCIMGUI::getInstance()->node(node,
-			lua_opt_imv4(args, 2, ImVec4(1, 1, 1, 1)),
-			lua_opt_imv4(args, 3, ImVec4(0, 0, 0, 0)));
-		return 0;
-	}
-	return 0;
-}
-static int imgui_ccNodeButton(lua_State *L) {
-	const int args = lua_gettop(L);
-	cocos2d::Node* node = nullptr;
-	if (luaval_to_object(L, 1, "cc.Node", &node))
-	{
-		if (!node)
-			return 0;
-		lua_pushboolean(L,
-			CCIMGUI::getInstance()->nodeButton(node,
-				lua_opt_int(args, 2, -1),
-				lua_opt_imv4(args, 3, ImVec4(0, 0, 0, 0)),
-				lua_opt_imv4(args, 4, ImVec4(1, 1, 1, 1)))
-		);
-		return 1;
-	}
-	return 0;
-}
 static int imgui_image(lua_State *L) {
 	const int args = lua_gettop(L);
 	cocos2d::Texture2D* tex = nullptr;
@@ -1120,6 +1089,81 @@ static int imgui_createLayer(lua_State *L) {
 	return 1;
 }
 
+// cocos
+
+static int imgui_ccNode(lua_State *L) {
+	const int args = lua_gettop(L);
+	cocos2d::Node* node = nullptr;
+	if (luaval_to_object(L, 1, "cc.Node", &node))
+	{
+		if (!node)
+			return 0;
+		CCIMGUI::getInstance()->node(node,
+			lua_opt_imv4(args, 2, ImVec4(1, 1, 1, 1)),
+			lua_opt_imv4(args, 3, ImVec4(0, 0, 0, 0)));
+		return 0;
+	}
+	return 0;
+}
+static int imgui_ccNodeButton(lua_State *L) {
+	const int args = lua_gettop(L);
+	cocos2d::Node* node = nullptr;
+	if (luaval_to_object(L, 1, "cc.Node", &node))
+	{
+		if (!node)
+			return 0;
+		lua_pushboolean(L,
+			CCIMGUI::getInstance()->nodeButton(node,
+				lua_opt_int(args, 2, -1),
+				lua_opt_imv4(args, 3, ImVec4(0, 0, 0, 0)),
+				lua_opt_imv4(args, 4, ImVec4(1, 1, 1, 1)))
+		);
+		return 1;
+	}
+	return 0;
+}
+static int imgui_setCCNodeColor(lua_State *L)
+{
+	cocos2d::Node* node = nullptr;
+	if (luaval_to_object(L, 1, "cc.Node", &node))
+	{
+		if (!node) return 0;
+		const auto type = lua_type(L, 2);
+		if (type == LUA_TNUMBER)
+		{
+			const auto idx = luaL_checkinteger(L, 2);
+			if (idx < 0 || idx >= ImGuiCol_COUNT)
+				return luaL_error(L, "invalid parameter #2");
+			CCIMGUI::setNodeColor(node, idx);
+		}
+		else if (type == LUA_TTABLE)
+		{
+			CCIMGUI::setNodeColor(node, _luaval_to_imvec4(L, 2));
+		}
+	}
+	return 0;
+}
+static int imgui_setCCLabelColor(lua_State *L)
+{
+	cocos2d::Label* label = nullptr;
+	if (luaval_to_object(L, 1, "cc.Label", &label))
+	{
+		if (!label) return 0;
+		const auto type = lua_type(L, 2);
+		if (type == LUA_TNUMBER)
+		{
+			const auto idx = luaL_checkinteger(L, 2);
+			if (idx < 0 || idx >= ImGuiCol_COUNT)
+				return luaL_error(L, "invalid parameter #2");
+			CCIMGUI::setLabelColor(label, idx);
+		}
+		else if (type == LUA_TTABLE)
+			CCIMGUI::setLabelColor(label, _luaval_to_imvec4(L, 2));
+		else
+			CCIMGUI::setLabelColor(label, lua_toboolean(L, 2) != 0);
+	}
+	return 0;
+}
 
 #define M(n) {#n, imgui_##n}
 static const luaL_Reg imgui_methods[] = {
@@ -1139,7 +1183,6 @@ static const luaL_Reg imgui_methods[] = {
 	M(pushFont), M(getFont), M(pushStyleColor), M(pushStyleVar),
 
 	// Widgets
-	M(ccNode), M(ccNodeButton),
     M(image), M(imageButton), M(collapsingHeader), M(checkbox),
 	M(checkboxFlags), M(radioButton), M(combo),
 
@@ -1200,6 +1243,10 @@ static const luaL_Reg imgui_methods[] = {
 
 	// Create
 	M(createLayer),
+
+	// cocos
+	M(ccNode), M(ccNodeButton),
+	M(setCCNodeColor), M(setCCLabelColor),
 
     {NULL,  NULL}
 };
