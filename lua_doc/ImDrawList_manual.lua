@@ -70,4 +70,10 @@ end
 function ImDrawList:addConvexPolyFilled(points, col)
 end
 
+---
+---@param node cc.Node
+---@param pos ImVec2
+function ImDrawList:addCCNode(node, pos)
+end
+
 return nil

@@ -624,6 +624,34 @@ end
 function imgui.createLayer()
 end
 
+---
+---@param node cc.Node
+---@param tint_color ImVec4
+---@param border_color ImVec4
+function imgui.ccNode(node, tint_color, border_color)
+end
+
+---
+---@param node cc.Node
+---@param frame_padding number if <0, uses default frame padding settings. 0 for no padding
+---@param bg_color ImVec4
+---@param tint_color ImVec4
+---@return boolean
+function imgui.ccNodeButton(node, frame_padding, bg_color, tint_color)
+end
+
+---
+---@param node cc.Node
+---@param col number|ImVec4
+function imgui.setCCNodeColor(node, col)
+end
+
+---
+---@param label cc.Label
+---@param col number|ImVec4|boolean
+function imgui.setCCLabelColor(label, col)
+end
+
 ---@class ImVec2:vec2_table
 local ImVec2
 
