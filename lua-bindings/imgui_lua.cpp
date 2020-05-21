@@ -1155,7 +1155,7 @@ static int imgui_setCCLabelColor(lua_State *L)
 			const auto idx = luaL_checkinteger(L, 2);
 			if (idx < 0 || idx >= ImGuiCol_COUNT)
 				return luaL_error(L, "invalid parameter #2");
-			CCIMGUI::setLabelColor(label, idx);
+			CCIMGUI::setLabelColor(label, (ImGuiCol)idx);
 		}
 		else if (type == LUA_TTABLE)
 			CCIMGUI::setLabelColor(label, _luaval_to_imvec4(L, 2));
