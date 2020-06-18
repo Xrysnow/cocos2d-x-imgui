@@ -18,6 +18,7 @@ endif()
 set(HEADER
     CCIMGUI.h
     CCImGuiLayer.h
+    CCImGuiColorTextEdit.h
     imgui_impl_cocos2dx.h
     imgui/imconfig.h
     imgui/imgui.h
@@ -26,17 +27,21 @@ set(HEADER
     imgui/imstb_textedit.h
     imgui/imstb_truetype.h
     imgui/misc/cpp/imgui_stdlib.h
+    imgui_markdown/imgui_markdown.h
+    ImGuiColorTextEdit/TextEditor.h
 )
 
 set(SOURCE
     CCIMGUI.cpp
     CCImGuiLayer.cpp
+    CCImGuiColorTextEdit.cpp
     imgui_impl_cocos2dx.cpp
     imgui/imgui.cpp
     imgui/imgui_demo.cpp
     imgui/imgui_draw.cpp
     imgui/imgui_widgets.cpp
     imgui/misc/cpp/imgui_stdlib.cpp
+    ImGuiColorTextEdit/TextEditor.cpp
 )
 
 if(BUILD_LUA_LIBS)
@@ -47,12 +52,14 @@ if(BUILD_LUA_LIBS)
     )
     list(APPEND HEADER
         lua-bindings/imgui_lua.hpp
+        lua-bindings/lua_conversion.hpp
+        lua-bindings/lua_imgui_auto.hpp
         lua-bindings/lua_imguiDrawList_auto.hpp
         lua-bindings/lua_imguiFont_auto.hpp
         lua-bindings/lua_imguiIO_auto.hpp
         lua-bindings/lua_imguiStyle_auto.hpp
         lua-bindings/lua_imguiViewport_auto.hpp
-        lua-bindings/lua_imgui_auto.hpp
+        lua-bindings/lua_ImGuiColorTextEdit_auto.hpp
     )
     list(APPEND SOURCE
         lua-bindings/imgui_lua.cpp
@@ -62,6 +69,7 @@ if(BUILD_LUA_LIBS)
         lua-bindings/lua_imguiStyle_auto.cpp
         lua-bindings/lua_imguiViewport_auto.cpp
         lua-bindings/lua_imgui_auto.cpp
+        lua-bindings/lua_ImGuiColorTextEdit_auto.cpp
     )
 endif()
 
