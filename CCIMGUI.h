@@ -63,15 +63,25 @@ public:
 	static void setLabelColor(cocos2d::Label* label, ImGuiCol col);
 
 	ImWchar* addGlyphRanges(const std::string& key, const std::vector<ImWchar>& ranges);
+	int getCCRefId(cocos2d::Ref* p);
+
+	// markdown
+
+	using MdLinkCallback = std::function<void(const std::string&, const std::string&, bool)>;
+	using MdImageCallback = std::function<std::tuple<cocos2d::Sprite*, ImVec2, ImVec4, ImVec4>(const std::string&, const std::string&)>;
+
+	void setMarkdownLinkCallback(const MdLinkCallback& f);
+	void setMarkdownImageCallback(const MdImageCallback& f);
+	void setMarkdownFont(int index, ImFont* font, bool seperator);
+	void setMarkdownLinkIcon(const std::string& icon);
+	void markdown(const std::string& content);
 
 private:
-	int getCCRefId(cocos2d::Ref* p);
 	static std::function<void(CCIMGUI*)> _onInit;
 	
     std::unordered_map<std::string, std::function<void()>> _callPiplines;
     std::unordered_map<cocos2d::Ref*, int> usedCCRefIdMap;
 	// cocos objects should be retained until next frame
     cocos2d::Vector<cocos2d::Ref*> usedCCRef;
-
 	std::unordered_map<std::string, std::vector<ImWchar>> glyphRanges;
 };

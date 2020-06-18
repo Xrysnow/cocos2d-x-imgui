@@ -270,3 +270,77 @@ int CCIMGUI::getCCRefId(Ref* p)
 		id = ++it->second;
 	return id;
 }
+
+#include "imgui_markdown/imgui_markdown.h"
+
+static CCIMGUI::MdLinkCallback ImGuiMarkdownLinkCallback = nullptr;
+static CCIMGUI::MdImageCallback ImGuiMarkdownImageCallback = nullptr;
+static ImGui::MarkdownImageData ImGuiMarkdownInvalidImageData = { false, false, nullptr, {0.f, 0.f} };
+
+void MarkdownLinkCallback(ImGui::MarkdownLinkCallbackData data)
+{
+	if (ImGuiMarkdownLinkCallback)
+	{
+		ImGuiMarkdownLinkCallback(
+			{ data.text, (size_t)data.textLength }, { data.link, (size_t)data.linkLength }, data.isImage);
+	}
+}
+
+ImGui::MarkdownImageData MarkdownImageCallback(ImGui::MarkdownLinkCallbackData data)
+{
+	if (!data.isImage || !ImGuiMarkdownImageCallback)
+		return ImGuiMarkdownInvalidImageData;
+	Sprite* sp; ImVec2 size; ImVec4 tint_col; ImVec4 border_col;
+	std::tie(sp, size, tint_col, border_col) = ImGuiMarkdownImageCallback(
+		{ data.text, (size_t)data.textLength },
+		{ data.link, (size_t)data.linkLength });
+	if(!sp || !sp->getTexture())
+		return ImGuiMarkdownInvalidImageData;
+	auto size_ = size;
+	const auto rect = sp->getTextureRect();
+	if (size_.x <= 0.f) size_.x = rect.size.width;
+	if (size_.y <= 0.f) size_.y = rect.size.height;
+	ImVec2 uv0, uv1;
+	std::tie(uv0, uv1) = getTextureUV(sp);
+	CCIMGUI::getInstance()->getCCRefId(sp);
+	return { true, true, (ImTextureID)sp->getTexture(), size_,uv0, uv1, tint_col, border_col };
+}
+
+static std::string ImGuiMarkdownLinkIcon;
+static ImGui::MarkdownConfig ImGuiMarkdownConfig = {
+	MarkdownLinkCallback, MarkdownImageCallback, "",
+	{ { nullptr, true }, { nullptr, true }, { nullptr, false } } };
+
+void Markdown(const std::string& markdown_)
+{
+	ImGuiMarkdownConfig.linkIcon = ImGuiMarkdownLinkIcon.c_str();
+	ImGui::Markdown(markdown_.c_str(), markdown_.length(), ImGuiMarkdownConfig);
+}
+
+void CCIMGUI::setMarkdownLinkCallback(const MdLinkCallback& f)
+{
+	ImGuiMarkdownLinkCallback = f;
+}
+
+void CCIMGUI::setMarkdownImageCallback(const MdImageCallback& f)
+{
+	ImGuiMarkdownImageCallback = f;
+}
+
+void CCIMGUI::setMarkdownFont(int index, ImFont* font, bool seperator)
+{
+	if (index < 0 || index >= ImGui::MarkdownConfig::NUMHEADINGS)
+		return;
+	ImGuiMarkdownConfig.headingFormats[index] = { font,seperator };
+}
+
+void CCIMGUI::setMarkdownLinkIcon(const std::string& icon)
+{
+	ImGuiMarkdownLinkIcon = icon;
+	ImGuiMarkdownConfig.linkIcon = ImGuiMarkdownLinkIcon.c_str();
+}
+
+void CCIMGUI::markdown(const std::string& content)
+{
+	ImGui::Markdown(content.c_str(), content.size(), ImGuiMarkdownConfig);
+}
