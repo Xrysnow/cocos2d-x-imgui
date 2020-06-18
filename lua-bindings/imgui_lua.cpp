@@ -1165,6 +1165,90 @@ static int imgui_setCCLabelColor(lua_State *L)
 	return 0;
 }
 
+// markdown
+
+static int imgui_setMarkdownLinkCallback(lua_State* L)
+{
+	if (lua_isnil(L, 1))
+	{
+		CCIMGUI::getInstance()->setMarkdownLinkCallback(nullptr);
+		return 0;
+	}
+	luaL_checktype(L, 1, LUA_TFUNCTION);
+	lua_pushlightuserdata(L, (void*)imgui_setMarkdownLinkCallback);
+	lua_pushvalue(L, 1);
+	lua_rawset(L, LUA_REGISTRYINDEX);
+	auto f = [=](const std::string& p1, const std::string& p2, bool p3)
+	{
+		lua_pushlightuserdata(L, (void*)imgui_setMarkdownLinkCallback);
+		lua_rawget(L, LUA_REGISTRYINDEX);
+		// ... f
+		lua_pushlstring(L, p1.c_str(), p1.size());
+		lua_pushlstring(L, p2.c_str(), p2.size());
+		lua_pushboolean(L, p3);
+		// ... f, p1, p2, p3
+		lua_call(L, 3, 0);
+	};
+	CCIMGUI::getInstance()->setMarkdownLinkCallback(f);
+	return 0;
+}
+static int imgui_setMarkdownImageCallback(lua_State* L)
+{
+	if (lua_isnil(L, 1))
+	{
+		CCIMGUI::getInstance()->setMarkdownLinkCallback(nullptr);
+		return 0;
+	}
+	luaL_checktype(L, 1, LUA_TFUNCTION);
+	lua_pushlightuserdata(L, (void*)imgui_setMarkdownImageCallback);
+	lua_pushvalue(L, 1);
+	lua_rawset(L, LUA_REGISTRYINDEX);
+	auto f = [=](const std::string& p1, const std::string& p2)
+	{
+		lua_pushlightuserdata(L, (void*)imgui_setMarkdownImageCallback);
+		lua_rawget(L, LUA_REGISTRYINDEX);
+		// ... f
+		lua_pushlstring(L, p1.c_str(), p1.size());
+		lua_pushlstring(L, p2.c_str(), p2.size());
+		// ... f, p1, p2
+		lua_call(L, 2, 4);
+		// ... f, r1, r2, r3, r4
+		cocos2d::Sprite* sp = nullptr;
+		luaval_to_object(L, -4, "cc.Sprite", &sp);
+		ImVec2 size(0, 0);
+		luaval_to_ImVec2(L, -3, &size);
+		ImVec4 tint_col(1, 1, 1, 1);
+		luaval_to_ImVec4(L, -2, &tint_col);
+		ImVec4 border_col(0, 0, 0, 0);
+		luaval_to_ImVec4(L, -1, &border_col);
+		return std::make_tuple(sp, size, tint_col, border_col);
+	};
+	CCIMGUI::getInstance()->setMarkdownImageCallback(f);
+	return 0;
+}
+static int imgui_setMarkdownFont(lua_State* L)
+{
+	const int index = luaL_checkinteger(L, 1);
+	ImFont* font = nullptr;
+	luaval_to_object(L, 2, "imgui.ImFont", &font);
+	CCIMGUI::getInstance()->setMarkdownFont(index, font, lua_toboolean(L, 3));
+	return 0;
+}
+static int imgui_setMarkdownLinkIcon(lua_State* L)
+{
+	size_t size;
+	const auto s = luaL_checklstring(L, 1, &size);
+	CCIMGUI::getInstance()->setMarkdownLinkIcon(std::string(s, size));
+	return 0;
+}
+static int imgui_markdown(lua_State* L)
+{
+	size_t size;
+	const auto s = luaL_checklstring(L, 1, &size);
+	CCIMGUI::getInstance()->markdown(std::string(s, size));
+	return 0;
+}
+
 #define M(n) {#n, imgui_##n}
 static const luaL_Reg imgui_methods[] = {
 	// Main
@@ -1247,6 +1331,13 @@ static const luaL_Reg imgui_methods[] = {
 	// cocos
 	M(ccNode), M(ccNodeButton),
 	M(setCCNodeColor), M(setCCLabelColor),
+
+	// markdown
+	M(setMarkdownLinkCallback),
+	M(setMarkdownImageCallback),
+	M(setMarkdownFont),
+	M(setMarkdownLinkIcon),
+	M(markdown),
 
     {NULL,  NULL}
 };
