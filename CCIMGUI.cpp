@@ -140,9 +140,15 @@ void CCIMGUI::node(Node* node, const ImVec4& tint_col, const ImVec4& border_col)
 	tr.m[5] = -1;
 	tr.m[12] = pos.x;
 	tr.m[13] = pos.y + size.height;
+	if (border_col.w > 0.f)
+	{
+		tr.m[12] += 1;
+		tr.m[13] += 1;
+	}
 	node->setNodeToParentTransform(tr);
 	ImGui::PushID(getCCRefId(node));
-	ImGui::Image((ImTextureID)node, ImVec2(size.width, size.height), ImVec2(0, 0), ImVec2(1, 1), tint_col, border_col);
+	ImGui::Image((ImTextureID)node,
+		ImVec2(size.width, size.height), ImVec2(0, 0), ImVec2(1, 1), tint_col, border_col);
 	ImGui::PopID();
 }
 
@@ -156,6 +162,16 @@ bool CCIMGUI::nodeButton(Node* node, int frame_padding, const ImVec4& bg_col, co
 	tr.m[5] = -1;
 	tr.m[12] = pos.x;
 	tr.m[13] = pos.y + size.height;
+	if (frame_padding >= 0)
+	{
+		tr.m[12] += (float)frame_padding;
+		tr.m[13] += (float)frame_padding;
+	}
+	else
+	{
+		tr.m[12] += ImGui::GetStyle().FramePadding.x;
+		tr.m[13] += ImGui::GetStyle().FramePadding.y;
+	}
 	node->setNodeToParentTransform(tr);
 	ImGui::PushID(getCCRefId(node));
 	const auto ret = ImGui::ImageButton((ImTextureID)node,
