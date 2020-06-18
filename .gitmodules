@@ -1,3 +1,6 @@
 [submodule "imgui"]
 	path = imgui
 	url = https://github.com/ocornut/imgui.git
+[submodule "imgui_markdown"]
+	path = imgui_markdown
+	url = https://github.com/juliettef/imgui_markdown.git
