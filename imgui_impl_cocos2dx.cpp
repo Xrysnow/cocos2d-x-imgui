@@ -321,6 +321,35 @@ void ImGui_ImplCocos2dx_CharCallback(GLFWwindow* window, unsigned int c)
     io.AddInputCharacter(c);
 }
 
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+
+#include <imm.h>
+#ifdef _MSC_VER
+#pragma comment(lib, "imm32")
+#endif
+
+static void ImGui_ImplCocos2dx_ImeSetInputScreenPos(ImGuiViewport* viewport, ImVec2 pos)
+{
+	const auto hwnd = (HWND)glfwGetWin32Window(ImGui_ImplCocos2dx_GetWindow());
+	if (hwnd)
+	if (HIMC himc = ::ImmGetContext(hwnd))
+	{
+		COMPOSITIONFORM cf;
+		cf.ptCurrentPos.x = viewport->Pos.x + pos.x;
+		cf.ptCurrentPos.y = viewport->Pos.y + pos.y;
+		cf.rcArea = { 0 };
+		cf.dwStyle = CFS_FORCE_POSITION;
+		::ImmSetCompositionWindow(himc, &cf);
+		::ImmReleaseContext(hwnd, himc);
+	}
+}
+
+#else
+
+static void ImeSetInputScreenPosFn_DefaultImpl(ImGuiViewport* viewport, ImVec2 pos) {}
+
+#endif
+
 #endif // CC_PLATFORM_PC
 
 bool ImGui_ImplCocos2dx_CreateFontsTexture()
@@ -482,9 +511,8 @@ bool ImGui_ImplCocos2dx_Init(bool install_callbacks)
     io.SetClipboardTextFn = ImGui_ImplCocos2dx_SetClipboardText;
     io.GetClipboardTextFn = ImGui_ImplCocos2dx_GetClipboardText;
     io.ClipboardUserData = window;
-//#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
-//    io.ImeWindowHandle = (void*)glfwGetWin32Window(g_Window);
-//#endif
+
+	ImGui::GetPlatformIO().Platform_SetImeInputPos = ImGui_ImplCocos2dx_ImeSetInputScreenPos;
 
     g_MouseCursors[ImGuiMouseCursor_Arrow] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
     g_MouseCursors[ImGuiMouseCursor_TextInput] = glfwCreateStandardCursor(GLFW_IBEAM_CURSOR);
