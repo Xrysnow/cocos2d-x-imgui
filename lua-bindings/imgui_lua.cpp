@@ -1089,6 +1089,11 @@ static int imgui_createLayer(lua_State *L) {
 	return 1;
 }
 
+static int imgui_shutdown(lua_State *L) {
+	CCIMGUI::destroyInstance();
+	return 0;
+}
+
 // cocos
 
 static int imgui_ccNode(lua_State *L) {
@@ -1325,8 +1330,9 @@ static const luaL_Reg imgui_methods[] = {
 	// Settings/.Ini Utilities
 	M(saveIniSettingsToMemory),
 
-	// Create
+	// launch/shutdown
 	M(createLayer),
+	M(shutdown),
 
 	// cocos
 	M(ccNode), M(ccNodeButton),

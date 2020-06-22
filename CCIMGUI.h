@@ -8,6 +8,7 @@ class CCIMGUI
 	void init();
 public:
 	static CCIMGUI* getInstance();
+	static void destroyInstance();
 	static void setOnInit(const std::function<void(CCIMGUI*)>& callBack);
 	void update();
 	void addCallback(const std::function<void()>& callBack, const std::string& name);

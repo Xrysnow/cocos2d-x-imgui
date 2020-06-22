@@ -14,12 +14,22 @@ CCIMGUI* CCIMGUI::getInstance()
 {
 	if(_instance == nullptr)
 	{
-		_instance = new (std::nothrow) CCIMGUI();
+		_instance = new CCIMGUI();
 		_instance->init();
 		if (_onInit)
 			_onInit(_instance);
 	}
 	return _instance;
+}
+
+void CCIMGUI::destroyInstance()
+{
+	if (_instance)
+	{
+		delete _instance;
+		ImGui_ImplCocos2dx_Shutdown();
+		_instance = nullptr;
+	}
 }
 
 void CCIMGUI::setOnInit(const std::function<void(CCIMGUI*)>& callBack)
