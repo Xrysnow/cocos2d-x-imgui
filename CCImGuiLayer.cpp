@@ -50,4 +50,5 @@ void ImGuiLayer::onDraw()
     // render
     ImGui::Render();
     ImGui_ImplCocos2dx_RenderDrawData(ImGui::GetDrawData());
+	ImGui_ImplCocos2dx_RenderPlatform();
 }
