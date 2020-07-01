@@ -30,15 +30,20 @@ bool ImGuiLayer::init()
         return ImGui::IsAnyWindowHovered();
     };
     getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
-    return true;
+	// add an empty sprite to avoid render problem
+	const auto sp = Sprite::create();
+	sp->setGlobalZOrder(1);
+	sp->setOpacity(0);
+	addChild(sp, 1);
+	return true;
 }
 
-void ImGuiLayer::visit(Renderer *renderer, const Mat4 &parentTransform, uint32_t parentFlags)
+void ImGuiLayer::visit(Renderer* renderer, const Mat4 &parentTransform, uint32_t parentFlags)
 {
 	if (!_visible)
 		return;
-	Layer::visit(renderer, parentTransform, parentFlags);
 	onDraw();
+	Layer::visit(renderer, parentTransform, parentFlags);
 }
 
 void ImGuiLayer::onDraw()
