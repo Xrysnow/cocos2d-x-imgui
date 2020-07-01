@@ -33,7 +33,7 @@ function M:isClosed()
 end
 
 function M:setFlags(flag, ...)
-    self:setParam(self:isClosable() and 3 or 2, bit.band(flag, ...))
+    self:setParam(self:isClosable() and 3 or 2, bit.bor(flag, ...))
     return self
 end
 

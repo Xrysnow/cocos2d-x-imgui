@@ -21,7 +21,7 @@ function M:getID()
 end
 
 function M:setFlags(flag, ...)
-    self:setParam(2, bit.band(flag, ...))
+    self:setParam(2, bit.bor(flag, ...))
     return self
 end
 

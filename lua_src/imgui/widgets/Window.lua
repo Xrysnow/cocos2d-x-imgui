@@ -23,7 +23,7 @@ function M:isOpen()
 end
 
 function M:setFlags(flag, ...)
-    self:setParam(3, bit.band(flag, ...))
+    self:setParam(3, bit.bor(flag, ...))
     return self
 end
 
@@ -114,6 +114,7 @@ function M:setAutoScrollY(b)
 end
 
 function M:_handler()
+    local imgui = imgui
     if self._pos then
         imgui.setNextWindowPos(self._pos)
         self._pos = nil

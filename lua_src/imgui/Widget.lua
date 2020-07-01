@@ -1,5 +1,8 @@
 ---@class im.Widget:cc.Node
 local M = class('imgui.Widget', cc.Node)
+local imgui = imgui
+local pairs = pairs
+local type = type
 
 function M:ctor(...)
     self._param = { ... }
@@ -80,9 +83,29 @@ function M:addChildChain(...)
     return self
 end
 
+function M:addChildren(...)
+    for _, v in ipairs({ ... }) do
+        self:addChild(v)
+    end
+    return self
+end
+
 --------------------------------------------------
 -- widgets
 --------------------------------------------------
+
+---@return im.Widget
+local function begin_end_wrapper(begin, end_, args)
+    local ret = M(unpack(args or {}))
+    ret:setHandler(function()
+        if begin(unpack(ret._param)) then
+            M._handler(ret)
+            end_()
+        end
+    end)
+    return ret
+end
+M._begin_end_wrapper = begin_end_wrapper
 
 ---@return im.Widget
 function M.Widget(handler)
@@ -136,6 +159,52 @@ function M.CollapsingHeader(label, flags, closable)
     return ret
 end
 
+---@return im.Combo
+function M.Combo(label, items, current, flags)
+    local ret = require('imgui.widgets.Combo')(label, '', flags)
+    if items then
+        ret:setItems(items)
+    end
+    if current then
+        ret:setCurrent(current)
+    end
+    return ret
+end
+
+---@return im.InputText
+function M.InputText(label, string, onChange, width)
+    local ret = require('imgui.widgets.InputText')(label, string)
+    if onChange then
+        ret:setOnChange(onChange)
+    end
+    if width then
+        ret:setWidth(width)
+    end
+    return ret
+end
+
+function M.MenuBar()
+    return begin_end_wrapper(imgui.beginMenuBar, imgui.endMenuBar)
+end
+
+function M.CCNode(node, tint_color, border_color)
+    local ret = M()
+    node:addTo(ret):setVisible(false)
+    ret:setHandler(function()
+        imgui.ccNode(unpack { node, tint_color, border_color })
+    end)
+    return ret
+end
+
+function M.CCNodeButton(node, frame_padding, bg_color, tint_color)
+    local ret = M()
+    node:addTo(ret):setVisible(false)
+    ret:setHandler(function()
+        imgui.ccNodeButton(unpack { node, frame_padding, bg_color, tint_color })
+    end)
+    return ret
+end
+
 ---@return im.ProgressBar
 function M.ProgressBar(fraction, size, overlay)
     return require('imgui.widgets.ProgressBar')(fraction, size, overlay)
@@ -154,8 +223,30 @@ function M.RadioButton(label, checked, checker, onCheck)
 end
 
 ---@return im.RadioButtonGroup
-function M.RadioButtonGroup(labels, handlers, initIndex, sameLine)
-    return require('imgui.widgets.RadioButtonGroup')(labels, handlers, initIndex, sameLine)
+function M.RadioButtonGroup(labels, onChange, initIndex, sameLine)
+    local ret = require('imgui.widgets.RadioButtonGroup')(labels, initIndex, sameLine)
+    if onChange then
+        ret:setOnChange(onChange)
+    end
+    return ret
+end
+
+---@return im.Selectable
+function M.Selectable(label, selected, flags, size, onSelect)
+    local ret = require('imgui.widgets.Selectable')(label, selected, flags, size)
+    if onSelect then
+        ret:setOnSelect(onSelect)
+    end
+    return ret
+end
+
+---@return im.SelectableGroup
+function M.SelectableGroup(labels, current, flags, sizes, onSelect)
+    local ret = require('imgui.widgets.SelectableGroup')(labels, current, flags, sizes)
+    if onSelect then
+        ret:setOnSelect(onSelect)
+    end
+    return ret
 end
 
 ---@return im.TabBar
@@ -204,6 +295,7 @@ local function push_pop_wrapper(push, pop, pushArgs)
     end)
     return ret
 end
+M._push_pop_wrapper = push_pop_wrapper
 
 ---   allow focusing using TAB/Shift-TAB, enabled by default but you can disable it for certain widgets
 ---@param allow_keyboard_focus boolean
@@ -266,6 +358,37 @@ function M.textWrapPos(pos)
             { pos })
 end
 
+function M.styleColor(idx, color)
+    return push_pop_wrapper(
+            imgui.pushStyleColor,
+            imgui.popStyleColor,
+            { idx, color })
+end
+
+local function pushStyleColors(t)
+    for k, v in pairs(t) do
+        if type(v) == 'function' then
+            v = v()
+        end
+        imgui.pushStyleColor(k, v)
+    end
+end
+local function popStyleColors(t)
+    for _, _ in pairs(t) do
+        imgui.popStyleColor()
+    end
+end
+
+function M.styleColors(t)
+    local on_push = function()
+        pushStyleColors(t)
+    end
+    local on_pop = function()
+        popStyleColors(t)
+    end
+    return M.wrapper(on_push, on_pop)
+end
+
 function M.styleVar(idx, value)
     return push_pop_wrapper(
             imgui.pushStyleVar,
@@ -273,11 +396,57 @@ function M.styleVar(idx, value)
             { idx, value })
 end
 
-function M.styleColor(idx, color)
-    return push_pop_wrapper(
-            imgui.pushStyleColor,
-            imgui.popStyleColor,
-            { idx, color })
+local function pushStyleVars(t)
+    for k, v in pairs(t) do
+        if type(v) == 'function' then
+            v = v()
+        end
+        imgui.pushStyleVar(k, v)
+    end
+end
+local function popStyleVars(t)
+    for _, _ in pairs(t) do
+        imgui.popStyleVar()
+    end
+end
+
+function M.styleVars(t)
+    local on_push = function()
+        pushStyleVars(t)
+    end
+    local on_pop = function()
+        popStyleVars(t)
+    end
+    return M.wrapper(on_push, on_pop)
+end
+
+function M.style(colors, vars)
+    colors = colors or {}
+    vars = vars or {}
+    local on_push = function()
+        pushStyleColors(colors)
+        pushStyleVars(vars)
+    end
+    local on_pop = function()
+        popStyleColors(colors)
+        popStyleVars(vars)
+    end
+    return M.wrapper(on_push, on_pop)
+end
+
+---@return im.Widget
+function M.wrapper(onPush, onPop)
+    local ret = M()
+    ret:setHandler(function()
+        if onPush then
+            onPush()
+        end
+        M._handler(ret)
+        if onPop then
+            onPop()
+        end
+    end)
+    return ret
 end
 
 --------------------------------------------------
@@ -322,7 +491,8 @@ function M.propertyInput(label, data, k, params)
     --
     local id = tostring(data) .. label .. k
     im.setNextItemWidth(-1)
-    local int = params.int
+    local ptype = params.type
+    local int = params.int or ptype == 'int'
     local step, step_fast = params.step, params.step_fast
     if int then
         step = step or 1
@@ -345,14 +515,14 @@ function M.propertyInput(label, data, k, params)
             if val == v[1] then
                 idx = i - 1
             end
-            table.insert(items, v[2])
+            table.insert(items, v[2] or tostring(v[1]))
         end
         ret, idx = im.combo(label, idx, items)
         data[k] = c[idx + 1][1]
-    elseif vtype == 'table' then
+    elseif vtype == 'table' or ptype == 'color' or ptype == 'vec' then
         local v = {}
-        local is_vec
-        local is_color
+        local is_vec = ptype == 'vec'
+        local is_color = ptype == 'color'
         if val.x then
             v = { val.x, val.y, val.z, val.w }
             is_vec = true
@@ -361,9 +531,11 @@ function M.propertyInput(label, data, k, params)
         end
         if is_vec and #v > 1 then
             if int then
-                ret, ret2 = im.inputIntN(label, v, step, step_fast, flags)
+                ret, ret2 = im.inputIntN(
+                        label, v, step, step_fast, flags)
             else
-                ret, ret2 = im.inputFloatN(label, v, step, step_fast, params.format or '%.3f', flags)
+                ret, ret2 = im.inputFloatN(
+                        label, v, step, step_fast, params.format or '%.3f', flags)
             end
             data[k].x = ret2[1]
             data[k].y = ret2[2]
@@ -372,16 +544,29 @@ function M.propertyInput(label, data, k, params)
             --TODO: limit
         elseif is_color then
             local col = im.color(val)
-            ret, ret2 = im.colorEdit4(label, { col.x, col.y, col.z, col.w }, flags)
+            ret, ret2 = im.colorEdit4(
+                    label, { col.x, col.y, col.z, col.w }, flags)
             data[k] = im.tocc4b(im.vec4(unpack(ret2)))
         else
             im.text('N/A')
         end
-    elseif vtype == 'number' then
-        if int then
-            ret, data[k] = im.inputInt(label, val, step, step_fast, flags)
+    elseif vtype == 'number' or ptype == 'number' or ptype == 'int' then
+        if params.slider then
+            local min = params.min or 0
+            local max = params.max or 100
+            if int then
+                ret, data[k] = im.sliderInt(
+                        label, val, min, max, params.format or '%d')
+            else
+                ret, data[k] = im.sliderInt(
+                        label, val, min, max, params.format or '%.3f')
+            end
         else
-            ret, data[k] = im.inputFloat(label, val, step, step_fast, params.format or '%.3f', flags)
+            if int then
+                ret, data[k] = im.inputInt(label, val, step, step_fast, flags)
+            else
+                ret, data[k] = im.inputFloat(label, val, step, step_fast, params.format or '%.3f', flags)
+            end
         end
         -- limit
         if params.min and data[k] < params.min then
@@ -390,12 +575,12 @@ function M.propertyInput(label, data, k, params)
         if params.max and data[k] > params.max then
             data[k] = params.max
         end
-    elseif vtype == 'boolean' then
+    elseif vtype == 'boolean' or ptype == 'bool' then
         if params.bool_show then
             label = val and 'True' or 'False'
         end
         ret, data[k] = im.checkbox(label, val)
-    elseif vtype == 'string' then
+    elseif vtype == 'string' or ptype == 'string' then
         local hint = params.hint
         local multiline = params.multiline
         if multiline then
@@ -404,6 +589,9 @@ function M.propertyInput(label, data, k, params)
             ret, data[k] = im.inputTextWithHint(label, hint, val, flags)
         else
             ret, data[k] = im.inputText(label, val, flags)
+        end
+        if params.on_finish and im.isItemDeactivatedAfterEdit() then
+            params.on_finish()
         end
     else
         im.text('N/A')

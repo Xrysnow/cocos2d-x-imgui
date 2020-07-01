@@ -89,8 +89,8 @@ ImGuiTreeNodeFlags.OpenOnArrow = 2 ^ 7   --- Only open when clicking on the arro
 ImGuiTreeNodeFlags.Leaf = 2 ^ 8   --- No collapsing no arrow (use as a convenience for leaf nodes).
 ImGuiTreeNodeFlags.Bullet = 2 ^ 9   --- Display a bullet instead of arrow
 ImGuiTreeNodeFlags.FramePadding = 2 ^ 10  --- Use FramePadding (even for an unframed text node) to vertically align text baseline to regular widget height. Equivalent to calling AlignTextToFramePadding().
---ImGuiTreeNodeFlags.SpanAllAvailWidth  = 2 ^ 11  --- FIXME: TODO: Extend hit box horizontally even if not framed
---ImGuiTreeNodeFlags.NoScrollOnOpen     = 2 ^ 12  --- FIXME: TODO: Disable automatic scroll on TreePop() if node got just open and contents is not visible
+ImGuiTreeNodeFlags.SpanAllAvailWidth  = 2 ^ 11  --- Extend hit box to the right-most edge, even if not framed. This is not the default in order to allow adding other items on the same line. In the future we may refactor the hit system to be front-to-back, allowing natural overlaps and then this can become the default.
+ImGuiTreeNodeFlags.NoScrollOnOpen     = 2 ^ 12  --- Extend hit box to the left-most and right-most edges (bypass the indented area).
 ImGuiTreeNodeFlags.NavLeftJumpsBackHere = 2 ^ 13  --- (WIP) Nav: left direction may move to this TreeNode() from any of its child (items submitted between TreeNode and TreePop)
 ImGuiTreeNodeFlags.CollapsingHeader = ImGuiTreeNodeFlags.Framed + ImGuiTreeNodeFlags.NoTreePushOnOpen + ImGuiTreeNodeFlags.NoAutoOpenOnLog
 

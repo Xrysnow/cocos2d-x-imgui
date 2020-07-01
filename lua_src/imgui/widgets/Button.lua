@@ -5,7 +5,12 @@ local M = class('im.Button', base)
 
 function M:ctor(...)
     base.ctor(self, ...)
-    self:setStyleNormal()
+    local t = type(self:getParam(2))
+    if t == 'number' then
+        self:setStyleArrow()
+    else
+        self:setStyleNormal()
+    end
 end
 
 function M:setStyleNormal()

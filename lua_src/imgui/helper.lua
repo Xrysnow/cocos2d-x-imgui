@@ -48,6 +48,7 @@ end
 local layerName = '::imgui::'
 local listener1
 local listener2
+local localZOrder = 0
 
 ---@return cc.Layer
 function imgui.on(target)
@@ -55,12 +56,13 @@ function imgui.on(target)
     if get then
         return get
     end
+    require('imgui.__init__')
     local la = imgui.create()
     if target then
-        target:addChild(la, 1, layerName)
+        target:addChild(la, localZOrder, layerName)
     else
         local sc = dir:getRunningScene()
-        sc:addChild(la, 1, layerName)
+        sc:addChild(la, localZOrder, layerName)
     end
     if listener1 or listener2 then
         return la
@@ -81,7 +83,7 @@ function imgui.on(target)
     listener2 = e:addCustomEventListener(
             cc.Director.EVENT_AFTER_SET_NEXT_SCENE, function()
                 if im and la_detached then
-                    dir:getRunningScene():addChild(im, 1, layerName)
+                    dir:getRunningScene():addChild(im, localZOrder, layerName)
                     im:release()
                     la_detached = false
                 end
@@ -100,7 +102,8 @@ end
 
 ---@return cc.Layer
 function imgui.get()
-    return dir:getRunningScene():getChildByName(layerName)
+    local scene = dir:getRunningScene()
+    return scene and scene:getChildByName(layerName)
 end
 
 function imgui.off()
@@ -236,6 +239,20 @@ end
 
 function imgui.unpack(t)
     return unpack(t, 1, table.maxn(t))
+end
+
+function imgui.configFlagCheck(flag)
+    return bit.band(imgui.getIO().ConfigFlags, flag) > 0
+end
+
+function imgui.configFlagEnable(flag)
+    local io = imgui.getIO()
+    io.ConfigFlags = bit.bor(io.ConfigFlags, flag)
+end
+
+function imgui.configFlagDisable(flag)
+    local io = imgui.getIO()
+    io.ConfigFlags = bit.band(io.ConfigFlags, bit.bnot(flag))
 end
 
 function imgui.ImFontConfig.__call()

@@ -36,7 +36,7 @@ function M:getBorder()
 end
 
 function M:setFlags(flag, ...)
-    self:setParam(4, bit.band(flag, ...))
+    self:setParam(4, bit.bor(flag, ...))
     return self
 end
 

@@ -3,11 +3,10 @@ local base = require('imgui.Widget')
 ---@class im.RadioButtonGroup:im.Widget
 local M = class('im.RadioButtonGroup', base)
 
-function M:ctor(labels, handlers, initIndex, sameLine)
+function M:ctor(labels, initIndex, sameLine)
     labels = labels or {}
     self._count = #labels
     self._labels = labels
-    self._events = handlers or {}
     self._idx = initIndex or 1
     self._sameLine = sameLine and true or false
 end
@@ -45,12 +44,19 @@ function M:getCount()
     return self._count
 end
 
+function M:setOnChange(f)
+    self._onChange = f
+end
+
 function M:_handler()
     local ret
     for i = 1, self._count do
-        ret, self._idx = imgui.radioButton(self._labels[i], self._idx, i)
-        if ret and self._events[i] then
-            self._events[i](self)
+        ret = imgui.radioButton(self._labels[i], self._idx == i)
+        if ret then
+            self._idx = i
+            if self._onChange then
+                self:_onChange(i)
+            end
         end
         if self._sameLine and i < self._count then
             imgui.sameLine()
