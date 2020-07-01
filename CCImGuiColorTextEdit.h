@@ -40,6 +40,8 @@ namespace ImGui
 		};
 		using LanguageDefinition = TextEditor::LanguageDefinition;
 
+		static ColorTextEdit* create();
+
 		void setLanguageDefinition(
 			const std::string& name,
 			const std::unordered_set<std::string>& keywords,

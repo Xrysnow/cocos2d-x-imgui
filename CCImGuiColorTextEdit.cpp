@@ -3,6 +3,18 @@
 using namespace ImGui;
 using namespace cocos2d;
 
+ColorTextEdit* ColorTextEdit::create()
+{
+	auto ret = new (std::nothrow) ColorTextEdit();
+	if (ret && ret->init())
+	{
+		ret->autorelease();
+		return ret;
+	}
+	delete ret;
+	return nullptr;
+}
+
 void ColorTextEdit::setLanguageDefinition(
 	const std::string& name,
 	const std::unordered_set<std::string>& keywords,

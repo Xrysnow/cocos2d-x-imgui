@@ -117,6 +117,40 @@ int lua_x_ImGuiColorTextEdit_ColorTextEdit_copy(lua_State* tolua_S)
     return 0;
 #endif
 }
+int lua_x_ImGuiColorTextEdit_ColorTextEdit_create(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"imgui.ColorTextEdit",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 0)
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_ImGuiColorTextEdit_ColorTextEdit_create'", nullptr);
+            return 0;
+        }
+        ImGui::ColorTextEdit* ret = ImGui::ColorTextEdit::create();
+        native_to_luaval(tolua_S, ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ColorTextEdit:create",argc, 0);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_ImGuiColorTextEdit_ColorTextEdit_create'.",&tolua_err);
+#endif
+    return 0;
+}
 int lua_x_ImGuiColorTextEdit_ColorTextEdit_cut(lua_State* tolua_S)
 {
     int argc = 0;
@@ -2935,114 +2969,115 @@ static int lua_x_ImGuiColorTextEdit_ColorTextEdit_finalize(lua_State* tolua_S)
 
 int lua_register_x_ImGuiColorTextEdit_ColorTextEdit(lua_State* tolua_S)
 {
-    tolua_usertype(tolua_S, "imgui.ColorTextEdit");
-    tolua_cclass(tolua_S, "ColorTextEdit", "imgui.ColorTextEdit", "cc.Node", nullptr);
+    tolua_usertype(tolua_S,"imgui.ColorTextEdit");
+    tolua_cclass(tolua_S,"ColorTextEdit","imgui.ColorTextEdit","cc.Node",nullptr);
 
-    tolua_beginmodule(tolua_S, "ColorTextEdit");
-    tolua_function(tolua_S, "insertText", lua_x_ImGuiColorTextEdit_ColorTextEdit_insertText);
-    tolua_function(tolua_S, "selectAll", lua_x_ImGuiColorTextEdit_ColorTextEdit_selectAll);
-    tolua_function(tolua_S, "setLanguageHLSL", lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageHLSL);
-    tolua_function(tolua_S, "setShowWhitespaces", lua_x_ImGuiColorTextEdit_ColorTextEdit_setShowWhitespaces);
-    tolua_function(tolua_S, "render", lua_x_ImGuiColorTextEdit_ColorTextEdit_render);
-    tolua_function(tolua_S, "moveDown", lua_x_ImGuiColorTextEdit_ColorTextEdit_moveDown);
-    tolua_function(tolua_S, "setBreakpoints", lua_x_ImGuiColorTextEdit_ColorTextEdit_setBreakpoints);
-    tolua_function(tolua_S, "setPaletteLight", lua_x_ImGuiColorTextEdit_ColorTextEdit_setPaletteLight);
-    tolua_function(tolua_S, "isImGuiChildIgnored", lua_x_ImGuiColorTextEdit_ColorTextEdit_isImGuiChildIgnored);
-    tolua_function(tolua_S, "getText", lua_x_ImGuiColorTextEdit_ColorTextEdit_getText);
-    tolua_function(tolua_S, "setPalette", lua_x_ImGuiColorTextEdit_ColorTextEdit_setPalette);
-    tolua_function(tolua_S, "setPaletteRetroBlue", lua_x_ImGuiColorTextEdit_ColorTextEdit_setPaletteRetroBlue);
-    tolua_function(tolua_S, "moveRight", lua_x_ImGuiColorTextEdit_ColorTextEdit_moveRight);
-    tolua_function(tolua_S, "isOverwrite", lua_x_ImGuiColorTextEdit_ColorTextEdit_isOverwrite);
-    tolua_function(tolua_S, "setLanguageDefinition", lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageDefinition);
-    tolua_function(tolua_S, "getCurrentLineText", lua_x_ImGuiColorTextEdit_ColorTextEdit_getCurrentLineText);
-    tolua_function(tolua_S, "moveUp", lua_x_ImGuiColorTextEdit_ColorTextEdit_moveUp);
-    tolua_function(tolua_S, "moveEnd", lua_x_ImGuiColorTextEdit_ColorTextEdit_moveEnd);
-    tolua_function(tolua_S, "cut", lua_x_ImGuiColorTextEdit_ColorTextEdit_cut);
-    tolua_function(tolua_S, "getTabSize", lua_x_ImGuiColorTextEdit_ColorTextEdit_getTabSize);
-    tolua_function(tolua_S, "setLanguageC", lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageC);
-    tolua_function(tolua_S, "setLanguageAngelScript", lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageAngelScript);
-    tolua_function(tolua_S, "selectWordUnderCursor", lua_x_ImGuiColorTextEdit_ColorTextEdit_selectWordUnderCursor);
-    tolua_function(tolua_S, "isReadOnly", lua_x_ImGuiColorTextEdit_ColorTextEdit_isReadOnly);
-    tolua_function(tolua_S, "paste", lua_x_ImGuiColorTextEdit_ColorTextEdit_paste);
-    tolua_function(tolua_S, "moveHome", lua_x_ImGuiColorTextEdit_ColorTextEdit_moveHome);
-    tolua_function(tolua_S, "setSelectionStart", lua_x_ImGuiColorTextEdit_ColorTextEdit_setSelectionStart);
-    tolua_function(tolua_S, "redo", lua_x_ImGuiColorTextEdit_ColorTextEdit_redo);
-    tolua_function(tolua_S, "isColorizerEnabled", lua_x_ImGuiColorTextEdit_ColorTextEdit_isColorizerEnabled);
-    tolua_function(tolua_S, "setPaletteDark", lua_x_ImGuiColorTextEdit_ColorTextEdit_setPaletteDark);
-    tolua_function(tolua_S, "setLanguageCPlusPlus", lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageCPlusPlus);
-    tolua_function(tolua_S, "setSelectionEnd", lua_x_ImGuiColorTextEdit_ColorTextEdit_setSelectionEnd);
-    tolua_function(tolua_S, "isHandleMouseInputsEnabled", lua_x_ImGuiColorTextEdit_ColorTextEdit_isHandleMouseInputsEnabled);
-    tolua_function(tolua_S, "setLanguageLua", lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageLua);
-    tolua_function(tolua_S, "hasSelection", lua_x_ImGuiColorTextEdit_ColorTextEdit_hasSelection);
-    tolua_function(tolua_S, "setErrorMarkers", lua_x_ImGuiColorTextEdit_ColorTextEdit_setErrorMarkers);
-    tolua_function(tolua_S, "canUndo", lua_x_ImGuiColorTextEdit_ColorTextEdit_canUndo);
-    tolua_function(tolua_S, "getCursorPosition", lua_x_ImGuiColorTextEdit_ColorTextEdit_getCursorPosition);
-    tolua_function(tolua_S, "setCursorPosition", lua_x_ImGuiColorTextEdit_ColorTextEdit_setCursorPosition);
-    tolua_function(tolua_S, "setHandleKeyboardInputs", lua_x_ImGuiColorTextEdit_ColorTextEdit_setHandleKeyboardInputs);
-    tolua_function(tolua_S, "isShowingWhitespaces", lua_x_ImGuiColorTextEdit_ColorTextEdit_isShowingWhitespaces);
-    tolua_function(tolua_S, "getTotalLines", lua_x_ImGuiColorTextEdit_ColorTextEdit_getTotalLines);
-    tolua_function(tolua_S, "undo", lua_x_ImGuiColorTextEdit_ColorTextEdit_undo);
-    tolua_function(tolua_S, "isTextChanged", lua_x_ImGuiColorTextEdit_ColorTextEdit_isTextChanged);
-    tolua_function(tolua_S, "getSelectedText", lua_x_ImGuiColorTextEdit_ColorTextEdit_getSelectedText);
-    tolua_function(tolua_S, "canRedo", lua_x_ImGuiColorTextEdit_ColorTextEdit_canRedo);
-    tolua_function(tolua_S, "copy", lua_x_ImGuiColorTextEdit_ColorTextEdit_copy);
-    tolua_function(tolua_S, "moveBottom", lua_x_ImGuiColorTextEdit_ColorTextEdit_moveBottom);
-    tolua_function(tolua_S, "isCursorPositionChanged", lua_x_ImGuiColorTextEdit_ColorTextEdit_isCursorPositionChanged);
-    tolua_function(tolua_S, "moveLeft", lua_x_ImGuiColorTextEdit_ColorTextEdit_moveLeft);
-    tolua_function(tolua_S, "delete", lua_x_ImGuiColorTextEdit_ColorTextEdit_delete_);
-    tolua_function(tolua_S, "setSelection", lua_x_ImGuiColorTextEdit_ColorTextEdit_setSelection);
-    tolua_function(tolua_S, "setTextLines", lua_x_ImGuiColorTextEdit_ColorTextEdit_setTextLines);
-    tolua_function(tolua_S, "setImGuiChildIgnored", lua_x_ImGuiColorTextEdit_ColorTextEdit_setImGuiChildIgnored);
-    tolua_function(tolua_S, "setLanguageSQL", lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageSQL);
-    tolua_function(tolua_S, "getTextLines", lua_x_ImGuiColorTextEdit_ColorTextEdit_getTextLines);
-    tolua_function(tolua_S, "setReadOnly", lua_x_ImGuiColorTextEdit_ColorTextEdit_setReadOnly);
-    tolua_function(tolua_S, "setColorizerEnable", lua_x_ImGuiColorTextEdit_ColorTextEdit_setColorizerEnable);
-    tolua_function(tolua_S, "getPalette", lua_x_ImGuiColorTextEdit_ColorTextEdit_getPalette);
-    tolua_function(tolua_S, "setHandleMouseInputs", lua_x_ImGuiColorTextEdit_ColorTextEdit_setHandleMouseInputs);
-    tolua_function(tolua_S, "setTabSize", lua_x_ImGuiColorTextEdit_ColorTextEdit_setTabSize);
-    tolua_function(tolua_S, "moveTop", lua_x_ImGuiColorTextEdit_ColorTextEdit_moveTop);
-    tolua_function(tolua_S, "setText", lua_x_ImGuiColorTextEdit_ColorTextEdit_setText);
-    tolua_function(tolua_S, "isHandleKeyboardInputsEnabled", lua_x_ImGuiColorTextEdit_ColorTextEdit_isHandleKeyboardInputsEnabled);
-    tolua_function(tolua_S, "setLanguageGLSL", lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageGLSL);
-    {
-        tolua_module(tolua_S, "PaletteIndex", 0);
-        tolua_beginmodule(tolua_S, "PaletteIndex");
+    tolua_beginmodule(tolua_S,"ColorTextEdit");
+        tolua_function(tolua_S,"insertText",lua_x_ImGuiColorTextEdit_ColorTextEdit_insertText);
+        tolua_function(tolua_S,"selectAll",lua_x_ImGuiColorTextEdit_ColorTextEdit_selectAll);
+        tolua_function(tolua_S,"setLanguageHLSL",lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageHLSL);
+        tolua_function(tolua_S,"setShowWhitespaces",lua_x_ImGuiColorTextEdit_ColorTextEdit_setShowWhitespaces);
+        tolua_function(tolua_S,"render",lua_x_ImGuiColorTextEdit_ColorTextEdit_render);
+        tolua_function(tolua_S,"moveDown",lua_x_ImGuiColorTextEdit_ColorTextEdit_moveDown);
+        tolua_function(tolua_S,"setBreakpoints",lua_x_ImGuiColorTextEdit_ColorTextEdit_setBreakpoints);
+        tolua_function(tolua_S,"setPaletteLight",lua_x_ImGuiColorTextEdit_ColorTextEdit_setPaletteLight);
+        tolua_function(tolua_S,"isImGuiChildIgnored",lua_x_ImGuiColorTextEdit_ColorTextEdit_isImGuiChildIgnored);
+        tolua_function(tolua_S,"getText",lua_x_ImGuiColorTextEdit_ColorTextEdit_getText);
+        tolua_function(tolua_S,"setPalette",lua_x_ImGuiColorTextEdit_ColorTextEdit_setPalette);
+        tolua_function(tolua_S,"setPaletteRetroBlue",lua_x_ImGuiColorTextEdit_ColorTextEdit_setPaletteRetroBlue);
+        tolua_function(tolua_S,"moveRight",lua_x_ImGuiColorTextEdit_ColorTextEdit_moveRight);
+        tolua_function(tolua_S,"isOverwrite",lua_x_ImGuiColorTextEdit_ColorTextEdit_isOverwrite);
+        tolua_function(tolua_S,"setLanguageDefinition",lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageDefinition);
+        tolua_function(tolua_S,"getCurrentLineText",lua_x_ImGuiColorTextEdit_ColorTextEdit_getCurrentLineText);
+        tolua_function(tolua_S,"moveUp",lua_x_ImGuiColorTextEdit_ColorTextEdit_moveUp);
+        tolua_function(tolua_S,"moveEnd",lua_x_ImGuiColorTextEdit_ColorTextEdit_moveEnd);
+        tolua_function(tolua_S,"cut",lua_x_ImGuiColorTextEdit_ColorTextEdit_cut);
+        tolua_function(tolua_S,"getTabSize",lua_x_ImGuiColorTextEdit_ColorTextEdit_getTabSize);
+        tolua_function(tolua_S,"setLanguageC",lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageC);
+        tolua_function(tolua_S,"setLanguageAngelScript",lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageAngelScript);
+        tolua_function(tolua_S,"selectWordUnderCursor",lua_x_ImGuiColorTextEdit_ColorTextEdit_selectWordUnderCursor);
+        tolua_function(tolua_S,"isReadOnly",lua_x_ImGuiColorTextEdit_ColorTextEdit_isReadOnly);
+        tolua_function(tolua_S,"paste",lua_x_ImGuiColorTextEdit_ColorTextEdit_paste);
+        tolua_function(tolua_S,"moveHome",lua_x_ImGuiColorTextEdit_ColorTextEdit_moveHome);
+        tolua_function(tolua_S,"setSelectionStart",lua_x_ImGuiColorTextEdit_ColorTextEdit_setSelectionStart);
+        tolua_function(tolua_S,"redo",lua_x_ImGuiColorTextEdit_ColorTextEdit_redo);
+        tolua_function(tolua_S,"isColorizerEnabled",lua_x_ImGuiColorTextEdit_ColorTextEdit_isColorizerEnabled);
+        tolua_function(tolua_S,"setPaletteDark",lua_x_ImGuiColorTextEdit_ColorTextEdit_setPaletteDark);
+        tolua_function(tolua_S,"setLanguageCPlusPlus",lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageCPlusPlus);
+        tolua_function(tolua_S,"setSelectionEnd",lua_x_ImGuiColorTextEdit_ColorTextEdit_setSelectionEnd);
+        tolua_function(tolua_S,"isHandleMouseInputsEnabled",lua_x_ImGuiColorTextEdit_ColorTextEdit_isHandleMouseInputsEnabled);
+        tolua_function(tolua_S,"setLanguageLua",lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageLua);
+        tolua_function(tolua_S,"hasSelection",lua_x_ImGuiColorTextEdit_ColorTextEdit_hasSelection);
+        tolua_function(tolua_S,"setErrorMarkers",lua_x_ImGuiColorTextEdit_ColorTextEdit_setErrorMarkers);
+        tolua_function(tolua_S,"canUndo",lua_x_ImGuiColorTextEdit_ColorTextEdit_canUndo);
+        tolua_function(tolua_S,"getCursorPosition",lua_x_ImGuiColorTextEdit_ColorTextEdit_getCursorPosition);
+        tolua_function(tolua_S,"setCursorPosition",lua_x_ImGuiColorTextEdit_ColorTextEdit_setCursorPosition);
+        tolua_function(tolua_S,"setHandleKeyboardInputs",lua_x_ImGuiColorTextEdit_ColorTextEdit_setHandleKeyboardInputs);
+        tolua_function(tolua_S,"isShowingWhitespaces",lua_x_ImGuiColorTextEdit_ColorTextEdit_isShowingWhitespaces);
+        tolua_function(tolua_S,"getTotalLines",lua_x_ImGuiColorTextEdit_ColorTextEdit_getTotalLines);
+        tolua_function(tolua_S,"undo",lua_x_ImGuiColorTextEdit_ColorTextEdit_undo);
+        tolua_function(tolua_S,"isTextChanged",lua_x_ImGuiColorTextEdit_ColorTextEdit_isTextChanged);
+        tolua_function(tolua_S,"getSelectedText",lua_x_ImGuiColorTextEdit_ColorTextEdit_getSelectedText);
+        tolua_function(tolua_S,"canRedo",lua_x_ImGuiColorTextEdit_ColorTextEdit_canRedo);
+        tolua_function(tolua_S,"copy",lua_x_ImGuiColorTextEdit_ColorTextEdit_copy);
+        tolua_function(tolua_S,"moveBottom",lua_x_ImGuiColorTextEdit_ColorTextEdit_moveBottom);
+        tolua_function(tolua_S,"isCursorPositionChanged",lua_x_ImGuiColorTextEdit_ColorTextEdit_isCursorPositionChanged);
+        tolua_function(tolua_S,"moveLeft",lua_x_ImGuiColorTextEdit_ColorTextEdit_moveLeft);
+        tolua_function(tolua_S,"delete",lua_x_ImGuiColorTextEdit_ColorTextEdit_delete_);
+        tolua_function(tolua_S,"setSelection",lua_x_ImGuiColorTextEdit_ColorTextEdit_setSelection);
+        tolua_function(tolua_S,"setTextLines",lua_x_ImGuiColorTextEdit_ColorTextEdit_setTextLines);
+        tolua_function(tolua_S,"setImGuiChildIgnored",lua_x_ImGuiColorTextEdit_ColorTextEdit_setImGuiChildIgnored);
+        tolua_function(tolua_S,"setLanguageSQL",lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageSQL);
+        tolua_function(tolua_S,"getTextLines",lua_x_ImGuiColorTextEdit_ColorTextEdit_getTextLines);
+        tolua_function(tolua_S,"setReadOnly",lua_x_ImGuiColorTextEdit_ColorTextEdit_setReadOnly);
+        tolua_function(tolua_S,"setColorizerEnable",lua_x_ImGuiColorTextEdit_ColorTextEdit_setColorizerEnable);
+        tolua_function(tolua_S,"getPalette",lua_x_ImGuiColorTextEdit_ColorTextEdit_getPalette);
+        tolua_function(tolua_S,"setHandleMouseInputs",lua_x_ImGuiColorTextEdit_ColorTextEdit_setHandleMouseInputs);
+        tolua_function(tolua_S,"setTabSize",lua_x_ImGuiColorTextEdit_ColorTextEdit_setTabSize);
+        tolua_function(tolua_S,"moveTop",lua_x_ImGuiColorTextEdit_ColorTextEdit_moveTop);
+        tolua_function(tolua_S,"setText",lua_x_ImGuiColorTextEdit_ColorTextEdit_setText);
+        tolua_function(tolua_S,"isHandleKeyboardInputsEnabled",lua_x_ImGuiColorTextEdit_ColorTextEdit_isHandleKeyboardInputsEnabled);
+        tolua_function(tolua_S,"setLanguageGLSL",lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageGLSL);
+        tolua_function(tolua_S,"create", lua_x_ImGuiColorTextEdit_ColorTextEdit_create);
         {
-            tolua_constant(tolua_S, "Default", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Default);
-            tolua_constant(tolua_S, "Keyword", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Keyword);
-            tolua_constant(tolua_S, "Number", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Number);
-            tolua_constant(tolua_S, "String", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::String);
-            tolua_constant(tolua_S, "CharLiteral", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::CharLiteral);
-            tolua_constant(tolua_S, "Punctuation", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Punctuation);
-            tolua_constant(tolua_S, "Preprocessor", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Preprocessor);
-            tolua_constant(tolua_S, "Identifier", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Identifier);
-            tolua_constant(tolua_S, "KnownIdentifier", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::KnownIdentifier);
-            tolua_constant(tolua_S, "PreprocIdentifier", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::PreprocIdentifier);
-            tolua_constant(tolua_S, "Comment", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Comment);
-            tolua_constant(tolua_S, "MultiLineComment", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::MultiLineComment);
-            tolua_constant(tolua_S, "Background", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Background);
-            tolua_constant(tolua_S, "Cursor", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Cursor);
-            tolua_constant(tolua_S, "Selection", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Selection);
-            tolua_constant(tolua_S, "ErrorMarker", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::ErrorMarker);
-            tolua_constant(tolua_S, "Breakpoint", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Breakpoint);
-            tolua_constant(tolua_S, "LineNumber", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::LineNumber);
-            tolua_constant(tolua_S, "CurrentLineFill", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::CurrentLineFill);
-            tolua_constant(tolua_S, "CurrentLineFillInactive", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::CurrentLineFillInactive);
-            tolua_constant(tolua_S, "CurrentLineEdge", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::CurrentLineEdge);
-            tolua_constant(tolua_S, "Max", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Max);
+            tolua_module(tolua_S, "PaletteIndex", 0);
+            tolua_beginmodule(tolua_S,"PaletteIndex");
+            {
+                tolua_constant(tolua_S, "Default", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Default);
+                tolua_constant(tolua_S, "Keyword", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Keyword);
+                tolua_constant(tolua_S, "Number", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Number);
+                tolua_constant(tolua_S, "String", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::String);
+                tolua_constant(tolua_S, "CharLiteral", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::CharLiteral);
+                tolua_constant(tolua_S, "Punctuation", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Punctuation);
+                tolua_constant(tolua_S, "Preprocessor", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Preprocessor);
+                tolua_constant(tolua_S, "Identifier", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Identifier);
+                tolua_constant(tolua_S, "KnownIdentifier", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::KnownIdentifier);
+                tolua_constant(tolua_S, "PreprocIdentifier", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::PreprocIdentifier);
+                tolua_constant(tolua_S, "Comment", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Comment);
+                tolua_constant(tolua_S, "MultiLineComment", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::MultiLineComment);
+                tolua_constant(tolua_S, "Background", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Background);
+                tolua_constant(tolua_S, "Cursor", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Cursor);
+                tolua_constant(tolua_S, "Selection", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Selection);
+                tolua_constant(tolua_S, "ErrorMarker", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::ErrorMarker);
+                tolua_constant(tolua_S, "Breakpoint", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Breakpoint);
+                tolua_constant(tolua_S, "LineNumber", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::LineNumber);
+                tolua_constant(tolua_S, "CurrentLineFill", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::CurrentLineFill);
+                tolua_constant(tolua_S, "CurrentLineFillInactive", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::CurrentLineFillInactive);
+                tolua_constant(tolua_S, "CurrentLineEdge", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::CurrentLineEdge);
+                tolua_constant(tolua_S, "Max", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Max);
+            }
+            tolua_endmodule(tolua_S);
         }
-        tolua_endmodule(tolua_S);
-    }
-    {
-        tolua_module(tolua_S, "SelectionMode", 0);
-        tolua_beginmodule(tolua_S, "SelectionMode");
         {
-            tolua_constant(tolua_S, "Normal", (lua_Number)ImGui::ColorTextEdit::SelectionMode::Normal);
-            tolua_constant(tolua_S, "Word", (lua_Number)ImGui::ColorTextEdit::SelectionMode::Word);
-            tolua_constant(tolua_S, "Line", (lua_Number)ImGui::ColorTextEdit::SelectionMode::Line);
+            tolua_module(tolua_S, "SelectionMode", 0);
+            tolua_beginmodule(tolua_S,"SelectionMode");
+            {
+                tolua_constant(tolua_S, "Normal", (lua_Number)ImGui::ColorTextEdit::SelectionMode::Normal);
+                tolua_constant(tolua_S, "Word", (lua_Number)ImGui::ColorTextEdit::SelectionMode::Word);
+                tolua_constant(tolua_S, "Line", (lua_Number)ImGui::ColorTextEdit::SelectionMode::Line);
+            }
+            tolua_endmodule(tolua_S);
         }
-        tolua_endmodule(tolua_S);
-    }
     tolua_endmodule(tolua_S);
     std::string typeName = typeid(ImGui::ColorTextEdit).name();
     g_luaType[typeName] = "imgui.ColorTextEdit";
