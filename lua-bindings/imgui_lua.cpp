@@ -8,6 +8,7 @@
 #include "lua_imguiFont_auto.hpp"
 #include "lua_imguiViewport_auto.hpp"
 #include "lua_imguiDrawList_auto.hpp"
+#include "lua_ImGuiColorTextEdit_auto.hpp"
 #include "../CCIMGUI.h"
 #include "../CCImGuiLayer.h"
 
@@ -1652,6 +1653,8 @@ end
 			tolua_function(L, reg.name, reg.func);
 	}
 	lua_pop(L, 1);
+
+	register_all_x_ImGuiColorTextEdit(L);
 
 	CCIMGUI::setOnInit([=](CCIMGUI* ins)
 	{
