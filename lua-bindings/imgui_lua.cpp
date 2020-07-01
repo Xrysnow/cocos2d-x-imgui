@@ -248,12 +248,48 @@ static int imgui_pushStyleColor(lua_State *L) {
 }
 static int imgui_pushStyleVar(lua_State *L) {
 	const auto idx = luaL_checkinteger(L, 1);
+	if (idx < ImGuiStyleVar_Alpha || idx >= ImGuiStyleVar_COUNT)
+		return luaL_error(L, "invalid parameter #1");
+	auto is_number = true;
+	switch (idx)
+	{
+	//case ImGuiStyleVar_Alpha:					// float 
+	case ImGuiStyleVar_WindowPadding:			// ImVec2
+	//case ImGuiStyleVar_WindowRounding:		// float 
+	//case ImGuiStyleVar_WindowBorderSize:		// float 
+	case ImGuiStyleVar_WindowMinSize:			// ImVec2
+	case ImGuiStyleVar_WindowTitleAlign:		// ImVec2
+	//case ImGuiStyleVar_ChildRounding:			// float 
+	//case ImGuiStyleVar_ChildBorderSize:		// float 
+	//case ImGuiStyleVar_PopupRounding:			// float 
+	//case ImGuiStyleVar_PopupBorderSize:		// float 
+	case ImGuiStyleVar_FramePadding:			// ImVec2
+	//case ImGuiStyleVar_FrameRounding:			// float 
+	//case ImGuiStyleVar_FrameBorderSize:		// float 
+	case ImGuiStyleVar_ItemSpacing:				// ImVec2
+	case ImGuiStyleVar_ItemInnerSpacing:		// ImVec2
+	//case ImGuiStyleVar_IndentSpacing:			// float 
+	//case ImGuiStyleVar_ScrollbarSize:			// float 
+	//case ImGuiStyleVar_ScrollbarRounding:		// float 
+	//case ImGuiStyleVar_GrabMinSize:			// float 
+	//case ImGuiStyleVar_GrabRounding:			// float 
+	//case ImGuiStyleVar_TabRounding:			// float 
+	case ImGuiStyleVar_ButtonTextAlign:			// ImVec2
+	case ImGuiStyleVar_SelectableTextAlign:		// ImVec2
+		is_number = false;
+		break;
+	default: ;
+	}
 	switch (lua_type(L, 2))
 	{
 	case LUA_TNUMBER:
+		if(!is_number)
+			return luaL_error(L, "invalid parameter #1");
 		ImGui::PushStyleVar(idx, luaL_checknumber(L, 2));
 		break;
 	case LUA_TTABLE:
+		if (is_number)
+			return luaL_error(L, "invalid parameter #1");
 		ImGui::PushStyleVar(idx, _luaval_to_imvec2(L, 2));
 		break;
 	default:
