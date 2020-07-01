@@ -353,10 +353,10 @@ end
 ---@param label string
 ---@param v number
 ---@param step number
----@param step_fase number
+---@param step_fast number
 ---@param flags number
 ---@return boolean,number
-function imgui.inputInt(label, v, step, step_fase, flags)
+function imgui.inputInt(label, v, step, step_fast, flags)
 end
 
 ---
@@ -624,6 +624,9 @@ end
 function imgui.createLayer()
 end
 
+function imgui.shutdown()
+end
+
 ---
 ---@param node cc.Node
 ---@param tint_color ImVec4
@@ -650,6 +653,35 @@ end
 ---@param label cc.Label
 ---@param col number|ImVec4|boolean
 function imgui.setCCLabelColor(label, col)
+end
+
+-- markdown
+
+---
+---@param f fun(text:string,link:string,isImage:boolean)
+function imgui.setMarkdownLinkCallback(f)
+end
+
+---
+---@param f fun(text:string,link:string):cc.Sprite,ImVec2,ImVec4,ImVec4
+function imgui.setMarkdownImageCallback(f)
+end
+
+---
+---@param index number
+---@param font imgui.ImFont
+---@param seperator boolean
+function imgui.setMarkdownFont(index, font, seperator)
+end
+
+---
+---@param icon string
+function imgui.setMarkdownLinkIcon(icon)
+end
+
+---
+---@param content string
+function imgui.markdown(content)
 end
 
 ---@class ImVec2:vec2_table
