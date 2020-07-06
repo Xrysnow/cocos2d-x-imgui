@@ -132,7 +132,7 @@ namespace lua
             for (size_t i = 0; i < len; i++) {\
                 lua_pushnumber(L, i + 1);\
                 lua_gettable(L, lo);\
-                ok &= to_native<T>::F(L, top, &value, fName);\
+                ok &= to_native<T>::F(L, top + 1, &value, fName);\
                 lua_pop(L, 1);\
                 if (ok)\
                     outValue->_Setter(value);\
@@ -286,7 +286,7 @@ namespace lua
             for (size_t i = 0; i < len; i++) {
                 lua_pushnumber(L, i + 1);
                 lua_gettable(L, lo);
-                ok &= to_native<T>::F(L, top, &value, fName);
+                ok &= to_native<T>::F(L, top + 1, &value, fName);
                 lua_pop(L, 1);
                 if (ok)
                     outValue->operator[](i) = value;
