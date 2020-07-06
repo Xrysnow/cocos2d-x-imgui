@@ -20,7 +20,7 @@ void ColorTextEdit::setLanguageDefinition(
 	const std::unordered_set<std::string>& keywords,
 	const std::unordered_map<std::string, std::string>& identifiers,
 	const std::unordered_map<std::string, std::string>& preprocIdentifiers,
-	const std::unordered_map<std::string, PaletteIndex>& tokenRegexStrings,
+	const std::vector<std::pair<std::string, PaletteIndex>>& tokenRegexStrings,
 	const std::string& commentStart,
 	const std::string& commentEnd,
 	const std::string& singleLineComment,
@@ -49,6 +49,39 @@ void ColorTextEdit::setLanguageDefinition(
 	lang.mPreprocChar = preprocChar.empty() ? '\0' : preprocChar.at(0);
 	lang.mAutoIndentation = autoIndentation;
 	lang.mCaseSensitive = caseSensitive;
+	try
+	{
+		e.SetLanguageDefinition(lang);
+	}
+	catch (...)
+	{
+		lang.mTokenRegexStrings.clear();
+		e.SetLanguageDefinition(lang);
+		cocos2d::log("invalid regex");
+	}
+}
+
+void ColorTextEdit::addLanguageIdentifier(const std::unordered_map<std::string, std::string>& identifiers)
+{
+	auto lang = e.GetLanguageDefinition();
+	for (auto&& it : identifiers)
+	{		
+		TextEditor::Identifier id;
+		id.mDeclaration = it.second;
+		lang.mIdentifiers.emplace(it.first, id);
+	}
+	e.SetLanguageDefinition(lang);
+}
+
+void ColorTextEdit::addLanguagePreprocIdentifier(const std::unordered_map<std::string, std::string>& identifiers)
+{
+	auto lang = e.GetLanguageDefinition();
+	for (auto&& it : identifiers)
+	{
+		TextEditor::Identifier id;
+		id.mDeclaration = it.second;
+		lang.mPreprocIdentifiers.emplace(it.first, id);
+	}
 	e.SetLanguageDefinition(lang);
 }
 
@@ -117,4 +150,10 @@ void ColorTextEdit::setSelection(
 	e.SetSelection(
 		{ lineStart, columnStart }, { lineEnd, columnEnd },
 		(TextEditor::SelectionMode)mode);
+}
+
+std::array<int, 2> ColorTextEdit::getHoveredCoordinates() const
+{
+	const auto p = e.GetHoveredCoordinates();
+	return { p.mLine,p.mColumn };
 }

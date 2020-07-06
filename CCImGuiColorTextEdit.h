@@ -47,7 +47,7 @@ namespace ImGui
 			const std::unordered_set<std::string>& keywords,
 			const std::unordered_map<std::string, std::string>& identifiers,
 			const std::unordered_map<std::string, std::string>& preprocIdentifiers,
-			const std::unordered_map<std::string, PaletteIndex>& tokenRegexStrings,
+			const std::vector<std::pair<std::string, PaletteIndex>>& tokenRegexStrings,
 			const std::string& commentStart,
 			const std::string& commentEnd,
 			const std::string& singleLineComment,
@@ -55,6 +55,9 @@ namespace ImGui
 			bool autoIndentation = true,
 			bool caseSensitive = true
 		);
+
+		void addLanguageIdentifier(const std::unordered_map<std::string, std::string>& identifiers);
+		void addLanguagePreprocIdentifier(const std::unordered_map<std::string, std::string>& identifiers);
 
 		void setLanguageCPlusPlus() { e.SetLanguageDefinition(LanguageDefinition::CPlusPlus()); }
 		void setLanguageHLSL() { e.SetLanguageDefinition(LanguageDefinition::HLSL()); }
@@ -102,6 +105,8 @@ namespace ImGui
 		bool isImGuiChildIgnored() const { return e.IsImGuiChildIgnored(); }
 		void setShowWhitespaces(bool value) { e.SetShowWhitespaces(value); }
 		bool isShowingWhitespaces() const { return e.IsShowingWhitespaces(); }
+		void setShowShortTabGlyphs(bool value) { e.SetShowShortTabGlyphs(value); }
+		bool isShowingShortTabGlyphs() const { return e.IsShowingShortTabGlyphs(); }
 		void setTabSize(int value) { e.SetTabSize(value); }
 		int  getTabSize() const { return e.GetTabSize(); }
 		void insertText(const std::string& value) { e.InsertText(value); }
@@ -131,6 +136,13 @@ namespace ImGui
 		bool canRedo() const { return e.CanRedo(); }
 		void undo(int steps = 1) { e.Undo(steps); }
 		void redo(int steps = 1) { e.Redo(steps); }
+
+		void setAutoTooltip(bool value) { e.SetAutoTooltip(value); }
+		bool isAutoTooltip() const { return e.IsAutoTooltip(); }
+		std::array<int, 2> getHoveredCoordinates() const;
+		std::string getHoveredWord() const { return e.GetHoveredWord(); }
+		std::string getHoveredDeclaration() const { return e.GetHoveredDeclaration(); }
+		PaletteIndex getHoveredWordIndex() const { return (PaletteIndex)e.GetHoveredWordIndex(); }
 	protected:
 		TextEditor e;
 		TextEditor::LanguageDefinition def;
