@@ -321,6 +321,8 @@ void ImGui_ImplCocos2dx_KeyCallback(GLFWwindow* window, int key, int scancode, i
     if (g_PrevUserCallbackKey != nullptr && window == ImGui_ImplCocos2dx_GetWindow())
         g_PrevUserCallbackKey(window, key, scancode, action, mods);
 
+	if (key < 0)
+		return;
     ImGuiIO& io = ImGui::GetIO();
     if (action == GLFW_PRESS)
         io.KeysDown[key] = true;
