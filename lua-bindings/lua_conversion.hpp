@@ -297,6 +297,33 @@ namespace lua
         }
     };
 
+    template<typename T1, typename T2>
+    struct to_native<std::pair<T1, T2>> {
+        static bool F(lua_State* L, int lo, std::pair<T1, T2>* outValue, const char* fName = "") {
+            CHECK_TO_NATIVE;
+            const auto type = lua_type(L, lo);
+            if (!(type == LUA_TTABLE || type == LUA_TUSERDATA || type == LUA_TCDATA))
+                return false;
+            T1 value1; T2 value2;
+            bool ok = true;
+            lua_pushnumber(L, 1);
+            lua_gettable(L, lo);
+            ok &= to_native<T1>::F(L, top + 1, &value1, fName);
+            lua_pop(L, 1);
+            if (ok)
+                outValue->first = value1;
+            else
+                return false;
+            lua_pushnumber(L, 2);
+            lua_gettable(L, lo);
+            ok &= to_native<T2>::F(L, top + 1, &value2, fName);
+            lua_pop(L, 1);
+            if (ok)
+                outValue->second = value2;
+            return ok;
+        }
+    };
+
     TO_NATIVE_VECTOR(cocos2d::Vector, pushBack);
     TO_NATIVE_VECTOR(std::vector, push_back);
     TO_NATIVE_VECTOR(std::set, insert);
