@@ -4,3 +4,6 @@
 [submodule "imgui_markdown"]
 	path = imgui_markdown
 	url = https://github.com/juliettef/imgui_markdown.git
+[submodule "ImGuiColorTextEdit"]
+	path = ImGuiColorTextEdit
+	url = https://github.com/Xrysnow/ImGuiColorTextEdit.git
