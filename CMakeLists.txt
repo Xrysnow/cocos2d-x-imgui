@@ -29,6 +29,7 @@ set(HEADER
     imgui/misc/cpp/imgui_stdlib.h
     imgui_markdown/imgui_markdown.h
     ImGuiColorTextEdit/TextEditor.h
+    implot/implot.h
 )
 
 set(SOURCE
@@ -42,6 +43,8 @@ set(SOURCE
     imgui/imgui_widgets.cpp
     imgui/misc/cpp/imgui_stdlib.cpp
     ImGuiColorTextEdit/TextEditor.cpp
+    implot/implot.cpp
+    implot/implot_demo.cpp
 )
 
 if(BUILD_LUA_LIBS)
@@ -60,6 +63,7 @@ if(BUILD_LUA_LIBS)
         lua-bindings/lua_imguiStyle_auto.hpp
         lua-bindings/lua_imguiViewport_auto.hpp
         lua-bindings/lua_ImGuiColorTextEdit_auto.hpp
+        lua-bindings/lua_implot_auto.hpp
     )
     list(APPEND SOURCE
         lua-bindings/imgui_lua.cpp
@@ -70,12 +74,14 @@ if(BUILD_LUA_LIBS)
         lua-bindings/lua_imguiViewport_auto.cpp
         lua-bindings/lua_imgui_auto.cpp
         lua-bindings/lua_ImGuiColorTextEdit_auto.cpp
+        lua-bindings/lua_implot_auto.cpp
     )
 endif()
 
 add_library(${LIB_NAME} STATIC ${SOURCE} ${HEADER})
 add_dependencies(${LIB_NAME} cocos2d)
 use_cocos2dx_compile_define(${LIB_NAME})
+use_cocos2dx_compile_options(${LIB_NAME})
 
 if(BUILD_LUA_LIBS)
     target_compile_definitions(${LIB_NAME} PUBLIC _USRLUASTATIC)
@@ -85,6 +91,10 @@ set_target_properties(${LIB_NAME}
     PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+)
+target_include_directories(${LIB_NAME} INTERFACE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/imgui
 )
 
 if(XCODE OR VS)
