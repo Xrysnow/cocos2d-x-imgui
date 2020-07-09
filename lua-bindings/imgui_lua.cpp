@@ -234,7 +234,7 @@ static int imgui_getFont(lua_State *L) {
 }
 static int imgui_pushStyleColor(lua_State *L) {
 	const auto idx = luaL_checkinteger(L, 1);
-	switch (lua_type(L,2))
+	switch (lua_type(L, 2))
 	{
 	case LUA_TNUMBER:
 		ImGui::PushStyleColor(idx, lua_tou32(L, 2));
@@ -1046,6 +1046,34 @@ enum GlyphRanges
 	GlyphRangesThai,                   // Default + Thai characters
 	GlyphRangesVietnamese,             // Default + Vietname characters
 };
+static const ImWchar* luaval_to_GlyphRanges(lua_State* L, int lo, const std::string& storeKey)
+{
+	auto& io = ImGui::GetIO();
+	std::vector<unsigned short> arr;
+	auto ranges = io.Fonts->GetGlyphRangesChineseFull();
+	if (lua_istable(L, lo))
+	{
+		luaval_to_std_vector_ushort(L, lo, &arr);
+		if (arr.size() % 2 == 0)
+			arr.push_back(0);
+		ranges = CCIMGUI::getInstance()->addGlyphRanges(storeKey, arr);
+	}
+	else
+	{
+		switch ((GlyphRanges)luaL_checkinteger(L, lo)) {
+		case GlyphRangesDefault: ranges = io.Fonts->GetGlyphRangesDefault(); break;
+		case GlyphRangesKorean: ranges = io.Fonts->GetGlyphRangesKorean(); break;
+		case GlyphRangesJapanese: ranges = io.Fonts->GetGlyphRangesJapanese(); break;
+		case GlyphRangesChineseFull: ranges = io.Fonts->GetGlyphRangesChineseFull(); break;
+		case GlyphRangesChineseSimplifiedCommon: ranges = io.Fonts->GetGlyphRangesChineseSimplifiedCommon(); break;
+		case GlyphRangesCyrillic: ranges = io.Fonts->GetGlyphRangesCyrillic(); break;
+		case GlyphRangesThai: ranges = io.Fonts->GetGlyphRangesThai(); break;
+		case GlyphRangesVietnamese: ranges = io.Fonts->GetGlyphRangesVietnamese(); break;
+		default:;
+		}
+	}
+	return ranges;
+}
 static int imgui_addFontTTF(lua_State *L) {
 	const auto args = lua_gettop(L);
 	std::string path;
@@ -1072,25 +1100,7 @@ static int imgui_addFontTTF(lua_State *L) {
 	auto ranges = io.Fonts->GetGlyphRangesChineseFull();
 	if (args >= 4)
 	{
-		if (lua_istable(L, 4))
-		{
-			luaval_to_std_vector_ushort(L, 4, &arr);
-			ranges = CCIMGUI::getInstance()->addGlyphRanges(cfg.Name, arr);
-		}
-		else
-		{
-			switch ((GlyphRanges)luaL_checkinteger(L, 4)) {
-			case GlyphRangesDefault: ranges = io.Fonts->GetGlyphRangesDefault(); break;
-			case GlyphRangesKorean: ranges = io.Fonts->GetGlyphRangesKorean(); break;
-			case GlyphRangesJapanese: ranges = io.Fonts->GetGlyphRangesJapanese(); break;
-			case GlyphRangesChineseFull: ranges = io.Fonts->GetGlyphRangesChineseFull(); break;
-			case GlyphRangesChineseSimplifiedCommon: ranges = io.Fonts->GetGlyphRangesChineseSimplifiedCommon(); break;
-			case GlyphRangesCyrillic: ranges = io.Fonts->GetGlyphRangesCyrillic(); break;
-			case GlyphRangesThai: ranges = io.Fonts->GetGlyphRangesThai(); break;
-			case GlyphRangesVietnamese: ranges = io.Fonts->GetGlyphRangesVietnamese(); break;
-			default: ;
-			}
-		}
+		ranges = luaval_to_GlyphRanges(L, 4, cfg.Name);
 	}
 	object_to_luaval(L, "imgui.ImFont",
 		io.Fonts->AddFontFromMemoryTTF(data.getBytes(), data.getSize(), size_pixels, &cfg, ranges));
