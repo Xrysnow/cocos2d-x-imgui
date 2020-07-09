@@ -1385,6 +1385,8 @@ static const luaL_Reg imgui_methods[] = {
     {NULL,  NULL}
 };
 
+// drawlist
+
 static int drawlist_addCCNode(lua_State *L)
 {
 	auto cobj = (ImDrawList*)tolua_tousertype(L, 1, nullptr);
@@ -1614,6 +1616,40 @@ static const luaL_Reg drawlist_methods[] = {
 	M(addConvexPolyFilled)
 };
 
+// font
+
+static int font_mergeGlyphs(lua_State* L)
+{
+	auto cobj = (ImFont*)tolua_tousertype(L, 1, nullptr);
+	if (!cobj)
+		return 0;
+	bool ok = true;
+	auto argc = lua_gettop(L) - 1;
+	if (argc == 3)
+	{
+		ImFont* arg0;
+		ok &= luaval_to_object(L, 2, "imgui.ImFont", &arg0, "imgui.ImFont:mergeGlyphs");
+		if (!ok || !arg0)
+		{
+			tolua_error(L, "invalid arguments in function 'imgui.ImFont:mergeGlyphs'", nullptr);
+			return 0;
+		}
+		CCIMGUI::mergeFontGlyphs(cobj, arg0,
+			ImWchar(luaL_checkinteger(L, 3)),
+			ImWchar(luaL_checkinteger(L, 4)));
+		lua_settop(L, 1);
+		return 1;
+	}
+	luaL_error(L, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImFont:mergeGlyphs", argc, 3);
+	return 0;
+}
+
+#undef M
+#define M(n) {#n, font_##n}
+static const luaL_Reg font_methods[] = {
+	M(mergeGlyphs)
+};
+
 int luaopen_imgui(lua_State *L)
 {
     luaL_register(L, "imgui", imgui_methods);
@@ -1630,7 +1666,7 @@ int luaopen_imgui(lua_State *L)
     lua_settable(L, -3);
 	// t(imgui)
 	lua_pop(L, 1);
-
+	// make functions static
 	luaL_dostring(L, R"__(
 for k, v in pairs(imgui._auto) do
     imgui[k] = function(...)
@@ -1650,6 +1686,15 @@ end
 	if (lua_istable(L, -1))
 	{
 		for (auto&& reg : drawlist_methods)
+			tolua_function(L, reg.name, reg.func);
+	}
+	lua_pop(L, 1);
+
+	lua_pushstring(L, "imgui.ImFont");
+	lua_rawget(L, LUA_REGISTRYINDEX);
+	if (lua_istable(L, -1))
+	{
+		for (auto&& reg : font_methods)
 			tolua_function(L, reg.name, reg.func);
 	}
 	lua_pop(L, 1);
