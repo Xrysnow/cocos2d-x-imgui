@@ -1824,6 +1824,386 @@ int lua_x_imguiDrawList_ImDrawList_PopTextureID(lua_State* tolua_S)
     return 0;
 #endif
 }
+int lua_x_imguiDrawList_ImDrawList_PrimQuadUV(lua_State* tolua_S)
+{
+    int argc = 0;
+    imgui::ImDrawList* cobj = nullptr;
+    bool ok  = true;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S,1,"imgui.ImDrawList",0,&tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (imgui::ImDrawList*)tolua_tousertype(tolua_S, 1, nullptr);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiDrawList_ImDrawList_PrimQuadUV'", nullptr);
+        return 0;
+    }
+#endif
+    argc = lua_gettop(tolua_S) - 1;
+    if (argc == 9) 
+    {
+        ImVec2 arg0;
+        ImVec2 arg1;
+        ImVec2 arg2;
+        ImVec2 arg3;
+        ImVec2 arg4;
+        ImVec2 arg5;
+        ImVec2 arg6;
+        ImVec2 arg7;
+        unsigned int arg8;
+
+        ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "imgui.ImDrawList:PrimQuadUV");
+
+        ok &= luaval_to_ImVec2(tolua_S, 3, &arg1, "imgui.ImDrawList:PrimQuadUV");
+
+        ok &= luaval_to_ImVec2(tolua_S, 4, &arg2, "imgui.ImDrawList:PrimQuadUV");
+
+        ok &= luaval_to_ImVec2(tolua_S, 5, &arg3, "imgui.ImDrawList:PrimQuadUV");
+
+        ok &= luaval_to_ImVec2(tolua_S, 6, &arg4, "imgui.ImDrawList:PrimQuadUV");
+
+        ok &= luaval_to_ImVec2(tolua_S, 7, &arg5, "imgui.ImDrawList:PrimQuadUV");
+
+        ok &= luaval_to_ImVec2(tolua_S, 8, &arg6, "imgui.ImDrawList:PrimQuadUV");
+
+        ok &= luaval_to_ImVec2(tolua_S, 9, &arg7, "imgui.ImDrawList:PrimQuadUV");
+
+        ok &= luaval_to_uint32(tolua_S, 10,&arg8, "imgui.ImDrawList:PrimQuadUV");
+        if(!ok)
+        {
+            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiDrawList_ImDrawList_PrimQuadUV'", nullptr);
+            return 0;
+        }
+        cobj->PrimQuadUV(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImDrawList:PrimQuadUV", argc, 9);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiDrawList_ImDrawList_PrimQuadUV'.",&tolua_err);
+    return 0;
+#endif
+}
+int lua_x_imguiDrawList_ImDrawList_PrimRect(lua_State* tolua_S)
+{
+    int argc = 0;
+    imgui::ImDrawList* cobj = nullptr;
+    bool ok  = true;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S,1,"imgui.ImDrawList",0,&tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (imgui::ImDrawList*)tolua_tousertype(tolua_S, 1, nullptr);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiDrawList_ImDrawList_PrimRect'", nullptr);
+        return 0;
+    }
+#endif
+    argc = lua_gettop(tolua_S) - 1;
+    if (argc == 3) 
+    {
+        ImVec2 arg0;
+        ImVec2 arg1;
+        unsigned int arg2;
+
+        ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "imgui.ImDrawList:PrimRect");
+
+        ok &= luaval_to_ImVec2(tolua_S, 3, &arg1, "imgui.ImDrawList:PrimRect");
+
+        ok &= luaval_to_uint32(tolua_S, 4,&arg2, "imgui.ImDrawList:PrimRect");
+        if(!ok)
+        {
+            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiDrawList_ImDrawList_PrimRect'", nullptr);
+            return 0;
+        }
+        cobj->PrimRect(arg0, arg1, arg2);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImDrawList:PrimRect", argc, 3);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiDrawList_ImDrawList_PrimRect'.",&tolua_err);
+    return 0;
+#endif
+}
+int lua_x_imguiDrawList_ImDrawList_PrimRectUV(lua_State* tolua_S)
+{
+    int argc = 0;
+    imgui::ImDrawList* cobj = nullptr;
+    bool ok  = true;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S,1,"imgui.ImDrawList",0,&tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (imgui::ImDrawList*)tolua_tousertype(tolua_S, 1, nullptr);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiDrawList_ImDrawList_PrimRectUV'", nullptr);
+        return 0;
+    }
+#endif
+    argc = lua_gettop(tolua_S) - 1;
+    if (argc == 5) 
+    {
+        ImVec2 arg0;
+        ImVec2 arg1;
+        ImVec2 arg2;
+        ImVec2 arg3;
+        unsigned int arg4;
+
+        ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "imgui.ImDrawList:PrimRectUV");
+
+        ok &= luaval_to_ImVec2(tolua_S, 3, &arg1, "imgui.ImDrawList:PrimRectUV");
+
+        ok &= luaval_to_ImVec2(tolua_S, 4, &arg2, "imgui.ImDrawList:PrimRectUV");
+
+        ok &= luaval_to_ImVec2(tolua_S, 5, &arg3, "imgui.ImDrawList:PrimRectUV");
+
+        ok &= luaval_to_uint32(tolua_S, 6,&arg4, "imgui.ImDrawList:PrimRectUV");
+        if(!ok)
+        {
+            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiDrawList_ImDrawList_PrimRectUV'", nullptr);
+            return 0;
+        }
+        cobj->PrimRectUV(arg0, arg1, arg2, arg3, arg4);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImDrawList:PrimRectUV", argc, 5);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiDrawList_ImDrawList_PrimRectUV'.",&tolua_err);
+    return 0;
+#endif
+}
+int lua_x_imguiDrawList_ImDrawList_PrimReserve(lua_State* tolua_S)
+{
+    int argc = 0;
+    imgui::ImDrawList* cobj = nullptr;
+    bool ok  = true;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S,1,"imgui.ImDrawList",0,&tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (imgui::ImDrawList*)tolua_tousertype(tolua_S, 1, nullptr);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiDrawList_ImDrawList_PrimReserve'", nullptr);
+        return 0;
+    }
+#endif
+    argc = lua_gettop(tolua_S) - 1;
+    if (argc == 2) 
+    {
+        int arg0;
+        int arg1;
+
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "imgui.ImDrawList:PrimReserve");
+
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "imgui.ImDrawList:PrimReserve");
+        if(!ok)
+        {
+            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiDrawList_ImDrawList_PrimReserve'", nullptr);
+            return 0;
+        }
+        cobj->PrimReserve(arg0, arg1);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImDrawList:PrimReserve", argc, 2);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiDrawList_ImDrawList_PrimReserve'.",&tolua_err);
+    return 0;
+#endif
+}
+int lua_x_imguiDrawList_ImDrawList_PrimUnreserve(lua_State* tolua_S)
+{
+    int argc = 0;
+    imgui::ImDrawList* cobj = nullptr;
+    bool ok  = true;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S,1,"imgui.ImDrawList",0,&tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (imgui::ImDrawList*)tolua_tousertype(tolua_S, 1, nullptr);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiDrawList_ImDrawList_PrimUnreserve'", nullptr);
+        return 0;
+    }
+#endif
+    argc = lua_gettop(tolua_S) - 1;
+    if (argc == 2) 
+    {
+        int arg0;
+        int arg1;
+
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "imgui.ImDrawList:PrimUnreserve");
+
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "imgui.ImDrawList:PrimUnreserve");
+        if(!ok)
+        {
+            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiDrawList_ImDrawList_PrimUnreserve'", nullptr);
+            return 0;
+        }
+        cobj->PrimUnreserve(arg0, arg1);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImDrawList:PrimUnreserve", argc, 2);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiDrawList_ImDrawList_PrimUnreserve'.",&tolua_err);
+    return 0;
+#endif
+}
+int lua_x_imguiDrawList_ImDrawList_PrimVtx(lua_State* tolua_S)
+{
+    int argc = 0;
+    imgui::ImDrawList* cobj = nullptr;
+    bool ok  = true;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S,1,"imgui.ImDrawList",0,&tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (imgui::ImDrawList*)tolua_tousertype(tolua_S, 1, nullptr);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiDrawList_ImDrawList_PrimVtx'", nullptr);
+        return 0;
+    }
+#endif
+    argc = lua_gettop(tolua_S) - 1;
+    if (argc == 3) 
+    {
+        ImVec2 arg0;
+        ImVec2 arg1;
+        unsigned int arg2;
+
+        ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "imgui.ImDrawList:PrimVtx");
+
+        ok &= luaval_to_ImVec2(tolua_S, 3, &arg1, "imgui.ImDrawList:PrimVtx");
+
+        ok &= luaval_to_uint32(tolua_S, 4,&arg2, "imgui.ImDrawList:PrimVtx");
+        if(!ok)
+        {
+            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiDrawList_ImDrawList_PrimVtx'", nullptr);
+            return 0;
+        }
+        cobj->PrimVtx(arg0, arg1, arg2);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImDrawList:PrimVtx", argc, 3);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiDrawList_ImDrawList_PrimVtx'.",&tolua_err);
+    return 0;
+#endif
+}
+int lua_x_imguiDrawList_ImDrawList_PrimWriteIdx(lua_State* tolua_S)
+{
+    int argc = 0;
+    imgui::ImDrawList* cobj = nullptr;
+    bool ok  = true;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S,1,"imgui.ImDrawList",0,&tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (imgui::ImDrawList*)tolua_tousertype(tolua_S, 1, nullptr);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiDrawList_ImDrawList_PrimWriteIdx'", nullptr);
+        return 0;
+    }
+#endif
+    argc = lua_gettop(tolua_S) - 1;
+    if (argc == 1) 
+    {
+        unsigned short arg0;
+
+        ok &= luaval_to_ushort(tolua_S, 2, &arg0, "imgui.ImDrawList:PrimWriteIdx");
+        if(!ok)
+        {
+            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiDrawList_ImDrawList_PrimWriteIdx'", nullptr);
+            return 0;
+        }
+        cobj->PrimWriteIdx(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImDrawList:PrimWriteIdx", argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiDrawList_ImDrawList_PrimWriteIdx'.",&tolua_err);
+    return 0;
+#endif
+}
+int lua_x_imguiDrawList_ImDrawList_PrimWriteVtx(lua_State* tolua_S)
+{
+    int argc = 0;
+    imgui::ImDrawList* cobj = nullptr;
+    bool ok  = true;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S,1,"imgui.ImDrawList",0,&tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (imgui::ImDrawList*)tolua_tousertype(tolua_S, 1, nullptr);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiDrawList_ImDrawList_PrimWriteVtx'", nullptr);
+        return 0;
+    }
+#endif
+    argc = lua_gettop(tolua_S) - 1;
+    if (argc == 3) 
+    {
+        ImVec2 arg0;
+        ImVec2 arg1;
+        unsigned int arg2;
+
+        ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "imgui.ImDrawList:PrimWriteVtx");
+
+        ok &= luaval_to_ImVec2(tolua_S, 3, &arg1, "imgui.ImDrawList:PrimWriteVtx");
+
+        ok &= luaval_to_uint32(tolua_S, 4,&arg2, "imgui.ImDrawList:PrimWriteVtx");
+        if(!ok)
+        {
+            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiDrawList_ImDrawList_PrimWriteVtx'", nullptr);
+            return 0;
+        }
+        cobj->PrimWriteVtx(arg0, arg1, arg2);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImDrawList:PrimWriteVtx", argc, 3);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiDrawList_ImDrawList_PrimWriteVtx'.",&tolua_err);
+    return 0;
+#endif
+}
 int lua_x_imguiDrawList_ImDrawList_PushClipRect(lua_State* tolua_S)
 {
     int argc = 0;
@@ -2059,12 +2439,14 @@ int lua_register_x_imguiDrawList_ImDrawList(lua_State* tolua_S)
 
     tolua_beginmodule(tolua_S,"ImDrawList");
         tolua_function(tolua_S,"channelsMerge",lua_x_imguiDrawList_ImDrawList_ChannelsMerge);
+        tolua_function(tolua_S,"primWriteIdx",lua_x_imguiDrawList_ImDrawList_PrimWriteIdx);
         tolua_function(tolua_S,"pathRect",lua_x_imguiDrawList_ImDrawList_PathRect);
         tolua_function(tolua_S,"addTriangleFilled",lua_x_imguiDrawList_ImDrawList_AddTriangleFilled);
         tolua_function(tolua_S,"pathFillConvex",lua_x_imguiDrawList_ImDrawList_PathFillConvex);
         tolua_function(tolua_S,"cloneOutput",lua_x_imguiDrawList_ImDrawList_CloneOutput);
         tolua_function(tolua_S,"addLine",lua_x_imguiDrawList_ImDrawList_AddLine);
         tolua_function(tolua_S,"channelsSplit",lua_x_imguiDrawList_ImDrawList_ChannelsSplit);
+        tolua_function(tolua_S,"primRectUV",lua_x_imguiDrawList_ImDrawList_PrimRectUV);
         tolua_function(tolua_S,"popClipRect",lua_x_imguiDrawList_ImDrawList_PopClipRect);
         tolua_function(tolua_S,"pushClipRect",lua_x_imguiDrawList_ImDrawList_PushClipRect);
 		tolua_function(tolua_S,"addNgonFilled", lua_x_imguiDrawList_ImDrawList_AddNgonFilled);
@@ -2077,8 +2459,10 @@ int lua_register_x_imguiDrawList_ImDrawList(lua_State* tolua_S)
         tolua_function(tolua_S,"addQuadFilled",lua_x_imguiDrawList_ImDrawList_AddQuadFilled);
 		tolua_function(tolua_S,"addNgon", lua_x_imguiDrawList_ImDrawList_AddNgon);
         tolua_function(tolua_S,"addCircleFilled",lua_x_imguiDrawList_ImDrawList_AddCircleFilled);
+        tolua_function(tolua_S,"primWriteVtx",lua_x_imguiDrawList_ImDrawList_PrimWriteVtx);
         tolua_function(tolua_S,"pathBezierCurveTo",lua_x_imguiDrawList_ImDrawList_PathBezierCurveTo);
         tolua_function(tolua_S,"getClipRectMax",lua_x_imguiDrawList_ImDrawList_GetClipRectMax);
+        tolua_function(tolua_S,"primVtx",lua_x_imguiDrawList_ImDrawList_PrimVtx);
         tolua_function(tolua_S,"addDrawCmd",lua_x_imguiDrawList_ImDrawList_AddDrawCmd);
         tolua_function(tolua_S,"pathClear",lua_x_imguiDrawList_ImDrawList_PathClear);
         tolua_function(tolua_S,"pushClipRectFullScreen",lua_x_imguiDrawList_ImDrawList_PushClipRectFullScreen);
@@ -2088,9 +2472,13 @@ int lua_register_x_imguiDrawList_ImDrawList(lua_State* tolua_S)
         tolua_function(tolua_S,"popTextureID",lua_x_imguiDrawList_ImDrawList_PopTextureID);
         tolua_function(tolua_S,"pathLineTo",lua_x_imguiDrawList_ImDrawList_PathLineTo);
         tolua_function(tolua_S,"pathStroke",lua_x_imguiDrawList_ImDrawList_PathStroke);
+        tolua_function(tolua_S,"primQuadUV",lua_x_imguiDrawList_ImDrawList_PrimQuadUV);
         tolua_function(tolua_S,"addBezierCurve",lua_x_imguiDrawList_ImDrawList_AddBezierCurve);
+        tolua_function(tolua_S,"primUnreserve",lua_x_imguiDrawList_ImDrawList_PrimUnreserve);
         tolua_function(tolua_S,"pathLineToMergeDuplicate",lua_x_imguiDrawList_ImDrawList_PathLineToMergeDuplicate);
+        tolua_function(tolua_S,"primRect",lua_x_imguiDrawList_ImDrawList_PrimRect);
         tolua_function(tolua_S,"addRectFilled",lua_x_imguiDrawList_ImDrawList_AddRectFilled);
+        tolua_function(tolua_S,"primReserve",lua_x_imguiDrawList_ImDrawList_PrimReserve);
         tolua_variable(tolua_S,"Flags", lua_x_imguiDrawList_ImDrawList_getFlags, lua_x_imguiDrawList_ImDrawList_setFlags);
         tolua_variable(tolua_S,"_OwnerName", lua_x_imguiDrawList_ImDrawList_get_OwnerName, lua_x_imguiDrawList_ImDrawList_set_OwnerName);
     tolua_endmodule(tolua_S);
@@ -2102,9 +2490,9 @@ int lua_register_x_imguiDrawList_ImDrawList(lua_State* tolua_S)
 TOLUA_API int register_all_x_imguiDrawList(lua_State* tolua_S)
 {
 	tolua_open(tolua_S);
-	
-	tolua_module(tolua_S,"imgui",0);
-	tolua_beginmodule(tolua_S,"imgui");
+
+	tolua_module(tolua_S, "imgui", 0);
+	tolua_beginmodule(tolua_S, "imgui");
 
 	lua_register_x_imguiDrawList_ImDrawList(tolua_S);
 

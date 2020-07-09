@@ -55,6 +55,46 @@ int lua_x_imguiIO_ImGuiIO_AddInputCharacter(lua_State* tolua_S)
     return 0;
 #endif
 }
+int lua_x_imguiIO_ImGuiIO_AddInputCharacterUTF16(lua_State* tolua_S)
+{
+    int argc = 0;
+    imgui::ImGuiIO* cobj = nullptr;
+    bool ok  = true;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S,1,"imgui.ImGuiIO",0,&tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, nullptr);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiIO_ImGuiIO_AddInputCharacterUTF16'", nullptr);
+        return 0;
+    }
+#endif
+    argc = lua_gettop(tolua_S) - 1;
+    if (argc == 1) 
+    {
+        unsigned short arg0;
+
+        ok &= luaval_to_ushort(tolua_S, 2, &arg0, "imgui.ImGuiIO:AddInputCharacterUTF16");
+        if(!ok)
+        {
+            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiIO_ImGuiIO_AddInputCharacterUTF16'", nullptr);
+            return 0;
+        }
+        cobj->AddInputCharacterUTF16(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiIO:AddInputCharacterUTF16", argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiIO_ImGuiIO_AddInputCharacterUTF16'.",&tolua_err);
+    return 0;
+#endif
+}
 int lua_x_imguiIO_ImGuiIO_AddInputCharactersUTF8(lua_State* tolua_S)
 {
     int argc = 0;
@@ -907,7 +947,7 @@ int lua_x_imguiIO_ImGuiIO_setFonts(lua_State* tolua_S)
     argc = lua_gettop(tolua_S) - 1;
     if (1 == argc)
     {
-        imgui::ImFontAtlas* arg0 = nullptr;
+        imgui::ImFontAtlas* arg0;
         ok &= luaval_to_native(tolua_S, 2, &arg0, "imgui.ImGuiIO:Fonts");
         if(!ok)
         {
@@ -1090,7 +1130,7 @@ int lua_x_imguiIO_ImGuiIO_setFontDefault(lua_State* tolua_S)
     argc = lua_gettop(tolua_S) - 1;
     if (1 == argc)
     {
-        imgui::ImFont* arg0 = nullptr;
+        imgui::ImFont* arg0;
         ok &= luaval_to_native(tolua_S, 2, &arg0, "imgui.ImGuiIO:FontDefault");
         if(!ok)
         {
@@ -3499,6 +3539,7 @@ int lua_register_x_imguiIO_ImGuiIO(lua_State* tolua_S)
     tolua_cclass(tolua_S,"ImGuiIO","imgui.ImGuiIO","",nullptr);
 
     tolua_beginmodule(tolua_S,"ImGuiIO");
+        tolua_function(tolua_S,"addInputCharacterUTF16",lua_x_imguiIO_ImGuiIO_AddInputCharacterUTF16);
         tolua_function(tolua_S,"addInputCharactersUTF8",lua_x_imguiIO_ImGuiIO_AddInputCharactersUTF8);
         tolua_function(tolua_S,"addInputCharacter",lua_x_imguiIO_ImGuiIO_AddInputCharacter);
         tolua_function(tolua_S,"clearInputCharacters",lua_x_imguiIO_ImGuiIO_ClearInputCharacters);
@@ -3566,9 +3607,9 @@ int lua_register_x_imguiIO_ImGuiIO(lua_State* tolua_S)
 TOLUA_API int register_all_x_imguiIO(lua_State* tolua_S)
 {
 	tolua_open(tolua_S);
-	
-	tolua_module(tolua_S,"imgui",0);
-	tolua_beginmodule(tolua_S,"imgui");
+
+	tolua_module(tolua_S, "imgui", 0);
+	tolua_beginmodule(tolua_S, "imgui");
 
 	lua_register_x_imguiIO_ImGuiIO(tolua_S);
 

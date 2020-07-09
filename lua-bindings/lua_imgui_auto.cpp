@@ -661,23 +661,6 @@ int lua_x_imgui_ImGui_BeginPopupContextWindow(lua_State* tolua_S)
         tolua_pushboolean(tolua_S,(bool)ret);
         return 1;
     }
-    if (argc == 3)
-    {
-        const char* arg0;
-        int arg1;
-        bool arg2;
-        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "imgui.ImGui:BeginPopupContextWindow"); arg0 = arg0_tmp.c_str();
-        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "imgui.ImGui:BeginPopupContextWindow");
-        ok &= luaval_to_boolean(tolua_S, 4,&arg2, "imgui.ImGui:BeginPopupContextWindow");
-        if(!ok)
-        {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_BeginPopupContextWindow'", nullptr);
-            return 0;
-        }
-        bool ret = imgui::ImGui::BeginPopupContextWindow(arg0, arg1, arg2);
-        tolua_pushboolean(tolua_S,(bool)ret);
-        return 1;
-    }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:BeginPopupContextWindow",argc, 0);
     return 0;
 #if COCOS2D_DEBUG >= 1
@@ -4968,6 +4951,21 @@ int lua_x_imgui_ImGui_IsPopupOpen(lua_State* tolua_S)
         tolua_pushboolean(tolua_S,(bool)ret);
         return 1;
     }
+    if (argc == 2)
+    {
+        const char* arg0;
+        int arg1;
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "imgui.ImGui:IsPopupOpen"); arg0 = arg0_tmp.c_str();
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "imgui.ImGui:IsPopupOpen");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_IsPopupOpen'", nullptr);
+            return 0;
+        }
+        bool ret = imgui::ImGui::IsPopupOpen(arg0, arg1);
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:IsPopupOpen",argc, 1);
     return 0;
 #if COCOS2D_DEBUG >= 1
@@ -5772,6 +5770,21 @@ int lua_x_imgui_ImGui_OpenPopup(lua_State* tolua_S)
         lua_settop(tolua_S, 1);
         return 1;
     }
+    if (argc == 2)
+    {
+        const char* arg0;
+        int arg1;
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "imgui.ImGui:OpenPopup"); arg0 = arg0_tmp.c_str();
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "imgui.ImGui:OpenPopup");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_OpenPopup'", nullptr);
+            return 0;
+        }
+        imgui::ImGui::OpenPopup(arg0, arg1);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:OpenPopup",argc, 1);
     return 0;
 #if COCOS2D_DEBUG >= 1
@@ -5780,7 +5793,7 @@ int lua_x_imgui_ImGui_OpenPopup(lua_State* tolua_S)
 #endif
     return 0;
 }
-int lua_x_imgui_ImGui_OpenPopupOnItemClick(lua_State* tolua_S)
+int lua_x_imgui_ImGui_OpenPopupContextItem(lua_State* tolua_S)
 {
     int argc = 0;
     bool ok  = true;
@@ -5799,23 +5812,23 @@ int lua_x_imgui_ImGui_OpenPopupOnItemClick(lua_State* tolua_S)
     {
         if(!ok)
         {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_OpenPopupOnItemClick'", nullptr);
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_OpenPopupContextItem'", nullptr);
             return 0;
         }
-        bool ret = imgui::ImGui::OpenPopupOnItemClick();
+        bool ret = imgui::ImGui::OpenPopupContextItem();
         tolua_pushboolean(tolua_S,(bool)ret);
         return 1;
     }
     if (argc == 1)
     {
         const char* arg0;
-        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "imgui.ImGui:OpenPopupOnItemClick"); arg0 = arg0_tmp.c_str();
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "imgui.ImGui:OpenPopupContextItem"); arg0 = arg0_tmp.c_str();
         if(!ok)
         {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_OpenPopupOnItemClick'", nullptr);
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_OpenPopupContextItem'", nullptr);
             return 0;
         }
-        bool ret = imgui::ImGui::OpenPopupOnItemClick(arg0);
+        bool ret = imgui::ImGui::OpenPopupContextItem(arg0);
         tolua_pushboolean(tolua_S,(bool)ret);
         return 1;
     }
@@ -5823,22 +5836,22 @@ int lua_x_imgui_ImGui_OpenPopupOnItemClick(lua_State* tolua_S)
     {
         const char* arg0;
         int arg1;
-        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "imgui.ImGui:OpenPopupOnItemClick"); arg0 = arg0_tmp.c_str();
-        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "imgui.ImGui:OpenPopupOnItemClick");
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "imgui.ImGui:OpenPopupContextItem"); arg0 = arg0_tmp.c_str();
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "imgui.ImGui:OpenPopupContextItem");
         if(!ok)
         {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_OpenPopupOnItemClick'", nullptr);
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_OpenPopupContextItem'", nullptr);
             return 0;
         }
-        bool ret = imgui::ImGui::OpenPopupOnItemClick(arg0, arg1);
+        bool ret = imgui::ImGui::OpenPopupContextItem(arg0, arg1);
         tolua_pushboolean(tolua_S,(bool)ret);
         return 1;
     }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:OpenPopupOnItemClick",argc, 0);
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:OpenPopupContextItem",argc, 0);
     return 0;
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_imgui_ImGui_OpenPopupOnItemClick'.",&tolua_err);
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imgui_ImGui_OpenPopupContextItem'.",&tolua_err);
 #endif
     return 0;
 }
@@ -8931,7 +8944,7 @@ std::vector<luaL_Reg> register_all_x_imgui(lua_State* tolua_S)
 		{ "setScrollX", lua_x_imgui_ImGui_SetScrollX },
 		{ "getStyleColorName", lua_x_imgui_ImGui_GetStyleColorName },
 		{ "getWindowViewport", lua_x_imgui_ImGui_GetWindowViewport },
-		{ "debugCheckVersionAndDataLayout", lua_x_imgui_ImGui_DebugCheckVersionAndDataLayout },
+		{ "setTabItemClosed", lua_x_imgui_ImGui_SetTabItemClosed },
 		{ "logText", lua_x_imgui_ImGui_LogText },
 		{ "getWindowDpiScale", lua_x_imgui_ImGui_GetWindowDpiScale },
 		{ "setWindowFontScale", lua_x_imgui_ImGui_SetWindowFontScale },
@@ -8990,6 +9003,7 @@ std::vector<luaL_Reg> register_all_x_imgui(lua_State* tolua_S)
 		{ "getScrollX", lua_x_imgui_ImGui_GetScrollX },
 		{ "getForegroundDrawList", lua_x_imgui_ImGui_GetForegroundDrawList },
 		{ "isMouseReleased", lua_x_imgui_ImGui_IsMouseReleased },
+        { "openPopupContextItem", lua_x_imgui_ImGui_OpenPopupContextItem },
 		{ "pushTextWrapPos", lua_x_imgui_ImGui_PushTextWrapPos },
 		{ "setNextWindowSize", lua_x_imgui_ImGui_SetNextWindowSize },
 		{ "showStyleSelector", lua_x_imgui_ImGui_ShowStyleSelector },
@@ -9003,6 +9017,7 @@ std::vector<luaL_Reg> register_all_x_imgui(lua_State* tolua_S)
 		{ "calcTextSize", lua_x_imgui_ImGui_CalcTextSize },
 		{ "endMenuBar", lua_x_imgui_ImGui_EndMenuBar },
 		{ "sameLine", lua_x_imgui_ImGui_SameLine },
+        { "debugCheckVersionAndDataLayout", lua_x_imgui_ImGui_DebugCheckVersionAndDataLayout },
 		{ "popStyleColor", lua_x_imgui_ImGui_PopStyleColor },
 		{ "arrowButton", lua_x_imgui_ImGui_ArrowButton },
 		{ "getVersion", lua_x_imgui_ImGui_GetVersion },
@@ -9070,7 +9085,6 @@ std::vector<luaL_Reg> register_all_x_imgui(lua_State* tolua_S)
 		{ "getKeyPressedAmount", lua_x_imgui_ImGui_GetKeyPressedAmount },
 		{ "setClipboardText", lua_x_imgui_ImGui_SetClipboardText },
 		{ "alignTextToFramePadding", lua_x_imgui_ImGui_AlignTextToFramePadding },
-		{ "isItemDeactivated", lua_x_imgui_ImGui_IsItemDeactivated },
 		{ "getFrameHeight", lua_x_imgui_ImGui_GetFrameHeight },
 		{ "bulletText", lua_x_imgui_ImGui_BulletText },
 		{ "setNextWindowCollapsed", lua_x_imgui_ImGui_SetNextWindowCollapsed },
@@ -9082,7 +9096,6 @@ std::vector<luaL_Reg> register_all_x_imgui(lua_State* tolua_S)
 		{ "endCombo", lua_x_imgui_ImGui_EndCombo },
 		{ "getWindowHeight", lua_x_imgui_ImGui_GetWindowHeight },
 		{ "endChildFrame", lua_x_imgui_ImGui_EndChildFrame },
-		{ "setTabItemClosed", lua_x_imgui_ImGui_SetTabItemClosed },
 		{ "isItemVisible", lua_x_imgui_ImGui_IsItemVisible },
 		{ "beginTabBar", lua_x_imgui_ImGui_BeginTabBar },
 		{ "treePush", lua_x_imgui_ImGui_TreePush },
@@ -9107,7 +9120,7 @@ std::vector<luaL_Reg> register_all_x_imgui(lua_State* tolua_S)
 		{ "endFrame", lua_x_imgui_ImGui_EndFrame },
 		{ "beginMenu", lua_x_imgui_ImGui_BeginMenu },
 		{ "getID", lua_x_imgui_ImGui_GetID },
-		{ "openPopupOnItemClick", lua_x_imgui_ImGui_OpenPopupOnItemClick },
+		{ "isItemDeactivated", lua_x_imgui_ImGui_IsItemDeactivated },
 		{ "setNextWindowViewport", lua_x_imgui_ImGui_SetNextWindowViewport },
 		{ "getStyleColorVec4", lua_x_imgui_ImGui_GetStyleColorVec4 },
 		{ "endDragDropSource", lua_x_imgui_ImGui_EndDragDropSource },

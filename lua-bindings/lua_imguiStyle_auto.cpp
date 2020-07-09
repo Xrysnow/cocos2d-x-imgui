@@ -417,6 +417,67 @@ tolua_lerror:
     return 0;
 #endif
 }
+int lua_x_imguiStyle_ImGuiStyle_getWindowMenuButtonPosition(lua_State* tolua_S)
+{
+    imgui::ImGuiStyle* cobj = nullptr;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiStyle", 0, &tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (imgui::ImGuiStyle*)tolua_tousertype(tolua_S, 1, 0);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiStyle_ImGuiStyle_getWindowMenuButtonPosition'", nullptr);
+        return 0;
+    }
+#endif
+    tolua_pushnumber(tolua_S,(lua_Number)cobj->WindowMenuButtonPosition);
+    return 1;
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiStyle_ImGuiStyle_getWindowMenuButtonPosition'.", &tolua_err);
+    return 0;
+#endif
+}
+int lua_x_imguiStyle_ImGuiStyle_setWindowMenuButtonPosition(lua_State* tolua_S)
+{
+    int argc = 0;
+    imgui::ImGuiStyle* cobj = nullptr;
+    bool ok  = true;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiStyle", 0, &tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (imgui::ImGuiStyle*)tolua_tousertype(tolua_S, 1, 0);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiStyle_ImGuiStyle_setWindowMenuButtonPosition'", nullptr);
+        return 0;
+    }
+#endif
+    argc = lua_gettop(tolua_S) - 1;
+    if (1 == argc)
+    {
+        int arg0;
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "imgui.ImGuiStyle:WindowMenuButtonPosition");
+        if(!ok)
+        {
+            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiStyle_ImGuiStyle'", nullptr);
+            return 0;
+        }
+        cobj->WindowMenuButtonPosition = arg0;
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiStyle:WindowMenuButtonPosition", argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiStyle_ImGuiStyle_getWindowMenuButtonPosition'.", &tolua_err);
+    return 0;
+#endif
+}
 int lua_x_imguiStyle_ImGuiStyle_getChildRounding(lua_State* tolua_S)
 {
     imgui::ImGuiStyle* cobj = nullptr;
@@ -1515,6 +1576,128 @@ tolua_lerror:
     return 0;
 #endif
 }
+int lua_x_imguiStyle_ImGuiStyle_getTabMinWidthForUnselectedCloseButton(lua_State* tolua_S)
+{
+    imgui::ImGuiStyle* cobj = nullptr;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiStyle", 0, &tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (imgui::ImGuiStyle*)tolua_tousertype(tolua_S, 1, 0);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiStyle_ImGuiStyle_getTabMinWidthForUnselectedCloseButton'", nullptr);
+        return 0;
+    }
+#endif
+    tolua_pushnumber(tolua_S,(lua_Number)cobj->TabMinWidthForUnselectedCloseButton);
+    return 1;
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiStyle_ImGuiStyle_getTabMinWidthForUnselectedCloseButton'.", &tolua_err);
+    return 0;
+#endif
+}
+int lua_x_imguiStyle_ImGuiStyle_setTabMinWidthForUnselectedCloseButton(lua_State* tolua_S)
+{
+    int argc = 0;
+    imgui::ImGuiStyle* cobj = nullptr;
+    bool ok  = true;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiStyle", 0, &tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (imgui::ImGuiStyle*)tolua_tousertype(tolua_S, 1, 0);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiStyle_ImGuiStyle_setTabMinWidthForUnselectedCloseButton'", nullptr);
+        return 0;
+    }
+#endif
+    argc = lua_gettop(tolua_S) - 1;
+    if (1 == argc)
+    {
+        double arg0;
+        ok &= luaval_to_number(tolua_S, 2,&arg0, "imgui.ImGuiStyle:TabMinWidthForUnselectedCloseButton");
+        if(!ok)
+        {
+            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiStyle_ImGuiStyle'", nullptr);
+            return 0;
+        }
+        cobj->TabMinWidthForUnselectedCloseButton = arg0;
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiStyle:TabMinWidthForUnselectedCloseButton", argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiStyle_ImGuiStyle_getTabMinWidthForUnselectedCloseButton'.", &tolua_err);
+    return 0;
+#endif
+}
+int lua_x_imguiStyle_ImGuiStyle_getColorButtonPosition(lua_State* tolua_S)
+{
+    imgui::ImGuiStyle* cobj = nullptr;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiStyle", 0, &tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (imgui::ImGuiStyle*)tolua_tousertype(tolua_S, 1, 0);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiStyle_ImGuiStyle_getColorButtonPosition'", nullptr);
+        return 0;
+    }
+#endif
+    tolua_pushnumber(tolua_S,(lua_Number)cobj->ColorButtonPosition);
+    return 1;
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiStyle_ImGuiStyle_getColorButtonPosition'.", &tolua_err);
+    return 0;
+#endif
+}
+int lua_x_imguiStyle_ImGuiStyle_setColorButtonPosition(lua_State* tolua_S)
+{
+    int argc = 0;
+    imgui::ImGuiStyle* cobj = nullptr;
+    bool ok  = true;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiStyle", 0, &tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (imgui::ImGuiStyle*)tolua_tousertype(tolua_S, 1, 0);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiStyle_ImGuiStyle_setColorButtonPosition'", nullptr);
+        return 0;
+    }
+#endif
+    argc = lua_gettop(tolua_S) - 1;
+    if (1 == argc)
+    {
+        int arg0;
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "imgui.ImGuiStyle:ColorButtonPosition");
+        if(!ok)
+        {
+            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiStyle_ImGuiStyle'", nullptr);
+            return 0;
+        }
+        cobj->ColorButtonPosition = arg0;
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiStyle:ColorButtonPosition", argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiStyle_ImGuiStyle_getColorButtonPosition'.", &tolua_err);
+    return 0;
+#endif
+}
 int lua_x_imguiStyle_ImGuiStyle_getButtonTextAlign(lua_State* tolua_S)
 {
     imgui::ImGuiStyle* cobj = nullptr;
@@ -2003,128 +2186,6 @@ tolua_lerror:
     return 0;
 #endif
 }
-int lua_x_imguiStyle_ImGuiStyle_getWindowMenuButtonPosition(lua_State* tolua_S)
-{
-    imgui::ImGuiStyle* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiStyle", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImGuiStyle*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiStyle_ImGuiStyle_getWindowMenuButtonPosition'", nullptr);
-        return 0;
-    }
-#endif
-    tolua_pushnumber(tolua_S,(lua_Number)cobj->WindowMenuButtonPosition);
-    return 1;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiStyle_ImGuiStyle_getWindowMenuButtonPosition'.", &tolua_err);
-    return 0;
-#endif
-}
-int lua_x_imguiStyle_ImGuiStyle_setWindowMenuButtonPosition(lua_State* tolua_S)
-{
-    int argc = 0;
-    imgui::ImGuiStyle* cobj = nullptr;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiStyle", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImGuiStyle*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiStyle_ImGuiStyle_setWindowMenuButtonPosition'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-    if (1 == argc)
-    {
-        int arg0;
-        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "imgui.ImGuiStyle:WindowMenuButtonPosition");
-        if(!ok)
-        {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiStyle_ImGuiStyle'", nullptr);
-            return 0;
-        }
-        cobj->WindowMenuButtonPosition = arg0;
-        return 0;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiStyle:WindowMenuButtonPosition", argc, 1);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiStyle_ImGuiStyle_getWindowMenuButtonPosition'.", &tolua_err);
-    return 0;
-#endif
-}
-int lua_x_imguiStyle_ImGuiStyle_getColorButtonPosition(lua_State* tolua_S)
-{
-    imgui::ImGuiStyle* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiStyle", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImGuiStyle*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiStyle_ImGuiStyle_getColorButtonPosition'", nullptr);
-        return 0;
-    }
-#endif
-    tolua_pushnumber(tolua_S,(lua_Number)cobj->ColorButtonPosition);
-    return 1;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiStyle_ImGuiStyle_getColorButtonPosition'.", &tolua_err);
-    return 0;
-#endif
-}
-int lua_x_imguiStyle_ImGuiStyle_setColorButtonPosition(lua_State* tolua_S)
-{
-    int argc = 0;
-    imgui::ImGuiStyle* cobj = nullptr;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiStyle", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImGuiStyle*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiStyle_ImGuiStyle_setColorButtonPosition'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-    if (1 == argc)
-    {
-        int arg0;
-        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "imgui.ImGuiStyle:ColorButtonPosition");
-        if(!ok)
-        {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiStyle_ImGuiStyle'", nullptr);
-            return 0;
-        }
-        cobj->ColorButtonPosition = arg0;
-        return 0;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiStyle:ColorButtonPosition", argc, 1);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiStyle_ImGuiStyle_getColorButtonPosition'.", &tolua_err);
-    return 0;
-#endif
-}
 int lua_x_imguiStyle_ImGuiStyle_getCircleSegmentMaxError(lua_State* tolua_S)
 {
     imgui::ImGuiStyle* cobj = nullptr;
@@ -2205,6 +2266,7 @@ int lua_register_x_imguiStyle_ImGuiStyle(lua_State* tolua_S)
         tolua_variable(tolua_S,"WindowBorderSize", lua_x_imguiStyle_ImGuiStyle_getWindowBorderSize, lua_x_imguiStyle_ImGuiStyle_setWindowBorderSize);
         tolua_variable(tolua_S,"WindowMinSize", lua_x_imguiStyle_ImGuiStyle_getWindowMinSize, lua_x_imguiStyle_ImGuiStyle_setWindowMinSize);
         tolua_variable(tolua_S,"WindowTitleAlign", lua_x_imguiStyle_ImGuiStyle_getWindowTitleAlign, lua_x_imguiStyle_ImGuiStyle_setWindowTitleAlign);
+        tolua_variable(tolua_S,"WindowMenuButtonPosition", lua_x_imguiStyle_ImGuiStyle_getWindowMenuButtonPosition, lua_x_imguiStyle_ImGuiStyle_setWindowMenuButtonPosition);
         tolua_variable(tolua_S,"ChildRounding", lua_x_imguiStyle_ImGuiStyle_getChildRounding, lua_x_imguiStyle_ImGuiStyle_setChildRounding);
         tolua_variable(tolua_S,"ChildBorderSize", lua_x_imguiStyle_ImGuiStyle_getChildBorderSize, lua_x_imguiStyle_ImGuiStyle_setChildBorderSize);
         tolua_variable(tolua_S,"PopupRounding", lua_x_imguiStyle_ImGuiStyle_getPopupRounding, lua_x_imguiStyle_ImGuiStyle_setPopupRounding);
@@ -2223,6 +2285,8 @@ int lua_register_x_imguiStyle_ImGuiStyle(lua_State* tolua_S)
         tolua_variable(tolua_S,"GrabRounding", lua_x_imguiStyle_ImGuiStyle_getGrabRounding, lua_x_imguiStyle_ImGuiStyle_setGrabRounding);
         tolua_variable(tolua_S,"TabRounding", lua_x_imguiStyle_ImGuiStyle_getTabRounding, lua_x_imguiStyle_ImGuiStyle_setTabRounding);
         tolua_variable(tolua_S,"TabBorderSize", lua_x_imguiStyle_ImGuiStyle_getTabBorderSize, lua_x_imguiStyle_ImGuiStyle_setTabBorderSize);
+        tolua_variable(tolua_S,"TabMinWidthForUnselectedCloseButton", lua_x_imguiStyle_ImGuiStyle_getTabMinWidthForUnselectedCloseButton, lua_x_imguiStyle_ImGuiStyle_setTabMinWidthForUnselectedCloseButton);
+        tolua_variable(tolua_S,"ColorButtonPosition", lua_x_imguiStyle_ImGuiStyle_getColorButtonPosition, lua_x_imguiStyle_ImGuiStyle_setColorButtonPosition);
         tolua_variable(tolua_S,"ButtonTextAlign", lua_x_imguiStyle_ImGuiStyle_getButtonTextAlign, lua_x_imguiStyle_ImGuiStyle_setButtonTextAlign);
         tolua_variable(tolua_S,"SelectableTextAlign", lua_x_imguiStyle_ImGuiStyle_getSelectableTextAlign, lua_x_imguiStyle_ImGuiStyle_setSelectableTextAlign);
         tolua_variable(tolua_S,"DisplayWindowPadding", lua_x_imguiStyle_ImGuiStyle_getDisplayWindowPadding, lua_x_imguiStyle_ImGuiStyle_setDisplayWindowPadding);
@@ -2231,8 +2295,6 @@ int lua_register_x_imguiStyle_ImGuiStyle(lua_State* tolua_S)
         tolua_variable(tolua_S,"AntiAliasedLines", lua_x_imguiStyle_ImGuiStyle_getAntiAliasedLines, lua_x_imguiStyle_ImGuiStyle_setAntiAliasedLines);
         tolua_variable(tolua_S,"AntiAliasedFill", lua_x_imguiStyle_ImGuiStyle_getAntiAliasedFill, lua_x_imguiStyle_ImGuiStyle_setAntiAliasedFill);
         tolua_variable(tolua_S,"CurveTessellationTol", lua_x_imguiStyle_ImGuiStyle_getCurveTessellationTol, lua_x_imguiStyle_ImGuiStyle_setCurveTessellationTol);
-        tolua_variable(tolua_S,"WindowMenuButtonPosition", lua_x_imguiStyle_ImGuiStyle_getWindowMenuButtonPosition, lua_x_imguiStyle_ImGuiStyle_setWindowMenuButtonPosition);
-        tolua_variable(tolua_S,"ColorButtonPosition", lua_x_imguiStyle_ImGuiStyle_getColorButtonPosition, lua_x_imguiStyle_ImGuiStyle_setColorButtonPosition);
         tolua_variable(tolua_S,"CircleSegmentMaxError", lua_x_imguiStyle_ImGuiStyle_getCircleSegmentMaxError, lua_x_imguiStyle_ImGuiStyle_setCircleSegmentMaxError);
     tolua_endmodule(tolua_S);
     std::string typeName = typeid(imgui::ImGuiStyle).name();
@@ -2243,9 +2305,9 @@ int lua_register_x_imguiStyle_ImGuiStyle(lua_State* tolua_S)
 TOLUA_API int register_all_x_imguiStyle(lua_State* tolua_S)
 {
 	tolua_open(tolua_S);
-	
-	tolua_module(tolua_S,"imgui",0);
-	tolua_beginmodule(tolua_S,"imgui");
+
+	tolua_module(tolua_S, "imgui", 0);
+	tolua_beginmodule(tolua_S, "imgui");
 
 	lua_register_x_imguiStyle_ImGuiStyle(tolua_S);
 
