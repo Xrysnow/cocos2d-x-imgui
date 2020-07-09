@@ -1,14 +1,31 @@
 --------------------------------
--- patch 20190602
---------------------------------
-
---------------------------------
 -- @module ImGuiViewport
 -- @parent_module imgui
 
 ---@class imgui.ImGuiViewport
 local ImGuiViewport = {}
 imgui.ImGuiViewport = ImGuiViewport
+--------------------------------
+
+--- 
+---@return ImVec2
+function ImGuiViewport:getCenter()
+end
+
+--------------------------------
+
+--- 
+---@return ImVec2
+function ImGuiViewport:getWorkPos()
+end
+
+--------------------------------
+
+--- 
+---@return ImVec2
+function ImGuiViewport:getWorkSize()
+end
+
 --------------------------------
 
 ---  Unique identifier for the viewport 
@@ -23,19 +40,31 @@ ImGuiViewport.Flags = nil
 
 --------------------------------
 
----  Position of viewport both in imgui space and in OS desktop/native space 
+---  Main Area: Position of the viewport (the imgui coordinates are the same as OS desktop/native coordinates) 
 ---@type ImVec2
 ImGuiViewport.Pos = nil
 
 --------------------------------
 
----  Size of viewport in pixel 
+---  Main Area: Size of the viewport. 
 ---@type ImVec2
 ImGuiViewport.Size = nil
 
 --------------------------------
 
----  1.0f = 96 DPI = No extra scale 
+---  Work Area: Offset from Pos to top-left corner of Work Area. Generally (0,0) or (0,+main_menu_bar_height). Work Area is Full Area but without menu-bars/status-bars (so WorkArea always fit inside Pos/Size!) 
+---@type ImVec2
+ImGuiViewport.WorkOffsetMin = nil
+
+--------------------------------
+
+---  Work Area: Offset from Pos+Size to bottom-right corner of Work Area. Generally (0,0) or (0,-status_bar_height). 
+---@type ImVec2
+ImGuiViewport.WorkOffsetMax = nil
+
+--------------------------------
+
+---  1.0f = 96 DPI = No extra scale. 
 ---@type number
 ImGuiViewport.DpiScale = nil
 
@@ -62,6 +91,7 @@ ImGuiViewport.PlatformRequestMove = nil
 ---  Platform window requested resize (e.g. window was resized by the OS / host window manager, authoritative size will be OS window size) 
 ---@type boolean
 ImGuiViewport.PlatformRequestResize = nil
+
 
 
 return nil

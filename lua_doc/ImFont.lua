@@ -11,7 +11,7 @@ imgui.ImFont = ImFont
 --- 
 ---@param c number
 ---@return imgui.ImFontGlyph
-function ImFont:FindGlyph(c)
+function ImFont:findGlyph(c)
 end
 
 --------------------------------
@@ -19,7 +19,7 @@ end
 --- 
 ---@param c number
 ---@return imgui.ImFontGlyph
-function ImFont:FindGlyphNoFallback(c)
+function ImFont:findGlyphNoFallback(c)
 end
 
 --------------------------------
@@ -27,21 +27,21 @@ end
 --- 
 ---@param c number
 ---@return number
-function ImFont:GetCharAdvance(c)
+function ImFont:getCharAdvance(c)
 end
 
 --------------------------------
 
 --- 'max_width' stops rendering after a certain width (could be turned into a 2d size). FLT_MAX to disable.
 ---@return string
-function ImFont:GetDebugName()
+function ImFont:getDebugName()
 end
 
 --------------------------------
 
 --- 
 ---@return boolean
-function ImFont:IsLoaded()
+function ImFont:isLoaded()
 end
 
 --------------------------------
@@ -113,6 +113,20 @@ ImFont.FallbackChar = nil
 
 --------------------------------
 
+--- Explicitly specify unicode codepoint of ellipsis character. When fonts are being merged first specified ellipsis will be used.
+--- -1
+---@type number
+ImFont.EllipsisChar = nil
+
+--------------------------------
+
+--- out
+--- 1
+---@type boolean
+ImFont.DirtyLookupTables = nil
+
+--------------------------------
+
 --- Base font scale, multiplied by the per-window font scale which you can adjust with SetWindowFontScale()
 --- = 1.f      
 --- in
@@ -144,21 +158,6 @@ ImFont.Descent = nil
 ---@type number
 ImFont.MetricsTotalSurface = nil
 
---------------------------------
-
---- out
---- 1
----@type boolean
-ImFont.DirtyLookupTables = nil
-
---------------------------------
-
---- Character used for ellipsis rendering.
---- = -1
---- out
---- 2
----@type number
-ImFont.EllipsisChar = nil
 
 
 return nil

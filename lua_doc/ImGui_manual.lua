@@ -509,7 +509,7 @@ end
 -- Those three properties are connected. The library needs to hold their visibility state because it can close popups at any time.
 --
 
---- modal dialog (regular window with title bar, block interactions behind the modal window, can't close the modal window by clicking outside)
+--- return true if the modal is open, and you can start outputting to it.
 ---@param name string
 ---@param open boolean optional, nullable
 ---@param flags number optional

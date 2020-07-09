@@ -14,6 +14,12 @@ ImFontGlyph.Codepoint = nil
 
 --------------------------------
 
+--- Flag to allow early out when rendering
+---@type number
+ImFontGlyph.Visible = nil
+
+--------------------------------
+
 --- Distance to next character (= data from font + ImFontConfig::GlyphExtraSpacing.x baked in)
 ---@type number
 ImFontGlyph.AdvanceX = nil
@@ -65,6 +71,7 @@ ImFontGlyph.U1 = nil
 --- Texture coordinates
 ---@type number
 ImFontGlyph.V1 = nil
+
 
 
 return nil

@@ -11,7 +11,7 @@ imgui.ImGuiStyle = ImGuiStyle
 --- 
 ---@param scale_factor number
 ---@return imgui.ImGuiStyle
-function ImGuiStyle:ScaleAllSizes(scale_factor)
+function ImGuiStyle:scaleAllSizes(scale_factor)
 end
 
 --------------------------------
@@ -28,7 +28,7 @@ ImGuiStyle.WindowPadding = nil
 
 --------------------------------
 
----  Radius of window corners rounding. Set to 0.0f to have rectangular windows. 
+---  Radius of window corners rounding. Set to 0.0f to have rectangular windows. Large values tend to lead to variety of artifacts and are not recommended. 
 ---@type number
 ImGuiStyle.WindowRounding = nil
 
@@ -49,6 +49,12 @@ ImGuiStyle.WindowMinSize = nil
 ---  Alignment for title bar text. Defaults to (0.0f,0.5f) for left-aligned,vertically centered. 
 ---@type ImVec2
 ImGuiStyle.WindowTitleAlign = nil
+
+--------------------------------
+
+---  Side of the collapsing/docking button in the title bar (left/right). Defaults to ImGuiDir_Left. 
+---@type number
+ImGuiStyle.WindowMenuButtonPosition = nil
 
 --------------------------------
 
@@ -160,13 +166,25 @@ ImGuiStyle.TabBorderSize = nil
 
 --------------------------------
 
+---  Minimum width for close button to appears on an unselected tab when hovered. Set to 0.0f to always show when hovering, set to FLT_MAX to never show close button unless selected. 
+---@type number
+ImGuiStyle.TabMinWidthForUnselectedCloseButton = nil
+
+--------------------------------
+
+---  Side of the color button in the ColorEdit4 widget (left/right). Defaults to ImGuiDir_Right. 
+---@type number
+ImGuiStyle.ColorButtonPosition = nil
+
+--------------------------------
+
 ---  Alignment of button text when button is larger than text. Defaults to (0.5f, 0.5f) (centered). 
 ---@type ImVec2
 ImGuiStyle.ButtonTextAlign = nil
 
 --------------------------------
 
----  Alignment of selectable text when selectable is larger than text. Defaults to (0.0f, 0.0f) (top-left aligned). 
+---  Alignment of selectable text. Defaults to (0.0f, 0.0f) (top-left aligned). It's generally important to keep this left-aligned if you want to lay multiple items on a same line. 
 ---@type ImVec2
 ImGuiStyle.SelectableTextAlign = nil
 
@@ -184,7 +202,7 @@ ImGuiStyle.DisplaySafeAreaPadding = nil
 
 --------------------------------
 
----  Scale software rendered mouse cursor (when io.MouseDrawCursor is enabled). May be removed later. 
+---  Scale software rendered mouse cursor (when io.MouseDrawCursor is enabled). We apply per-monitor DPI scaling over this scale. May be removed later. 
 ---@type number
 ImGuiStyle.MouseCursorScale = nil
 
@@ -207,25 +225,11 @@ ImGuiStyle.AntiAliasedFill = nil
 ImGuiStyle.CurveTessellationTol = nil
 
 --------------------------------
--- patch 20190602
---------------------------------
-
----  Side of the collapsing/docking button in the title bar (left/right). Defaults to ImGuiDir_Left.
----@type number
-ImGuiStyle.WindowMenuButtonPosition = nil
-
---------------------------------
--- patch 20200207
---------------------------------
-
---- Side of the color button in the ColorEdit4 widget (left/right). Defaults to ImGuiDir_Right.
----@type number
-ImGuiStyle.ColorButtonPosition = nil
-
---------------------------------
 
 --- Maximum error (in pixels) allowed when using AddCircle()/AddCircleFilled() or drawing rounded corner rectangles with no explicit segment count specified. Decrease for higher quality but more geometry.
 ---@type number
 ImGuiStyle.CircleSegmentMaxError = nil
+
+
 
 return nil

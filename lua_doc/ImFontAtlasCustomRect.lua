@@ -10,15 +10,8 @@ imgui.ImFontAtlasCustomRect = ImFontAtlasCustomRect
 
 --- 
 ---@return boolean
-function ImFontAtlasCustomRect:IsPacked()
+function ImFontAtlasCustomRect:isPacked()
 end
-
---------------------------------
-
---- User ID. Use <0x10000 to map into a font glyph, >=0x10000 for other/internal/custom texture data.
---- Input
----@type number
-ImFontAtlasCustomRect.ID = nil
 
 --------------------------------
 
@@ -50,6 +43,13 @@ ImFontAtlasCustomRect.Y = nil
 
 --------------------------------
 
+--- For custom font glyphs only (ID < 0x110000)
+--- Input
+---@type number
+ImFontAtlasCustomRect.GlyphID = nil
+
+--------------------------------
+
 --- For custom font glyphs only (ID<0x10000): glyph xadvance
 --- Input
 ---@type number
@@ -66,8 +66,9 @@ ImFontAtlasCustomRect.GlyphOffset = nil
 
 --- For custom font glyphs only (ID<0x10000): target font
 --- Input
----@type ImFont
+---@type imgui.ImFont
 ImFontAtlasCustomRect.Font = nil
+
 
 
 return nil
