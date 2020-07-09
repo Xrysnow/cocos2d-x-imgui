@@ -64,6 +64,7 @@ public:
 	static void setLabelColor(cocos2d::Label* label, ImGuiCol col);
 
 	ImWchar* addGlyphRanges(const std::string& key, const std::vector<ImWchar>& ranges);
+	static void mergeFontGlyphs(ImFont* dst, ImFont* src, ImWchar start, ImWchar end);
 	int getCCRefId(cocos2d::Ref* p);
 
 	// markdown

@@ -267,6 +267,21 @@ ImWchar* CCIMGUI::addGlyphRanges(const std::string& key, const std::vector<ImWch
 	return glyphRanges[key].data();
 }
 
+void CCIMGUI::mergeFontGlyphs(ImFont* dst, ImFont* src, ImWchar start, ImWchar end)
+{
+	if (!dst || !src || start > end)
+		return;
+	for (auto i = start; i <= end; ++i)
+	{
+		const auto g = src->FindGlyphNoFallback(i);
+		if (g)
+		{
+			dst->AddGlyph(g->Codepoint, g->X0, g->Y0, g->X1, g->Y1, g->U0, g->V0, g->U1, g->V1, g->AdvanceX);
+		}
+	}
+	dst->BuildLookupTable();
+}
+
 int CCIMGUI::getCCRefId(Ref* p)
 {
 	int id = 0;
