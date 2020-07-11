@@ -812,7 +812,7 @@ int lua_x_imgui_ImGui_BulletText(lua_State* tolua_S)
             tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_BulletText'", nullptr);
             return 0;
         }
-        imgui::ImGui::BulletText(arg0);
+        imgui::ImGui::BulletText("%s", arg0);
         lua_settop(tolua_S, 1);
         return 1;
     }
@@ -5247,7 +5247,7 @@ int lua_x_imgui_ImGui_LabelText(lua_State* tolua_S)
             tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_LabelText'", nullptr);
             return 0;
         }
-        imgui::ImGui::LabelText(arg0, arg1);
+        imgui::ImGui::LabelText(arg0, "%s", arg1);
         lua_settop(tolua_S, 1);
         return 1;
     }
@@ -5472,7 +5472,7 @@ int lua_x_imgui_ImGui_LogText(lua_State* tolua_S)
             tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_LogText'", nullptr);
             return 0;
         }
-        imgui::ImGui::LogText(arg0);
+        imgui::ImGui::LogText("%s", arg0);
         lua_settop(tolua_S, 1);
         return 1;
     }
@@ -7994,7 +7994,7 @@ int lua_x_imgui_ImGui_SetTooltip(lua_State* tolua_S)
             tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_SetTooltip'", nullptr);
             return 0;
         }
-        imgui::ImGui::SetTooltip(arg0);
+        imgui::ImGui::SetTooltip("%s", arg0);
         lua_settop(tolua_S, 1);
         return 1;
     }
@@ -8443,7 +8443,7 @@ int lua_x_imgui_ImGui_Text(lua_State* tolua_S)
             tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_Text'", nullptr);
             return 0;
         }
-        imgui::ImGui::Text(arg0);
+        imgui::ImGui::Text("%s", arg0);
         lua_settop(tolua_S, 1);
         return 1;
     }
@@ -8481,7 +8481,7 @@ int lua_x_imgui_ImGui_TextColored(lua_State* tolua_S)
             tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_TextColored'", nullptr);
             return 0;
         }
-        imgui::ImGui::TextColored(arg0, arg1);
+        imgui::ImGui::TextColored(arg0, "%s", arg1);
         lua_settop(tolua_S, 1);
         return 1;
     }
@@ -8517,7 +8517,7 @@ int lua_x_imgui_ImGui_TextDisabled(lua_State* tolua_S)
             tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_TextDisabled'", nullptr);
             return 0;
         }
-        imgui::ImGui::TextDisabled(arg0);
+        imgui::ImGui::TextDisabled("%s", arg0);
         lua_settop(tolua_S, 1);
         return 1;
     }
@@ -8604,7 +8604,7 @@ int lua_x_imgui_ImGui_TextWrapped(lua_State* tolua_S)
             tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_TextWrapped'", nullptr);
             return 0;
         }
-        imgui::ImGui::TextWrapped(arg0);
+        imgui::ImGui::TextWrapped("%s", arg0);
         lua_settop(tolua_S, 1);
         return 1;
     }
@@ -8640,7 +8640,7 @@ int lua_x_imgui_ImGui_TreeNode(lua_State* tolua_S)
             const char* arg1;
             std::string arg1_tmp; ok &= luaval_to_std_string(tolua_S, 3, &arg1_tmp, "imgui.ImGui:TreeNode"); arg1 = arg1_tmp.c_str();
             if (!ok) { break; }
-            bool ret = imgui::ImGui::TreeNode(arg0, arg1);
+            bool ret = imgui::ImGui::TreeNode(arg0, "%s", arg1);
             tolua_pushboolean(tolua_S,(bool)ret);
             return 1;
         }
@@ -8694,7 +8694,7 @@ int lua_x_imgui_ImGui_TreeNodeEx(lua_State* tolua_S)
             const char* arg2;
             std::string arg2_tmp; ok &= luaval_to_std_string(tolua_S, 4, &arg2_tmp, "imgui.ImGui:TreeNodeEx"); arg2 = arg2_tmp.c_str();
             if (!ok) { break; }
-            bool ret = imgui::ImGui::TreeNodeEx(arg0, arg1, arg2);
+            bool ret = imgui::ImGui::TreeNodeEx(arg0, arg1, "%s", arg2);
             tolua_pushboolean(tolua_S,(bool)ret);
             return 1;
         }
