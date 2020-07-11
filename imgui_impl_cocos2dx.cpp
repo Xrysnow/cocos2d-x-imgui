@@ -496,11 +496,12 @@ bool ImGui_ImplCocos2dx_Init(bool install_callbacks)
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
-	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
-	//io.ConfigViewportsNoAutoMerge = true;
-	//io.ConfigViewportsNoTaskBarIcon = true;
 
 #ifdef CC_PLATFORM_PC
+	// Enable Multi-Viewport / Platform Windows
+	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+	//io.ConfigViewportsNoAutoMerge = true;
+	//io.ConfigViewportsNoTaskBarIcon = true;
     const auto window = ImGui_ImplCocos2dx_GetWindow();
 	// We can honor GetMouseCursor() values (optional)
     io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
@@ -512,14 +513,13 @@ bool ImGui_ImplCocos2dx_Init(bool install_callbacks)
 	// We can set io.MouseHoveredViewport correctly (optional, not easy)
 	io.BackendFlags |= ImGuiBackendFlags_HasMouseHoveredViewport;
 #endif
-
 	// backend
 	io.BackendFlags |= ImGuiBackendFlags_RendererHasViewports;
 	ImGuiPlatformIO& platform_io = ImGui::GetPlatformIO();
 	platform_io.Renderer_RenderWindow = ImGui_ImplOpenGL2_RenderWindow;
-	
 #endif // CC_PLATFORM_PC
-    io.BackendPlatformName = "imgui_impl_cocos";
+
+	io.BackendPlatformName = "imgui_impl_cocos";
 	io.BackendRendererName = "imgui_impl_cocos";
 	// disable auto load and save
 	io.IniFilename = nullptr;
