@@ -21,15 +21,17 @@ bool ImGuiLayer::init()
 {
 	if (!Layer::init() || !CCIMGUI::getInstance())
 		return false;
+#ifdef CC_PLATFORM_PC
 	// note: when at the first click to focus the window, this will not take effect
-    auto listener = EventListenerTouchOneByOne::create();
-    listener->setSwallowTouches(true);
-    listener->onTouchBegan = [this](Touch* touch, Event*) -> bool {
+	auto listener = EventListenerTouchOneByOne::create();
+	listener->setSwallowTouches(true);
+	listener->onTouchBegan = [this](Touch* touch, Event*) -> bool {
 		if (!_visible)
 			return false;
-        return ImGui::IsAnyWindowHovered();
-    };
+		return ImGui::IsAnyWindowHovered();
+	};
     getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
+#endif
 	// add an empty sprite to avoid render problem
 	const auto sp = Sprite::create();
 	sp->setGlobalZOrder(1);
