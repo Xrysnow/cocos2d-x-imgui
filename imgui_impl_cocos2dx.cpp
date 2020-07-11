@@ -600,8 +600,8 @@ bool ImGui_ImplCocos2dx_Init(bool install_callbacks)
 #endif
 	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		ImGui_ImplGlfw_InitPlatformInterface();
-
 #else
+	/*
 	auto e = cocos2d::EventListenerMouse::create();
 	e->onMouseDown = [](cocos2d::EventMouse* ev)
 	{
@@ -627,6 +627,37 @@ bool ImGui_ImplCocos2dx_Init(bool install_callbacks)
 		_io.MouseWheel += (float)ev->getScrollY();
 	};
 	cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(e, 1);
+	*/
+	auto e1 = cocos2d::EventListenerTouchOneByOne::create();
+	//e1->setSwallowTouches(true);
+	e1->onTouchBegan = [](Touch* touch, Event*)
+	{
+		const auto loc = touch->getLocationInView();
+		g_CursorPos.x = loc.x;
+		g_CursorPos.y = loc.y;
+		g_MouseJustPressed[0] = true;
+		return true;
+	};
+	e1->onTouchMoved = [](Touch* touch, Event*)
+	{
+		const auto loc = touch->getLocationInView();
+		g_CursorPos.x = loc.x;
+		g_CursorPos.y = loc.y;
+		g_MouseJustPressed[0] = true;
+	};
+	e1->onTouchEnded = [](Touch* touch, Event*)
+	{
+		const auto loc = touch->getLocationInView();
+		g_CursorPos.x = loc.x;
+		g_CursorPos.y = loc.y;
+		g_MouseJustPressed[0] = false;
+	};
+	e1->onTouchCancelled = [&](Touch* touch, Event*)
+	{
+		g_CursorPos = ImVec2(-FLT_MAX, -FLT_MAX);
+		g_MouseJustPressed[0] = false;
+	};
+	cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(e1, 1);
 	auto e2 = cocos2d::EventListenerKeyboard::create();
 	using KeyCode = cocos2d::EventKeyboard::KeyCode;
 	e2->onKeyPressed = [](KeyCode k, cocos2d::Event* ev)
@@ -651,7 +682,7 @@ bool ImGui_ImplCocos2dx_Init(bool install_callbacks)
 	};
 	cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(e2, 1);
 #endif // CC_PLATFORM_PC
-    return true;
+	return true;
 }
 
 void ImGui_ImplCocos2dx_Shutdown()
@@ -742,19 +773,26 @@ static void ImGui_ImplCocos2dx_UpdateMousePosAndButtons()
 	ImGuiIO& io = ImGui::GetIO();
 	for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++)
 	{
-		// If a mouse press event came, always pass it as "mouse held this frame", so we don't miss click-release events that are shorter than 1 frame.
+		// g_MouseJustPressed represents touch state on mobile platforms
 		io.MouseDown[i] = g_MouseJustPressed[i];
-		g_MouseJustPressed[i] = false;
 	}
 	// Update mouse position
 	const ImVec2 mouse_pos_backup = io.MousePos;
 	io.MousePos = ImVec2(-FLT_MAX, -FLT_MAX);
 	if (io.WantSetMousePos)
 	{
+		io.MousePos = mouse_pos_backup;
 	}
 	else
 	{
-		io.MousePos = g_CursorPos;
+		if (g_CursorPos.x != -FLT_MAX && g_CursorPos.y != -FLT_MAX)
+		{
+			// convert g_CursorPos
+			const auto glv = cocos2d::Director::getInstance()->getOpenGLView();
+			const auto rect = glv->getViewPortRect();
+			io.MousePos.x = g_CursorPos.x * glv->getScaleX() + rect.origin.x;
+			io.MousePos.y = g_CursorPos.y * glv->getScaleY() + rect.origin.y;
+		}
 	}
 #endif // CC_PLATFORM_PC
 }
