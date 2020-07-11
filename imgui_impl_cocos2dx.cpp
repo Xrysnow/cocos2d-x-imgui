@@ -836,6 +836,7 @@ static void ImGui_ImplCocos2dx_UpdateGamepads()
 
 static void ImGui_ImplGlfw_UpdateMonitors()
 {
+#ifdef CC_PLATFORM_PC
 	ImGuiPlatformIO& platform_io = ImGui::GetPlatformIO();
 	int monitors_count = 0;
 	GLFWmonitor** glfw_monitors = glfwGetMonitors(&monitors_count);
@@ -866,6 +867,7 @@ static void ImGui_ImplGlfw_UpdateMonitors()
 		platform_io.Monitors.push_back(monitor);
 	}
 	g_WantUpdateMonitors = false;
+#endif // CC_PLATFORM_PC
 }
 
 void ImGui_ImplCocos2dx_NewFrame()
