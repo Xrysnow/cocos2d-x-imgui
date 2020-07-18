@@ -7,3 +7,6 @@
 [submodule "implot"]
 	path = implot
 	url = https://github.com/epezent/implot.git
+[submodule "imgui_markdown"]
+	path = imgui_markdown
+	url = https://github.com/Xrysnow/imgui_markdown.git
