@@ -2,7 +2,7 @@
 
 This project is [ImGui](https://github.com/ocornut/imgui) binding for [cocos2d-x](https://github.com/cocos2d/cocos2d-x), with most things bind to lua.
 
-Currently it works with [cocos2d-x 4.0](https://github.com/cocos2d/cocos2d-x/releases/tag/cocos2d-x-4.0) and ImGui docking branch at [3bde375](https://github.com/ocornut/imgui/tree/3bde375078db5fe15959f4ba6480fcf4013189d7). To work with cocos2d-x 3.x, see [branch v3](https://github.com/Xrysnow/cocos2d-x-imgui/tree/v3).
+Currently it works with [cocos2d-x 4.0](https://github.com/cocos2d/cocos2d-x/releases/tag/cocos2d-x-4.0) and ImGui docking branch. [Branch v3](https://github.com/Xrysnow/cocos2d-x-imgui/tree/v3) can work with cocos2d-x 3.x, but will not be maintained.
 
 ## How to use
 
