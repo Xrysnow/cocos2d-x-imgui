@@ -1415,7 +1415,7 @@ static int imgui_setMarkdownFont(lua_State* L)
 	const int index = luaL_checkinteger(L, 1);
 	ImFont* font = nullptr;
 	luaval_to_object(L, 2, "imgui.ImFont", &font);
-	CCIMGUI::getInstance()->setMarkdownFont(index, font, lua_toboolean(L, 3));
+	CCIMGUI::getInstance()->setMarkdownFont(index, font, lua_toboolean(L, 3), luaL_optnumber(L, 4, 1));
 	return 0;
 }
 static int imgui_setMarkdownLinkIcon(lua_State* L)

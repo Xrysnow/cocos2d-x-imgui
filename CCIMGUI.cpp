@@ -333,14 +333,7 @@ ImGui::MarkdownImageData MarkdownImageCallback(ImGui::MarkdownLinkCallbackData d
 
 static std::string ImGuiMarkdownLinkIcon;
 static ImGui::MarkdownConfig ImGuiMarkdownConfig = {
-	MarkdownLinkCallback, MarkdownImageCallback, "",
-	{ { nullptr, true }, { nullptr, true }, { nullptr, false } } };
-
-void Markdown(const std::string& markdown_)
-{
-	ImGuiMarkdownConfig.linkIcon = ImGuiMarkdownLinkIcon.c_str();
-	ImGui::Markdown(markdown_.c_str(), markdown_.length(), ImGuiMarkdownConfig);
-}
+	MarkdownLinkCallback, MarkdownImageCallback, "" };
 
 void CCIMGUI::setMarkdownLinkCallback(const MdLinkCallback& f)
 {
@@ -352,11 +345,12 @@ void CCIMGUI::setMarkdownImageCallback(const MdImageCallback& f)
 	ImGuiMarkdownImageCallback = f;
 }
 
-void CCIMGUI::setMarkdownFont(int index, ImFont* font, bool seperator)
+void CCIMGUI::setMarkdownFont(int index, ImFont* font, bool seperator, float scale)
 {
 	if (index < 0 || index >= ImGui::MarkdownConfig::NUMHEADINGS)
 		return;
 	ImGuiMarkdownConfig.headingFormats[index] = { font,seperator };
+	ImGuiMarkdownConfig.headingScales[index] = scale;
 }
 
 void CCIMGUI::setMarkdownLinkIcon(const std::string& icon)

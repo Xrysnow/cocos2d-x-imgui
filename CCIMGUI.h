@@ -74,7 +74,7 @@ public:
 
 	void setMarkdownLinkCallback(const MdLinkCallback& f);
 	void setMarkdownImageCallback(const MdImageCallback& f);
-	void setMarkdownFont(int index, ImFont* font, bool seperator);
+	void setMarkdownFont(int index, ImFont* font, bool seperator, float scale = 1.f);
 	void setMarkdownLinkIcon(const std::string& icon);
 	void markdown(const std::string& content);
 
