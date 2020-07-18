@@ -673,7 +673,8 @@ end
 ---@param index number
 ---@param font imgui.ImFont
 ---@param seperator boolean
-function imgui.setMarkdownFont(index, font, seperator)
+---@param scale number optional
+function imgui.setMarkdownFont(index, font, seperator, scale)
 end
 
 ---
