@@ -927,33 +927,37 @@ static int imgui_listBoxHeader(lua_State *L) {
 
 static int imgui_plotLines(lua_State *L) {
 	const int args = lua_gettop(L);
+	const auto count = lua_opt_int(args, 3, 0);
 	std::vector<float> arr;
 	luaval_to_std_vector_float(L, 2, &arr);
 	ImGui::PlotLines(
 		luaL_checkstring(L, 1),
-		arr.data(), arr.size(),
-		lua_opt_int(args, 3, 0),
-		lua_opt_string_null(args, 4, nullptr),
-		lua_opt_number(args, 5, FLT_MAX),
+		arr.data(),
+		count > 0 ? std::min(count, (int)arr.size()) : (int)arr.size(),
+		lua_opt_int(args, 4, 0),
+		lua_opt_string_null(args, 5, nullptr),
 		lua_opt_number(args, 6, FLT_MAX),
-		lua_opt_imv2(args, 7, ImVec2(0, 0)),
-		lua_opt_int(args, 8, sizeof(float))
+		lua_opt_number(args, 7, FLT_MAX),
+		lua_opt_imv2(args, 8, ImVec2(0, 0)),
+		lua_opt_int(args, 9, sizeof(float))
 	);
 	return 0;
 }
 static int imgui_plotHistogram(lua_State *L) {
 	const int args = lua_gettop(L);
+	const auto count = lua_opt_int(args, 3, 0);
 	std::vector<float> arr;
 	luaval_to_std_vector_float(L, 2, &arr);
 	ImGui::PlotHistogram(
 		luaL_checkstring(L, 1),
-		arr.data(), arr.size(),
-		lua_opt_int(args, 3, 0),
-		lua_opt_string_null(args, 4, nullptr),
-		lua_opt_number(args, 5, FLT_MAX),
+		arr.data(),
+		count > 0 ? std::min(count, (int)arr.size()) : (int)arr.size(),
+		lua_opt_int(args, 4, 0),
+		lua_opt_string_null(args, 5, nullptr),
 		lua_opt_number(args, 6, FLT_MAX),
-		lua_opt_imv2(args, 7, ImVec2(0, 0)),
-		lua_opt_int(args, 8, sizeof(float))
+		lua_opt_number(args, 7, FLT_MAX),
+		lua_opt_imv2(args, 8, ImVec2(0, 0)),
+		lua_opt_int(args, 9, sizeof(float))
 	);
 	return 0;
 }
