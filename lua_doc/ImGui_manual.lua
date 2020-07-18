@@ -464,25 +464,27 @@ end
 ---
 ---@param label string
 ---@param values number[]
+---@param values_count number optional
 ---@param values_offset number optional
 ---@param overlay_text string optional, nullable
 ---@param scale_min number optional
 ---@param scale_max number optional
 ---@param graph_size ImVec2 optional
 ---@param stride number optional
-function imgui.plotLines(label, values, values_offset, overlay_text, scale_min, scale_max, graph_size, stride)
+function imgui.plotLines(label, values, values_count, values_offset, overlay_text, scale_min, scale_max, graph_size, stride)
 end
 
 ---
 ---@param label string
 ---@param values number[]
+---@param values_count number optional
 ---@param values_offset number optional
 ---@param overlay_text string optional, nullable
 ---@param scale_min number optional
 ---@param scale_max number optional
 ---@param graph_size ImVec2 optional
 ---@param stride number optional
-function imgui.plotHistogram(label, values, values_offset, overlay_text, scale_min, scale_max, graph_size, stride)
+function imgui.plotHistogram(label, values, values_count, values_offset, overlay_text, scale_min, scale_max, graph_size, stride)
 end
 
 --

@@ -1105,14 +1105,16 @@ end
 
 --------------------------------
 
---- 
-function imgui.popStyleColor()
+---
+---@param count number
+function imgui.popStyleColor(count)
 end
 
 --------------------------------
 
---- 
-function imgui.popStyleVar()
+---
+---@param count number
+function imgui.popStyleVar(count)
 end
 
 --------------------------------

@@ -9,6 +9,22 @@ imgui.ColorTextEdit = ColorTextEdit
 --------------------------------
 
 --- 
+---@param identifiers table<string,string>
+---@return imgui.ColorTextEdit
+function ColorTextEdit:addLanguageIdentifier(identifiers)
+end
+
+--------------------------------
+
+--- 
+---@param identifiers table<string,string>
+---@return imgui.ColorTextEdit
+function ColorTextEdit:addLanguagePreprocIdentifier(identifiers)
+end
+
+--------------------------------
+
+--- 
 ---@return boolean
 function ColorTextEdit:canRedo()
 end
@@ -60,6 +76,34 @@ end
 --- 
 ---@return number[]
 function ColorTextEdit:getCursorPosition()
+end
+
+--------------------------------
+
+--- 
+---@return number[]
+function ColorTextEdit:getHoveredCoordinates()
+end
+
+--------------------------------
+
+--- 
+---@return string
+function ColorTextEdit:getHoveredDeclaration()
+end
+
+--------------------------------
+
+--- 
+---@return string
+function ColorTextEdit:getHoveredWord()
+end
+
+--------------------------------
+
+--- 
+---@return number
+function ColorTextEdit:getHoveredWordIndex()
 end
 
 --------------------------------
@@ -123,6 +167,13 @@ end
 
 --- 
 ---@return boolean
+function ColorTextEdit:isAutoTooltip()
+end
+
+--------------------------------
+
+--- 
+---@return boolean
 function ColorTextEdit:isColorizerEnabled()
 end
 
@@ -166,6 +217,13 @@ end
 --- 
 ---@return boolean
 function ColorTextEdit:isReadOnly()
+end
+
+--------------------------------
+
+--- 
+---@return boolean
+function ColorTextEdit:isShowingShortTabGlyphs()
 end
 
 --------------------------------
@@ -279,6 +337,14 @@ end
 --------------------------------
 
 --- 
+---@param value boolean
+---@return imgui.ColorTextEdit
+function ColorTextEdit:setAutoTooltip(value)
+end
+
+--------------------------------
+
+--- 
 ---@param markers number[]
 ---@return imgui.ColorTextEdit
 function ColorTextEdit:setBreakpoints(markers)
@@ -361,7 +427,7 @@ end
 ---@param keywords string[]
 ---@param identifiers table<string,string>
 ---@param preprocIdentifiers table<string,string>
----@param tokenRegexStrings map_table
+---@param tokenRegexStrings array_table
 ---@param commentStart string
 ---@param commentEnd string
 ---@param singleLineComment string
@@ -465,6 +531,14 @@ end
 ---@param column number
 ---@return imgui.ColorTextEdit
 function ColorTextEdit:setSelectionStart(line, column)
+end
+
+--------------------------------
+
+--- 
+---@param value boolean
+---@return imgui.ColorTextEdit
+function ColorTextEdit:setShowShortTabGlyphs(value)
 end
 
 --------------------------------
