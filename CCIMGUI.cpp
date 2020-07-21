@@ -293,7 +293,14 @@ int CCIMGUI::getCCRefId(Ref* p)
 	}
 	else
 		id = ++it->second;
-	return id;
+	// BKDR hash
+	constexpr unsigned int seed = 131;
+	unsigned int hash = 0;
+	for (auto i = 0u; i < sizeof(void*); ++i)
+		hash = hash * seed + ((const char*)&p)[i];
+	for (auto i = 0u; i < sizeof(int); ++i)
+		hash = hash * seed + ((const char*)&id)[i];
+	return (int)hash;
 }
 
 #include "imgui_markdown/imgui_markdown.h"
