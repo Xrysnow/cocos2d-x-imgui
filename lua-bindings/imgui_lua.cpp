@@ -1814,12 +1814,12 @@ static int implot_beginPlot(lua_State* L) {
 	int offset = lua_opt_int(args, _i2, 0);\
 	offset = std::max(0, std::min(offset, (_size)));\
 	count = std::max(0, std::min(count, (_size) - offset));
-#define lua_param_error(_i) luaL_error(L, "invalid parameter #%d", (_i))
+#define lua_param_error(_i) luaL_error(L, "invalid parameter #%d: %s", (_i), luaL_typename(L, (_i)))
 
 static int implot_plotLine(lua_State* L) {
 	const int args = lua_gettop(L);
 	const auto label_id = luaL_checkstring(L, 1);
-	if (lua_type(L, 2) != LUA_TTABLE || lua_type(L, 2) != LUA_TUSERDATA)
+	if (lua_type(L, 2) != LUA_TTABLE && lua_type(L, 2) != LUA_TUSERDATA)
 		return lua_param_error(2);
 	const auto len1 = lua_objlen(L, 2);
 	if (len1 == 0)
@@ -1866,7 +1866,7 @@ static int implot_plotLine(lua_State* L) {
 static int implot_plotScatter(lua_State* L) {
 	const int args = lua_gettop(L);
 	const auto label_id = luaL_checkstring(L, 1);
-	if (lua_type(L, 2) != LUA_TTABLE || lua_type(L, 2) != LUA_TUSERDATA)
+	if (lua_type(L, 2) != LUA_TTABLE && lua_type(L, 2) != LUA_TUSERDATA)
 		return lua_param_error(2);
 	const auto len1 = lua_objlen(L, 2);
 	if (len1 == 0)
