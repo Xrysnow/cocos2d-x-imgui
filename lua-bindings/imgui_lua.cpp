@@ -91,7 +91,7 @@ bool luaval_to_ImPlotPoint(lua_State* L, int lo, ImPlotPoint* out, const char* n
 	if (!tolua_istable(L, lo, 0, &tolua_err))
 	{
 #if COCOS2D_DEBUG >=1
-		luaval_to_native_err(L, "#ferror:", &tolua_err, funcName);
+		luaval_to_native_err(L, "#ferror:", &tolua_err, name);
 #endif
 		ok = false;
 	}
@@ -118,7 +118,7 @@ bool luaval_to_ImPlotRange(lua_State* L, int lo, ImPlotRange* out, const char* n
 	if (!tolua_istable(L, lo, 0, &tolua_err))
 	{
 #if COCOS2D_DEBUG >=1
-		luaval_to_native_err(L, "#ferror:", &tolua_err, funcName);
+		luaval_to_native_err(L, "#ferror:", &tolua_err, name);
 #endif
 		ok = false;
 	}
@@ -145,7 +145,7 @@ bool luaval_to_ImPlotLimits(lua_State* L, int lo, ImPlotLimits* out, const char*
 	if (!tolua_istable(L, lo, 0, &tolua_err))
 	{
 #if COCOS2D_DEBUG >=1
-		luaval_to_native_err(L, "#ferror:", &tolua_err, funcName);
+		luaval_to_native_err(L, "#ferror:", &tolua_err, name);
 #endif
 		ok = false;
 	}
