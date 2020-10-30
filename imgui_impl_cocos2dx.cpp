@@ -373,7 +373,7 @@ bool ImGui_ImplCocos2dx_CreateFontsTexture()
 
 	g_FontTexture->setAntiAliasTexParameters();
 	g_FontTexture->initWithData(pixels, width*height,
-		backend::PixelFormat::A8, width, height, Size(width, height));
+		backend::PixelFormat::A8, width, height, cocos2d::Size(width, height));
 	io.Fonts->TexID = (ImTextureID)g_FontTexture;
     return true;
 }
