@@ -1,6 +1,7 @@
 #pragma once
 #include "cocos2d.h"
 #include "imgui/imgui.h"
+#include "implot/implot.h"
 #include <tuple>
 
 class CCIMGUI
@@ -66,6 +67,23 @@ public:
 	ImWchar* addGlyphRanges(const std::string& key, const std::vector<ImWchar>& ranges);
 	static void mergeFontGlyphs(ImFont* dst, ImFont* src, ImWchar start, ImWchar end);
 	int getCCRefId(cocos2d::Ref* p);
+
+	// implot
+
+	void plotImage(
+		const char* label_id,
+		cocos2d::Texture2D* tex,
+		const ImPlotPoint& bounds_min,
+		const ImPlotPoint& bounds_max,
+		const ImVec2& uv0 = ImVec2(0, 0),
+		const ImVec2& uv1 = ImVec2(1, 1),
+		const ImVec4& tint_col = ImVec4(1, 1, 1, 1));
+	void plotImage(
+		const char* label_id,
+		cocos2d::Sprite* sprite,
+		const ImPlotPoint& bounds_min,
+		const ImPlotPoint& bounds_max,
+		const ImVec4& tint_col = ImVec4(1, 1, 1, 1));
 
 	// markdown
 

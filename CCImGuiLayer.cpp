@@ -28,7 +28,7 @@ bool ImGuiLayer::init()
 	listener->onTouchBegan = [this](Touch* touch, Event*) -> bool {
 		if (!_visible)
 			return false;
-		return ImGui::IsAnyWindowHovered();
+		return ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow);
 	};
     getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 #endif

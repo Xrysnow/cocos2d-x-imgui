@@ -97,7 +97,7 @@ void CCIMGUI::image(Sprite* sprite, const ImVec2& size, const ImVec4& tint_col, 
 	if (!sprite || !sprite->getTexture())
 		return;
 	auto size_ = size;
-	const auto rect = sprite->getTextureRect();
+	const auto& rect = sprite->getTextureRect();
 	if (size_.x <= 0.f) size_.x = rect.size.width;
 	if (size_.y <= 0.f) size_.y = rect.size.height;
 	ImVec2 uv0, uv1;
@@ -276,7 +276,7 @@ void CCIMGUI::mergeFontGlyphs(ImFont* dst, ImFont* src, ImWchar start, ImWchar e
 		const auto g = src->FindGlyphNoFallback(i);
 		if (g)
 		{
-			dst->AddGlyph(g->Codepoint, g->X0, g->Y0, g->X1, g->Y1, g->U0, g->V0, g->U1, g->V1, g->AdvanceX);
+			dst->AddGlyph(src->ConfigData, (ImWchar)g->Codepoint, g->X0, g->Y0, g->X1, g->Y1, g->U0, g->V0, g->U1, g->V1, g->AdvanceX);
 		}
 	}
 	dst->BuildLookupTable();
@@ -301,6 +301,28 @@ int CCIMGUI::getCCRefId(Ref* p)
 	for (auto i = 0u; i < sizeof(int); ++i)
 		hash = hash * seed + ((const char*)&id)[i];
 	return (int)hash;
+}
+
+void CCIMGUI::plotImage(const char* label_id, Texture2D* tex, const ImPlotPoint& bounds_min,
+	const ImPlotPoint& bounds_max, const ImVec2& uv0, const ImVec2& uv1, const ImVec4& tint_col)
+{
+	if (!label_id || !tex)
+		return;
+	ImGui::PushID(getCCRefId(tex));
+	ImPlot::PlotImage(label_id, (ImTextureID)tex, bounds_min, bounds_max, uv0, uv1, tint_col);
+	ImGui::PopID();
+}
+
+void CCIMGUI::plotImage(const char* label_id, Sprite* sprite, const ImPlotPoint& bounds_min,
+	const ImPlotPoint& bounds_max, const ImVec4& tint_col)
+{
+	if (!label_id || !sprite)
+		return;
+	ImVec2 uv0, uv1;
+	std::tie(uv0, uv1) = getTextureUV(sprite);
+	ImGui::PushID(getCCRefId(sprite));
+	ImPlot::PlotImage(label_id, (ImTextureID)sprite, bounds_min, bounds_max, uv0, uv1, tint_col);
+	ImGui::PopID();
 }
 
 #include "imgui_markdown/imgui_markdown.h"
