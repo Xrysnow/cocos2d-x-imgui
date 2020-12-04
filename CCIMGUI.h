@@ -88,11 +88,15 @@ public:
 	// markdown
 
 	using MdLinkCallback = std::function<void(const std::string&, const std::string&, bool)>;
+	using MdTooltipCallback = std::function<void(const std::string&, const std::string&, bool, const std::string&)>;
 	using MdImageCallback = std::function<std::tuple<cocos2d::Sprite*, ImVec2, ImVec4, ImVec4>(const std::string&, const std::string&)>;
+	using MdFormatCallback = std::function<void(int, int32_t, bool, bool)>;
 
 	void setMarkdownLinkCallback(const MdLinkCallback& f);
+	void setMarkdownTooltipCallback(const MdTooltipCallback& f);
 	void setMarkdownImageCallback(const MdImageCallback& f);
-	void setMarkdownFont(int index, ImFont* font, bool seperator, float scale = 1.f);
+	void setMarkdownFormatCallback(const MdFormatCallback& f);
+	void setMarkdownFont(int index, ImFont* font, bool seperator);
 	void setMarkdownLinkIcon(const std::string& icon);
 	void markdown(const std::string& content);
 

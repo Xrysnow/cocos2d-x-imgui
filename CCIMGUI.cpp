@@ -328,7 +328,9 @@ void CCIMGUI::plotImage(const char* label_id, Sprite* sprite, const ImPlotPoint&
 #include "imgui_markdown/imgui_markdown.h"
 
 static CCIMGUI::MdLinkCallback ImGuiMarkdownLinkCallback = nullptr;
+static CCIMGUI::MdTooltipCallback ImGuiMarkdownTooltipCallback = nullptr;
 static CCIMGUI::MdImageCallback ImGuiMarkdownImageCallback = nullptr;
+static CCIMGUI::MdFormatCallback ImGuiMarkdownFormatCallback = nullptr;
 static ImGui::MarkdownImageData ImGuiMarkdownInvalidImageData = { false, false, nullptr, {0.f, 0.f} };
 
 void MarkdownLinkCallback(ImGui::MarkdownLinkCallbackData data)
@@ -336,10 +338,26 @@ void MarkdownLinkCallback(ImGui::MarkdownLinkCallbackData data)
 	if (ImGuiMarkdownLinkCallback)
 	{
 		ImGuiMarkdownLinkCallback(
-			{ data.text, (size_t)data.textLength }, { data.link, (size_t)data.linkLength }, data.isImage);
+			{ data.text, (size_t)data.textLength },
+			{ data.link, (size_t)data.linkLength },
+			data.isImage);
 	}
 }
-
+void MarkdownTooltipCallback(ImGui::MarkdownTooltipCallbackData data)
+{
+	if(ImGuiMarkdownTooltipCallback)
+	{
+		ImGuiMarkdownTooltipCallback(
+			{ data.linkData.text, (size_t)data.linkData.textLength },
+			{ data.linkData.link, (size_t)data.linkData.linkLength },
+			data.linkData.isImage,
+			data.linkIcon);
+	}
+	else
+	{
+		ImGui::defaultMarkdownTooltipCallback(data);
+	}
+}
 ImGui::MarkdownImageData MarkdownImageCallback(ImGui::MarkdownLinkCallbackData data)
 {
 	if (!data.isImage || !ImGuiMarkdownImageCallback)
@@ -351,7 +369,7 @@ ImGui::MarkdownImageData MarkdownImageCallback(ImGui::MarkdownLinkCallbackData d
 	if(!sp || !sp->getTexture())
 		return ImGuiMarkdownInvalidImageData;
 	auto size_ = size;
-	const auto rect = sp->getTextureRect();
+	const auto& rect = sp->getTextureRect();
 	if (size_.x <= 0.f) size_.x = rect.size.width;
 	if (size_.y <= 0.f) size_.y = rect.size.height;
 	ImVec2 uv0, uv1;
@@ -359,14 +377,45 @@ ImGui::MarkdownImageData MarkdownImageCallback(ImGui::MarkdownLinkCallbackData d
 	CCIMGUI::getInstance()->getCCRefId(sp);
 	return { true, true, (ImTextureID)sp->getTexture(), size_,uv0, uv1, tint_col, border_col };
 }
+void MarkdownFormatCallback(const ImGui::MarkdownFormatInfo& markdownFormatInfo, bool start)
+{
+	if(ImGuiMarkdownFormatCallback)
+	{
+		ImGuiMarkdownFormatCallback(
+			int(markdownFormatInfo.type), markdownFormatInfo.level, markdownFormatInfo.itemHovered, start);
+	}
+	else
+	{
+		ImGui::defaultMarkdownFormatCallback(markdownFormatInfo, start);
+	}
+}
 
+struct _ImGuiMarkdownConfig
+{
+	ImGui::MarkdownConfig config;
+	_ImGuiMarkdownConfig()
+	{
+		config.linkCallback = MarkdownLinkCallback;
+		config.imageCallback = MarkdownImageCallback;
+		config.formatCallback = MarkdownFormatCallback;
+		config.tooltipCallback = MarkdownTooltipCallback;
+	}
+};
+static ImGui::MarkdownConfig& GetMarkdownConfig()
+{
+	static _ImGuiMarkdownConfig cfg;
+	return cfg.config;
+}
 static std::string ImGuiMarkdownLinkIcon;
-static ImGui::MarkdownConfig ImGuiMarkdownConfig = {
-	MarkdownLinkCallback, MarkdownImageCallback, "" };
 
 void CCIMGUI::setMarkdownLinkCallback(const MdLinkCallback& f)
 {
 	ImGuiMarkdownLinkCallback = f;
+}
+
+void CCIMGUI::setMarkdownTooltipCallback(const MdTooltipCallback& f)
+{
+	ImGuiMarkdownTooltipCallback = f;
 }
 
 void CCIMGUI::setMarkdownImageCallback(const MdImageCallback& f)
@@ -374,21 +423,25 @@ void CCIMGUI::setMarkdownImageCallback(const MdImageCallback& f)
 	ImGuiMarkdownImageCallback = f;
 }
 
-void CCIMGUI::setMarkdownFont(int index, ImFont* font, bool seperator, float scale)
+void CCIMGUI::setMarkdownFormatCallback(const MdFormatCallback& f)
+{
+	ImGuiMarkdownFormatCallback = f;
+}
+
+void CCIMGUI::setMarkdownFont(int index, ImFont* font, bool seperator)
 {
 	if (index < 0 || index >= ImGui::MarkdownConfig::NUMHEADINGS)
 		return;
-	ImGuiMarkdownConfig.headingFormats[index] = { font,seperator };
-	ImGuiMarkdownConfig.headingScales[index] = scale;
+	GetMarkdownConfig().headingFormats[index] = { font,seperator };
 }
 
 void CCIMGUI::setMarkdownLinkIcon(const std::string& icon)
 {
 	ImGuiMarkdownLinkIcon = icon;
-	ImGuiMarkdownConfig.linkIcon = ImGuiMarkdownLinkIcon.c_str();
+	GetMarkdownConfig().linkIcon = ImGuiMarkdownLinkIcon.c_str();
 }
 
 void CCIMGUI::markdown(const std::string& content)
 {
-	ImGui::Markdown(content.c_str(), content.size(), ImGuiMarkdownConfig);
+	ImGui::Markdown(content.c_str(), content.size(), GetMarkdownConfig());
 }
