@@ -1376,6 +1376,32 @@ static int imgui_setMarkdownLinkCallback(lua_State* L)
 	CCIMGUI::getInstance()->setMarkdownLinkCallback(f);
 	return 0;
 }
+static int imgui_setMarkdownTooltipCallback(lua_State* L)
+{
+	if (lua_isnil(L, 1))
+	{
+		CCIMGUI::getInstance()->setMarkdownTooltipCallback(nullptr);
+		return 0;
+	}
+	luaL_checktype(L, 1, LUA_TFUNCTION);
+	lua_pushlightuserdata(L, (void*)imgui_setMarkdownTooltipCallback);
+	lua_pushvalue(L, 1);
+	lua_rawset(L, LUA_REGISTRYINDEX);
+	auto f = [=](const std::string& p1, const std::string& p2, bool p3, const std::string& p4)
+	{
+		lua_pushlightuserdata(L, (void*)imgui_setMarkdownTooltipCallback);
+		lua_rawget(L, LUA_REGISTRYINDEX);
+		// ... f
+		lua_pushlstring(L, p1.c_str(), p1.size());
+		lua_pushlstring(L, p2.c_str(), p2.size());
+		lua_pushboolean(L, p3);
+		lua_pushlstring(L, p4.c_str(), p4.size());
+		// ... f, p1, p2, p3, p4
+		lua_call(L, 4, 0);
+	};
+	CCIMGUI::getInstance()->setMarkdownTooltipCallback(f);
+	return 0;
+}
 static int imgui_setMarkdownImageCallback(lua_State* L)
 {
 	if (lua_isnil(L, 1))
@@ -1410,12 +1436,38 @@ static int imgui_setMarkdownImageCallback(lua_State* L)
 	CCIMGUI::getInstance()->setMarkdownImageCallback(f);
 	return 0;
 }
+static int imgui_setMarkdownFormatCallback(lua_State* L)
+{
+	if (lua_isnil(L, 1))
+	{
+		CCIMGUI::getInstance()->setMarkdownFormatCallback(nullptr);
+		return 0;
+	}
+	luaL_checktype(L, 1, LUA_TFUNCTION);
+	lua_pushlightuserdata(L, (void*)imgui_setMarkdownFormatCallback);
+	lua_pushvalue(L, 1);
+	lua_rawset(L, LUA_REGISTRYINDEX);
+	auto f = [=](int p1, int32_t p2, bool p3, bool p4)
+	{
+		lua_pushlightuserdata(L, (void*)imgui_setMarkdownFormatCallback);
+		lua_rawget(L, LUA_REGISTRYINDEX);
+		// ... f
+		lua_pushinteger(L, p1);
+		lua_pushinteger(L, p2);
+		lua_pushboolean(L, p3);
+		lua_pushboolean(L, p4);
+		// ... f, p1, p2, p3, p4
+		lua_call(L, 4, 0);
+	};
+	CCIMGUI::getInstance()->setMarkdownFormatCallback(f);
+	return 0;
+}
 static int imgui_setMarkdownFont(lua_State* L)
 {
 	const int index = luaL_checkinteger(L, 1);
 	ImFont* font = nullptr;
 	luaval_to_object(L, 2, "imgui.ImFont", &font);
-	CCIMGUI::getInstance()->setMarkdownFont(index, font, lua_toboolean(L, 3), luaL_optnumber(L, 4, 1));
+	CCIMGUI::getInstance()->setMarkdownFont(index, font, lua_toboolean(L, 3));
 	return 0;
 }
 static int imgui_setMarkdownLinkIcon(lua_State* L)
@@ -1519,7 +1571,9 @@ static const luaL_Reg imgui_methods[] = {
 
 	// markdown
 	M(setMarkdownLinkCallback),
+	M(setMarkdownTooltipCallback),
 	M(setMarkdownImageCallback),
+	M(setMarkdownFormatCallback),
 	M(setMarkdownFont),
 	M(setMarkdownLinkIcon),
 	M(markdown),
