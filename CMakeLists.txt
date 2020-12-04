@@ -30,6 +30,7 @@ set(HEADER
     imgui_markdown/imgui_markdown.h
     ImGuiColorTextEdit/TextEditor.h
     implot/implot.h
+    implot/implot_internal.h
 )
 
 set(SOURCE
@@ -45,6 +46,7 @@ set(SOURCE
     ImGuiColorTextEdit/TextEditor.cpp
     implot/implot.cpp
     implot/implot_demo.cpp
+    implot/implot_items.cpp
 )
 
 if(BUILD_LUA_LIBS)
