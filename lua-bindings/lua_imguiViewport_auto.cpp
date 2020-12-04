@@ -6,6 +6,7 @@
 #ifdef COCOS2D_DEBUG
 #undef COCOS2D_DEBUG
 #endif
+#define COCOS2D_DEBUG 0
 namespace imgui
 {
     using ImGuiViewport = ImGuiViewport;
@@ -805,9 +806,9 @@ int lua_register_x_imguiViewport_ImGuiViewport(lua_State* tolua_S)
     tolua_cclass(tolua_S,"ImGuiViewport","imgui.ImGuiViewport","",nullptr);
 
     tolua_beginmodule(tolua_S,"ImGuiViewport");
-        tolua_function(tolua_S,"getWorkSize",lua_x_imguiViewport_ImGuiViewport_GetWorkSize);
-        tolua_function(tolua_S,"getWorkPos",lua_x_imguiViewport_ImGuiViewport_GetWorkPos);
         tolua_function(tolua_S,"getCenter",lua_x_imguiViewport_ImGuiViewport_GetCenter);
+        tolua_function(tolua_S,"getWorkPos",lua_x_imguiViewport_ImGuiViewport_GetWorkPos);
+        tolua_function(tolua_S,"getWorkSize",lua_x_imguiViewport_ImGuiViewport_GetWorkSize);
         tolua_variable(tolua_S,"ID", lua_x_imguiViewport_ImGuiViewport_getID, lua_x_imguiViewport_ImGuiViewport_setID);
         tolua_variable(tolua_S,"Flags", lua_x_imguiViewport_ImGuiViewport_getFlags, lua_x_imguiViewport_ImGuiViewport_setFlags);
         tolua_variable(tolua_S,"Pos", lua_x_imguiViewport_ImGuiViewport_getPos, lua_x_imguiViewport_ImGuiViewport_setPos);

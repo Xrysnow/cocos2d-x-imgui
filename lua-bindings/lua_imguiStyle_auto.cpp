@@ -6,6 +6,7 @@
 #ifdef COCOS2D_DEBUG
 #undef COCOS2D_DEBUG
 #endif // COCOS2D_DEBUG
+#define COCOS2D_DEBUG 0
 namespace imgui
 {
     using ImGuiStyle = ImGuiStyle;
@@ -1454,6 +1455,67 @@ tolua_lerror:
     return 0;
 #endif
 }
+int lua_x_imguiStyle_ImGuiStyle_getLogSliderDeadzone(lua_State* tolua_S)
+{
+    imgui::ImGuiStyle* cobj = nullptr;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiStyle", 0, &tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (imgui::ImGuiStyle*)tolua_tousertype(tolua_S, 1, 0);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiStyle_ImGuiStyle_getLogSliderDeadzone'", nullptr);
+        return 0;
+    }
+#endif
+    tolua_pushnumber(tolua_S,(lua_Number)cobj->LogSliderDeadzone);
+    return 1;
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiStyle_ImGuiStyle_getLogSliderDeadzone'.", &tolua_err);
+    return 0;
+#endif
+}
+int lua_x_imguiStyle_ImGuiStyle_setLogSliderDeadzone(lua_State* tolua_S)
+{
+    int argc = 0;
+    imgui::ImGuiStyle* cobj = nullptr;
+    bool ok  = true;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiStyle", 0, &tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (imgui::ImGuiStyle*)tolua_tousertype(tolua_S, 1, 0);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiStyle_ImGuiStyle_setLogSliderDeadzone'", nullptr);
+        return 0;
+    }
+#endif
+    argc = lua_gettop(tolua_S) - 1;
+    if (1 == argc)
+    {
+        double arg0;
+        ok &= luaval_to_number(tolua_S, 2,&arg0, "imgui.ImGuiStyle:LogSliderDeadzone");
+        if(!ok)
+        {
+            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiStyle_ImGuiStyle'", nullptr);
+            return 0;
+        }
+        cobj->LogSliderDeadzone = arg0;
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiStyle:LogSliderDeadzone", argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiStyle_ImGuiStyle_getLogSliderDeadzone'.", &tolua_err);
+    return 0;
+#endif
+}
 int lua_x_imguiStyle_ImGuiStyle_getTabRounding(lua_State* tolua_S)
 {
     imgui::ImGuiStyle* cobj = nullptr;
@@ -1576,7 +1638,7 @@ tolua_lerror:
     return 0;
 #endif
 }
-int lua_x_imguiStyle_ImGuiStyle_getTabMinWidthForUnselectedCloseButton(lua_State* tolua_S)
+int lua_x_imguiStyle_ImGuiStyle_getTabMinWidthForCloseButton(lua_State* tolua_S)
 {
     imgui::ImGuiStyle* cobj = nullptr;
 #if COCOS2D_DEBUG >= 1
@@ -1587,19 +1649,19 @@ int lua_x_imguiStyle_ImGuiStyle_getTabMinWidthForUnselectedCloseButton(lua_State
 #if COCOS2D_DEBUG >= 1
     if (!cobj) 
     {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiStyle_ImGuiStyle_getTabMinWidthForUnselectedCloseButton'", nullptr);
+        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiStyle_ImGuiStyle_getTabMinWidthForCloseButton'", nullptr);
         return 0;
     }
 #endif
-    tolua_pushnumber(tolua_S,(lua_Number)cobj->TabMinWidthForUnselectedCloseButton);
+    tolua_pushnumber(tolua_S,(lua_Number)cobj->TabMinWidthForCloseButton);
     return 1;
 #if COCOS2D_DEBUG >= 1
 tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiStyle_ImGuiStyle_getTabMinWidthForUnselectedCloseButton'.", &tolua_err);
+    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiStyle_ImGuiStyle_getTabMinWidthForCloseButton'.", &tolua_err);
     return 0;
 #endif
 }
-int lua_x_imguiStyle_ImGuiStyle_setTabMinWidthForUnselectedCloseButton(lua_State* tolua_S)
+int lua_x_imguiStyle_ImGuiStyle_setTabMinWidthForCloseButton(lua_State* tolua_S)
 {
     int argc = 0;
     imgui::ImGuiStyle* cobj = nullptr;
@@ -1612,7 +1674,7 @@ int lua_x_imguiStyle_ImGuiStyle_setTabMinWidthForUnselectedCloseButton(lua_State
 #if COCOS2D_DEBUG >= 1
     if (!cobj) 
     {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiStyle_ImGuiStyle_setTabMinWidthForUnselectedCloseButton'", nullptr);
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiStyle_ImGuiStyle_setTabMinWidthForCloseButton'", nullptr);
         return 0;
     }
 #endif
@@ -1620,20 +1682,20 @@ int lua_x_imguiStyle_ImGuiStyle_setTabMinWidthForUnselectedCloseButton(lua_State
     if (1 == argc)
     {
         double arg0;
-        ok &= luaval_to_number(tolua_S, 2,&arg0, "imgui.ImGuiStyle:TabMinWidthForUnselectedCloseButton");
+        ok &= luaval_to_number(tolua_S, 2,&arg0, "imgui.ImGuiStyle:TabMinWidthForCloseButton");
         if(!ok)
         {
             tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiStyle_ImGuiStyle'", nullptr);
             return 0;
         }
-        cobj->TabMinWidthForUnselectedCloseButton = arg0;
+        cobj->TabMinWidthForCloseButton = arg0;
         return 0;
     }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiStyle:TabMinWidthForUnselectedCloseButton", argc, 1);
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiStyle:TabMinWidthForCloseButton", argc, 1);
     return 0;
 #if COCOS2D_DEBUG >= 1
 tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiStyle_ImGuiStyle_getTabMinWidthForUnselectedCloseButton'.", &tolua_err);
+    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiStyle_ImGuiStyle_getTabMinWidthForCloseButton'.", &tolua_err);
     return 0;
 #endif
 }
@@ -2064,6 +2126,67 @@ tolua_lerror:
     return 0;
 #endif
 }
+int lua_x_imguiStyle_ImGuiStyle_getAntiAliasedLinesUseTex(lua_State* tolua_S)
+{
+    imgui::ImGuiStyle* cobj = nullptr;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiStyle", 0, &tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (imgui::ImGuiStyle*)tolua_tousertype(tolua_S, 1, 0);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiStyle_ImGuiStyle_getAntiAliasedLinesUseTex'", nullptr);
+        return 0;
+    }
+#endif
+    tolua_pushboolean(tolua_S,(bool)cobj->AntiAliasedLinesUseTex);
+    return 1;
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiStyle_ImGuiStyle_getAntiAliasedLinesUseTex'.", &tolua_err);
+    return 0;
+#endif
+}
+int lua_x_imguiStyle_ImGuiStyle_setAntiAliasedLinesUseTex(lua_State* tolua_S)
+{
+    int argc = 0;
+    imgui::ImGuiStyle* cobj = nullptr;
+    bool ok  = true;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiStyle", 0, &tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (imgui::ImGuiStyle*)tolua_tousertype(tolua_S, 1, 0);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiStyle_ImGuiStyle_setAntiAliasedLinesUseTex'", nullptr);
+        return 0;
+    }
+#endif
+    argc = lua_gettop(tolua_S) - 1;
+    if (1 == argc)
+    {
+        bool arg0;
+        ok &= luaval_to_boolean(tolua_S, 2,&arg0, "imgui.ImGuiStyle:AntiAliasedLinesUseTex");
+        if(!ok)
+        {
+            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiStyle_ImGuiStyle'", nullptr);
+            return 0;
+        }
+        cobj->AntiAliasedLinesUseTex = arg0;
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiStyle:AntiAliasedLinesUseTex", argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiStyle_ImGuiStyle_getAntiAliasedLinesUseTex'.", &tolua_err);
+    return 0;
+#endif
+}
 int lua_x_imguiStyle_ImGuiStyle_getAntiAliasedFill(lua_State* tolua_S)
 {
     imgui::ImGuiStyle* cobj = nullptr;
@@ -2283,9 +2406,10 @@ int lua_register_x_imguiStyle_ImGuiStyle(lua_State* tolua_S)
         tolua_variable(tolua_S,"ScrollbarRounding", lua_x_imguiStyle_ImGuiStyle_getScrollbarRounding, lua_x_imguiStyle_ImGuiStyle_setScrollbarRounding);
         tolua_variable(tolua_S,"GrabMinSize", lua_x_imguiStyle_ImGuiStyle_getGrabMinSize, lua_x_imguiStyle_ImGuiStyle_setGrabMinSize);
         tolua_variable(tolua_S,"GrabRounding", lua_x_imguiStyle_ImGuiStyle_getGrabRounding, lua_x_imguiStyle_ImGuiStyle_setGrabRounding);
+        tolua_variable(tolua_S,"LogSliderDeadzone", lua_x_imguiStyle_ImGuiStyle_getLogSliderDeadzone, lua_x_imguiStyle_ImGuiStyle_setLogSliderDeadzone);
         tolua_variable(tolua_S,"TabRounding", lua_x_imguiStyle_ImGuiStyle_getTabRounding, lua_x_imguiStyle_ImGuiStyle_setTabRounding);
         tolua_variable(tolua_S,"TabBorderSize", lua_x_imguiStyle_ImGuiStyle_getTabBorderSize, lua_x_imguiStyle_ImGuiStyle_setTabBorderSize);
-        tolua_variable(tolua_S,"TabMinWidthForUnselectedCloseButton", lua_x_imguiStyle_ImGuiStyle_getTabMinWidthForUnselectedCloseButton, lua_x_imguiStyle_ImGuiStyle_setTabMinWidthForUnselectedCloseButton);
+        tolua_variable(tolua_S,"TabMinWidthForCloseButton", lua_x_imguiStyle_ImGuiStyle_getTabMinWidthForCloseButton, lua_x_imguiStyle_ImGuiStyle_setTabMinWidthForCloseButton);
         tolua_variable(tolua_S,"ColorButtonPosition", lua_x_imguiStyle_ImGuiStyle_getColorButtonPosition, lua_x_imguiStyle_ImGuiStyle_setColorButtonPosition);
         tolua_variable(tolua_S,"ButtonTextAlign", lua_x_imguiStyle_ImGuiStyle_getButtonTextAlign, lua_x_imguiStyle_ImGuiStyle_setButtonTextAlign);
         tolua_variable(tolua_S,"SelectableTextAlign", lua_x_imguiStyle_ImGuiStyle_getSelectableTextAlign, lua_x_imguiStyle_ImGuiStyle_setSelectableTextAlign);
@@ -2293,6 +2417,7 @@ int lua_register_x_imguiStyle_ImGuiStyle(lua_State* tolua_S)
         tolua_variable(tolua_S,"DisplaySafeAreaPadding", lua_x_imguiStyle_ImGuiStyle_getDisplaySafeAreaPadding, lua_x_imguiStyle_ImGuiStyle_setDisplaySafeAreaPadding);
         tolua_variable(tolua_S,"MouseCursorScale", lua_x_imguiStyle_ImGuiStyle_getMouseCursorScale, lua_x_imguiStyle_ImGuiStyle_setMouseCursorScale);
         tolua_variable(tolua_S,"AntiAliasedLines", lua_x_imguiStyle_ImGuiStyle_getAntiAliasedLines, lua_x_imguiStyle_ImGuiStyle_setAntiAliasedLines);
+        tolua_variable(tolua_S,"AntiAliasedLinesUseTex", lua_x_imguiStyle_ImGuiStyle_getAntiAliasedLinesUseTex, lua_x_imguiStyle_ImGuiStyle_setAntiAliasedLinesUseTex);
         tolua_variable(tolua_S,"AntiAliasedFill", lua_x_imguiStyle_ImGuiStyle_getAntiAliasedFill, lua_x_imguiStyle_ImGuiStyle_setAntiAliasedFill);
         tolua_variable(tolua_S,"CurveTessellationTol", lua_x_imguiStyle_ImGuiStyle_getCurveTessellationTol, lua_x_imguiStyle_ImGuiStyle_setCurveTessellationTol);
         tolua_variable(tolua_S,"CircleSegmentMaxError", lua_x_imguiStyle_ImGuiStyle_getCircleSegmentMaxError, lua_x_imguiStyle_ImGuiStyle_setCircleSegmentMaxError);

@@ -1,5 +1,4 @@
 #pragma once
-#include <vector>
 
 #ifdef __cplusplus
 extern "C" {
@@ -9,5 +8,5 @@ extern "C" {
 }
 #endif
 
-std::vector<luaL_Reg> register_all_x_imgui(lua_State* tolua_S);
+int register_all_x_imgui(lua_State* tolua_S);
 

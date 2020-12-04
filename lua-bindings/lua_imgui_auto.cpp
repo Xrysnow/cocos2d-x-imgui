@@ -6,7 +6,8 @@
 
 #ifdef COCOS2D_DEBUG
 #undef COCOS2D_DEBUG
-#endif // COCOS2D_DEBUG
+#endif
+#define COCOS2D_DEBUG 0
 namespace imgui
 {
 	namespace ImGui
@@ -4025,6 +4026,23 @@ int lua_x_imgui_ImGui_InvisibleButton(lua_State* tolua_S)
         tolua_pushboolean(tolua_S,(bool)ret);
         return 1;
     }
+    if (argc == 3)
+    {
+        const char* arg0;
+        ImVec2 arg1;
+        int arg2;
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "imgui.ImGui:InvisibleButton"); arg0 = arg0_tmp.c_str();
+        ok &= luaval_to_ImVec2(tolua_S, 3, &arg1, "imgui.ImGui:InvisibleButton");
+        ok &= luaval_to_int32(tolua_S, 4,(int *)&arg2, "imgui.ImGui:InvisibleButton");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_InvisibleButton'", nullptr);
+            return 0;
+        }
+        bool ret = imgui::ImGui::InvisibleButton(arg0, arg1, arg2);
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:InvisibleButton",argc, 2);
     return 0;
 #if COCOS2D_DEBUG >= 1
@@ -5793,7 +5811,7 @@ int lua_x_imgui_ImGui_OpenPopup(lua_State* tolua_S)
 #endif
     return 0;
 }
-int lua_x_imgui_ImGui_OpenPopupContextItem(lua_State* tolua_S)
+int lua_x_imgui_ImGui_OpenPopupOnItemClick(lua_State* tolua_S)
 {
     int argc = 0;
     bool ok  = true;
@@ -5812,46 +5830,43 @@ int lua_x_imgui_ImGui_OpenPopupContextItem(lua_State* tolua_S)
     {
         if(!ok)
         {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_OpenPopupContextItem'", nullptr);
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_OpenPopupOnItemClick'", nullptr);
             return 0;
         }
-        bool ret = imgui::ImGui::OpenPopupContextItem();
-        tolua_pushboolean(tolua_S,(bool)ret);
-        return 1;
+        imgui::ImGui::OpenPopupOnItemClick();
+        return 0;
     }
     if (argc == 1)
     {
         const char* arg0;
-        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "imgui.ImGui:OpenPopupContextItem"); arg0 = arg0_tmp.c_str();
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "imgui.ImGui:OpenPopupOnItemClick"); arg0 = arg0_tmp.c_str();
         if(!ok)
         {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_OpenPopupContextItem'", nullptr);
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_OpenPopupOnItemClick'", nullptr);
             return 0;
         }
-        bool ret = imgui::ImGui::OpenPopupContextItem(arg0);
-        tolua_pushboolean(tolua_S,(bool)ret);
-        return 1;
+        imgui::ImGui::OpenPopupOnItemClick(arg0);
+        return 0;
     }
     if (argc == 2)
     {
         const char* arg0;
         int arg1;
-        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "imgui.ImGui:OpenPopupContextItem"); arg0 = arg0_tmp.c_str();
-        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "imgui.ImGui:OpenPopupContextItem");
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "imgui.ImGui:OpenPopupOnItemClick"); arg0 = arg0_tmp.c_str();
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "imgui.ImGui:OpenPopupOnItemClick");
         if(!ok)
         {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_OpenPopupContextItem'", nullptr);
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_OpenPopupOnItemClick'", nullptr);
             return 0;
         }
-        bool ret = imgui::ImGui::OpenPopupContextItem(arg0, arg1);
-        tolua_pushboolean(tolua_S,(bool)ret);
-        return 1;
+        imgui::ImGui::OpenPopupOnItemClick(arg0, arg1);
+        return 0;
     }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:OpenPopupContextItem",argc, 0);
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:OpenPopupOnItemClick",argc, 0);
     return 0;
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_imgui_ImGui_OpenPopupContextItem'.",&tolua_err);
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imgui_ImGui_OpenPopupOnItemClick'.",&tolua_err);
 #endif
     return 0;
 }
@@ -8419,6 +8434,57 @@ int lua_x_imgui_ImGui_Spacing(lua_State* tolua_S)
 #endif
     return 0;
 }
+int lua_x_imgui_ImGui_TabItemButton(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"imgui.ImGui",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 1)
+    {
+        const char* arg0;
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "imgui.ImGui:TabItemButton"); arg0 = arg0_tmp.c_str();
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_TabItemButton'", nullptr);
+            return 0;
+        }
+        bool ret = imgui::ImGui::TabItemButton(arg0);
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
+    if (argc == 2)
+    {
+        const char* arg0;
+        int arg1;
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "imgui.ImGui:TabItemButton"); arg0 = arg0_tmp.c_str();
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "imgui.ImGui:TabItemButton");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_TabItemButton'", nullptr);
+            return 0;
+        }
+        bool ret = imgui::ImGui::TabItemButton(arg0, arg1);
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:TabItemButton",argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imgui_ImGui_TabItemButton'.",&tolua_err);
+#endif
+    return 0;
+}
 int lua_x_imgui_ImGui_Text(lua_State* tolua_S)
 {
     int argc = 0;
@@ -8903,230 +8969,254 @@ static int lua_x_imgui_ImGui_finalize(lua_State* tolua_S)
     return 0;
 }
 
-std::vector<luaL_Reg> register_all_x_imgui(lua_State* tolua_S)
+int lua_register_x_imgui_ImGui(lua_State* tolua_S)
 {
-    std::vector<luaL_Reg> f = {
-        { "destroyPlatformWindows", lua_x_imgui_ImGui_DestroyPlatformWindows },
-		{ "showUserGuide", lua_x_imgui_ImGui_ShowUserGuide },
-		{ "beginTooltip", lua_x_imgui_ImGui_BeginTooltip },
-		{ "isItemEdited", lua_x_imgui_ImGui_IsItemEdited },
-		{ "setScrollHereY", lua_x_imgui_ImGui_SetScrollHereY },
-		{ "setScrollHereX", lua_x_imgui_ImGui_SetScrollHereX },
-		{ "getBackgroundDrawList", lua_x_imgui_ImGui_GetBackgroundDrawList },
-		{ "isKeyPressed", lua_x_imgui_ImGui_IsKeyPressed },
-		{ "endTabBar", lua_x_imgui_ImGui_EndTabBar },
-		{ "endTabItem", lua_x_imgui_ImGui_EndTabItem },
-		{ "setWindowPos", lua_x_imgui_ImGui_SetWindowPos },
-		{ "beginPopupContextWindow", lua_x_imgui_ImGui_BeginPopupContextWindow },
-		{ "setColumnOffset", lua_x_imgui_ImGui_SetColumnOffset },
-		{ "isMouseDoubleClicked", lua_x_imgui_ImGui_IsMouseDoubleClicked },
-		{ "getFontTexUvWhitePixel", lua_x_imgui_ImGui_GetFontTexUvWhitePixel },
-		{ "labelText", lua_x_imgui_ImGui_LabelText },
-		{ "textWrapped", lua_x_imgui_ImGui_TextWrapped },
-		{ "getTime", lua_x_imgui_ImGui_GetTime },
-		{ "endTooltip", lua_x_imgui_ImGui_EndTooltip },
-		{ "getScrollMaxX", lua_x_imgui_ImGui_GetScrollMaxX },
-		{ "getScrollMaxY", lua_x_imgui_ImGui_GetScrollMaxY },
-		{ "endMainMenuBar", lua_x_imgui_ImGui_EndMainMenuBar },
-		{ "nextColumn", lua_x_imgui_ImGui_NextColumn },
-		{ "loadIniSettingsFromDisk", lua_x_imgui_ImGui_LoadIniSettingsFromDisk },
-		{ "findViewportByID", lua_x_imgui_ImGui_FindViewportByID },
-		{ "getContentRegionAvail", lua_x_imgui_ImGui_GetContentRegionAvail },
-		{ "isRectVisible", lua_x_imgui_ImGui_IsRectVisible },
-		{ "getCursorPos", lua_x_imgui_ImGui_GetCursorPos },
-		{ "getTextLineHeight", lua_x_imgui_ImGui_GetTextLineHeight },
-		{ "indent", lua_x_imgui_ImGui_Indent },
-		{ "endMenu", lua_x_imgui_ImGui_EndMenu },
-		{ "getCursorScreenPos", lua_x_imgui_ImGui_GetCursorScreenPos },
-		{ "openPopup", lua_x_imgui_ImGui_OpenPopup },
-		{ "getItemRectMax", lua_x_imgui_ImGui_GetItemRectMax },
-		{ "treeNodeEx", lua_x_imgui_ImGui_TreeNodeEx },
-		{ "setScrollX", lua_x_imgui_ImGui_SetScrollX },
-		{ "getStyleColorName", lua_x_imgui_ImGui_GetStyleColorName },
-		{ "getWindowViewport", lua_x_imgui_ImGui_GetWindowViewport },
-		{ "setTabItemClosed", lua_x_imgui_ImGui_SetTabItemClosed },
-		{ "logText", lua_x_imgui_ImGui_LogText },
-		{ "getWindowDpiScale", lua_x_imgui_ImGui_GetWindowDpiScale },
-		{ "setWindowFontScale", lua_x_imgui_ImGui_SetWindowFontScale },
-		{ "isMouseHoveringRect", lua_x_imgui_ImGui_IsMouseHoveringRect },
-		{ "isItemHovered", lua_x_imgui_ImGui_IsItemHovered },
-		{ "setScrollY", lua_x_imgui_ImGui_SetScrollY },
-		{ "getFontSize", lua_x_imgui_ImGui_GetFontSize },
-		{ "getWindowSize", lua_x_imgui_ImGui_GetWindowSize },
-		{ "render", lua_x_imgui_ImGui_Render },
-		{ "colorConvertFloat4ToU32", lua_x_imgui_ImGui_ColorConvertFloat4ToU32 },
-		{ "isItemDeactivatedAfterEdit", lua_x_imgui_ImGui_IsItemDeactivatedAfterEdit },
-		{ "colorConvertU32ToFloat4", lua_x_imgui_ImGui_ColorConvertU32ToFloat4 },
-		{ "getMouseDragDelta", lua_x_imgui_ImGui_GetMouseDragDelta },
-		{ "renderPlatformWindowsDefault", lua_x_imgui_ImGui_RenderPlatformWindowsDefault },
-		{ "getColumnsCount", lua_x_imgui_ImGui_GetColumnsCount },
-		{ "setColorEditOptions", lua_x_imgui_ImGui_SetColorEditOptions },
-		{ "endPopup", lua_x_imgui_ImGui_EndPopup },
-		{ "getWindowContentRegionMax", lua_x_imgui_ImGui_GetWindowContentRegionMax },
-		{ "loadIniSettingsFromMemory", lua_x_imgui_ImGui_LoadIniSettingsFromMemory },
-		{ "getColumnIndex", lua_x_imgui_ImGui_GetColumnIndex },
-		{ "setColumnWidth", lua_x_imgui_ImGui_SetColumnWidth },
-		{ "isMouseClicked", lua_x_imgui_ImGui_IsMouseClicked },
-		{ "getItemRectSize", lua_x_imgui_ImGui_GetItemRectSize },
-		{ "getWindowContentRegionMin", lua_x_imgui_ImGui_GetWindowContentRegionMin },
-		{ "popFont", lua_x_imgui_ImGui_PopFont },
-		{ "popButtonRepeat", lua_x_imgui_ImGui_PopButtonRepeat },
-		{ "beginMainMenuBar", lua_x_imgui_ImGui_BeginMainMenuBar },
-		{ "textDisabled", lua_x_imgui_ImGui_TextDisabled },
-		{ "setNextItemWidth", lua_x_imgui_ImGui_SetNextItemWidth },
-		{ "beginMenuBar", lua_x_imgui_ImGui_BeginMenuBar },
-		{ "beginPopupContextVoid", lua_x_imgui_ImGui_BeginPopupContextVoid },
-		{ "popStyleVar", lua_x_imgui_ImGui_PopStyleVar },
-		{ "getClipboardText", lua_x_imgui_ImGui_GetClipboardText },
-		{ "getMouseCursor", lua_x_imgui_ImGui_GetMouseCursor },
-		{ "setTooltip", lua_x_imgui_ImGui_SetTooltip },
-		{ "isItemActivated", lua_x_imgui_ImGui_IsItemActivated },
-		{ "logToFile", lua_x_imgui_ImGui_LogToFile },
-		{ "getFrameCount", lua_x_imgui_ImGui_GetFrameCount },
-		{ "calcItemWidth", lua_x_imgui_ImGui_CalcItemWidth },
-		{ "pushButtonRepeat", lua_x_imgui_ImGui_PushButtonRepeat },
-		{ "smallButton", lua_x_imgui_ImGui_SmallButton },
-		{ "setNextWindowFocus", lua_x_imgui_ImGui_SetNextWindowFocus },
-		{ "isWindowAppearing", lua_x_imgui_ImGui_IsWindowAppearing },
-		{ "closeCurrentPopup", lua_x_imgui_ImGui_CloseCurrentPopup },
-		{ "getColumnOffset", lua_x_imgui_ImGui_GetColumnOffset },
-		{ "isItemToggledOpen", lua_x_imgui_ImGui_IsItemToggledOpen },
-		{ "dummy", lua_x_imgui_ImGui_Dummy },
-		{ "setWindowCollapsed", lua_x_imgui_ImGui_SetWindowCollapsed },
-		{ "popItemWidth", lua_x_imgui_ImGui_PopItemWidth },
-		{ "getKeyIndex", lua_x_imgui_ImGui_GetKeyIndex },
-		{ "pushItemWidth", lua_x_imgui_ImGui_PushItemWidth },
-		{ "logButtons", lua_x_imgui_ImGui_LogButtons },
-		{ "separator", lua_x_imgui_ImGui_Separator },
-		{ "isAnyMouseDown", lua_x_imgui_ImGui_IsAnyMouseDown },
-		{ "getScrollY", lua_x_imgui_ImGui_GetScrollY },
-		{ "getScrollX", lua_x_imgui_ImGui_GetScrollX },
-		{ "getForegroundDrawList", lua_x_imgui_ImGui_GetForegroundDrawList },
-		{ "isMouseReleased", lua_x_imgui_ImGui_IsMouseReleased },
-        { "openPopupContextItem", lua_x_imgui_ImGui_OpenPopupContextItem },
-		{ "pushTextWrapPos", lua_x_imgui_ImGui_PushTextWrapPos },
-		{ "setNextWindowSize", lua_x_imgui_ImGui_SetNextWindowSize },
-		{ "showStyleSelector", lua_x_imgui_ImGui_ShowStyleSelector },
-		{ "setNextWindowContentSize", lua_x_imgui_ImGui_SetNextWindowContentSize },
-		{ "getWindowContentRegionWidth", lua_x_imgui_ImGui_GetWindowContentRegionWidth },
-		{ "getTreeNodeToLabelSpacing", lua_x_imgui_ImGui_GetTreeNodeToLabelSpacing },
-		{ "getTextLineHeightWithSpacing", lua_x_imgui_ImGui_GetTextLineHeightWithSpacing },
-		{ "popAllowKeyboardFocus", lua_x_imgui_ImGui_PopAllowKeyboardFocus },
-		{ "radioButton", lua_x_imgui_ImGui_RadioButton },
-		{ "progressBar", lua_x_imgui_ImGui_ProgressBar },
-		{ "calcTextSize", lua_x_imgui_ImGui_CalcTextSize },
-		{ "endMenuBar", lua_x_imgui_ImGui_EndMenuBar },
-		{ "sameLine", lua_x_imgui_ImGui_SameLine },
-        { "debugCheckVersionAndDataLayout", lua_x_imgui_ImGui_DebugCheckVersionAndDataLayout },
-		{ "popStyleColor", lua_x_imgui_ImGui_PopStyleColor },
-		{ "arrowButton", lua_x_imgui_ImGui_ArrowButton },
-		{ "getVersion", lua_x_imgui_ImGui_GetVersion },
-		{ "setMouseCursor", lua_x_imgui_ImGui_SetMouseCursor },
-		{ "resetMouseDragDelta", lua_x_imgui_ImGui_ResetMouseDragDelta },
-		{ "dockSpaceOverViewport", lua_x_imgui_ImGui_DockSpaceOverViewport },
-		{ "getItemRectMin", lua_x_imgui_ImGui_GetItemRectMin },
-		{ "beginPopupContextItem", lua_x_imgui_ImGui_BeginPopupContextItem },
-		{ "newLine", lua_x_imgui_ImGui_NewLine },
-		{ "isAnyItemFocused", lua_x_imgui_ImGui_IsAnyItemFocused },
-		{ "isItemFocused", lua_x_imgui_ImGui_IsItemFocused },
-		{ "isWindowHovered", lua_x_imgui_ImGui_IsWindowHovered },
-		{ "logFinish", lua_x_imgui_ImGui_LogFinish },
-		{ "popClipRect", lua_x_imgui_ImGui_PopClipRect },
-		{ "logToClipboard", lua_x_imgui_ImGui_LogToClipboard },
-		{ "pushClipRect", lua_x_imgui_ImGui_PushClipRect },
-		{ "columns", lua_x_imgui_ImGui_Columns },
-		{ "isKeyReleased", lua_x_imgui_ImGui_IsKeyReleased },
-		{ "setScrollFromPosX", lua_x_imgui_ImGui_SetScrollFromPosX },
-		{ "setScrollFromPosY", lua_x_imgui_ImGui_SetScrollFromPosY },
-		{ "setNextWindowDockID", lua_x_imgui_ImGui_SetNextWindowDockID },
-		{ "getWindowWidth", lua_x_imgui_ImGui_GetWindowWidth },
-		{ "popID", lua_x_imgui_ImGui_PopID },
-		{ "dockSpace", lua_x_imgui_ImGui_DockSpace },
-		{ "setItemDefaultFocus", lua_x_imgui_ImGui_SetItemDefaultFocus },
-		{ "isWindowCollapsed", lua_x_imgui_ImGui_IsWindowCollapsed },
-		{ "updatePlatformWindows", lua_x_imgui_ImGui_UpdatePlatformWindows },
-		{ "isMouseDown", lua_x_imgui_ImGui_IsMouseDown },
-		{ "isItemActive", lua_x_imgui_ImGui_IsItemActive },
-		{ "unindent", lua_x_imgui_ImGui_Unindent },
-		{ "treeNode", lua_x_imgui_ImGui_TreeNode },
-		{ "bullet", lua_x_imgui_ImGui_Bullet },
-		{ "isKeyDown", lua_x_imgui_ImGui_IsKeyDown },
-		{ "setNextItemOpen", lua_x_imgui_ImGui_SetNextItemOpen },
-		{ "getCursorStartPos", lua_x_imgui_ImGui_GetCursorStartPos },
-		{ "beginGroup", lua_x_imgui_ImGui_BeginGroup },
-		{ "isAnyItemActive", lua_x_imgui_ImGui_IsAnyItemActive },
-		{ "treePop", lua_x_imgui_ImGui_TreePop },
-		{ "beginPopup", lua_x_imgui_ImGui_BeginPopup },
-		{ "setNextWindowPos", lua_x_imgui_ImGui_SetNextWindowPos },
-		{ "setNextWindowSizeConstraints", lua_x_imgui_ImGui_SetNextWindowSizeConstraints },
-		{ "beginDragDropTarget", lua_x_imgui_ImGui_BeginDragDropTarget },
-		{ "showFontSelector", lua_x_imgui_ImGui_ShowFontSelector },
-		{ "colorButton", lua_x_imgui_ImGui_ColorButton },
-		{ "beginDragDropSource", lua_x_imgui_ImGui_BeginDragDropSource },
-		{ "setWindowFocus", lua_x_imgui_ImGui_SetWindowFocus },
-		{ "popTextWrapPos", lua_x_imgui_ImGui_PopTextWrapPos },
-		{ "endDragDropTarget", lua_x_imgui_ImGui_EndDragDropTarget },
-		{ "beginCombo", lua_x_imgui_ImGui_BeginCombo },
-		{ "text", lua_x_imgui_ImGui_Text },
-		{ "getMainViewport", lua_x_imgui_ImGui_GetMainViewport },
-		{ "endGroup", lua_x_imgui_ImGui_EndGroup },
-		{ "setNextWindowBgAlpha", lua_x_imgui_ImGui_SetNextWindowBgAlpha },
-		{ "captureMouseFromApp", lua_x_imgui_ImGui_CaptureMouseFromApp },
-		{ "isItemClicked", lua_x_imgui_ImGui_IsItemClicked },
-		{ "setItemAllowOverlap", lua_x_imgui_ImGui_SetItemAllowOverlap },
-		{ "getContentRegionMax", lua_x_imgui_ImGui_GetContentRegionMax },
-		{ "invisibleButton", lua_x_imgui_ImGui_InvisibleButton },
-		{ "captureKeyboardFromApp", lua_x_imgui_ImGui_CaptureKeyboardFromApp },
-		{ "isPopupOpen", lua_x_imgui_ImGui_IsPopupOpen },
-		{ "setCursorScreenPos", lua_x_imgui_ImGui_SetCursorScreenPos },
-		{ "setKeyboardFocusHere", lua_x_imgui_ImGui_SetKeyboardFocusHere },
-		{ "isMouseDragging", lua_x_imgui_ImGui_IsMouseDragging },
-		{ "textColored", lua_x_imgui_ImGui_TextColored },
-		{ "getKeyPressedAmount", lua_x_imgui_ImGui_GetKeyPressedAmount },
-		{ "setClipboardText", lua_x_imgui_ImGui_SetClipboardText },
-		{ "alignTextToFramePadding", lua_x_imgui_ImGui_AlignTextToFramePadding },
-		{ "getFrameHeight", lua_x_imgui_ImGui_GetFrameHeight },
-		{ "bulletText", lua_x_imgui_ImGui_BulletText },
-		{ "setNextWindowCollapsed", lua_x_imgui_ImGui_SetNextWindowCollapsed },
-		{ "spacing", lua_x_imgui_ImGui_Spacing },
-		{ "listBoxFooter", lua_x_imgui_ImGui_ListBoxFooter },
-		{ "getCursorPosY", lua_x_imgui_ImGui_GetCursorPosY },
-		{ "getCursorPosX", lua_x_imgui_ImGui_GetCursorPosX },
-		{ "getWindowPos", lua_x_imgui_ImGui_GetWindowPos },
-		{ "endCombo", lua_x_imgui_ImGui_EndCombo },
-		{ "getWindowHeight", lua_x_imgui_ImGui_GetWindowHeight },
-		{ "endChildFrame", lua_x_imgui_ImGui_EndChildFrame },
-		{ "isItemVisible", lua_x_imgui_ImGui_IsItemVisible },
-		{ "beginTabBar", lua_x_imgui_ImGui_BeginTabBar },
-		{ "treePush", lua_x_imgui_ImGui_TreePush },
-		{ "setWindowSize", lua_x_imgui_ImGui_SetWindowSize },
-		{ "getColumnWidth", lua_x_imgui_ImGui_GetColumnWidth },
-		{ "saveIniSettingsToDisk", lua_x_imgui_ImGui_SaveIniSettingsToDisk },
-		{ "button", lua_x_imgui_ImGui_Button },
-		{ "getWindowDrawList", lua_x_imgui_ImGui_GetWindowDrawList },
-		{ "getMousePos", lua_x_imgui_ImGui_GetMousePos },
-		{ "getMousePosOnOpeningCurrentPopup", lua_x_imgui_ImGui_GetMousePosOnOpeningCurrentPopup },
-		{ "isWindowFocused", lua_x_imgui_ImGui_IsWindowFocused },
-		{ "isWindowDocked", lua_x_imgui_ImGui_IsWindowDocked },
-		{ "pushAllowKeyboardFocus", lua_x_imgui_ImGui_PushAllowKeyboardFocus },
-		{ "setCursorPos", lua_x_imgui_ImGui_SetCursorPos },
-		{ "getWindowDockID", lua_x_imgui_ImGui_GetWindowDockID },
-		{ "isAnyItemHovered", lua_x_imgui_ImGui_IsAnyItemHovered },
-		{ "setCursorPosY", lua_x_imgui_ImGui_SetCursorPosY },
-		{ "setCursorPosX", lua_x_imgui_ImGui_SetCursorPosX },
-		{ "textUnformatted", lua_x_imgui_ImGui_TextUnformatted },
-		{ "getFrameHeightWithSpacing", lua_x_imgui_ImGui_GetFrameHeightWithSpacing },
-		{ "logToTTY", lua_x_imgui_ImGui_LogToTTY },
-		{ "endFrame", lua_x_imgui_ImGui_EndFrame },
-		{ "beginMenu", lua_x_imgui_ImGui_BeginMenu },
-		{ "getID", lua_x_imgui_ImGui_GetID },
-		{ "isItemDeactivated", lua_x_imgui_ImGui_IsItemDeactivated },
-		{ "setNextWindowViewport", lua_x_imgui_ImGui_SetNextWindowViewport },
-		{ "getStyleColorVec4", lua_x_imgui_ImGui_GetStyleColorVec4 },
-		{ "endDragDropSource", lua_x_imgui_ImGui_EndDragDropSource },
-		{ "newFrame", lua_x_imgui_ImGui_NewFrame },
-		{ "beginChildFrame", lua_x_imgui_ImGui_BeginChildFrame },
-    };
-
-    return f;
+    tolua_module(tolua_S, "_auto", 0);
+    tolua_beginmodule(tolua_S,"_auto");
+        tolua_function(tolua_S,"alignTextToFramePadding", lua_x_imgui_ImGui_AlignTextToFramePadding);
+        tolua_function(tolua_S,"arrowButton", lua_x_imgui_ImGui_ArrowButton);
+        tolua_function(tolua_S,"beginChildFrame", lua_x_imgui_ImGui_BeginChildFrame);
+        tolua_function(tolua_S,"beginCombo", lua_x_imgui_ImGui_BeginCombo);
+        tolua_function(tolua_S,"beginDragDropSource", lua_x_imgui_ImGui_BeginDragDropSource);
+        tolua_function(tolua_S,"beginDragDropTarget", lua_x_imgui_ImGui_BeginDragDropTarget);
+        tolua_function(tolua_S,"beginGroup", lua_x_imgui_ImGui_BeginGroup);
+        tolua_function(tolua_S,"beginMainMenuBar", lua_x_imgui_ImGui_BeginMainMenuBar);
+        tolua_function(tolua_S,"beginMenu", lua_x_imgui_ImGui_BeginMenu);
+        tolua_function(tolua_S,"beginMenuBar", lua_x_imgui_ImGui_BeginMenuBar);
+        tolua_function(tolua_S,"beginPopup", lua_x_imgui_ImGui_BeginPopup);
+        tolua_function(tolua_S,"beginPopupContextItem", lua_x_imgui_ImGui_BeginPopupContextItem);
+        tolua_function(tolua_S,"beginPopupContextVoid", lua_x_imgui_ImGui_BeginPopupContextVoid);
+        tolua_function(tolua_S,"beginPopupContextWindow", lua_x_imgui_ImGui_BeginPopupContextWindow);
+        tolua_function(tolua_S,"beginTabBar", lua_x_imgui_ImGui_BeginTabBar);
+        tolua_function(tolua_S,"beginTooltip", lua_x_imgui_ImGui_BeginTooltip);
+        tolua_function(tolua_S,"bullet", lua_x_imgui_ImGui_Bullet);
+        tolua_function(tolua_S,"bulletText", lua_x_imgui_ImGui_BulletText);
+        tolua_function(tolua_S,"button", lua_x_imgui_ImGui_Button);
+        tolua_function(tolua_S,"calcItemWidth", lua_x_imgui_ImGui_CalcItemWidth);
+        tolua_function(tolua_S,"calcTextSize", lua_x_imgui_ImGui_CalcTextSize);
+        tolua_function(tolua_S,"captureKeyboardFromApp", lua_x_imgui_ImGui_CaptureKeyboardFromApp);
+        tolua_function(tolua_S,"captureMouseFromApp", lua_x_imgui_ImGui_CaptureMouseFromApp);
+        tolua_function(tolua_S,"closeCurrentPopup", lua_x_imgui_ImGui_CloseCurrentPopup);
+        tolua_function(tolua_S,"colorButton", lua_x_imgui_ImGui_ColorButton);
+        tolua_function(tolua_S,"colorConvertFloat4ToU32", lua_x_imgui_ImGui_ColorConvertFloat4ToU32);
+        tolua_function(tolua_S,"colorConvertU32ToFloat4", lua_x_imgui_ImGui_ColorConvertU32ToFloat4);
+        tolua_function(tolua_S,"columns", lua_x_imgui_ImGui_Columns);
+        tolua_function(tolua_S,"debugCheckVersionAndDataLayout", lua_x_imgui_ImGui_DebugCheckVersionAndDataLayout);
+        tolua_function(tolua_S,"destroyPlatformWindows", lua_x_imgui_ImGui_DestroyPlatformWindows);
+        tolua_function(tolua_S,"dockSpace", lua_x_imgui_ImGui_DockSpace);
+        tolua_function(tolua_S,"dockSpaceOverViewport", lua_x_imgui_ImGui_DockSpaceOverViewport);
+        tolua_function(tolua_S,"dummy", lua_x_imgui_ImGui_Dummy);
+        tolua_function(tolua_S,"endChildFrame", lua_x_imgui_ImGui_EndChildFrame);
+        tolua_function(tolua_S,"endCombo", lua_x_imgui_ImGui_EndCombo);
+        tolua_function(tolua_S,"endDragDropSource", lua_x_imgui_ImGui_EndDragDropSource);
+        tolua_function(tolua_S,"endDragDropTarget", lua_x_imgui_ImGui_EndDragDropTarget);
+        tolua_function(tolua_S,"endFrame", lua_x_imgui_ImGui_EndFrame);
+        tolua_function(tolua_S,"endGroup", lua_x_imgui_ImGui_EndGroup);
+        tolua_function(tolua_S,"endMainMenuBar", lua_x_imgui_ImGui_EndMainMenuBar);
+        tolua_function(tolua_S,"endMenu", lua_x_imgui_ImGui_EndMenu);
+        tolua_function(tolua_S,"endMenuBar", lua_x_imgui_ImGui_EndMenuBar);
+        tolua_function(tolua_S,"endPopup", lua_x_imgui_ImGui_EndPopup);
+        tolua_function(tolua_S,"endTabBar", lua_x_imgui_ImGui_EndTabBar);
+        tolua_function(tolua_S,"endTabItem", lua_x_imgui_ImGui_EndTabItem);
+        tolua_function(tolua_S,"endTooltip", lua_x_imgui_ImGui_EndTooltip);
+        tolua_function(tolua_S,"findViewportByID", lua_x_imgui_ImGui_FindViewportByID);
+        tolua_function(tolua_S,"getBackgroundDrawList", lua_x_imgui_ImGui_GetBackgroundDrawList);
+        tolua_function(tolua_S,"getClipboardText", lua_x_imgui_ImGui_GetClipboardText);
+        tolua_function(tolua_S,"getColumnIndex", lua_x_imgui_ImGui_GetColumnIndex);
+        tolua_function(tolua_S,"getColumnOffset", lua_x_imgui_ImGui_GetColumnOffset);
+        tolua_function(tolua_S,"getColumnWidth", lua_x_imgui_ImGui_GetColumnWidth);
+        tolua_function(tolua_S,"getColumnsCount", lua_x_imgui_ImGui_GetColumnsCount);
+        tolua_function(tolua_S,"getContentRegionAvail", lua_x_imgui_ImGui_GetContentRegionAvail);
+        tolua_function(tolua_S,"getContentRegionMax", lua_x_imgui_ImGui_GetContentRegionMax);
+        tolua_function(tolua_S,"getCursorPos", lua_x_imgui_ImGui_GetCursorPos);
+        tolua_function(tolua_S,"getCursorPosX", lua_x_imgui_ImGui_GetCursorPosX);
+        tolua_function(tolua_S,"getCursorPosY", lua_x_imgui_ImGui_GetCursorPosY);
+        tolua_function(tolua_S,"getCursorScreenPos", lua_x_imgui_ImGui_GetCursorScreenPos);
+        tolua_function(tolua_S,"getCursorStartPos", lua_x_imgui_ImGui_GetCursorStartPos);
+        tolua_function(tolua_S,"getFontSize", lua_x_imgui_ImGui_GetFontSize);
+        tolua_function(tolua_S,"getFontTexUvWhitePixel", lua_x_imgui_ImGui_GetFontTexUvWhitePixel);
+        tolua_function(tolua_S,"getForegroundDrawList", lua_x_imgui_ImGui_GetForegroundDrawList);
+        tolua_function(tolua_S,"getFrameCount", lua_x_imgui_ImGui_GetFrameCount);
+        tolua_function(tolua_S,"getFrameHeight", lua_x_imgui_ImGui_GetFrameHeight);
+        tolua_function(tolua_S,"getFrameHeightWithSpacing", lua_x_imgui_ImGui_GetFrameHeightWithSpacing);
+        tolua_function(tolua_S,"getID", lua_x_imgui_ImGui_GetID);
+        tolua_function(tolua_S,"getItemRectMax", lua_x_imgui_ImGui_GetItemRectMax);
+        tolua_function(tolua_S,"getItemRectMin", lua_x_imgui_ImGui_GetItemRectMin);
+        tolua_function(tolua_S,"getItemRectSize", lua_x_imgui_ImGui_GetItemRectSize);
+        tolua_function(tolua_S,"getKeyIndex", lua_x_imgui_ImGui_GetKeyIndex);
+        tolua_function(tolua_S,"getKeyPressedAmount", lua_x_imgui_ImGui_GetKeyPressedAmount);
+        tolua_function(tolua_S,"getMainViewport", lua_x_imgui_ImGui_GetMainViewport);
+        tolua_function(tolua_S,"getMouseCursor", lua_x_imgui_ImGui_GetMouseCursor);
+        tolua_function(tolua_S,"getMouseDragDelta", lua_x_imgui_ImGui_GetMouseDragDelta);
+        tolua_function(tolua_S,"getMousePos", lua_x_imgui_ImGui_GetMousePos);
+        tolua_function(tolua_S,"getMousePosOnOpeningCurrentPopup", lua_x_imgui_ImGui_GetMousePosOnOpeningCurrentPopup);
+        tolua_function(tolua_S,"getScrollMaxX", lua_x_imgui_ImGui_GetScrollMaxX);
+        tolua_function(tolua_S,"getScrollMaxY", lua_x_imgui_ImGui_GetScrollMaxY);
+        tolua_function(tolua_S,"getScrollX", lua_x_imgui_ImGui_GetScrollX);
+        tolua_function(tolua_S,"getScrollY", lua_x_imgui_ImGui_GetScrollY);
+        tolua_function(tolua_S,"getStyleColorName", lua_x_imgui_ImGui_GetStyleColorName);
+        tolua_function(tolua_S,"getStyleColorVec4", lua_x_imgui_ImGui_GetStyleColorVec4);
+        tolua_function(tolua_S,"getTextLineHeight", lua_x_imgui_ImGui_GetTextLineHeight);
+        tolua_function(tolua_S,"getTextLineHeightWithSpacing", lua_x_imgui_ImGui_GetTextLineHeightWithSpacing);
+        tolua_function(tolua_S,"getTime", lua_x_imgui_ImGui_GetTime);
+        tolua_function(tolua_S,"getTreeNodeToLabelSpacing", lua_x_imgui_ImGui_GetTreeNodeToLabelSpacing);
+        tolua_function(tolua_S,"getVersion", lua_x_imgui_ImGui_GetVersion);
+        tolua_function(tolua_S,"getWindowContentRegionMax", lua_x_imgui_ImGui_GetWindowContentRegionMax);
+        tolua_function(tolua_S,"getWindowContentRegionMin", lua_x_imgui_ImGui_GetWindowContentRegionMin);
+        tolua_function(tolua_S,"getWindowContentRegionWidth", lua_x_imgui_ImGui_GetWindowContentRegionWidth);
+        tolua_function(tolua_S,"getWindowDockID", lua_x_imgui_ImGui_GetWindowDockID);
+        tolua_function(tolua_S,"getWindowDpiScale", lua_x_imgui_ImGui_GetWindowDpiScale);
+        tolua_function(tolua_S,"getWindowDrawList", lua_x_imgui_ImGui_GetWindowDrawList);
+        tolua_function(tolua_S,"getWindowHeight", lua_x_imgui_ImGui_GetWindowHeight);
+        tolua_function(tolua_S,"getWindowPos", lua_x_imgui_ImGui_GetWindowPos);
+        tolua_function(tolua_S,"getWindowSize", lua_x_imgui_ImGui_GetWindowSize);
+        tolua_function(tolua_S,"getWindowViewport", lua_x_imgui_ImGui_GetWindowViewport);
+        tolua_function(tolua_S,"getWindowWidth", lua_x_imgui_ImGui_GetWindowWidth);
+        tolua_function(tolua_S,"indent", lua_x_imgui_ImGui_Indent);
+        tolua_function(tolua_S,"invisibleButton", lua_x_imgui_ImGui_InvisibleButton);
+        tolua_function(tolua_S,"isAnyItemActive", lua_x_imgui_ImGui_IsAnyItemActive);
+        tolua_function(tolua_S,"isAnyItemFocused", lua_x_imgui_ImGui_IsAnyItemFocused);
+        tolua_function(tolua_S,"isAnyItemHovered", lua_x_imgui_ImGui_IsAnyItemHovered);
+        tolua_function(tolua_S,"isAnyMouseDown", lua_x_imgui_ImGui_IsAnyMouseDown);
+        tolua_function(tolua_S,"isItemActivated", lua_x_imgui_ImGui_IsItemActivated);
+        tolua_function(tolua_S,"isItemActive", lua_x_imgui_ImGui_IsItemActive);
+        tolua_function(tolua_S,"isItemClicked", lua_x_imgui_ImGui_IsItemClicked);
+        tolua_function(tolua_S,"isItemDeactivated", lua_x_imgui_ImGui_IsItemDeactivated);
+        tolua_function(tolua_S,"isItemDeactivatedAfterEdit", lua_x_imgui_ImGui_IsItemDeactivatedAfterEdit);
+        tolua_function(tolua_S,"isItemEdited", lua_x_imgui_ImGui_IsItemEdited);
+        tolua_function(tolua_S,"isItemFocused", lua_x_imgui_ImGui_IsItemFocused);
+        tolua_function(tolua_S,"isItemHovered", lua_x_imgui_ImGui_IsItemHovered);
+        tolua_function(tolua_S,"isItemToggledOpen", lua_x_imgui_ImGui_IsItemToggledOpen);
+        tolua_function(tolua_S,"isItemVisible", lua_x_imgui_ImGui_IsItemVisible);
+        tolua_function(tolua_S,"isKeyDown", lua_x_imgui_ImGui_IsKeyDown);
+        tolua_function(tolua_S,"isKeyPressed", lua_x_imgui_ImGui_IsKeyPressed);
+        tolua_function(tolua_S,"isKeyReleased", lua_x_imgui_ImGui_IsKeyReleased);
+        tolua_function(tolua_S,"isMouseClicked", lua_x_imgui_ImGui_IsMouseClicked);
+        tolua_function(tolua_S,"isMouseDoubleClicked", lua_x_imgui_ImGui_IsMouseDoubleClicked);
+        tolua_function(tolua_S,"isMouseDown", lua_x_imgui_ImGui_IsMouseDown);
+        tolua_function(tolua_S,"isMouseDragging", lua_x_imgui_ImGui_IsMouseDragging);
+        tolua_function(tolua_S,"isMouseHoveringRect", lua_x_imgui_ImGui_IsMouseHoveringRect);
+        tolua_function(tolua_S,"isMouseReleased", lua_x_imgui_ImGui_IsMouseReleased);
+        tolua_function(tolua_S,"isPopupOpen", lua_x_imgui_ImGui_IsPopupOpen);
+        tolua_function(tolua_S,"isRectVisible", lua_x_imgui_ImGui_IsRectVisible);
+        tolua_function(tolua_S,"isWindowAppearing", lua_x_imgui_ImGui_IsWindowAppearing);
+        tolua_function(tolua_S,"isWindowCollapsed", lua_x_imgui_ImGui_IsWindowCollapsed);
+        tolua_function(tolua_S,"isWindowDocked", lua_x_imgui_ImGui_IsWindowDocked);
+        tolua_function(tolua_S,"isWindowFocused", lua_x_imgui_ImGui_IsWindowFocused);
+        tolua_function(tolua_S,"isWindowHovered", lua_x_imgui_ImGui_IsWindowHovered);
+        tolua_function(tolua_S,"labelText", lua_x_imgui_ImGui_LabelText);
+        tolua_function(tolua_S,"listBoxFooter", lua_x_imgui_ImGui_ListBoxFooter);
+        tolua_function(tolua_S,"loadIniSettingsFromDisk", lua_x_imgui_ImGui_LoadIniSettingsFromDisk);
+        tolua_function(tolua_S,"loadIniSettingsFromMemory", lua_x_imgui_ImGui_LoadIniSettingsFromMemory);
+        tolua_function(tolua_S,"logButtons", lua_x_imgui_ImGui_LogButtons);
+        tolua_function(tolua_S,"logFinish", lua_x_imgui_ImGui_LogFinish);
+        tolua_function(tolua_S,"logText", lua_x_imgui_ImGui_LogText);
+        tolua_function(tolua_S,"logToClipboard", lua_x_imgui_ImGui_LogToClipboard);
+        tolua_function(tolua_S,"logToFile", lua_x_imgui_ImGui_LogToFile);
+        tolua_function(tolua_S,"logToTTY", lua_x_imgui_ImGui_LogToTTY);
+        tolua_function(tolua_S,"newFrame", lua_x_imgui_ImGui_NewFrame);
+        tolua_function(tolua_S,"newLine", lua_x_imgui_ImGui_NewLine);
+        tolua_function(tolua_S,"nextColumn", lua_x_imgui_ImGui_NextColumn);
+        tolua_function(tolua_S,"openPopup", lua_x_imgui_ImGui_OpenPopup);
+        tolua_function(tolua_S,"openPopupOnItemClick", lua_x_imgui_ImGui_OpenPopupOnItemClick);
+        tolua_function(tolua_S,"popAllowKeyboardFocus", lua_x_imgui_ImGui_PopAllowKeyboardFocus);
+        tolua_function(tolua_S,"popButtonRepeat", lua_x_imgui_ImGui_PopButtonRepeat);
+        tolua_function(tolua_S,"popClipRect", lua_x_imgui_ImGui_PopClipRect);
+        tolua_function(tolua_S,"popFont", lua_x_imgui_ImGui_PopFont);
+        tolua_function(tolua_S,"popID", lua_x_imgui_ImGui_PopID);
+        tolua_function(tolua_S,"popItemWidth", lua_x_imgui_ImGui_PopItemWidth);
+        tolua_function(tolua_S,"popStyleColor", lua_x_imgui_ImGui_PopStyleColor);
+        tolua_function(tolua_S,"popStyleVar", lua_x_imgui_ImGui_PopStyleVar);
+        tolua_function(tolua_S,"popTextWrapPos", lua_x_imgui_ImGui_PopTextWrapPos);
+        tolua_function(tolua_S,"progressBar", lua_x_imgui_ImGui_ProgressBar);
+        tolua_function(tolua_S,"pushAllowKeyboardFocus", lua_x_imgui_ImGui_PushAllowKeyboardFocus);
+        tolua_function(tolua_S,"pushButtonRepeat", lua_x_imgui_ImGui_PushButtonRepeat);
+        tolua_function(tolua_S,"pushClipRect", lua_x_imgui_ImGui_PushClipRect);
+        tolua_function(tolua_S,"pushItemWidth", lua_x_imgui_ImGui_PushItemWidth);
+        tolua_function(tolua_S,"pushTextWrapPos", lua_x_imgui_ImGui_PushTextWrapPos);
+        tolua_function(tolua_S,"radioButton", lua_x_imgui_ImGui_RadioButton);
+        tolua_function(tolua_S,"render", lua_x_imgui_ImGui_Render);
+        tolua_function(tolua_S,"renderPlatformWindowsDefault", lua_x_imgui_ImGui_RenderPlatformWindowsDefault);
+        tolua_function(tolua_S,"resetMouseDragDelta", lua_x_imgui_ImGui_ResetMouseDragDelta);
+        tolua_function(tolua_S,"sameLine", lua_x_imgui_ImGui_SameLine);
+        tolua_function(tolua_S,"saveIniSettingsToDisk", lua_x_imgui_ImGui_SaveIniSettingsToDisk);
+        tolua_function(tolua_S,"separator", lua_x_imgui_ImGui_Separator);
+        tolua_function(tolua_S,"setClipboardText", lua_x_imgui_ImGui_SetClipboardText);
+        tolua_function(tolua_S,"setColorEditOptions", lua_x_imgui_ImGui_SetColorEditOptions);
+        tolua_function(tolua_S,"setColumnOffset", lua_x_imgui_ImGui_SetColumnOffset);
+        tolua_function(tolua_S,"setColumnWidth", lua_x_imgui_ImGui_SetColumnWidth);
+        tolua_function(tolua_S,"setCursorPos", lua_x_imgui_ImGui_SetCursorPos);
+        tolua_function(tolua_S,"setCursorPosX", lua_x_imgui_ImGui_SetCursorPosX);
+        tolua_function(tolua_S,"setCursorPosY", lua_x_imgui_ImGui_SetCursorPosY);
+        tolua_function(tolua_S,"setCursorScreenPos", lua_x_imgui_ImGui_SetCursorScreenPos);
+        tolua_function(tolua_S,"setItemAllowOverlap", lua_x_imgui_ImGui_SetItemAllowOverlap);
+        tolua_function(tolua_S,"setItemDefaultFocus", lua_x_imgui_ImGui_SetItemDefaultFocus);
+        tolua_function(tolua_S,"setKeyboardFocusHere", lua_x_imgui_ImGui_SetKeyboardFocusHere);
+        tolua_function(tolua_S,"setMouseCursor", lua_x_imgui_ImGui_SetMouseCursor);
+        tolua_function(tolua_S,"setNextItemOpen", lua_x_imgui_ImGui_SetNextItemOpen);
+        tolua_function(tolua_S,"setNextItemWidth", lua_x_imgui_ImGui_SetNextItemWidth);
+        tolua_function(tolua_S,"setNextWindowBgAlpha", lua_x_imgui_ImGui_SetNextWindowBgAlpha);
+        tolua_function(tolua_S,"setNextWindowCollapsed", lua_x_imgui_ImGui_SetNextWindowCollapsed);
+        tolua_function(tolua_S,"setNextWindowContentSize", lua_x_imgui_ImGui_SetNextWindowContentSize);
+        tolua_function(tolua_S,"setNextWindowDockID", lua_x_imgui_ImGui_SetNextWindowDockID);
+        tolua_function(tolua_S,"setNextWindowFocus", lua_x_imgui_ImGui_SetNextWindowFocus);
+        tolua_function(tolua_S,"setNextWindowPos", lua_x_imgui_ImGui_SetNextWindowPos);
+        tolua_function(tolua_S,"setNextWindowSize", lua_x_imgui_ImGui_SetNextWindowSize);
+        tolua_function(tolua_S,"setNextWindowSizeConstraints", lua_x_imgui_ImGui_SetNextWindowSizeConstraints);
+        tolua_function(tolua_S,"setNextWindowViewport", lua_x_imgui_ImGui_SetNextWindowViewport);
+        tolua_function(tolua_S,"setScrollFromPosX", lua_x_imgui_ImGui_SetScrollFromPosX);
+        tolua_function(tolua_S,"setScrollFromPosY", lua_x_imgui_ImGui_SetScrollFromPosY);
+        tolua_function(tolua_S,"setScrollHereX", lua_x_imgui_ImGui_SetScrollHereX);
+        tolua_function(tolua_S,"setScrollHereY", lua_x_imgui_ImGui_SetScrollHereY);
+        tolua_function(tolua_S,"setScrollX", lua_x_imgui_ImGui_SetScrollX);
+        tolua_function(tolua_S,"setScrollY", lua_x_imgui_ImGui_SetScrollY);
+        tolua_function(tolua_S,"setTabItemClosed", lua_x_imgui_ImGui_SetTabItemClosed);
+        tolua_function(tolua_S,"setTooltip", lua_x_imgui_ImGui_SetTooltip);
+        tolua_function(tolua_S,"setWindowCollapsed", lua_x_imgui_ImGui_SetWindowCollapsed);
+        tolua_function(tolua_S,"setWindowFocus", lua_x_imgui_ImGui_SetWindowFocus);
+        tolua_function(tolua_S,"setWindowFontScale", lua_x_imgui_ImGui_SetWindowFontScale);
+        tolua_function(tolua_S,"setWindowPos", lua_x_imgui_ImGui_SetWindowPos);
+        tolua_function(tolua_S,"setWindowSize", lua_x_imgui_ImGui_SetWindowSize);
+        tolua_function(tolua_S,"showFontSelector", lua_x_imgui_ImGui_ShowFontSelector);
+        tolua_function(tolua_S,"showStyleSelector", lua_x_imgui_ImGui_ShowStyleSelector);
+        tolua_function(tolua_S,"showUserGuide", lua_x_imgui_ImGui_ShowUserGuide);
+        tolua_function(tolua_S,"smallButton", lua_x_imgui_ImGui_SmallButton);
+        tolua_function(tolua_S,"spacing", lua_x_imgui_ImGui_Spacing);
+        tolua_function(tolua_S,"tabItemButton", lua_x_imgui_ImGui_TabItemButton);
+        tolua_function(tolua_S,"text", lua_x_imgui_ImGui_Text);
+        tolua_function(tolua_S,"textColored", lua_x_imgui_ImGui_TextColored);
+        tolua_function(tolua_S,"textDisabled", lua_x_imgui_ImGui_TextDisabled);
+        tolua_function(tolua_S,"textUnformatted", lua_x_imgui_ImGui_TextUnformatted);
+        tolua_function(tolua_S,"textWrapped", lua_x_imgui_ImGui_TextWrapped);
+        tolua_function(tolua_S,"treeNode", lua_x_imgui_ImGui_TreeNode);
+        tolua_function(tolua_S,"treeNodeEx", lua_x_imgui_ImGui_TreeNodeEx);
+        tolua_function(tolua_S,"treePop", lua_x_imgui_ImGui_TreePop);
+        tolua_function(tolua_S,"treePush", lua_x_imgui_ImGui_TreePush);
+        tolua_function(tolua_S,"unindent", lua_x_imgui_ImGui_Unindent);
+        tolua_function(tolua_S,"updatePlatformWindows", lua_x_imgui_ImGui_UpdatePlatformWindows);
+    tolua_endmodule(tolua_S);
+    return 1;
 }
+TOLUA_API int register_all_x_imgui(lua_State* tolua_S)
+{
+	tolua_open(tolua_S);
+
+	tolua_module(tolua_S, "imgui", 0);
+	tolua_beginmodule(tolua_S, "imgui");
+
+	lua_register_x_imgui_ImGui(tolua_S);
+
+	tolua_endmodule(tolua_S);
+    
+    // make functions static
+    luaL_dostring(tolua_S, R"__(
+for k, v in pairs(imgui._auto) do
+    imgui[k] = function(...)
+        return v(nil, ...)
+    end
+end
+)__");
+
+	return 1;
+}
+

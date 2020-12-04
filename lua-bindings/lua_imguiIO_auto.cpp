@@ -7,6 +7,7 @@
 #ifdef COCOS2D_DEBUG
 #undef COCOS2D_DEBUG
 #endif
+#define COCOS2D_DEBUG 0
 namespace imgui
 {
     using ImGuiIO = ImGuiIO;
@@ -2002,7 +2003,7 @@ tolua_lerror:
     return 0;
 #endif
 }
-int lua_x_imguiIO_ImGuiIO_getConfigWindowsMemoryCompactTimer(lua_State* tolua_S)
+int lua_x_imguiIO_ImGuiIO_getConfigMemoryCompactTimer(lua_State* tolua_S)
 {
     imgui::ImGuiIO* cobj = nullptr;
 #if COCOS2D_DEBUG >= 1
@@ -2013,19 +2014,19 @@ int lua_x_imguiIO_ImGuiIO_getConfigWindowsMemoryCompactTimer(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     if (!cobj) 
     {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiIO_ImGuiIO_getConfigWindowsMemoryCompactTimer'", nullptr);
+        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiIO_ImGuiIO_getConfigMemoryCompactTimer'", nullptr);
         return 0;
     }
 #endif
-    tolua_pushnumber(tolua_S,(lua_Number)cobj->ConfigWindowsMemoryCompactTimer);
+    tolua_pushnumber(tolua_S,(lua_Number)cobj->ConfigMemoryCompactTimer);
     return 1;
 #if COCOS2D_DEBUG >= 1
 tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiIO_ImGuiIO_getConfigWindowsMemoryCompactTimer'.", &tolua_err);
+    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiIO_ImGuiIO_getConfigMemoryCompactTimer'.", &tolua_err);
     return 0;
 #endif
 }
-int lua_x_imguiIO_ImGuiIO_setConfigWindowsMemoryCompactTimer(lua_State* tolua_S)
+int lua_x_imguiIO_ImGuiIO_setConfigMemoryCompactTimer(lua_State* tolua_S)
 {
     int argc = 0;
     imgui::ImGuiIO* cobj = nullptr;
@@ -2038,7 +2039,7 @@ int lua_x_imguiIO_ImGuiIO_setConfigWindowsMemoryCompactTimer(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     if (!cobj) 
     {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiIO_ImGuiIO_setConfigWindowsMemoryCompactTimer'", nullptr);
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiIO_ImGuiIO_setConfigMemoryCompactTimer'", nullptr);
         return 0;
     }
 #endif
@@ -2046,20 +2047,20 @@ int lua_x_imguiIO_ImGuiIO_setConfigWindowsMemoryCompactTimer(lua_State* tolua_S)
     if (1 == argc)
     {
         double arg0;
-        ok &= luaval_to_number(tolua_S, 2,&arg0, "imgui.ImGuiIO:ConfigWindowsMemoryCompactTimer");
+        ok &= luaval_to_number(tolua_S, 2,&arg0, "imgui.ImGuiIO:ConfigMemoryCompactTimer");
         if(!ok)
         {
             tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiIO_ImGuiIO'", nullptr);
             return 0;
         }
-        cobj->ConfigWindowsMemoryCompactTimer = arg0;
+        cobj->ConfigMemoryCompactTimer = arg0;
         return 0;
     }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiIO:ConfigWindowsMemoryCompactTimer", argc, 1);
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiIO:ConfigMemoryCompactTimer", argc, 1);
     return 0;
 #if COCOS2D_DEBUG >= 1
 tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiIO_ImGuiIO_getConfigWindowsMemoryCompactTimer'.", &tolua_err);
+    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiIO_ImGuiIO_getConfigMemoryCompactTimer'.", &tolua_err);
     return 0;
 #endif
 }
@@ -3539,9 +3540,9 @@ int lua_register_x_imguiIO_ImGuiIO(lua_State* tolua_S)
     tolua_cclass(tolua_S,"ImGuiIO","imgui.ImGuiIO","",nullptr);
 
     tolua_beginmodule(tolua_S,"ImGuiIO");
+        tolua_function(tolua_S,"addInputCharacter",lua_x_imguiIO_ImGuiIO_AddInputCharacter);
         tolua_function(tolua_S,"addInputCharacterUTF16",lua_x_imguiIO_ImGuiIO_AddInputCharacterUTF16);
         tolua_function(tolua_S,"addInputCharactersUTF8",lua_x_imguiIO_ImGuiIO_AddInputCharactersUTF8);
-        tolua_function(tolua_S,"addInputCharacter",lua_x_imguiIO_ImGuiIO_AddInputCharacter);
         tolua_function(tolua_S,"clearInputCharacters",lua_x_imguiIO_ImGuiIO_ClearInputCharacters);
         tolua_variable(tolua_S,"ConfigFlags", lua_x_imguiIO_ImGuiIO_getConfigFlags, lua_x_imguiIO_ImGuiIO_setConfigFlags);
         tolua_variable(tolua_S,"BackendFlags", lua_x_imguiIO_ImGuiIO_getBackendFlags, lua_x_imguiIO_ImGuiIO_setBackendFlags);
@@ -3573,7 +3574,7 @@ int lua_register_x_imguiIO_ImGuiIO(lua_State* tolua_S)
         tolua_variable(tolua_S,"ConfigInputTextCursorBlink", lua_x_imguiIO_ImGuiIO_getConfigInputTextCursorBlink, lua_x_imguiIO_ImGuiIO_setConfigInputTextCursorBlink);
         tolua_variable(tolua_S,"ConfigWindowsResizeFromEdges", lua_x_imguiIO_ImGuiIO_getConfigWindowsResizeFromEdges, lua_x_imguiIO_ImGuiIO_setConfigWindowsResizeFromEdges);
         tolua_variable(tolua_S,"ConfigWindowsMoveFromTitleBarOnly", lua_x_imguiIO_ImGuiIO_getConfigWindowsMoveFromTitleBarOnly, lua_x_imguiIO_ImGuiIO_setConfigWindowsMoveFromTitleBarOnly);
-        tolua_variable(tolua_S,"ConfigWindowsMemoryCompactTimer", lua_x_imguiIO_ImGuiIO_getConfigWindowsMemoryCompactTimer, lua_x_imguiIO_ImGuiIO_setConfigWindowsMemoryCompactTimer);
+        tolua_variable(tolua_S,"ConfigMemoryCompactTimer", lua_x_imguiIO_ImGuiIO_getConfigMemoryCompactTimer, lua_x_imguiIO_ImGuiIO_setConfigMemoryCompactTimer);
         tolua_variable(tolua_S,"BackendPlatformName", lua_x_imguiIO_ImGuiIO_getBackendPlatformName, lua_x_imguiIO_ImGuiIO_setBackendPlatformName);
         tolua_variable(tolua_S,"BackendRendererName", lua_x_imguiIO_ImGuiIO_getBackendRendererName, lua_x_imguiIO_ImGuiIO_setBackendRendererName);
         tolua_variable(tolua_S,"MousePos", lua_x_imguiIO_ImGuiIO_getMousePos, lua_x_imguiIO_ImGuiIO_setMousePos);

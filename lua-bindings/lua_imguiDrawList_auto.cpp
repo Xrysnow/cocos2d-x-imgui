@@ -6,10 +6,12 @@
 #ifdef COCOS2D_DEBUG
 #undef COCOS2D_DEBUG
 #endif
+#define COCOS2D_DEBUG 0
 namespace imgui
 {
     using ImDrawList = ImDrawList;
 }
+using namespace lua;
 
 int lua_x_imguiDrawList_ImDrawList_AddBezierCurve(lua_State* tolua_S)
 {
@@ -1166,7 +1168,7 @@ int lua_x_imguiDrawList_ImDrawList_CloneOutput(lua_State* tolua_S)
             return 0;
         }
         imgui::ImDrawList* ret = cobj->CloneOutput();
-        object_to_luaval(tolua_S, "imgui.ImDrawList", ret);
+        native_to_luaval(tolua_S, ret);
         return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImDrawList:CloneOutput", argc, 0);
@@ -2438,47 +2440,47 @@ int lua_register_x_imguiDrawList_ImDrawList(lua_State* tolua_S)
     tolua_cclass(tolua_S,"ImDrawList","imgui.ImDrawList","",nullptr);
 
     tolua_beginmodule(tolua_S,"ImDrawList");
-        tolua_function(tolua_S,"channelsMerge",lua_x_imguiDrawList_ImDrawList_ChannelsMerge);
-        tolua_function(tolua_S,"primWriteIdx",lua_x_imguiDrawList_ImDrawList_PrimWriteIdx);
-        tolua_function(tolua_S,"pathRect",lua_x_imguiDrawList_ImDrawList_PathRect);
-        tolua_function(tolua_S,"addTriangleFilled",lua_x_imguiDrawList_ImDrawList_AddTriangleFilled);
-        tolua_function(tolua_S,"pathFillConvex",lua_x_imguiDrawList_ImDrawList_PathFillConvex);
-        tolua_function(tolua_S,"cloneOutput",lua_x_imguiDrawList_ImDrawList_CloneOutput);
-        tolua_function(tolua_S,"addLine",lua_x_imguiDrawList_ImDrawList_AddLine);
-        tolua_function(tolua_S,"channelsSplit",lua_x_imguiDrawList_ImDrawList_ChannelsSplit);
-        tolua_function(tolua_S,"primRectUV",lua_x_imguiDrawList_ImDrawList_PrimRectUV);
-        tolua_function(tolua_S,"popClipRect",lua_x_imguiDrawList_ImDrawList_PopClipRect);
-        tolua_function(tolua_S,"pushClipRect",lua_x_imguiDrawList_ImDrawList_PushClipRect);
-		tolua_function(tolua_S,"addNgonFilled", lua_x_imguiDrawList_ImDrawList_AddNgonFilled);
-        tolua_function(tolua_S,"addTriangle",lua_x_imguiDrawList_ImDrawList_AddTriangle);
-        tolua_function(tolua_S,"pathArcToFast",lua_x_imguiDrawList_ImDrawList_PathArcToFast);
-        tolua_function(tolua_S,"addRect",lua_x_imguiDrawList_ImDrawList_AddRect);
-        tolua_function(tolua_S,"pathArcTo",lua_x_imguiDrawList_ImDrawList_PathArcTo);
-        tolua_function(tolua_S,"addQuad",lua_x_imguiDrawList_ImDrawList_AddQuad);
-        tolua_function(tolua_S,"addRectFilledMultiColor",lua_x_imguiDrawList_ImDrawList_AddRectFilledMultiColor);
-        tolua_function(tolua_S,"addQuadFilled",lua_x_imguiDrawList_ImDrawList_AddQuadFilled);
-		tolua_function(tolua_S,"addNgon", lua_x_imguiDrawList_ImDrawList_AddNgon);
-        tolua_function(tolua_S,"addCircleFilled",lua_x_imguiDrawList_ImDrawList_AddCircleFilled);
-        tolua_function(tolua_S,"primWriteVtx",lua_x_imguiDrawList_ImDrawList_PrimWriteVtx);
-        tolua_function(tolua_S,"pathBezierCurveTo",lua_x_imguiDrawList_ImDrawList_PathBezierCurveTo);
-        tolua_function(tolua_S,"getClipRectMax",lua_x_imguiDrawList_ImDrawList_GetClipRectMax);
-        tolua_function(tolua_S,"primVtx",lua_x_imguiDrawList_ImDrawList_PrimVtx);
-        tolua_function(tolua_S,"addDrawCmd",lua_x_imguiDrawList_ImDrawList_AddDrawCmd);
-        tolua_function(tolua_S,"pathClear",lua_x_imguiDrawList_ImDrawList_PathClear);
-        tolua_function(tolua_S,"pushClipRectFullScreen",lua_x_imguiDrawList_ImDrawList_PushClipRectFullScreen);
-        tolua_function(tolua_S,"channelsSetCurrent",lua_x_imguiDrawList_ImDrawList_ChannelsSetCurrent);
-        tolua_function(tolua_S,"addCircle",lua_x_imguiDrawList_ImDrawList_AddCircle);
-        tolua_function(tolua_S,"getClipRectMin",lua_x_imguiDrawList_ImDrawList_GetClipRectMin);
-        tolua_function(tolua_S,"popTextureID",lua_x_imguiDrawList_ImDrawList_PopTextureID);
-        tolua_function(tolua_S,"pathLineTo",lua_x_imguiDrawList_ImDrawList_PathLineTo);
-        tolua_function(tolua_S,"pathStroke",lua_x_imguiDrawList_ImDrawList_PathStroke);
-        tolua_function(tolua_S,"primQuadUV",lua_x_imguiDrawList_ImDrawList_PrimQuadUV);
         tolua_function(tolua_S,"addBezierCurve",lua_x_imguiDrawList_ImDrawList_AddBezierCurve);
-        tolua_function(tolua_S,"primUnreserve",lua_x_imguiDrawList_ImDrawList_PrimUnreserve);
-        tolua_function(tolua_S,"pathLineToMergeDuplicate",lua_x_imguiDrawList_ImDrawList_PathLineToMergeDuplicate);
-        tolua_function(tolua_S,"primRect",lua_x_imguiDrawList_ImDrawList_PrimRect);
+        tolua_function(tolua_S,"addCircle",lua_x_imguiDrawList_ImDrawList_AddCircle);
+        tolua_function(tolua_S,"addCircleFilled",lua_x_imguiDrawList_ImDrawList_AddCircleFilled);
+        tolua_function(tolua_S,"addDrawCmd",lua_x_imguiDrawList_ImDrawList_AddDrawCmd);
+        tolua_function(tolua_S,"addLine",lua_x_imguiDrawList_ImDrawList_AddLine);
+        tolua_function(tolua_S,"addNgon",lua_x_imguiDrawList_ImDrawList_AddNgon);
+        tolua_function(tolua_S,"addNgonFilled",lua_x_imguiDrawList_ImDrawList_AddNgonFilled);
+        tolua_function(tolua_S,"addQuad",lua_x_imguiDrawList_ImDrawList_AddQuad);
+        tolua_function(tolua_S,"addQuadFilled",lua_x_imguiDrawList_ImDrawList_AddQuadFilled);
+        tolua_function(tolua_S,"addRect",lua_x_imguiDrawList_ImDrawList_AddRect);
         tolua_function(tolua_S,"addRectFilled",lua_x_imguiDrawList_ImDrawList_AddRectFilled);
+        tolua_function(tolua_S,"addRectFilledMultiColor",lua_x_imguiDrawList_ImDrawList_AddRectFilledMultiColor);
+        tolua_function(tolua_S,"addTriangle",lua_x_imguiDrawList_ImDrawList_AddTriangle);
+        tolua_function(tolua_S,"addTriangleFilled",lua_x_imguiDrawList_ImDrawList_AddTriangleFilled);
+        tolua_function(tolua_S,"channelsMerge",lua_x_imguiDrawList_ImDrawList_ChannelsMerge);
+        tolua_function(tolua_S,"channelsSetCurrent",lua_x_imguiDrawList_ImDrawList_ChannelsSetCurrent);
+        tolua_function(tolua_S,"channelsSplit",lua_x_imguiDrawList_ImDrawList_ChannelsSplit);
+        tolua_function(tolua_S,"cloneOutput",lua_x_imguiDrawList_ImDrawList_CloneOutput);
+        tolua_function(tolua_S,"getClipRectMax",lua_x_imguiDrawList_ImDrawList_GetClipRectMax);
+        tolua_function(tolua_S,"getClipRectMin",lua_x_imguiDrawList_ImDrawList_GetClipRectMin);
+        tolua_function(tolua_S,"pathArcTo",lua_x_imguiDrawList_ImDrawList_PathArcTo);
+        tolua_function(tolua_S,"pathArcToFast",lua_x_imguiDrawList_ImDrawList_PathArcToFast);
+        tolua_function(tolua_S,"pathBezierCurveTo",lua_x_imguiDrawList_ImDrawList_PathBezierCurveTo);
+        tolua_function(tolua_S,"pathClear",lua_x_imguiDrawList_ImDrawList_PathClear);
+        tolua_function(tolua_S,"pathFillConvex",lua_x_imguiDrawList_ImDrawList_PathFillConvex);
+        tolua_function(tolua_S,"pathLineTo",lua_x_imguiDrawList_ImDrawList_PathLineTo);
+        tolua_function(tolua_S,"pathLineToMergeDuplicate",lua_x_imguiDrawList_ImDrawList_PathLineToMergeDuplicate);
+        tolua_function(tolua_S,"pathRect",lua_x_imguiDrawList_ImDrawList_PathRect);
+        tolua_function(tolua_S,"pathStroke",lua_x_imguiDrawList_ImDrawList_PathStroke);
+        tolua_function(tolua_S,"popClipRect",lua_x_imguiDrawList_ImDrawList_PopClipRect);
+        tolua_function(tolua_S,"popTextureID",lua_x_imguiDrawList_ImDrawList_PopTextureID);
+        tolua_function(tolua_S,"primQuadUV",lua_x_imguiDrawList_ImDrawList_PrimQuadUV);
+        tolua_function(tolua_S,"primRect",lua_x_imguiDrawList_ImDrawList_PrimRect);
+        tolua_function(tolua_S,"primRectUV",lua_x_imguiDrawList_ImDrawList_PrimRectUV);
         tolua_function(tolua_S,"primReserve",lua_x_imguiDrawList_ImDrawList_PrimReserve);
+        tolua_function(tolua_S,"primUnreserve",lua_x_imguiDrawList_ImDrawList_PrimUnreserve);
+        tolua_function(tolua_S,"primVtx",lua_x_imguiDrawList_ImDrawList_PrimVtx);
+        tolua_function(tolua_S,"primWriteIdx",lua_x_imguiDrawList_ImDrawList_PrimWriteIdx);
+        tolua_function(tolua_S,"primWriteVtx",lua_x_imguiDrawList_ImDrawList_PrimWriteVtx);
+        tolua_function(tolua_S,"pushClipRect",lua_x_imguiDrawList_ImDrawList_PushClipRect);
+        tolua_function(tolua_S,"pushClipRectFullScreen",lua_x_imguiDrawList_ImDrawList_PushClipRectFullScreen);
         tolua_variable(tolua_S,"Flags", lua_x_imguiDrawList_ImDrawList_getFlags, lua_x_imguiDrawList_ImDrawList_setFlags);
         tolua_variable(tolua_S,"_OwnerName", lua_x_imguiDrawList_ImDrawList_get_OwnerName, lua_x_imguiDrawList_ImDrawList_set_OwnerName);
     tolua_endmodule(tolua_S);
