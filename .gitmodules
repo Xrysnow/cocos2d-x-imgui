@@ -10,4 +10,4 @@
 	url = https://github.com/epezent/implot.git
 [submodule "imgui_markdown"]
 	path = imgui_markdown
-	url = https://github.com/juliettef/imgui_markdown.git
+	url = https://github.com/Xrysnow/imgui_markdown.git
