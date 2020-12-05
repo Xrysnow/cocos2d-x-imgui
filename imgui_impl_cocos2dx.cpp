@@ -62,7 +62,9 @@ static GLFWmousebuttonfun   g_PrevUserCallbackMousebutton = nullptr;
 static GLFWscrollfun        g_PrevUserCallbackScroll = nullptr;
 static GLFWkeyfun           g_PrevUserCallbackKey = nullptr;
 static GLFWcharfun          g_PrevUserCallbackChar = nullptr;
+static GLFWmonitorfun       g_PrevUserCallbackMonitor = nullptr;
 static bool                 g_WantUpdateMonitors = true;
+static bool                 g_InstalledCallbacks = false;
 
 // Forward Declarations
 static void ImGui_ImplGlfw_InitPlatformInterface();
@@ -599,12 +601,15 @@ bool ImGui_ImplCocos2dx_Init(bool install_callbacks)
 	g_PrevUserCallbackScroll = nullptr;
 	g_PrevUserCallbackKey = nullptr;
 	g_PrevUserCallbackChar = nullptr;
+	g_PrevUserCallbackMonitor = nullptr; // not used
 	if (install_callbacks)
 	{
+		g_InstalledCallbacks = true;
 		g_PrevUserCallbackMousebutton = glfwSetMouseButtonCallback(window, ImGui_ImplCocos2dx_MouseButtonCallback);
 		g_PrevUserCallbackScroll = glfwSetScrollCallback(window, ImGui_ImplCocos2dx_ScrollCallback);
 		g_PrevUserCallbackKey = glfwSetKeyCallback(window, ImGui_ImplCocos2dx_KeyCallback);
 		g_PrevUserCallbackChar = glfwSetCharCallback(window, ImGui_ImplCocos2dx_CharCallback);
+		g_PrevUserCallbackMonitor = glfwSetMonitorCallback(ImGui_ImplGlfw_MonitorCallback);
 	}
 
 	// Update monitors the first time (note: monitor callback are broken in GLFW 3.2 and earlier, see github.com/glfw/glfw/issues/784)
@@ -706,14 +711,25 @@ bool ImGui_ImplCocos2dx_Init(bool install_callbacks)
 
 void ImGui_ImplCocos2dx_Shutdown()
 {
-	ImGui::DestroyPlatformWindows();
 #ifdef CC_PLATFORM_PC
+	ImGui_ImplGlfw_ShutdownPlatformInterface();
+	const auto g_Window = ImGui_ImplCocos2dx_GetWindow();
+	if (g_InstalledCallbacks)
+	{
+		glfwSetMouseButtonCallback(g_Window, g_PrevUserCallbackMousebutton);
+		glfwSetScrollCallback(g_Window, g_PrevUserCallbackScroll);
+		glfwSetKeyCallback(g_Window, g_PrevUserCallbackKey);
+		glfwSetCharCallback(g_Window, g_PrevUserCallbackChar);
+		g_InstalledCallbacks = false;
+	}
+
 	for (ImGuiMouseCursor cursor_n = 0; cursor_n < ImGuiMouseCursor_COUNT; cursor_n++)
 	{
 		glfwDestroyCursor(g_MouseCursors[cursor_n]);
 		g_MouseCursors[cursor_n] = nullptr;
 	}
 #endif // CC_PLATFORM_PC
+	ImGui::DestroyPlatformWindows();
 	ImGui_ImplCocos2dx_DestroyDeviceObjects();
 	ImGui::DestroyContext();
 }
@@ -751,7 +767,7 @@ static void ImGui_ImplCocos2dx_UpdateMousePosAndButtons()
 		{
 			if (io.WantSetMousePos)
 			{
-	            glfwSetCursorPos(window, (double)mouse_pos_backup.x, (double)mouse_pos_backup.y);
+				glfwSetCursorPos(window, (double)(mouse_pos_backup.x - viewport->Pos.x), (double)(mouse_pos_backup.y - viewport->Pos.y));
 			}
 			else
 			{
@@ -783,7 +799,11 @@ static void ImGui_ImplCocos2dx_UpdateMousePosAndButtons()
 		// [GLFW] FIXME: This is currently only correct on Win32. See what we do below with the WM_NCHITTEST, missing an equivalent for other systems.
 		// See https://github.com/glfw/glfw/issues/1236 if you want to help in making this a GLFW feature.
 #if GLFW_HAS_MOUSE_PASSTHROUGH || (GLFW_HAS_WINDOW_HOVERED && CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-		if (glfwGetWindowAttrib(window, GLFW_HOVERED) && !(viewport->Flags & ImGuiViewportFlags_NoInputs))
+		const bool window_no_input = (viewport->Flags & ImGuiViewportFlags_NoInputs) != 0;
+#if GLFW_HAS_MOUSE_PASSTHROUGH
+		glfwSetWindowAttrib(window, GLFW_MOUSE_PASSTHROUGH, window_no_input);
+#endif
+		if (glfwGetWindowAttrib(window, GLFW_HOVERED) && !window_no_input)
 			io.MouseHoveredViewport = viewport->ID;
 #endif
 	}
@@ -904,16 +924,16 @@ static void ImGui_ImplGlfw_UpdateMonitors()
 		int x, y;
 		glfwGetMonitorPos(glfw_monitors[n], &x, &y);
 		const GLFWvidmode* vid_mode = glfwGetVideoMode(glfw_monitors[n]);
-#if GLFW_HAS_MONITOR_WORK_AREA
-		monitor.MainPos = ImVec2((float)x, (float)y);
-		monitor.MainSize = ImVec2((float)vid_mode->width, (float)vid_mode->height);
-		int w, h;
-		glfwGetMonitorWorkarea(glfw_monitors[n], &x, &y, &w, &h);
-		monitor.WorkPos = ImVec2((float)x, (float)y);;
-		monitor.WorkSize = ImVec2((float)w, (float)h);
-#else
 		monitor.MainPos = monitor.WorkPos = ImVec2((float)x, (float)y);
 		monitor.MainSize = monitor.WorkSize = ImVec2((float)vid_mode->width, (float)vid_mode->height);
+#if GLFW_HAS_MONITOR_WORK_AREA
+		int w, h;
+		glfwGetMonitorWorkarea(glfw_monitors[n], &x, &y, &w, &h);
+		if (w > 0 && h > 0) // Workaround a small GLFW issue reporting zero on monitor changes: https://github.com/glfw/glfw/pull/1761
+		{
+			monitor.WorkPos = ImVec2((float)x, (float)y);
+			monitor.WorkSize = ImVec2((float)w, (float)h);
+		}
 #endif
 #if GLFW_HAS_PER_MONITOR_DPI
 		// Warning: the validity of monitor DPI information on Windows depends on the application DPI awareness settings, which generally needs to be set in the manifest or at runtime.
@@ -978,7 +998,7 @@ void ImGui_ImplCocos2dx_NewFrame()
 
 //--------------------------------------------------------------------------------------------------------
 // MULTI-VIEWPORT / PLATFORM INTERFACE SUPPORT
-// This is an _advanced_ and _optional_ feature, allowing the back-end to create and handle multiple viewports simultaneously.
+// This is an _advanced_ and _optional_ feature, allowing the backend to create and handle multiple viewports simultaneously.
 // If you are new to dear imgui or creating a new binding for dear imgui, it is recommended that you completely ignore this section first..
 //--------------------------------------------------------------------------------------------------------
 
@@ -1095,16 +1115,16 @@ static void ImGui_ImplGlfw_DestroyWindow(ImGuiViewport* viewport)
 			AddRendererCommand([=]()
 			{
 #if !GLFW_HAS_MOUSE_PASSTHROUGH && GLFW_HAS_WINDOW_HOVERED && CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
-				HWND hwnd = PlatformHandleRaw;
+				HWND hwnd = (HWND)viewport->PlatformHandleRaw;
 				::RemovePropA(hwnd, "IMGUI_VIEWPORT");
 #endif
 				glfwDestroyWindow(window);
 			});
 		}
-		data->Window = NULL;
+		data->Window = nullptr;
 		IM_DELETE(data);
 	}
-	viewport->PlatformUserData = viewport->PlatformHandle = NULL;
+	viewport->PlatformUserData = viewport->PlatformHandle = nullptr;
 }
 
 // We have submitted https://github.com/glfw/glfw/pull/1568 to allow GLFW to support "transparent inputs".
@@ -1177,6 +1197,7 @@ static ImVec2 ImGui_ImplGlfw_GetWindowPos(ImGuiViewport* viewport)
 static void ImGui_ImplGlfw_SetWindowPos(ImGuiViewport* viewport, ImVec2 pos)
 {
 	ImGuiViewportDataGlfw* data = (ImGuiViewportDataGlfw*)viewport->PlatformUserData;
+	data->IgnoreWindowPosEventFrame = ImGui::GetFrameCount();
 	glfwSetWindowPos(data->Window, (int)pos.x, (int)pos.y);
 }
 
@@ -1273,6 +1294,7 @@ static void ImGui_ImplGlfw_SwapBuffers(ImGuiViewport* viewport, void*)
 // IME (Input Method Editor) basic support for e.g. Asian language users
 //--------------------------------------------------------------------------------------------------------
 
+// We provide a Win32 implementation because this is such a common issue for IME users
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
 
 #include <imm.h>
@@ -1284,6 +1306,7 @@ static void ImGui_ImplGlfw_SetImeInputPos(ImGuiViewport* viewport, ImVec2 pos)
 {
 	const auto hwnd = (HWND)glfwGetWin32Window(ImGui_ImplCocos2dx_GetWindow());
 	if (hwnd)
+	{
 		if (HIMC himc = ::ImmGetContext(hwnd))
 		{
 			COMPOSITIONFORM cf = {
@@ -1293,6 +1316,7 @@ static void ImGui_ImplGlfw_SetImeInputPos(ImGuiViewport* viewport, ImVec2 pos)
 			::ImmSetCompositionWindow(himc, &cf);
 			::ImmReleaseContext(hwnd, himc);
 		}
+	}
 }
 
 #else
@@ -1300,6 +1324,34 @@ static void ImGui_ImplGlfw_SetImeInputPos(ImGuiViewport* viewport, ImVec2 pos)
 static void ImGui_ImplGlfw_SetImeInputPos(ImGuiViewport* viewport, ImVec2 pos) {}
 
 #endif
+
+//--------------------------------------------------------------------------------------------------------
+// Vulkan support (the Vulkan renderer needs to call a platform-side support function to create the surface)
+//--------------------------------------------------------------------------------------------------------
+
+// Avoid including <vulkan.h> so we can build without it
+#if 0 && GLFW_HAS_VULKAN
+#ifndef VULKAN_H_
+#define VK_DEFINE_HANDLE(object) typedef struct object##_T* object;
+#if defined(__LP64__) || defined(_WIN64) || defined(__x86_64__) || defined(_M_X64) || defined(__ia64) || defined (_M_IA64) || defined(__aarch64__) || defined(__powerpc64__)
+#define VK_DEFINE_NON_DISPATCHABLE_HANDLE(object) typedef struct object##_T *object;
+#else
+#define VK_DEFINE_NON_DISPATCHABLE_HANDLE(object) typedef uint64_t object;
+#endif
+VK_DEFINE_HANDLE(VkInstance)
+VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkSurfaceKHR)
+struct VkAllocationCallbacks;
+enum VkResult { VK_RESULT_MAX_ENUM = 0x7FFFFFFF };
+#endif // VULKAN_H_
+extern "C" { extern GLFWAPI VkResult glfwCreateWindowSurface(VkInstance instance, GLFWwindow* window, const VkAllocationCallbacks* allocator, VkSurfaceKHR* surface); }
+static int ImGui_ImplCocos2dx_CreateVkSurface(ImGuiViewport* viewport, ImU64 vk_instance, const void* vk_allocator, ImU64* out_vk_surface)
+{
+	ImGuiViewportDataGlfw* data = (ImGuiViewportDataGlfw*)viewport->PlatformUserData;
+	IM_ASSERT(g_ClientApi == GlfwClientApi_Vulkan);
+	VkResult err = glfwCreateWindowSurface((VkInstance)vk_instance, data->Window, (const VkAllocationCallbacks*)vk_allocator, (VkSurfaceKHR*)out_vk_surface);
+	return (int)err;
+}
+#endif // GLFW_HAS_VULKAN
 
 static void ImGui_ImplGlfw_InitPlatformInterface()
 {
@@ -1321,11 +1373,10 @@ static void ImGui_ImplGlfw_InitPlatformInterface()
 #if GLFW_HAS_WINDOW_ALPHA
 	platform_io.Platform_SetWindowAlpha = ImGui_ImplGlfw_SetWindowAlpha;
 #endif
+#if 0 && GLFW_HAS_VULKAN
+	platform_io.Platform_CreateVkSurface = ImGui_ImplCocos2dx_CreateVkSurface;
+#endif
 	platform_io.Platform_SetImeInputPos = ImGui_ImplGlfw_SetImeInputPos;
-
-	// Note: monitor callback are broken GLFW 3.2 and earlier (see github.com/glfw/glfw/issues/784)
-	ImGui_ImplGlfw_UpdateMonitors();
-	glfwSetMonitorCallback(ImGui_ImplGlfw_MonitorCallback);
 
 	// Register main window handle (which is owned by the main application, not by us)
 	// This is mostly for simplicity and consistency, so that our code (e.g. mouse handling etc.) can use same logic for main and secondary viewports.
