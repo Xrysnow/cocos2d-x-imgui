@@ -19,12 +19,30 @@ static_assert(
 	GLFW_VERSION_MAJOR * 1000 + GLFW_VERSION_MINOR * 100 >= 3300,
 	"glfw version should be 3.3+");
 
+#define GLFW_HAS_WINDOW_TOPMOST       (1) // 3.2+ GLFW_FLOATING
+#define GLFW_HAS_WINDOW_HOVERED       (1) // 3.3+ GLFW_HOVERED
+#define GLFW_HAS_WINDOW_ALPHA         (1) // 3.3+ glfwSetWindowOpacity
+#define GLFW_HAS_PER_MONITOR_DPI      (1) // 3.3+ glfwGetMonitorContentScale
+#define GLFW_HAS_VULKAN               (1) // 3.2+ glfwCreateWindowSurface
+#define GLFW_HAS_FOCUS_WINDOW         (1) // 3.2+ glfwFocusWindow
+#define GLFW_HAS_FOCUS_ON_SHOW        (1) // 3.3+ GLFW_FOCUS_ON_SHOW
+#define GLFW_HAS_MONITOR_WORK_AREA    (1) // 3.3+ glfwGetMonitorWorkarea
 // 3.3.1+ Fixed: Resizing window repositions it on MacOS #1553
 #define GLFW_HAS_OSX_WINDOW_POS_FIX (GLFW_VERSION_MAJOR * 1000 + GLFW_VERSION_MINOR * 100 + GLFW_VERSION_REVISION * 10 >= 3310)
+// Let's be nice to people who pulled GLFW between 2019-04-16 (3.4 define) and 2019-11-29 (cursors defines) // FIXME: Remove when GLFW 3.4 is released?
 #ifdef GLFW_RESIZE_NESW_CURSOR
+	// 3.4+ GLFW_RESIZE_ALL_CURSOR, GLFW_RESIZE_NESW_CURSOR, GLFW_RESIZE_NWSE_CURSOR, GLFW_NOT_ALLOWED_CURSOR
 	#define GLFW_HAS_NEW_CURSORS (GLFW_VERSION_MAJOR * 1000 + GLFW_VERSION_MINOR * 100 >= 3400)
 #else
 	#define GLFW_HAS_NEW_CURSORS (0)
+#endif
+
+// Let's be nice to people who pulled GLFW between 2019-04-16 (3.4 define) and 2020-07-17 (passthrough)
+#ifdef GLFW_MOUSE_PASSTHROUGH
+	// 3.4+ GLFW_MOUSE_PASSTHROUGH
+	#define GLFW_HAS_MOUSE_PASSTHROUGH (GLFW_VERSION_MAJOR * 1000 + GLFW_VERSION_MINOR * 100 >= 3400)
+#else
+	#define GLFW_HAS_MOUSE_PASSTHROUGH (0)
 #endif
 
 #endif // CC_PLATFORM_PC
