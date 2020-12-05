@@ -1280,7 +1280,7 @@ static void ImGui_ImplGlfw_SwapBuffers(ImGuiViewport* viewport, void*)
 #pragma comment(lib, "imm32")
 #endif
 
-static void ImGui_ImplCocos2dx_SetImeInputPos(ImGuiViewport* viewport, ImVec2 pos)
+static void ImGui_ImplGlfw_SetImeInputPos(ImGuiViewport* viewport, ImVec2 pos)
 {
 	const auto hwnd = (HWND)glfwGetWin32Window(ImGui_ImplCocos2dx_GetWindow());
 	if (hwnd)
@@ -1297,7 +1297,7 @@ static void ImGui_ImplCocos2dx_SetImeInputPos(ImGuiViewport* viewport, ImVec2 po
 
 #else
 
-static void ImGui_ImplCocos2dx_SetImeInputPos(ImGuiViewport* viewport, ImVec2 pos) {}
+static void ImGui_ImplGlfw_SetImeInputPos(ImGuiViewport* viewport, ImVec2 pos) {}
 
 #endif
 
@@ -1321,7 +1321,7 @@ static void ImGui_ImplGlfw_InitPlatformInterface()
 #if GLFW_HAS_WINDOW_ALPHA
 	platform_io.Platform_SetWindowAlpha = ImGui_ImplGlfw_SetWindowAlpha;
 #endif
-	platform_io.Platform_SetImeInputPos = ImGui_ImplCocos2dx_SetImeInputPos;
+	platform_io.Platform_SetImeInputPos = ImGui_ImplGlfw_SetImeInputPos;
 
 	// Note: monitor callback are broken GLFW 3.2 and earlier (see github.com/glfw/glfw/issues/784)
 	ImGui_ImplGlfw_UpdateMonitors();
