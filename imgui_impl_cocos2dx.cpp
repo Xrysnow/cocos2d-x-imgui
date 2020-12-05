@@ -533,8 +533,10 @@ bool ImGui_ImplCocos2dx_Init(bool install_callbacks)
 	// We can set io.MouseHoveredViewport correctly (optional, not easy)
 	io.BackendFlags |= ImGuiBackendFlags_HasMouseHoveredViewport;
 #endif
-	// backend
+	// metal renderer is not supported
+#if CC_TARGET_PLATFORM != CC_PLATFORM_MAC
 	io.BackendFlags |= ImGuiBackendFlags_RendererHasViewports;
+#endif
 	ImGuiPlatformIO& platform_io = ImGui::GetPlatformIO();
 	platform_io.Renderer_RenderWindow = ImGui_ImplOpenGL2_RenderWindow;
 #endif // CC_PLATFORM_PC
