@@ -2143,7 +2143,7 @@ int lua_register_x_imguiFont_ImFontAtlasCustomRect(lua_State* tolua_S)
     tolua_cclass(tolua_S,"ImFontAtlasCustomRect","imgui.ImFontAtlasCustomRect","",nullptr);
 
     tolua_beginmodule(tolua_S,"ImFontAtlasCustomRect");
-        tolua_function(tolua_S,"IsPacked",lua_x_imguiFont_ImFontAtlasCustomRect_IsPacked);
+        tolua_function(tolua_S,"isPacked",lua_x_imguiFont_ImFontAtlasCustomRect_IsPacked);
         tolua_variable(tolua_S,"Width", lua_x_imguiFont_ImFontAtlasCustomRect_getWidth, lua_x_imguiFont_ImFontAtlasCustomRect_setWidth);
         tolua_variable(tolua_S,"Height", lua_x_imguiFont_ImFontAtlasCustomRect_getHeight, lua_x_imguiFont_ImFontAtlasCustomRect_setHeight);
         tolua_variable(tolua_S,"X", lua_x_imguiFont_ImFontAtlasCustomRect_getX, lua_x_imguiFont_ImFontAtlasCustomRect_setX);
@@ -2801,15 +2801,15 @@ int lua_register_x_imguiFont_ImFontAtlas(lua_State* tolua_S)
     tolua_cclass(tolua_S,"ImFontAtlas","imgui.ImFontAtlas","",nullptr);
 
     tolua_beginmodule(tolua_S,"ImFontAtlas");
-        tolua_function(tolua_S,"AddCustomRectFontGlyph",lua_x_imguiFont_ImFontAtlas_AddCustomRectFontGlyph);
-        tolua_function(tolua_S,"AddCustomRectRegular",lua_x_imguiFont_ImFontAtlas_AddCustomRectRegular);
-        tolua_function(tolua_S,"Build",lua_x_imguiFont_ImFontAtlas_Build);
-        tolua_function(tolua_S,"Clear",lua_x_imguiFont_ImFontAtlas_Clear);
-        tolua_function(tolua_S,"ClearFonts",lua_x_imguiFont_ImFontAtlas_ClearFonts);
-        tolua_function(tolua_S,"ClearInputData",lua_x_imguiFont_ImFontAtlas_ClearInputData);
-        tolua_function(tolua_S,"ClearTexData",lua_x_imguiFont_ImFontAtlas_ClearTexData);
-        tolua_function(tolua_S,"GetCustomRectByIndex",lua_x_imguiFont_ImFontAtlas_GetCustomRectByIndex);
-        tolua_function(tolua_S,"IsBuilt",lua_x_imguiFont_ImFontAtlas_IsBuilt);
+        tolua_function(tolua_S,"addCustomRectFontGlyph",lua_x_imguiFont_ImFontAtlas_AddCustomRectFontGlyph);
+        tolua_function(tolua_S,"addCustomRectRegular",lua_x_imguiFont_ImFontAtlas_AddCustomRectRegular);
+        tolua_function(tolua_S,"build",lua_x_imguiFont_ImFontAtlas_Build);
+        tolua_function(tolua_S,"clear",lua_x_imguiFont_ImFontAtlas_Clear);
+        tolua_function(tolua_S,"clearFonts",lua_x_imguiFont_ImFontAtlas_ClearFonts);
+        tolua_function(tolua_S,"clearInputData",lua_x_imguiFont_ImFontAtlas_ClearInputData);
+        tolua_function(tolua_S,"clearTexData",lua_x_imguiFont_ImFontAtlas_ClearTexData);
+        tolua_function(tolua_S,"getCustomRectByIndex",lua_x_imguiFont_ImFontAtlas_GetCustomRectByIndex);
+        tolua_function(tolua_S,"isBuilt",lua_x_imguiFont_ImFontAtlas_IsBuilt);
         tolua_variable(tolua_S,"Locked", lua_x_imguiFont_ImFontAtlas_getLocked, lua_x_imguiFont_ImFontAtlas_setLocked);
         tolua_variable(tolua_S,"Flags", lua_x_imguiFont_ImFontAtlas_getFlags, lua_x_imguiFont_ImFontAtlas_setFlags);
         tolua_variable(tolua_S,"TexDesiredWidth", lua_x_imguiFont_ImFontAtlas_getTexDesiredWidth, lua_x_imguiFont_ImFontAtlas_setTexDesiredWidth);
