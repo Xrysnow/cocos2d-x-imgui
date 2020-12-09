@@ -2904,11 +2904,8 @@ static int implot_pushColormap(lua_State* L) {
 	}
 	case LUA_TTABLE:
 	{
-		std::vector<ImVec4> colors;
-		if (!lua::luaval_to_native(L, 1, &colors))
-			return lua_param_error(1);
-		ImPlot::PushColormap(colors.data(), colors.size());
-		return 0;
+		// data must be persist until poped, use SetColormap instead
+		break;
 	}
 	default:
 		break;
