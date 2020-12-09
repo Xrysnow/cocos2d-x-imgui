@@ -1870,9 +1870,9 @@ static int implot_beginPlot(lua_State* L) {
 	offset = std::max(0, std::min(offset, (_size)));\
 	count = std::max(0, std::min(count, (_size) - offset));
 #define lua_param_error(_i) luaL_error(L, "invalid parameter #%d: %s", (_i), luaL_typename(L, (_i)))
-#define LUA_GET_PTR(Name, _i)\
-	T* Name = (T*)lua_to_cptr(L, _i);\
-	if (!Name) return lua_param_error(_i);\
+#define LUA_GET_PTR(_name, _i)\
+	T* _name = (T*)lua_to_cptr(L, (_i));\
+	if (!(_name)) return lua_param_error(_i);
 
 static bool lua_type_indexable(int t)
 {
