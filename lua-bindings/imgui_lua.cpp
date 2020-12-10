@@ -570,12 +570,23 @@ static int imgui_dragFloat(lua_State *L) {
 	const auto label = luaL_checkstring(L, 1);
 	float v = luaL_checknumber(L, 2);
 	const float v_speed = lua_opt_number(args, 3, 1.0f);
-	float v_min = lua_opt_number(args, 4, 0.0f);
-	float v_max = lua_opt_number(args, 5, 0.0f);
+	float v_min, v_max;
+	float* p_min = nullptr;
+	float* p_max = nullptr;
+	if (!lua_isnoneornil(L, 4))
+	{
+		v_min = luaL_checknumber(L, 4);
+		p_min = &v_min;
+	}
+	if (!lua_isnoneornil(L, 5))
+	{
+		v_max = luaL_checknumber(L, 5);
+		p_max = &v_max;
+	}
 	lua_pushboolean(L,
 		ImGui::DragScalar(label, ImGuiDataType_Float, &v,
-			v_speed, &v_min, &v_max,
-			lua_opt_string(args, 6, "%.3f"),
+			v_speed, p_min, p_max,
+			lua_opt_string_null(args, 6, nullptr),
 			lua_opt_int(args, 7, 0)));
 	lua_pushnumber(L, v);
 	return 2;
@@ -586,12 +597,23 @@ static int imgui_dragFloatN(lua_State *L) {
 	std::vector<float> arr;
 	luaval_to_std_vector_float(L, 2, &arr);
 	const float v_speed = lua_opt_number(args, 3, 1.0f);
-	float v_min = lua_opt_number(args, 4, 0.0f);
-	float v_max = lua_opt_number(args, 5, 0.0f);
+	float v_min, v_max;
+	float* p_min = nullptr;
+	float* p_max = nullptr;
+	if (!lua_isnoneornil(L, 4))
+	{
+		v_min = luaL_checknumber(L, 4);
+		p_min = &v_min;
+	}
+	if (!lua_isnoneornil(L, 5))
+	{
+		v_max = luaL_checknumber(L, 5);
+		p_max = &v_max;
+	}
 	lua_pushboolean(L,
 		ImGui::DragScalarN(label, ImGuiDataType_Float, arr.data(), arr.size(),
-			v_speed, &v_min, &v_max,
-			lua_opt_string(args, 6, "%.3f"),
+			v_speed, p_min, p_max,
+			lua_opt_string_null(args, 6, nullptr),
 			lua_opt_int(args, 7, 0)));
 	ccvector_float_to_luaval(L, arr);
 	return 2;
@@ -599,14 +621,25 @@ static int imgui_dragFloatN(lua_State *L) {
 static int imgui_dragInt(lua_State *L) {
 	const int args = lua_gettop(L);
 	auto label = luaL_checkstring(L, 1);
-	int v = luaL_checkinteger(L, 2);
+	int32_t v = luaL_checkinteger(L, 2);
 	const float v_speed = lua_opt_number(args, 3, 1.0f);
-	int v_min = lua_opt_int(args, 4, 0);
-	int v_max = lua_opt_int(args, 5, 0);
+	int32_t v_min, v_max;
+	int32_t* p_min = nullptr;
+	int32_t* p_max = nullptr;
+	if (!lua_isnoneornil(L, 4))
+	{
+		v_min = luaL_checkinteger(L, 4);
+		p_min = &v_min;
+	}
+	if (!lua_isnoneornil(L, 5))
+	{
+		v_max = luaL_checkinteger(L, 5);
+		p_max = &v_max;
+	}
 	lua_pushboolean(L,
 		ImGui::DragScalar(label, ImGuiDataType_S32, &v,
-			v_speed, &v_min, &v_max,
-			lua_opt_string(args, 6, "%d"),
+			v_speed, p_min, p_max,
+			lua_opt_string_null(args, 6, nullptr),
 			lua_opt_int(args, 7, 0)));
 	lua_pushnumber(L, v);
 	return 2;
@@ -617,12 +650,23 @@ static int imgui_dragIntN(lua_State *L) {
 	std::vector<int> arr;
 	luaval_to_std_vector_int(L, 2, &arr);
 	const float v_speed = lua_opt_number(args, 3, 1.0f);
-	int v_min = lua_opt_int(args, 4, 0);
-	int v_max = lua_opt_int(args, 5, 0);
+	int32_t v_min, v_max;
+	int32_t* p_min = nullptr;
+	int32_t* p_max = nullptr;
+	if (!lua_isnoneornil(L, 4))
+	{
+		v_min = luaL_checkinteger(L, 4);
+		p_min = &v_min;
+	}
+	if (!lua_isnoneornil(L, 5))
+	{
+		v_max = luaL_checkinteger(L, 5);
+		p_max = &v_max;
+	}
 	lua_pushboolean(L,
 		ImGui::DragScalarN(label, ImGuiDataType_S32, arr.data(), arr.size(),
-			v_speed, &v_min, &v_max,
-			lua_opt_string(args, 6, "%d"),
+			v_speed, p_min, p_max,
+			lua_opt_string_null(args, 6, nullptr),
 			lua_opt_int(args, 7, 0)));
 	ccvector_int_to_luaval(L, arr);
 	return 2;
@@ -653,7 +697,7 @@ static int imgui_sliderFloatN(lua_State *L) {
 		ImGui::SliderScalarN(luaL_checkstring(L, 1),
 			ImGuiDataType_Float, arr.data(), arr.size(),
 			&v_min, &v_max,
-			lua_opt_string(args, 5, "%.3f"),
+			lua_opt_string_null(args, 5, nullptr),
 			lua_opt_int(args, 6, 0)));
 	ccvector_float_to_luaval(L, arr);
 	return 2;
@@ -692,7 +736,7 @@ static int imgui_sliderIntN(lua_State *L) {
 		ImGui::SliderScalarN(luaL_checkstring(L, 1),
 			ImGuiDataType_S32, arr.data(), arr.size(),
 			&v_min, &v_max,
-			lua_opt_string(args, 5, "%d")));
+			lua_opt_string_null(args, 5, nullptr)));
 	ccvector_int_to_luaval(L, arr);
 	return 2;
 }
