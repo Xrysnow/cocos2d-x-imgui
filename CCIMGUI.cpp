@@ -331,7 +331,7 @@ static CCIMGUI::MdLinkCallback ImGuiMarkdownLinkCallback = nullptr;
 static CCIMGUI::MdTooltipCallback ImGuiMarkdownTooltipCallback = nullptr;
 static CCIMGUI::MdImageCallback ImGuiMarkdownImageCallback = nullptr;
 static CCIMGUI::MdFormatCallback ImGuiMarkdownFormatCallback = nullptr;
-static ImGui::MarkdownImageData ImGuiMarkdownInvalidImageData = { false, false, nullptr, {0.f, 0.f} };
+static ImGui::MarkdownImageData ImGuiMarkdownInvalidImageData = {};
 
 void MarkdownLinkCallback(ImGui::MarkdownLinkCallbackData data)
 {
@@ -375,7 +375,16 @@ ImGui::MarkdownImageData MarkdownImageCallback(ImGui::MarkdownLinkCallbackData d
 	ImVec2 uv0, uv1;
 	std::tie(uv0, uv1) = getTextureUV(sp);
 	CCIMGUI::getInstance()->getCCRefId(sp);
-	return { true, true, (ImTextureID)sp->getTexture(), size_,uv0, uv1, tint_col, border_col };
+	ImGui::MarkdownImageData ret;
+	ret.isValid = true;
+	ret.useLinkCallback = true;
+	ret.user_texture_id = (ImTextureID)sp->getTexture();
+	ret.size = size_;
+	ret.uv0 = uv0;
+	ret.uv1 = uv1;
+	ret.tint_col = tint_col;
+	ret.border_col = border_col;
+	return ret;
 }
 void MarkdownFormatCallback(const ImGui::MarkdownFormatInfo& markdownFormatInfo, bool start)
 {
