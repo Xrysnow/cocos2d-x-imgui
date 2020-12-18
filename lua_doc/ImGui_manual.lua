@@ -7,10 +7,14 @@ end
 
 -- Demo, Debug, Information
 
+--- create Demo window (previously called ShowTestWindow). demonstrate most ImGui features.
+--- call this to learn about the library! try to make it always available in your application!
 function imgui.showDemoWindow(open)
 end
+--- create About window. display Dear ImGui version, credits and build/system information.
 function imgui.showAboutWindow(open)
 end
+--- create Metrics/Debugger window. display Dear ImGui internals: windows, draw commands, various internal state, etc.
 function imgui.showMetricsWindow(open)
 end
 
@@ -54,6 +58,9 @@ end
 --- - For each independent axis of 'size': ==0.0f: use remaining host window size / >0.0f: fixed size / <0.0f: use remaining window size minus abs(size) / Each axis can use a different mode, e.g. ImVec2(0,400).
 --- - BeginChild() returns false to indicate the window is collapsed or fully clipped, so you may early out and omit submitting anything to the window.
 ---   Always call a matching EndChild() for each BeginChild() call, regardless of its return value (this is due to legacy reason and is inconsistent with most other functions such as BeginMenu/EndMenu, BeginPopup/EndPopup, etc. where the EndXXX call should only be called if the corresponding BeginXXX function returned true.)
+---   [Important: due to legacy reason, this is inconsistent with most other functions such as BeginMenu/EndMenu,
+---   BeginPopup/EndPopup, etc. where the EndXXX call should only be called if the corresponding BeginXXX function
+---   returned true. Begin and BeginChild are the only odd ones out. Will be fixed in a future update.]
 ---@param id string
 ---@param size ImVec2 optional
 ---@param border number optional
@@ -155,25 +162,29 @@ end
 
 
 --
--- Widgets: Drags
+-- Widgets: Drag Sliders
 -- - CTRL+Click on any drag box to turn them into an input box. Manually input values aren't clamped and can go off-bounds.
 -- - For all the Float2/Float3/Float4/Int2/Int3/Int4 versions of every functions, note that a 'float v[X]' function argument is the same as 'float* v', the array syntax is just a way to document the number of elements that are expected to be accessible. You can pass address of your first element out of a contiguous set, e.g. &myvector.x
 -- - Adjust format string to decorate the value with a prefix, a suffix, or adapt the editing and display precision e.g. "%.3f" -> 1.234; "%5.2f secs" -> 01.23 secs; "Biscuit: %.0f" -> Biscuit: 1; etc.
+-- - Format string may also be set to NULL or use the default format ("%f" or "%d").
 -- - Speed are per-pixel of mouse movement (v_speed=0.2f: mouse needs to move by 5 pixels to increase value by 1). For gamepad/keyboard navigation, minimum speed is Max(v_speed, minimum_step_at_given_precision).
---
--- if v_min >= v_max we have no bound
+-- - Use v_min < v_max to clamp edits to given limits. Note that CTRL+Click manual input can override those limits.
+-- - Use v_max = FLT_MAX / INT_MAX etc to avoid clamping to a maximum, same with v_min = -FLT_MAX / INT_MIN to avoid clamping to a minimum.
+-- - We use the same sets of flags for DragXXX() and SliderXXX() functions as the features are the same and it makes it easier to swap them.
+-- - Legacy: Pre-1.78 there are DragXXX() function signatures that takes a final `float power=1.0f' argument instead of the `ImGuiSliderFlags flags=0' argument.
+--   If you get a warning converting a float to ImGuiSliderFlags, read https://github.com/ocornut/imgui/issues/3361
 --
 
 ---
 ---@param label string
 ---@param value number
----@param v_speed number
----@param v_min number
----@param v_max number
----@param format string
----@param power number
+---@param v_speed number @optional
+---@param v_min number @optional
+---@param v_max number @optional
+---@param format string @optional
+---@param flags number @optional, ImGuiSliderFlags
 ---@return boolean,number
-function imgui.dragFloat(label, value, v_speed, v_min, v_max, format, power)
+function imgui.dragFloat(label, value, v_speed, v_min, v_max, format, flags)
 end
 
 ---
@@ -183,41 +194,42 @@ end
 ---@param v_min number
 ---@param v_max number
 ---@param format string
----@param power number
+---@param flags number
 ---@return boolean,number[]
-function imgui.dragFloatN(label, array, v_speed, v_min, v_max, format, power)
+function imgui.dragFloatN(label, array, v_speed, v_min, v_max, format, flags)
 end
 
 ---
 ---@param label string
 ---@param value number
----@param v_speed number
----@param v_min number
----@param v_max number
----@param format string
----@param power number
+---@param v_speed number @optional
+---@param v_min number @optional
+---@param v_max number @optional
+---@param format string @optional
+---@param flags number @optional, ImGuiSliderFlags
 ---@return boolean,number
-function imgui.dragInt(label, value, v_speed, v_min, v_max, format, power)
+function imgui.dragInt(label, value, v_speed, v_min, v_max, format, flags)
 end
 
 ---
 ---@param label string
 ---@param array number[]
----@param v_speed number
----@param v_min number
----@param v_max number
----@param format string
----@param power number
+---@param v_speed number @optional
+---@param v_min number @optional
+---@param v_max number @optional
+---@param format string @optional
+---@param flags number @optional, ImGuiSliderFlags
 ---@return boolean,number[]
-function imgui.dragIntN(label, array, v_speed, v_min, v_max, format, power)
+function imgui.dragIntN(label, array, v_speed, v_min, v_max, format, flags)
 end
 
 --
--- Widgets: Sliders
+-- Widgets: Regular Sliders
 -- - CTRL+Click on any slider to turn them into an input box. Manually input values aren't clamped and can go off-bounds.
 -- - Adjust format string to decorate the value with a prefix, a suffix, or adapt the editing and display precision e.g. "%.3f" -> 1.234; "%5.2f secs" -> 01.23 secs; "Biscuit: %.0f" -> Biscuit: 1; etc.
---
---  adjust format to decorate the value with a prefix or a suffix for in-slider labels or unit display. Use power!=1.0 for power curve sliders
+-- - Format string may also be set to NULL or use the default format ("%f" or "%d").
+-- - Legacy: Pre-1.78 there are SliderXXX() function signatures that takes a final `float power=1.0f' argument instead of the `ImGuiSliderFlags flags=0' argument.
+--   If you get a warning converting a float to ImGuiSliderFlags, read https://github.com/ocornut/imgui/issues/3361
 --
 
 ---
@@ -225,10 +237,10 @@ end
 ---@param value number
 ---@param v_min number
 ---@param v_max number
----@param format string
----@param power number
+---@param format string @optional
+---@param flags number @optional, ImGuiSliderFlags
 ---@return boolean,number
-function imgui.sliderFloat(label, value, v_min, v_max, format, power)
+function imgui.sliderFloat(label, value, v_min, v_max, format, flags)
 end
 
 ---
@@ -236,10 +248,10 @@ end
 ---@param array number[]
 ---@param v_min number
 ---@param v_max number
----@param format string
----@param power number
+---@param format string @optional
+---@param flags number @optional, ImGuiSliderFlags
 ---@return boolean,number[]
-function imgui.sliderFloatN(label, array, v_min, v_max, format, power)
+function imgui.sliderFloatN(label, array, v_min, v_max, format, flags)
 end
 
 ---
@@ -371,7 +383,7 @@ end
 
 --
 -- Widgets: Color Editor/Picker
--- (tip: the ColorEdit* functions have a little colored preview square that can be left-clicked to open a picker, and right-clicked to open an option menu.)
+-- (tip: the ColorEdit* functions have a little color square that can be left-clicked to open a picker, and right-clicked to open an option menu.)
 -- - Note that in C++ a 'float v[X]' function argument is the _same_ as 'float* v', the array syntax is just a way to document the number of elements that are expected to be accessible.
 -- - You can pass the address of a first float element out of a contiguous structure, e.g. &myvector.x
 --
