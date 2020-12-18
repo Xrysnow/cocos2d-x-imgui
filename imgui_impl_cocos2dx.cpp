@@ -684,8 +684,32 @@ bool ImGui_ImplCocos2dx_Init(bool install_callbacks)
 		g_MouseJustPressed[0] = false;
 	};
 	cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(e1, -1);
-	auto e2 = cocos2d::EventListenerKeyboard::create();
+
 	using KeyCode = cocos2d::EventKeyboard::KeyCode;
+	io.KeyMap[ImGuiKey_Tab] = (int)KeyCode::KEY_TAB;
+	io.KeyMap[ImGuiKey_LeftArrow] = (int)KeyCode::KEY_LEFT_ARROW;
+	io.KeyMap[ImGuiKey_RightArrow] = (int)KeyCode::KEY_RIGHT_ARROW;
+	io.KeyMap[ImGuiKey_UpArrow] = (int)KeyCode::KEY_UP_ARROW;
+	io.KeyMap[ImGuiKey_DownArrow] = (int)KeyCode::KEY_DOWN_ARROW;
+	io.KeyMap[ImGuiKey_PageUp] = (int)KeyCode::KEY_PG_UP;
+	io.KeyMap[ImGuiKey_PageDown] = (int)KeyCode::KEY_PG_DOWN;
+	io.KeyMap[ImGuiKey_Home] = (int)KeyCode::KEY_HOME;
+	io.KeyMap[ImGuiKey_End] = (int)KeyCode::KEY_END;
+	io.KeyMap[ImGuiKey_Insert] = (int)KeyCode::KEY_INSERT;
+	io.KeyMap[ImGuiKey_Delete] = (int)KeyCode::KEY_DELETE;
+	io.KeyMap[ImGuiKey_Backspace] = (int)KeyCode::KEY_BACKSPACE;
+	io.KeyMap[ImGuiKey_Space] = (int)KeyCode::KEY_SPACE;
+	io.KeyMap[ImGuiKey_Enter] = (int)KeyCode::KEY_ENTER;
+	io.KeyMap[ImGuiKey_Escape] = (int)KeyCode::KEY_ESCAPE;
+	io.KeyMap[ImGuiKey_KeyPadEnter] = (int)KeyCode::KEY_KP_ENTER;
+	io.KeyMap[ImGuiKey_A] = (int)KeyCode::KEY_A;
+	io.KeyMap[ImGuiKey_C] = (int)KeyCode::KEY_C;
+	io.KeyMap[ImGuiKey_V] = (int)KeyCode::KEY_V;
+	io.KeyMap[ImGuiKey_X] = (int)KeyCode::KEY_X;
+	io.KeyMap[ImGuiKey_Y] = (int)KeyCode::KEY_Y;
+	io.KeyMap[ImGuiKey_Z] = (int)KeyCode::KEY_Z;
+
+	auto e2 = cocos2d::EventListenerKeyboard::create();
 	e2->onKeyPressed = [](KeyCode k, cocos2d::Event* ev)
 	{
 		auto& _io = ImGui::GetIO();
