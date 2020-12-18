@@ -1,4 +1,3 @@
-
 --------------------------------
 -- @module ImFontGlyph
 -- @parent_module imgui

@@ -70,15 +70,6 @@ ImFont.FallbackGlyph = nil
 
 --------------------------------
 
---- Offset font rendering by xx pixels
---- = (0,0)    
---- in
---- 8
----@type ImVec2
-ImFont.DisplayOffset = nil
-
---------------------------------
-
 --- What we has been loaded into
 --- out
 --- 4-8

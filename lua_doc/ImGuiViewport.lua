@@ -70,7 +70,7 @@ ImGuiViewport.DpiScale = nil
 
 --------------------------------
 
----  (Advanced) 0: no parent. Instruct the platform back-end to setup a parent/child relationship between platform windows. 
+---  (Advanced) 0: no parent. Instruct the platform backend to setup a parent/child relationship between platform windows. 
 ---@type number
 ImGuiViewport.ParentViewportId = nil
 

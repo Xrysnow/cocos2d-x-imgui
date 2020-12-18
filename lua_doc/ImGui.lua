@@ -129,7 +129,7 @@ end
 
 --------------------------------
 
----   draw a small circle and keep the cursor on the same line. advance cursor x position by GetTreeNodeToLabelSpacing(), same distance that TreeNode() uses 
+---   draw a small circle + keep the cursor on the same line. advance cursor x position by GetTreeNodeToLabelSpacing(), same distance that TreeNode() uses 
 function imgui.bullet()
 end
 
@@ -187,7 +187,7 @@ end
 
 --------------------------------
 
----   display a colored square/button, hover for details, return true when pressed. 
+---   display a color square/button, hover for details, return true when pressed. 
 ---@param desc_id string
 ---@param col ImVec4
 ---@param flags number
@@ -198,7 +198,7 @@ end
 
 --------------------------------
 
----   Inputs Utilities 
+--- 
 ---@param in_ ImVec4
 ---@return number
 function imgui.colorConvertFloat4ToU32(in_)
@@ -234,7 +234,7 @@ end
 
 --------------------------------
 
----  call DestroyWindow platform functions for all viewports. call from back-end Shutdown() if you need to close platform windows before imgui shutdown. otherwise will be called by DestroyContext(). 
+---  call DestroyWindow platform functions for all viewports. call from backend Shutdown() if you need to close platform windows before imgui shutdown. otherwise will be called by DestroyContext(). 
 function imgui.destroyPlatformWindows()
 end
 
@@ -341,7 +341,7 @@ end
 
 --------------------------------
 
----  this is a helper for back-ends. 
+---  this is a helper for backends. 
 ---@param id number
 ---@return imgui.ImGuiViewport
 function imgui.findViewportByID(id)
@@ -570,14 +570,14 @@ end
 
 --------------------------------
 
----   get maximum scrolling amount ~~ ContentSize.X - WindowSize.X 
+---   get maximum scrolling amount ~~ ContentSize.x - WindowSize.x 
 ---@return number
 function imgui.getScrollMaxX()
 end
 
 --------------------------------
 
----   get maximum scrolling amount ~~ ContentSize.Y - WindowSize.Y 
+---   get maximum scrolling amount ~~ ContentSize.y - WindowSize.y 
 ---@return number
 function imgui.getScrollMaxY()
 end
@@ -726,17 +726,18 @@ end
 
 --------------------------------
 
----   move content position toward the right, by style.IndentSpacing or indent_w if != 0 
+---   move content position toward the right, by indent_w, or style.IndentSpacing if indent_w <= 0 
 function imgui.indent()
 end
 
 --------------------------------
 
----   button behavior without the visuals, frequently useful to build custom behaviors using the public api (along with IsItemActive, IsItemHovered, etc.) 
+---   flexible button behavior without the visuals, frequently useful to build custom behaviors using the public api (along with IsItemActive, IsItemHovered, etc.) 
 ---@param str_id string
 ---@param size ImVec2
+---@param flags number
 ---@return boolean
-function imgui.invisibleButton(str_id, size)
+function imgui.invisibleButton(str_id, size, flags)
 end
 
 --------------------------------
@@ -873,7 +874,7 @@ end
 
 --------------------------------
 
----   did mouse button double-clicked. a double-click returns false in IsMouseClicked(). uses io.MouseDoubleClickTime. 
+---   did mouse button double-clicked? (note that a double-click will also report IsMouseClicked() == true) 
 ---@param button number
 ---@return boolean
 function imgui.isMouseDoubleClicked(button)
@@ -1064,7 +1065,7 @@ end
 
 ---   helper to open popup when clicked on last item. return true when just opened. (note: actually triggers on the mouse _released_ event to be consistent with popup behaviors) 
 ---@return boolean
-function imgui.openPopupContextItem()
+function imgui.openPopupOnItemClick()
 end
 
 --------------------------------
@@ -1179,7 +1180,7 @@ end
 
 --------------------------------
 
----   ends the Dear ImGui frame, finalize the draw data. You can get call GetDrawData() to obtain it and run your rendering function (up to v1.60, this used to call io.RenderDrawListsFn(). Nowadays, we allow and prefer calling your render function yourself.) 
+---   ends the Dear ImGui frame, finalize the draw data. You can then get call GetDrawData(). 
 function imgui.render()
 end
 
@@ -1514,6 +1515,15 @@ end
 
 --------------------------------
 
+---   create a Tab behaving like a button. return true when clicked. cannot be selected in the tab bar. 
+---@param label string
+---@param flags number
+---@return boolean
+function imgui.tabItemButton(label, flags)
+end
+
+--------------------------------
+
 ---   simple formatted text 
 ---@param fmt string
 function imgui.text(fmt)
@@ -1586,7 +1596,7 @@ end
 
 --------------------------------
 
----   move content position back to the left, by style.IndentSpacing or indent_w if != 0 
+---   move content position back to the left, by indent_w, or style.IndentSpacing if indent_w <= 0 
 function imgui.unindent()
 end
 

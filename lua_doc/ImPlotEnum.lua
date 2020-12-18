@@ -1,187 +1,445 @@
 --------------------------------
--- @module ImPlot
+-- @module ImPlotAxisFlags_
 -- @parent_module implot
 
-local ImPlot = implot
---------------------------------
-
-local ImPlotFlags = {}
----  Options for plots. 
-ImPlot.ImPlotFlags = ImPlotFlags
----  Options for plots.
-ImPlot.Flags = ImPlotFlags
----  the mouse position, in plot coordinates, will be displayed in the bottom-right 
-ImPlotFlags.MousePos = 1
----  a legend will be displayed in the top-left 
-ImPlotFlags.Legend = 2
----  plot items will be highlighted when their legend entry is hovered 
-ImPlotFlags.Highlight = 4
----  the user will be able to box-select with right-mouse 
-ImPlotFlags.BoxSelect = 8
----  the user will be able to draw query rects with middle-mouse 
-ImPlotFlags.Query = 16
----  the user will be able to open a context menu with double-right click 
-ImPlotFlags.ContextMenu = 32
----  the default mouse cursor will be replaced with a crosshair when hovered 
-ImPlotFlags.Crosshairs = 64
----  plot lines will be software anti-aliased (not recommended, prefer MSAA) 
-ImPlotFlags.AntiAliased = 128
----  a child window region will not be used to capture mouse scroll (can boost performance for single ImGui window applications) 
-ImPlotFlags.NoChild = 256
----  enable a 2nd y-axis 
-ImPlotFlags.YAxis2 = 512
----  enable a 3rd y-axis 
-ImPlotFlags.YAxis3 = 1024
----  enable a 3rd y-axis 
-ImPlotFlags.Default = 47
---------------------------------
-
-local ImPlotAxisFlags = {}
----  Options for plot axes (X and Y). 
-ImPlot.ImPlotAxisFlags = ImPlotAxisFlags
 ---  Options for plot axes (X and Y).
-ImPlot.AxisFlags = ImPlotAxisFlags
----  grid lines will be displayed 
-ImPlotAxisFlags.GridLines = 1
----  tick marks will be displayed for each grid line 
-ImPlotAxisFlags.TickMarks = 2
----  text labels will be displayed for each grid line 
-ImPlotAxisFlags.TickLabels = 4
----  the axis will be inverted 
-ImPlotAxisFlags.Invert = 8
----  the axis minimum value will be locked when panning/zooming 
-ImPlotAxisFlags.LockMin = 16
----  the axis maximum value will be locked when panning/zooming 
-ImPlotAxisFlags.LockMax = 32
----  a logartithmic (base 10) axis scale will be used 
-ImPlotAxisFlags.LogScale = 64
----  scientific notation will be used for tick labels if displayed (WIP, not very good yet) 
-ImPlotAxisFlags.Scientific = 128
----  scientific notation will be used for tick labels if displayed (WIP, not very good yet) 
-ImPlotAxisFlags.Default = 7
----  scientific notation will be used for tick labels if displayed (WIP, not very good yet) 
-ImPlotAxisFlags.Auxiliary = 6
---------------------------------
+---@class implot.ImPlotAxisFlags
+local ImPlotAxisFlags = {}
+implot.ImPlotAxisFlags = ImPlotAxisFlags
+implot.AxisFlags = ImPlotAxisFlags
 
-local ImPlotCol = {}
----  Plot styling colors. 
-ImPlot.ImPlotCol = ImPlotCol
+---  default
+---@type number
+ImPlotAxisFlags.None = 0
+---  no grid lines will be displayed
+---@type number
+ImPlotAxisFlags.NoGridLines = 1
+---  no tick marks will be displayed
+---@type number
+ImPlotAxisFlags.NoTickMarks = 2
+---  no text labels will be displayed
+---@type number
+ImPlotAxisFlags.NoTickLabels = 4
+---  a logartithmic (base 10) axis scale will be used (mutually exclusive with ImPlotAxisFlags_Time)
+---@type number
+ImPlotAxisFlags.LogScale = 8
+---  axis will display date/time formatted labels (mutually exclusive with ImPlotAxisFlags_LogScale)
+---@type number
+ImPlotAxisFlags.Time = 16
+---  the axis will be inverted
+---@type number
+ImPlotAxisFlags.Invert = 32
+---  the axis minimum value will be locked when panning/zooming
+---@type number
+ImPlotAxisFlags.LockMin = 64
+---  the axis maximum value will be locked when panning/zooming
+---@type number
+ImPlotAxisFlags.LockMax = 128
+--- 
+---@type number
+ImPlotAxisFlags.Lock = 192
+--- 
+---@type number
+ImPlotAxisFlags.NoDecorations = 7
+
+--------------------------------
+-- @module ImPlotCol_
+-- @parent_module implot
+
 ---  Plot styling colors.
-ImPlot.Col = ImPlotCol
----  plot line/outline color (defaults to next unused color in current colormap) 
+---@class implot.ImPlotCol
+local ImPlotCol = {}
+implot.ImPlotCol = ImPlotCol
+implot.Col = ImPlotCol
+
+---  plot line/outline color (defaults to next unused color in current colormap)
+---@type number
 ImPlotCol.Line = 0
----  plot fill color for bars (defaults to the current line color) 
+---  plot fill color for bars (defaults to the current line color)
+---@type number
 ImPlotCol.Fill = 1
----  marker outline color (defaults to the current line color) 
+---  marker outline color (defaults to the current line color)
+---@type number
 ImPlotCol.MarkerOutline = 2
----  marker fill color (defaults to the current line color) 
+---  marker fill color (defaults to the current line color)
+---@type number
 ImPlotCol.MarkerFill = 3
----  error bar color (defaults to ImGuiCol_Text) 
+---  error bar color (defaults to ImGuiCol_Text)
+---@type number
 ImPlotCol.ErrorBar = 4
----  plot frame background color (defaults to ImGuiCol_FrameBg) 
+---  plot frame background color (defaults to ImGuiCol_FrameBg)
+---@type number
 ImPlotCol.FrameBg = 5
----  plot area background color (defaults to ImGuiCol_WindowBg) 
+---  plot area background color (defaults to ImGuiCol_WindowBg)
+---@type number
 ImPlotCol.PlotBg = 6
----  plot area border color (defaults to ImGuiCol_Text) 
+---  plot area border color (defaults to ImGuiCol_Border)
+---@type number
 ImPlotCol.PlotBorder = 7
----  x-axis grid/label color (defaults to 25% ImGuiCol_Text) 
-ImPlotCol.XAxis = 8
----  y-axis grid/label color (defaults to 25% ImGuiCol_Text) 
-ImPlotCol.YAxis = 9
----  2nd y-axis grid/label color (defaults to 25% ImGuiCol_Text) 
-ImPlotCol.YAxis2 = 10
----  3rd y-axis grid/label color (defaults to 25% ImGuiCol_Text) 
-ImPlotCol.YAxis3 = 11
----  box-selection color (defaults to yellow) 
-ImPlotCol.Selection = 12
----  box-query color (defaults to green) 
-ImPlotCol.Query = 13
----  box-query color (defaults to green) 
-ImPlotCol.COUNT = 14
---------------------------------
+---  legend background color (defaults to ImGuiCol_PopupBg)
+---@type number
+ImPlotCol.LegendBg = 8
+---  legend border color (defaults to ImPlotCol_PlotBorder)
+---@type number
+ImPlotCol.LegendBorder = 9
+---  legend text color (defaults to ImPlotCol_InlayText)
+---@type number
+ImPlotCol.LegendText = 10
+---  plot title text color (defaults to ImGuiCol_Text)
+---@type number
+ImPlotCol.TitleText = 11
+---  color of text appearing inside of plots (defaults to ImGuiCol_Text)
+---@type number
+ImPlotCol.InlayText = 12
+---  x-axis label and tick lables color (defaults to ImGuiCol_Text)
+---@type number
+ImPlotCol.XAxis = 13
+---  x-axis grid color (defaults to 25% ImPlotCol_XAxis)
+---@type number
+ImPlotCol.XAxisGrid = 14
+---  y-axis label and tick labels color (defaults to ImGuiCol_Text)
+---@type number
+ImPlotCol.YAxis = 15
+---  y-axis grid color (defaults to 25% ImPlotCol_YAxis)
+---@type number
+ImPlotCol.YAxisGrid = 16
+---  2nd y-axis label and tick labels color (defaults to ImGuiCol_Text)
+---@type number
+ImPlotCol.YAxis2 = 17
+---  2nd y-axis grid/label color (defaults to 25% ImPlotCol_YAxis2)
+---@type number
+ImPlotCol.YAxisGrid2 = 18
+---  3rd y-axis label and tick labels color (defaults to ImGuiCol_Text)
+---@type number
+ImPlotCol.YAxis3 = 19
+---  3rd y-axis grid/label color (defaults to 25% ImPlotCol_YAxis3)
+---@type number
+ImPlotCol.YAxisGrid3 = 20
+---  box-selection color (defaults to yellow)
+---@type number
+ImPlotCol.Selection = 21
+---  box-query color (defaults to green)
+---@type number
+ImPlotCol.Query = 22
+---  crosshairs color (defaults to ImPlotCol_PlotBorder)
+---@type number
+ImPlotCol.Crosshairs = 23
+---  crosshairs color (defaults to ImPlotCol_PlotBorder)
+---@type number
+ImPlotCol.COUNT = 24
 
-local ImPlotStyleVar = {}
----  Plot styling variables. 
-ImPlot.ImPlotStyleVar = ImPlotStyleVar
----  Plot styling variables.
-ImPlot.StyleVar = ImPlotStyleVar
----  float, line weight in pixels 
-ImPlotStyleVar.LineWeight = 0
----  int,   marker specification 
-ImPlotStyleVar.Marker = 1
----  float, marker size in pixels (roughly the marker's "radius") 
-ImPlotStyleVar.MarkerSize = 2
----  float, outline weight of markers in pixels 
-ImPlotStyleVar.MarkerWeight = 3
----  float, alpha modifier applied to all plot item fills 
-ImPlotStyleVar.FillAlpha = 4
----  float, error bar whisker width in pixels 
-ImPlotStyleVar.ErrorBarSize = 5
----  float, error bar whisker weight in pixels 
-ImPlotStyleVar.ErrorBarWeight = 6
----  float, digital channels bit height (at 1) in pixels 
-ImPlotStyleVar.DigitalBitHeight = 7
----  float, digital channels bit padding gap in pixels 
-ImPlotStyleVar.DigitalBitGap = 8
----  float, digital channels bit padding gap in pixels 
-ImPlotStyleVar.COUNT = 9
 --------------------------------
+-- @module ImPlotColormap_
+-- @parent_module implot
 
-local ImPlotMarker = {}
----  Marker specifications. You can combine this with binary OR, e.g. Circle | Cross. 
-ImPlot.ImPlotMarker = ImPlotMarker
----  Marker specifications. You can combine this with binary OR, e.g. Circle | Cross.
-ImPlot.Marker = ImPlotMarker
----  no marker 
-ImPlotMarker.None = 1
----  a circle marker will be rendered at each point 
-ImPlotMarker.Circle = 2
----  a square maker will be rendered at each point 
-ImPlotMarker.Square = 4
----  a diamond marker will be rendered at each point 
-ImPlotMarker.Diamond = 8
----  an upward-pointing triangle marker will up rendered at each point 
-ImPlotMarker.Up = 16
----  an downward-pointing triangle marker will up rendered at each point 
-ImPlotMarker.Down = 32
----  an leftward-pointing triangle marker will up rendered at each point 
-ImPlotMarker.Left = 64
----  an rightward-pointing triangle marker will up rendered at each point 
-ImPlotMarker.Right = 128
----  a cross marker will be rendered at each point (not filled) 
-ImPlotMarker.Cross = 256
----  a plus marker will be rendered at each point (not filled) 
-ImPlotMarker.Plus = 512
----  a asterisk marker will be rendered at each point (not filled) 
-ImPlotMarker.Asterisk = 1024
---------------------------------
-
-local ImPlotColormap = {}
----  Built-in colormaps 
-ImPlot.ImPlotColormap = ImPlotColormap
 ---  Built-in colormaps
-ImPlot.Colormap = ImPlotColormap
----  ImPlot default colormap         (n=10) 
+---@class implot.ImPlotColormap
+local ImPlotColormap = {}
+implot.ImPlotColormap = ImPlotColormap
+implot.Colormap = ImPlotColormap
+
+---  ImPlot default colormap         (n=10)
+---@type number
 ImPlotColormap.Default = 0
----  a.k.a. matplotlib "Set1"        (n=9) 
-ImPlotColormap.Dark = 1
----  a.k.a. matplotlib "Pastel1"     (n=9) 
-ImPlotColormap.Pastel = 2
----  a.k.a. matplotlib "Paired"      (n=12) 
-ImPlotColormap.Paired = 3
----  a.k.a. matplotlib "viridis"     (n=11) 
-ImPlotColormap.Viridis = 4
----  a.k.a. matplotlib "plasma"      (n=11) 
-ImPlotColormap.Plasma = 5
----  a.k.a. matplotlib/MATLAB "hot"  (n=11) 
-ImPlotColormap.Hot = 6
----  a.k.a. matplotlib/MATLAB "cool" (n=11) 
-ImPlotColormap.Cool = 7
----  a.k.a. matplotlib/MATLAB "pink" (n=11) 
-ImPlotColormap.Pink = 8
----  a.k.a. MATLAB "jet"             (n=11) 
-ImPlotColormap.Jet = 9
----  a.k.a. MATLAB "jet"             (n=11) 
-ImPlotColormap.COUNT = 10
+---  a.k.a. seaborn deep             (n=10)
+---@type number
+ImPlotColormap.Deep = 1
+---  a.k.a. matplotlib "Set1"        (n=9)
+---@type number
+ImPlotColormap.Dark = 2
+---  a.k.a. matplotlib "Pastel1"     (n=9)
+---@type number
+ImPlotColormap.Pastel = 3
+---  a.k.a. matplotlib "Paired"      (n=12)
+---@type number
+ImPlotColormap.Paired = 4
+---  a.k.a. matplotlib "viridis"     (n=11)
+---@type number
+ImPlotColormap.Viridis = 5
+---  a.k.a. matplotlib "plasma"      (n=11)
+---@type number
+ImPlotColormap.Plasma = 6
+---  a.k.a. matplotlib/MATLAB "hot"  (n=11)
+---@type number
+ImPlotColormap.Hot = 7
+---  a.k.a. matplotlib/MATLAB "cool" (n=11)
+---@type number
+ImPlotColormap.Cool = 8
+---  a.k.a. matplotlib/MATLAB "pink" (n=11)
+---@type number
+ImPlotColormap.Pink = 9
+---  a.k.a. MATLAB "jet"             (n=11)
+---@type number
+ImPlotColormap.Jet = 10
+
+--------------------------------
+-- @module ImPlotFlags_
+-- @parent_module implot
+
+---  Options for plots.
+---@class implot.ImPlotFlags
+local ImPlotFlags = {}
+implot.ImPlotFlags = ImPlotFlags
+implot.Flags = ImPlotFlags
+
+---  default
+---@type number
+ImPlotFlags.None = 0
+---  the plot title will not be displayed (titles are also hidden if preceeded by double hashes, e.g. "##MyPlot")
+---@type number
+ImPlotFlags.NoTitle = 1
+---  the legend will not be displayed
+---@type number
+ImPlotFlags.NoLegend = 2
+---  the user will not be able to open context menus with double-right click
+---@type number
+ImPlotFlags.NoMenus = 4
+---  the user will not be able to box-select with right-mouse
+---@type number
+ImPlotFlags.NoBoxSelect = 8
+---  the mouse position, in plot coordinates, will not be displayed inside of the plot
+---@type number
+ImPlotFlags.NoMousePos = 16
+---  plot items will not be highlighted when their legend entry is hovered
+---@type number
+ImPlotFlags.NoHighlight = 32
+---  a child window region will not be used to capture mouse scroll (can boost performance for single ImGui window applications)
+---@type number
+ImPlotFlags.NoChild = 64
+---  primary x and y axes will be constrained to have the same units/pixel (does not apply to auxiliary y axes)
+---@type number
+ImPlotFlags.Equal = 128
+---  enable a 2nd y-axis on the right side
+---@type number
+ImPlotFlags.YAxis2 = 256
+---  enable a 3rd y-axis on the right side
+---@type number
+ImPlotFlags.YAxis3 = 512
+---  the user will be able to draw query rects with middle-mouse
+---@type number
+ImPlotFlags.Query = 1024
+---  the default mouse cursor will be replaced with a crosshair when hovered
+---@type number
+ImPlotFlags.Crosshairs = 2048
+---  plot lines will be software anti-aliased (not recommended for density plots, prefer MSAA)
+---@type number
+ImPlotFlags.AntiAliased = 4096
+---  plot lines will be software anti-aliased (not recommended for density plots, prefer MSAA)
+---@type number
+ImPlotFlags.CanvasOnly = 31
+
+--------------------------------
+-- @module ImPlotLocation_
+-- @parent_module implot
+
+---  Used to position items on a plot (e.g. legends, labels, etc.)
+---@class implot.ImPlotLocation
+local ImPlotLocation = {}
+implot.ImPlotLocation = ImPlotLocation
+implot.Location = ImPlotLocation
+
+---  center-center
+---@type number
+ImPlotLocation.Center = 0
+---  top-center
+---@type number
+ImPlotLocation.North = 1
+---  bottom-center
+---@type number
+ImPlotLocation.South = 2
+---  center-left
+---@type number
+ImPlotLocation.West = 4
+---  center-right
+---@type number
+ImPlotLocation.East = 8
+---  top-left
+---@type number
+ImPlotLocation.NorthWest = 5
+---  top-right
+---@type number
+ImPlotLocation.NorthEast = 9
+---  bottom-left
+---@type number
+ImPlotLocation.SouthWest = 6
+---  bottom-right
+---@type number
+ImPlotLocation.SouthEast = 10
+
+--------------------------------
+-- @module ImPlotMarker_
+-- @parent_module implot
+
+---  Marker specifications.
+---@class implot.ImPlotMarker
+local ImPlotMarker = {}
+implot.ImPlotMarker = ImPlotMarker
+implot.Marker = ImPlotMarker
+
+---  no marker
+---@type number
+ImPlotMarker.None = -1
+---  a circle marker
+---@type number
+ImPlotMarker.Circle = 0
+---  a square maker
+---@type number
+ImPlotMarker.Square = 1
+---  a diamond marker
+---@type number
+ImPlotMarker.Diamond = 2
+---  an upward-pointing triangle marker
+---@type number
+ImPlotMarker.Up = 3
+---  an downward-pointing triangle marker
+---@type number
+ImPlotMarker.Down = 4
+---  an leftward-pointing triangle marker
+---@type number
+ImPlotMarker.Left = 5
+---  an rightward-pointing triangle marker
+---@type number
+ImPlotMarker.Right = 6
+---  a cross marker (not fillable)
+---@type number
+ImPlotMarker.Cross = 7
+---  a plus marker (not fillable)
+---@type number
+ImPlotMarker.Plus = 8
+---  a asterisk marker (not fillable)
+---@type number
+ImPlotMarker.Asterisk = 9
+---  a asterisk marker (not fillable)
+---@type number
+ImPlotMarker.COUNT = 10
+
+--------------------------------
+-- @module ImPlotOrientation_
+-- @parent_module implot
+
+---  Used to orient items on a plot (e.g. legends, labels, etc.)
+---@class implot.ImPlotOrientation
+local ImPlotOrientation = {}
+implot.ImPlotOrientation = ImPlotOrientation
+implot.Orientation = ImPlotOrientation
+
+---  left/right
+---@type number
+ImPlotOrientation.Horizontal = 0
+---  up/down
+---@type number
+ImPlotOrientation.Vertical = 1
+
+--------------------------------
+-- @module ImPlotStyleVar_
+-- @parent_module implot
+
+---  Plot styling variables.
+---@class implot.ImPlotStyleVar
+local ImPlotStyleVar = {}
+implot.ImPlotStyleVar = ImPlotStyleVar
+implot.StyleVar = ImPlotStyleVar
+
+---  float,  plot item line weight in pixels
+---@type number
+ImPlotStyleVar.LineWeight = 0
+---  int,    marker specification
+---@type number
+ImPlotStyleVar.Marker = 1
+---  float,  marker size in pixels (roughly the marker's "radius")
+---@type number
+ImPlotStyleVar.MarkerSize = 2
+---  float,  plot outline weight of markers in pixels
+---@type number
+ImPlotStyleVar.MarkerWeight = 3
+---  float,  alpha modifier applied to all plot item fills
+---@type number
+ImPlotStyleVar.FillAlpha = 4
+---  float,  error bar whisker width in pixels
+---@type number
+ImPlotStyleVar.ErrorBarSize = 5
+---  float,  error bar whisker weight in pixels
+---@type number
+ImPlotStyleVar.ErrorBarWeight = 6
+---  float,  digital channels bit height (at 1) in pixels
+---@type number
+ImPlotStyleVar.DigitalBitHeight = 7
+---  float,  digital channels bit padding gap in pixels
+---@type number
+ImPlotStyleVar.DigitalBitGap = 8
+---  float,  thickness of border around plot area
+---@type number
+ImPlotStyleVar.PlotBorderSize = 9
+---  float,  alpha multiplier applied to minor axis grid lines
+---@type number
+ImPlotStyleVar.MinorAlpha = 10
+---  ImVec2, major tick lengths for X and Y axes
+---@type number
+ImPlotStyleVar.MajorTickLen = 11
+---  ImVec2, minor tick lengths for X and Y axes
+---@type number
+ImPlotStyleVar.MinorTickLen = 12
+---  ImVec2, line thickness of major ticks
+---@type number
+ImPlotStyleVar.MajorTickSize = 13
+---  ImVec2, line thickness of minor ticks
+---@type number
+ImPlotStyleVar.MinorTickSize = 14
+---  ImVec2, line thickness of major grid lines
+---@type number
+ImPlotStyleVar.MajorGridSize = 15
+---  ImVec2, line thickness of minor grid lines
+---@type number
+ImPlotStyleVar.MinorGridSize = 16
+---  ImVec2, padding between widget frame and plot area, labels, or outside legends (i.e. main padding)
+---@type number
+ImPlotStyleVar.PlotPadding = 17
+---  ImVec2, padding between axes labels, tick labels, and plot edge
+---@type number
+ImPlotStyleVar.LabelPadding = 18
+---  ImVec2, legend padding from plot edges
+---@type number
+ImPlotStyleVar.LegendPadding = 19
+---  ImVec2, legend inner padding from legend edges
+---@type number
+ImPlotStyleVar.LegendInnerPadding = 20
+---  ImVec2, spacing between legend entries
+---@type number
+ImPlotStyleVar.LegendSpacing = 21
+---  ImVec2, padding between plot edge and interior info text
+---@type number
+ImPlotStyleVar.MousePosPadding = 22
+---  ImVec2, text padding around annotation labels
+---@type number
+ImPlotStyleVar.AnnotationPadding = 23
+---  ImVec2, default size used when ImVec2(0,0) is passed to BeginPlot
+---@type number
+ImPlotStyleVar.PlotDefaultSize = 24
+---  ImVec2, minimum size plot frame can be when shrunk
+---@type number
+ImPlotStyleVar.PlotMinSize = 25
+---  ImVec2, minimum size plot frame can be when shrunk
+---@type number
+ImPlotStyleVar.COUNT = 26
+
+--------------------------------
+-- @module ImPlotYAxis_
+-- @parent_module implot
+
+---  Enums for different y-axes.
+---@class implot.ImPlotYAxis
+local ImPlotYAxis = {}
+implot.ImPlotYAxis = ImPlotYAxis
+implot.YAxis = ImPlotYAxis
+
+---  left (default)
+---@type number
+ImPlotYAxis._1 = 0
+---  first on right side
+---@type number
+ImPlotYAxis._2 = 1
+---  second on right side
+---@type number
+ImPlotYAxis._3 = 2
 
 return nil

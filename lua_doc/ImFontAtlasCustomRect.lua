@@ -1,4 +1,3 @@
-
 --------------------------------
 -- @module ImFontAtlasCustomRect
 -- @parent_module imgui

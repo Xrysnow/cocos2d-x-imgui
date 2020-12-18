@@ -45,7 +45,7 @@ ImGuiIO.ConfigFlags = nil
 
 --------------------------------
 
----  See ImGuiBackendFlags_ enum. Set by back-end (imgui_impl_xxx files or custom back-end) to communicate features supported by the back-end.
+---  See ImGuiBackendFlags_ enum. Set by backend (imgui_impl_xxx files or custom backend) to communicate features supported by the backend.
 --- = 0 
 ---@type number
 ImGuiIO.BackendFlags = nil
@@ -199,21 +199,21 @@ ImGuiIO.ConfigViewportsNoTaskBarIcon = nil
 
 --------------------------------
 
----  [BETA] Disable default OS window decoration flag for secondary viewports. When a viewport doesn't want window decorations, ImGuiViewportFlags_NoDecoration will be set on it. Enabling decoration can create subsequent issues at OS levels (e.g. minimum window size).
+---  Disable default OS window decoration flag for secondary viewports. When a viewport doesn't want window decorations, ImGuiViewportFlags_NoDecoration will be set on it. Enabling decoration can create subsequent issues at OS levels (e.g. minimum window size).
 --- = true 
 ---@type boolean
 ImGuiIO.ConfigViewportsNoDecoration = nil
 
 --------------------------------
 
----  Disable default OS parenting to main viewport for secondary viewports. By default, viewports are marked with ParentViewportId = <main_viewport>, expecting the platform back-end to setup a parent/child relationship between the OS windows (some back-end may ignore this). Set to true if you want the default to be 0, then all viewports will be top-level OS windows.
+---  Disable default OS parenting to main viewport for secondary viewports. By default, viewports are marked with ParentViewportId = <main_viewport>, expecting the platform backend to setup a parent/child relationship between the OS windows (some backend may ignore this). Set to true if you want the default to be 0, then all viewports will be top-level OS windows.
 --- = false 
 ---@type boolean
 ImGuiIO.ConfigViewportsNoDefaultParent = nil
 
 --------------------------------
 
----  Request ImGui to draw a mouse cursor for you (if you are on a platform without a mouse cursor). Cannot be easily renamed to 'io.ConfigXXX' because this is frequently used by back-end implementations.
+---  Request ImGui to draw a mouse cursor for you (if you are on a platform without a mouse cursor). Cannot be easily renamed to 'io.ConfigXXX' because this is frequently used by backend implementations.
 --- = false         
 ---@type boolean
 ImGuiIO.MouseDrawCursor = nil
@@ -248,10 +248,10 @@ ImGuiIO.ConfigWindowsMoveFromTitleBarOnly = nil
 
 --------------------------------
 
---- [BETA] Compact window memory usage when unused. Set to -1.0f to disable.
+--- [BETA] Free transient windows/tables memory buffers when unused for given amount of time. Set to -1.0f to disable.
 --- = 60.0f
 ---@type number
-ImGuiIO.ConfigWindowsMemoryCompactTimer = nil
+ImGuiIO.ConfigMemoryCompactTimer = nil
 
 --------------------------------
 
@@ -279,7 +279,7 @@ ImGuiIO.MouseWheel = nil
 
 --------------------------------
 
----  Mouse wheel Horizontal. Most users don't have a mouse with an horizontal wheel, may not be filled by all back-ends. 
+---  Mouse wheel Horizontal. Most users don't have a mouse with an horizontal wheel, may not be filled by all backends. 
 ---@type number
 ImGuiIO.MouseWheelH = nil
 
@@ -333,7 +333,7 @@ ImGuiIO.WantTextInput = nil
 
 --------------------------------
 
----  MousePos has been altered, back-end should reposition mouse on next frame. Rarely used! Set only when ImGuiConfigFlags_NavEnableSetMousePos flag is enabled. 
+---  MousePos has been altered, backend should reposition mouse on next frame. Rarely used! Set only when ImGuiConfigFlags_NavEnableSetMousePos flag is enabled. 
 ---@type boolean
 ImGuiIO.WantSetMousePos = nil
 
