@@ -683,7 +683,7 @@ bool ImGui_ImplCocos2dx_Init(bool install_callbacks)
 		g_CursorPos = ImVec2(-FLT_MAX, -FLT_MAX);
 		g_MouseJustPressed[0] = false;
 	};
-	cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(e1, 1);
+	cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(e1, -1);
 	auto e2 = cocos2d::EventListenerKeyboard::create();
 	using KeyCode = cocos2d::EventKeyboard::KeyCode;
 	e2->onKeyPressed = [](KeyCode k, cocos2d::Event* ev)
