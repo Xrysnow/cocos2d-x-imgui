@@ -28,6 +28,8 @@
 #define lua_opt_imv2(_N, _IDX, _DEF) lua_opt_value(_N, _IDX, _luaval_to_imvec2, _DEF)
 #define lua_opt_imv4(_N, _IDX, _DEF) lua_opt_value(_N, _IDX, _luaval_to_imvec4, _DEF)
 #define lua_opt_impoint(_N, _IDX, _DEF) lua_opt_value(_N, _IDX, _luaval_to_implotPoint, _DEF)
+#define lua_opt_imrange(_N, _IDX, _DEF) lua_opt_value(_N, _IDX, _luaval_to_implotRange, _DEF)
+#define lua_opt_imlimits(_N, _IDX, _DEF) lua_opt_value(_N, _IDX, _luaval_to_implotLimits, _DEF)
 #define lua_opt_string_null(_N, _IDX, _DEF) (_N >= _IDX) ? ( lua_isnil(L, _IDX) ? nullptr : luaL_checkstring(L, _IDX) ) : _DEF
 
 
@@ -53,9 +55,21 @@ ImVec4 _luaval_to_imvec4(lua_State *L, int lo)
 }
 ImPlotPoint _luaval_to_implotPoint(lua_State* L, int lo)
 {
-	ImPlotPoint vec;
-	luaval_to_ImPlotPoint(L, lo, &vec);
-	return vec;
+	ImPlotPoint v;
+	luaval_to_ImPlotPoint(L, lo, &v);
+	return v;
+}
+ImPlotRange _luaval_to_implotRange(lua_State* L, int lo)
+{
+	ImPlotRange v;
+	luaval_to_ImPlotRange(L, lo, &v);
+	return v;
+}
+ImPlotLimits _luaval_to_implotLimits(lua_State* L, int lo)
+{
+	ImPlotLimits v;
+	luaval_to_ImPlotLimits(L, lo, &v);
+	return v;
 }
 ImU32 lua_tou32(lua_State *L, int lo)
 {
@@ -1893,7 +1907,9 @@ static int implot_beginPlot(lua_State* L) {
 			lua_opt_int(args, 6, ImPlotAxisFlags_None),
 			lua_opt_int(args, 7, ImPlotAxisFlags_None),
 			lua_opt_int(args, 8, ImPlotAxisFlags_NoGridLines),
-			lua_opt_int(args, 9, ImPlotAxisFlags_NoGridLines)
+			lua_opt_int(args, 9, ImPlotAxisFlags_NoGridLines),
+			lua_opt_string_null(args, 10, nullptr),
+			lua_opt_string_null(args, 11, nullptr)
 		));
 	return 1;
 }
@@ -2578,6 +2594,50 @@ DEF_PLOT_T(implot_plotStems) {
 	return 0;
 }
 DEF_PLOT_C(implot_plotStems);
+static int implot_plotVLines(lua_State* L) {
+	const int args = lua_gettop(L);
+	const auto label_id = luaL_checkstring(L, 1);
+	std::vector<double> xs;
+	if (!lua::luaval_to_native(L, 2, &xs))
+		return lua_param_error(2);
+	const int size = xs.size();
+	IMPLOT_COUNT_OFFSET(3, 4, size);
+	if (count > 0)
+		ImPlot::PlotVLines<double>(label_id, xs.data(), count, offset);
+	return 0;
+}
+DEF_PLOT_T(implot_plotVLines) {
+	const int args = lua_gettop(L);
+	const auto label_id = luaL_checkstring(L, 1);
+	LUA_GET_PTR(xs, 2 + Offset);
+	const int count = luaL_checkinteger(L, 3 + Offset);
+	if (count > 0)
+		ImPlot::PlotVLines(label_id, xs, count, lua_opt_int(args, 4 + Offset, 0));
+	return 0;
+}
+DEF_PLOT_C(implot_plotVLines);
+static int implot_plotHLines(lua_State* L) {
+	const int args = lua_gettop(L);
+	const auto label_id = luaL_checkstring(L, 1);
+	std::vector<double> ys;
+	if (!lua::luaval_to_native(L, 2, &ys))
+		return lua_param_error(2);
+	const int size = ys.size();
+	IMPLOT_COUNT_OFFSET(3, 4, size);
+	if (count > 0)
+		ImPlot::PlotHLines<double>(label_id, ys.data(), count, offset);
+	return 0;
+}
+DEF_PLOT_T(implot_plotHLines) {
+	const int args = lua_gettop(L);
+	const auto label_id = luaL_checkstring(L, 1);
+	LUA_GET_PTR(ys, 2 + Offset);
+	const int count = luaL_checkinteger(L, 3 + Offset);
+	if (count > 0)
+		ImPlot::PlotHLines(label_id, ys, count, lua_opt_int(args, 4 + Offset, 0));
+	return 0;
+}
+DEF_PLOT_C(implot_plotHLines);
 static int implot_plotPieChart(lua_State* L) {
 	const int args = lua_gettop(L);
 	std::vector<const char*> label_ids;
@@ -2624,8 +2684,8 @@ static int implot_plotHeatmap(lua_State* L) {
 	ImPlot::PlotHeatmap(label_id, values.data(),
 		luaL_checkinteger(L, 3),
 		luaL_checkinteger(L, 4),
-		luaL_checknumber(L, 5),
-		luaL_checknumber(L, 6),
+		luaL_optnumber(L, 5, 0),
+		luaL_optnumber(L, 6, 0),
 		lua_opt_string(args, 7, "%.1f"),
 		lua_opt_impoint(args, 8, ImPlotPoint(0, 0)),
 		lua_opt_impoint(args, 9, ImPlotPoint(1, 1)));
@@ -2638,14 +2698,88 @@ DEF_PLOT_T(implot_plotHeatmap) {
 	ImPlot::PlotHeatmap(label_id, v1,
 		luaL_checkinteger(L, 3 + Offset),
 		luaL_checkinteger(L, 4 + Offset),
-		luaL_checknumber(L, 5 + Offset),
-		luaL_checknumber(L, 6 + Offset),
+		luaL_optnumber(L, 5 + Offset, 0),
+		luaL_optnumber(L, 6 + Offset, 0),
 		lua_opt_string(args, 7 + Offset, "%.1f"),
 		lua_opt_impoint(args, 8 + Offset, ImPlotPoint(0, 0)),
 		lua_opt_impoint(args, 9 + Offset, ImPlotPoint(1, 1)));
 	return 0;
 }
 DEF_PLOT_C(implot_plotHeatmap);
+static int implot_plotHistogram(lua_State* L) {
+	const int args = lua_gettop(L);
+	const auto label_id = luaL_checkstring(L, 1);
+	std::vector<double> values;
+	if (!lua::luaval_to_native(L, 2, &values))
+		return lua_param_error(2);
+	int count = luaL_checkinteger(L, 3);
+	count = std::min({ count, (int)values.size() });
+	if (count == 0)
+		return 0;
+	lua_pushnumber(L, ImPlot::PlotHistogram<double>(label_id, values.data(), count,
+		lua_opt_int(args, 4, ImPlotBin_Sturges),
+		lua_opt_bool(args, 5, false),
+		lua_opt_bool(args, 6, false),
+		lua_opt_imrange(args, 7, ImPlotRange()),
+		lua_opt_bool(args, 8, true),
+		lua_opt_number(args, 9, 1.0)));
+	return 1;
+}
+DEF_PLOT_T(implot_plotHistogram) {
+	const int args = lua_gettop(L);
+	const auto label_id = luaL_checkstring(L, 1);
+	LUA_GET_PTR(values, 2 + Offset);
+	const int count = luaL_checkinteger(L, 3 + Offset);
+	if (count == 0)
+		return 0;
+	lua_pushnumber(L, ImPlot::PlotHistogram(label_id, values, count,
+		lua_opt_int(args, 4 + Offset, ImPlotBin_Sturges),
+		lua_opt_bool(args, 5 + Offset, false),
+		lua_opt_bool(args, 6 + Offset, false),
+		lua_opt_imrange(args, 7 + Offset, ImPlotRange()),
+		lua_opt_bool(args, 8 + Offset, true),
+		lua_opt_number(args, 9 + Offset, 1.0)));
+	return 1;
+}
+DEF_PLOT_C(implot_plotHistogram);
+static int implot_plotHistogram2D(lua_State* L) {
+	const int args = lua_gettop(L);
+	const auto label_id = luaL_checkstring(L, 1);
+	std::vector<double> xs;
+	if (!lua::luaval_to_native(L, 2, &xs))
+		return lua_param_error(2);
+	std::vector<double> ys;
+	if (!lua::luaval_to_native(L, 3, &ys))
+		return lua_param_error(3);
+	int count = luaL_checkinteger(L, 4);
+	count = std::min({ count, (int)xs.size(), (int)ys.size() });
+	if (count == 0)
+		return 0;
+	lua_pushnumber(L, ImPlot::PlotHistogram2D<double>(label_id, xs.data(), ys.data(), count,
+		lua_opt_int(args, 5, ImPlotBin_Sturges),
+		lua_opt_int(args, 6, ImPlotBin_Sturges),
+		lua_opt_bool(args, 7, false),
+		lua_opt_imlimits(args, 8, ImPlotLimits()),
+		lua_opt_bool(args, 9, true)));
+	return 1;
+}
+DEF_PLOT_T(implot_plotHistogram2D) {
+	const int args = lua_gettop(L);
+	const auto label_id = luaL_checkstring(L, 1);
+	LUA_GET_PTR(xs, 2 + Offset);
+	LUA_GET_PTR(ys, 3 + Offset);
+	const int count = luaL_checkinteger(L, 4 + Offset);
+	if (count == 0)
+		return 0;
+	lua_pushnumber(L, ImPlot::PlotHistogram2D(label_id, xs, ys, count,
+		lua_opt_int(args, 5 + Offset, ImPlotBin_Sturges),
+		lua_opt_int(args, 6 + Offset, ImPlotBin_Sturges),
+		lua_opt_bool(args, 7 + Offset, false),
+		lua_opt_imlimits(args, 8 + Offset, ImPlotLimits()),
+		lua_opt_bool(args, 9 + Offset, true)));
+	return 1;
+}
+DEF_PLOT_C(implot_plotHistogram2D);
 static int implot_plotDigital(lua_State* L) {
 	const int args = lua_gettop(L);
 	const auto label_id = luaL_checkstring(L, 1);
@@ -2774,7 +2908,7 @@ static int implot_setNextPlotTicksY(lua_State* L) {
 			n_ticks,
 			labels,
 			lua_opt_bool(args, 5, false),
-			lua_opt_int(args, 6, 0));
+			lua_opt_int(args, 6, ImPlotYAxis_1));
 		return 0;
 	}
 	if (type1 == LUA_TTABLE)
@@ -2797,7 +2931,7 @@ static int implot_setNextPlotTicksY(lua_State* L) {
 		}
 		ImPlot::SetNextPlotTicksY(values.data(), n_ticks, labels,
 			lua_opt_bool(args, 4, false),
-			lua_opt_int(args, 5, 0));
+			lua_opt_int(args, 5, ImPlotYAxis_1));
 		return 0;
 	}
 	return lua_param_error(1);
@@ -2885,45 +3019,88 @@ static int implot_pushStyleVar(lua_State* L) {
 	}
 	return 0;
 }
+static int implot_addColormap(lua_State* L) {
+	const int args = lua_gettop(L);
+	const auto name = luaL_checkstring(L, 1);
+	if (!lua_istable(L, 2))
+		return lua_param_error(2);
+	lua_pushinteger(L, 1);
+	lua_gettable(L, 2);
+	const auto type_element = lua_type(L, -1);
+	lua_pop(L, 1);
+	if (type_element == LUA_TNUMBER)
+	{
+		std::vector<ImU32> cols;
+		if (!lua::luaval_to_native(L, 2, &cols))
+			return lua_param_error(2);
+		lua_pushinteger(L,
+			ImPlot::AddColormap(name, cols.data(), cols.size(), lua_opt_bool(args, 3, true)));
+	}
+	else if (type_element == LUA_TTABLE)
+	{
+		std::vector<ImVec4> cols;
+		if (!lua::luaval_to_native(L, 2, &cols))
+			return lua_param_error(2);
+		lua_pushinteger(L,
+			ImPlot::AddColormap(name, cols.data(), cols.size(), lua_opt_bool(args, 3, true)));
+	}
+	else
+	{
+		return lua_param_error(2);
+	}
+	return 1;
+}
 static int implot_pushColormap(lua_State* L) {
 	switch (lua_type(L, 1))
 	{
 	case LUA_TNUMBER:
 	{
 		const auto idx = luaL_checkinteger(L, 1);
-		if (idx < ImPlotColormap_Default || idx >= ImPlotColormap_COUNT)
+		if (idx < 0 || idx >= ImPlot::GetColormapCount())
 			return lua_param_error(1);
 		ImPlot::PushColormap(idx);
 		return 0;
 	}
-	case LUA_TTABLE:
+	case LUA_TSTRING:
 	{
-		// data must be persist until poped, use SetColormap instead
-		break;
+		const auto idx = ImPlot::GetColormapIndex(luaL_checkstring(L, 1));
+		if (idx < 0)
+			return lua_param_error(1);
+		ImPlot::PushColormap(idx);
+		return 0;
 	}
 	default:
 		break;
 	}
 	return lua_param_error(1);
 }
-static int implot_setColormap(lua_State* L) {
+static int implot_colormapSlider(lua_State* L) {
 	const int args = lua_gettop(L);
+	float t = luaL_checknumber(L, 2);
+	ImVec4 out;
+	lua_pushboolean(L,
+		ImPlot::ColormapSlider(
+			luaL_checkstring(L, 1), &t, &out, lua_opt_string(args, 4, ""), lua_opt_int(args, 5, IMPLOT_AUTO)));
+	lua_pushnumber(L, (lua_Number)t);
+	ImVec4_to_luaval(L, out);
+	return 3;
+}
+static int implot_bustColorCache(lua_State* L) {
+	const int args = lua_gettop(L);
+	ImPlot::BustColorCache(lua_opt_string_null(args, 1, nullptr));
+	return 0;
+}
+static int implot_itemIcon(lua_State* L) {
 	switch (lua_type(L, 1))
 	{
 	case LUA_TNUMBER:
 	{
-		const auto idx = luaL_checkinteger(L, 1);
-		if (idx < ImPlotColormap_Default || idx >= ImPlotColormap_COUNT)
-			return lua_param_error(1);
-		ImPlot::SetColormap(idx, lua_opt_int(args, 2, 0));
+		ImPlot::ItemIcon(lua_tou32(L,1));
 		return 0;
 	}
-	case LUA_TTABLE:
+	case LUA_TSTRING:
 	{
-		std::vector<ImVec4> colors;
-		if (!lua::luaval_to_native(L, 1, &colors))
-			return lua_param_error(1);
-		ImPlot::SetColormap(colors.data(), colors.size());
+		ImPlot::ItemIcon(_luaval_to_imvec4(L, 1));
 		return 0;
 	}
 	default:
@@ -2952,8 +3129,12 @@ static const luaL_Reg implot_methods[] = {
 	M_PLOT(plotErrorBars),
 	M_PLOT(plotErrorBarsH),
 	M_PLOT(plotStems),
+	M_PLOT(plotVLines),
+	M_PLOT(plotHLines),
 	M_PLOT(plotPieChart),
 	M_PLOT(plotHeatmap),
+	M_PLOT(plotHistogram),
+	M_PLOT(plotHistogram2D),
 	M_PLOT(plotDigital),
 	M(plotImage),
 	M(setNextPlotTicksX),
@@ -2963,8 +3144,11 @@ static const luaL_Reg implot_methods[] = {
 	M(dragPoint),
 	M(pushStyleColor),
 	M(pushStyleVar),
+	M(addColormap),
 	M(pushColormap),
-	M(setColormap),
+	M(colormapSlider),
+	M(bustColorCache),
+	M(itemIcon),
 	M(showMetricsWindow),
 	M(showDemoWindow)
 };
