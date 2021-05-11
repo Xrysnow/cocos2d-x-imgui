@@ -15,6 +15,10 @@
 
 #pragma warning (disable: 4244)
 
+#ifndef COCOS2D_DEBUG
+#define COCOS2D_DEBUG 0
+#endif
+
 #define lua_opt_value(_N, _IDX, _F, _DEF) _N >= _IDX ? _F(L, _IDX) : _DEF
 #define lua_opt_number(_N, _IDX, _DEF) lua_opt_value(_N, _IDX, luaL_checknumber, _DEF)
 #define lua_opt_int(_N, _IDX, _DEF) (int)(lua_opt_value(_N, _IDX, luaL_checkinteger, _DEF))
