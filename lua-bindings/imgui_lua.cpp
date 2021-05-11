@@ -245,7 +245,7 @@ ImFontConfig lua_toImFontConfig(lua_State* L, int lo)
 		get_field(GlyphMinAdvanceX, luaL_checknumber);
 		get_field(GlyphMaxAdvanceX, luaL_checknumber);
 		get_field(MergeMode, lua_toboolean);
-		get_field(RasterizerFlags, luaL_checknumber);
+		get_field(FontBuilderFlags, luaL_checkinteger);
 		get_field(RasterizerMultiply, luaL_checknumber);
 	}
 #undef get_field
@@ -401,7 +401,8 @@ static int imgui_pushStyleVar(lua_State *L) {
 	//case ImGuiStyleVar_FrameBorderSize:		// float 
 	case ImGuiStyleVar_ItemSpacing:				// ImVec2
 	case ImGuiStyleVar_ItemInnerSpacing:		// ImVec2
-	//case ImGuiStyleVar_IndentSpacing:			// float 
+	//case ImGuiStyleVar_IndentSpacing:			// float
+	case ImGuiStyleVar_CellPadding:             // ImVec2
 	//case ImGuiStyleVar_ScrollbarSize:			// float 
 	//case ImGuiStyleVar_ScrollbarRounding:		// float 
 	//case ImGuiStyleVar_GrabMinSize:			// float 
@@ -953,22 +954,6 @@ static int imgui_listBox(lua_State *L) {
 			lua_opt_int(args, 4, -1)));
 	lua_pushinteger(L, current_item);
 	return 2;
-}
-static int imgui_listBoxHeader(lua_State *L) {
-	const int args = lua_gettop(L);
-	auto label = luaL_checkstring(L, 1);
-	switch (lua_type(L, 2))
-	{
-	case LUA_TNUMBER:
-		lua_pushboolean(L,
-			ImGui::ListBoxHeader(label, luaL_checkinteger(L, 2), lua_opt_int(args, 3, -1)));
-		break;
-	default:
-		lua_pushboolean(L,
-			ImGui::ListBoxHeader(label, lua_opt_imv2(args, 2, ImVec2(0, 0))));
-		break;
-	}
-	return 1;
 }
 
 // Widgets: Data Plotting
@@ -1572,7 +1557,7 @@ static const luaL_Reg imgui_methods[] = {
 	M(selectable),
 
 	// Widgets: List Boxes
-	M(listBox),M(listBoxHeader),
+	M(listBox),
 
 	// Widgets: Data Plotting
 	M(plotLines),M(plotHistogram),
@@ -1797,7 +1782,7 @@ static int drawlist_addImageRounded(lua_State *L)
 			_luaval_to_imvec2(L, 6),
 			lua_tou32(L, 7),
 			luaL_checknumber(L, 8),
-			lua_opt_int(args, 9, ImDrawCornerFlags_All));
+			lua_opt_int(args, 9, 0));
 		return 0;
 	}
 	cocos2d::Sprite* sp = nullptr;
@@ -1814,7 +1799,7 @@ static int drawlist_addImageRounded(lua_State *L)
 			uvb,
 			lua_tou32(L, 5),
 			luaL_checknumber(L, 6),
-			lua_opt_int(args, 7, ImDrawCornerFlags_All));
+			lua_opt_int(args, 7, 0));
 		return 0;
 	}
 	return 0;
@@ -1830,7 +1815,7 @@ static int drawlist_addPolyline(lua_State *L)
 		(ImVec2*)arr.data(),
 		arr.size(),
 		lua_tou32(L, 3),
-		lua_toboolean(L, 4),
+		luaL_checkinteger(L, 4),
 		luaL_checknumber(L, 5));
 	return 0;
 }
