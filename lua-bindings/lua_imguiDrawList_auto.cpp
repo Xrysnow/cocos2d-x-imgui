@@ -13,7 +13,7 @@ namespace imgui
 }
 using namespace lua;
 
-int lua_x_imguiDrawList_ImDrawList_AddBezierCurve(lua_State* tolua_S)
+int lua_x_imguiDrawList_ImDrawList_AddBezierCubic(lua_State* tolua_S)
 {
     int argc = 0;
     imgui::ImDrawList* cobj = nullptr;
@@ -26,7 +26,7 @@ int lua_x_imguiDrawList_ImDrawList_AddBezierCurve(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     if (!cobj) 
     {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiDrawList_ImDrawList_AddBezierCurve'", nullptr);
+        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiDrawList_ImDrawList_AddBezierCubic'", nullptr);
         return 0;
     }
 #endif
@@ -40,23 +40,23 @@ int lua_x_imguiDrawList_ImDrawList_AddBezierCurve(lua_State* tolua_S)
         unsigned int arg4;
         double arg5;
 
-        ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "imgui.ImDrawList:AddBezierCurve");
+        ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "imgui.ImDrawList:AddBezierCubic");
 
-        ok &= luaval_to_ImVec2(tolua_S, 3, &arg1, "imgui.ImDrawList:AddBezierCurve");
+        ok &= luaval_to_ImVec2(tolua_S, 3, &arg1, "imgui.ImDrawList:AddBezierCubic");
 
-        ok &= luaval_to_ImVec2(tolua_S, 4, &arg2, "imgui.ImDrawList:AddBezierCurve");
+        ok &= luaval_to_ImVec2(tolua_S, 4, &arg2, "imgui.ImDrawList:AddBezierCubic");
 
-        ok &= luaval_to_ImVec2(tolua_S, 5, &arg3, "imgui.ImDrawList:AddBezierCurve");
+        ok &= luaval_to_ImVec2(tolua_S, 5, &arg3, "imgui.ImDrawList:AddBezierCubic");
 
-        ok &= luaval_to_uint32(tolua_S, 6,&arg4, "imgui.ImDrawList:AddBezierCurve");
+        ok &= luaval_to_uint32(tolua_S, 6,&arg4, "imgui.ImDrawList:AddBezierCubic");
 
-        ok &= luaval_to_number(tolua_S, 7,&arg5, "imgui.ImDrawList:AddBezierCurve");
+        ok &= luaval_to_number(tolua_S, 7,&arg5, "imgui.ImDrawList:AddBezierCubic");
         if(!ok)
         {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiDrawList_ImDrawList_AddBezierCurve'", nullptr);
+            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiDrawList_ImDrawList_AddBezierCubic'", nullptr);
             return 0;
         }
-        cobj->AddBezierCurve(arg0, arg1, arg2, arg3, arg4, arg5);
+        cobj->AddBezierCubic(arg0, arg1, arg2, arg3, arg4, arg5);
         lua_settop(tolua_S, 1);
         return 1;
     }
@@ -70,33 +70,114 @@ int lua_x_imguiDrawList_ImDrawList_AddBezierCurve(lua_State* tolua_S)
         double arg5;
         int arg6;
 
-        ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "imgui.ImDrawList:AddBezierCurve");
+        ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "imgui.ImDrawList:AddBezierCubic");
 
-        ok &= luaval_to_ImVec2(tolua_S, 3, &arg1, "imgui.ImDrawList:AddBezierCurve");
+        ok &= luaval_to_ImVec2(tolua_S, 3, &arg1, "imgui.ImDrawList:AddBezierCubic");
 
-        ok &= luaval_to_ImVec2(tolua_S, 4, &arg2, "imgui.ImDrawList:AddBezierCurve");
+        ok &= luaval_to_ImVec2(tolua_S, 4, &arg2, "imgui.ImDrawList:AddBezierCubic");
 
-        ok &= luaval_to_ImVec2(tolua_S, 5, &arg3, "imgui.ImDrawList:AddBezierCurve");
+        ok &= luaval_to_ImVec2(tolua_S, 5, &arg3, "imgui.ImDrawList:AddBezierCubic");
 
-        ok &= luaval_to_uint32(tolua_S, 6,&arg4, "imgui.ImDrawList:AddBezierCurve");
+        ok &= luaval_to_uint32(tolua_S, 6,&arg4, "imgui.ImDrawList:AddBezierCubic");
 
-        ok &= luaval_to_number(tolua_S, 7,&arg5, "imgui.ImDrawList:AddBezierCurve");
+        ok &= luaval_to_number(tolua_S, 7,&arg5, "imgui.ImDrawList:AddBezierCubic");
 
-        ok &= luaval_to_int32(tolua_S, 8,(int *)&arg6, "imgui.ImDrawList:AddBezierCurve");
+        ok &= luaval_to_int32(tolua_S, 8,(int *)&arg6, "imgui.ImDrawList:AddBezierCubic");
         if(!ok)
         {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiDrawList_ImDrawList_AddBezierCurve'", nullptr);
+            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiDrawList_ImDrawList_AddBezierCubic'", nullptr);
             return 0;
         }
-        cobj->AddBezierCurve(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+        cobj->AddBezierCubic(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
         lua_settop(tolua_S, 1);
         return 1;
     }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImDrawList:AddBezierCurve", argc, 6);
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImDrawList:AddBezierCubic", argc, 6);
     return 0;
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiDrawList_ImDrawList_AddBezierCurve'.",&tolua_err);
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiDrawList_ImDrawList_AddBezierCubic'.",&tolua_err);
+    return 0;
+#endif
+}
+int lua_x_imguiDrawList_ImDrawList_AddBezierQuadratic(lua_State* tolua_S)
+{
+    int argc = 0;
+    imgui::ImDrawList* cobj = nullptr;
+    bool ok  = true;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S,1,"imgui.ImDrawList",0,&tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (imgui::ImDrawList*)tolua_tousertype(tolua_S, 1, nullptr);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiDrawList_ImDrawList_AddBezierQuadratic'", nullptr);
+        return 0;
+    }
+#endif
+    argc = lua_gettop(tolua_S) - 1;
+    if (argc == 5) 
+    {
+        ImVec2 arg0;
+        ImVec2 arg1;
+        ImVec2 arg2;
+        unsigned int arg3;
+        double arg4;
+
+        ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "imgui.ImDrawList:AddBezierQuadratic");
+
+        ok &= luaval_to_ImVec2(tolua_S, 3, &arg1, "imgui.ImDrawList:AddBezierQuadratic");
+
+        ok &= luaval_to_ImVec2(tolua_S, 4, &arg2, "imgui.ImDrawList:AddBezierQuadratic");
+
+        ok &= luaval_to_uint32(tolua_S, 5,&arg3, "imgui.ImDrawList:AddBezierQuadratic");
+
+        ok &= luaval_to_number(tolua_S, 6,&arg4, "imgui.ImDrawList:AddBezierQuadratic");
+        if(!ok)
+        {
+            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiDrawList_ImDrawList_AddBezierQuadratic'", nullptr);
+            return 0;
+        }
+        cobj->AddBezierQuadratic(arg0, arg1, arg2, arg3, arg4);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    if (argc == 6) 
+    {
+        ImVec2 arg0;
+        ImVec2 arg1;
+        ImVec2 arg2;
+        unsigned int arg3;
+        double arg4;
+        int arg5;
+
+        ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "imgui.ImDrawList:AddBezierQuadratic");
+
+        ok &= luaval_to_ImVec2(tolua_S, 3, &arg1, "imgui.ImDrawList:AddBezierQuadratic");
+
+        ok &= luaval_to_ImVec2(tolua_S, 4, &arg2, "imgui.ImDrawList:AddBezierQuadratic");
+
+        ok &= luaval_to_uint32(tolua_S, 5,&arg3, "imgui.ImDrawList:AddBezierQuadratic");
+
+        ok &= luaval_to_number(tolua_S, 6,&arg4, "imgui.ImDrawList:AddBezierQuadratic");
+
+        ok &= luaval_to_int32(tolua_S, 7,(int *)&arg5, "imgui.ImDrawList:AddBezierQuadratic");
+        if(!ok)
+        {
+            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiDrawList_ImDrawList_AddBezierQuadratic'", nullptr);
+            return 0;
+        }
+        cobj->AddBezierQuadratic(arg0, arg1, arg2, arg3, arg4, arg5);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImDrawList:AddBezierQuadratic", argc, 5);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiDrawList_ImDrawList_AddBezierQuadratic'.",&tolua_err);
     return 0;
 #endif
 }
@@ -1377,7 +1458,7 @@ int lua_x_imguiDrawList_ImDrawList_PathArcToFast(lua_State* tolua_S)
     return 0;
 #endif
 }
-int lua_x_imguiDrawList_ImDrawList_PathBezierCurveTo(lua_State* tolua_S)
+int lua_x_imguiDrawList_ImDrawList_PathBezierCubicCurveTo(lua_State* tolua_S)
 {
     int argc = 0;
     imgui::ImDrawList* cobj = nullptr;
@@ -1390,7 +1471,7 @@ int lua_x_imguiDrawList_ImDrawList_PathBezierCurveTo(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     if (!cobj) 
     {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiDrawList_ImDrawList_PathBezierCurveTo'", nullptr);
+        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiDrawList_ImDrawList_PathBezierCubicCurveTo'", nullptr);
         return 0;
     }
 #endif
@@ -1401,17 +1482,17 @@ int lua_x_imguiDrawList_ImDrawList_PathBezierCurveTo(lua_State* tolua_S)
         ImVec2 arg1;
         ImVec2 arg2;
 
-        ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "imgui.ImDrawList:PathBezierCurveTo");
+        ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "imgui.ImDrawList:PathBezierCubicCurveTo");
 
-        ok &= luaval_to_ImVec2(tolua_S, 3, &arg1, "imgui.ImDrawList:PathBezierCurveTo");
+        ok &= luaval_to_ImVec2(tolua_S, 3, &arg1, "imgui.ImDrawList:PathBezierCubicCurveTo");
 
-        ok &= luaval_to_ImVec2(tolua_S, 4, &arg2, "imgui.ImDrawList:PathBezierCurveTo");
+        ok &= luaval_to_ImVec2(tolua_S, 4, &arg2, "imgui.ImDrawList:PathBezierCubicCurveTo");
         if(!ok)
         {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiDrawList_ImDrawList_PathBezierCurveTo'", nullptr);
+            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiDrawList_ImDrawList_PathBezierCubicCurveTo'", nullptr);
             return 0;
         }
-        cobj->PathBezierCurveTo(arg0, arg1, arg2);
+        cobj->PathBezierCubicCurveTo(arg0, arg1, arg2);
         lua_settop(tolua_S, 1);
         return 1;
     }
@@ -1422,27 +1503,90 @@ int lua_x_imguiDrawList_ImDrawList_PathBezierCurveTo(lua_State* tolua_S)
         ImVec2 arg2;
         int arg3;
 
-        ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "imgui.ImDrawList:PathBezierCurveTo");
+        ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "imgui.ImDrawList:PathBezierCubicCurveTo");
 
-        ok &= luaval_to_ImVec2(tolua_S, 3, &arg1, "imgui.ImDrawList:PathBezierCurveTo");
+        ok &= luaval_to_ImVec2(tolua_S, 3, &arg1, "imgui.ImDrawList:PathBezierCubicCurveTo");
 
-        ok &= luaval_to_ImVec2(tolua_S, 4, &arg2, "imgui.ImDrawList:PathBezierCurveTo");
+        ok &= luaval_to_ImVec2(tolua_S, 4, &arg2, "imgui.ImDrawList:PathBezierCubicCurveTo");
 
-        ok &= luaval_to_int32(tolua_S, 5,(int *)&arg3, "imgui.ImDrawList:PathBezierCurveTo");
+        ok &= luaval_to_int32(tolua_S, 5,(int *)&arg3, "imgui.ImDrawList:PathBezierCubicCurveTo");
         if(!ok)
         {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiDrawList_ImDrawList_PathBezierCurveTo'", nullptr);
+            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiDrawList_ImDrawList_PathBezierCubicCurveTo'", nullptr);
             return 0;
         }
-        cobj->PathBezierCurveTo(arg0, arg1, arg2, arg3);
+        cobj->PathBezierCubicCurveTo(arg0, arg1, arg2, arg3);
         lua_settop(tolua_S, 1);
         return 1;
     }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImDrawList:PathBezierCurveTo", argc, 3);
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImDrawList:PathBezierCubicCurveTo", argc, 3);
     return 0;
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiDrawList_ImDrawList_PathBezierCurveTo'.",&tolua_err);
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiDrawList_ImDrawList_PathBezierCubicCurveTo'.",&tolua_err);
+    return 0;
+#endif
+}
+int lua_x_imguiDrawList_ImDrawList_PathBezierQuadraticCurveTo(lua_State* tolua_S)
+{
+    int argc = 0;
+    imgui::ImDrawList* cobj = nullptr;
+    bool ok  = true;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S,1,"imgui.ImDrawList",0,&tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (imgui::ImDrawList*)tolua_tousertype(tolua_S, 1, nullptr);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiDrawList_ImDrawList_PathBezierQuadraticCurveTo'", nullptr);
+        return 0;
+    }
+#endif
+    argc = lua_gettop(tolua_S) - 1;
+    if (argc == 2) 
+    {
+        ImVec2 arg0;
+        ImVec2 arg1;
+
+        ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "imgui.ImDrawList:PathBezierQuadraticCurveTo");
+
+        ok &= luaval_to_ImVec2(tolua_S, 3, &arg1, "imgui.ImDrawList:PathBezierQuadraticCurveTo");
+        if(!ok)
+        {
+            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiDrawList_ImDrawList_PathBezierQuadraticCurveTo'", nullptr);
+            return 0;
+        }
+        cobj->PathBezierQuadraticCurveTo(arg0, arg1);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    if (argc == 3) 
+    {
+        ImVec2 arg0;
+        ImVec2 arg1;
+        int arg2;
+
+        ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "imgui.ImDrawList:PathBezierQuadraticCurveTo");
+
+        ok &= luaval_to_ImVec2(tolua_S, 3, &arg1, "imgui.ImDrawList:PathBezierQuadraticCurveTo");
+
+        ok &= luaval_to_int32(tolua_S, 4,(int *)&arg2, "imgui.ImDrawList:PathBezierQuadraticCurveTo");
+        if(!ok)
+        {
+            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiDrawList_ImDrawList_PathBezierQuadraticCurveTo'", nullptr);
+            return 0;
+        }
+        cobj->PathBezierQuadraticCurveTo(arg0, arg1, arg2);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImDrawList:PathBezierQuadraticCurveTo", argc, 2);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiDrawList_ImDrawList_PathBezierQuadraticCurveTo'.",&tolua_err);
     return 0;
 #endif
 }
@@ -1707,14 +1851,28 @@ int lua_x_imguiDrawList_ImDrawList_PathStroke(lua_State* tolua_S)
     }
 #endif
     argc = lua_gettop(tolua_S) - 1;
+    if (argc == 1) 
+    {
+        unsigned int arg0;
+
+        ok &= luaval_to_uint32(tolua_S, 2,&arg0, "imgui.ImDrawList:PathStroke");
+        if(!ok)
+        {
+            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiDrawList_ImDrawList_PathStroke'", nullptr);
+            return 0;
+        }
+        cobj->PathStroke(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
     if (argc == 2) 
     {
         unsigned int arg0;
-        bool arg1;
+        int arg1;
 
         ok &= luaval_to_uint32(tolua_S, 2,&arg0, "imgui.ImDrawList:PathStroke");
 
-        ok &= luaval_to_boolean(tolua_S, 3,&arg1, "imgui.ImDrawList:PathStroke");
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "imgui.ImDrawList:PathStroke");
         if(!ok)
         {
             tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiDrawList_ImDrawList_PathStroke'", nullptr);
@@ -1727,12 +1885,12 @@ int lua_x_imguiDrawList_ImDrawList_PathStroke(lua_State* tolua_S)
     if (argc == 3) 
     {
         unsigned int arg0;
-        bool arg1;
+        int arg1;
         double arg2;
 
         ok &= luaval_to_uint32(tolua_S, 2,&arg0, "imgui.ImDrawList:PathStroke");
 
-        ok &= luaval_to_boolean(tolua_S, 3,&arg1, "imgui.ImDrawList:PathStroke");
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "imgui.ImDrawList:PathStroke");
 
         ok &= luaval_to_number(tolua_S, 4,&arg2, "imgui.ImDrawList:PathStroke");
         if(!ok)
@@ -1744,7 +1902,7 @@ int lua_x_imguiDrawList_ImDrawList_PathStroke(lua_State* tolua_S)
         lua_settop(tolua_S, 1);
         return 1;
     }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImDrawList:PathStroke", argc, 2);
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImDrawList:PathStroke", argc, 1);
     return 0;
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
@@ -2440,7 +2598,8 @@ int lua_register_x_imguiDrawList_ImDrawList(lua_State* tolua_S)
     tolua_cclass(tolua_S,"ImDrawList","imgui.ImDrawList","",nullptr);
 
     tolua_beginmodule(tolua_S,"ImDrawList");
-        tolua_function(tolua_S,"addBezierCurve",lua_x_imguiDrawList_ImDrawList_AddBezierCurve);
+        tolua_function(tolua_S,"addBezierCubic",lua_x_imguiDrawList_ImDrawList_AddBezierCubic);
+        tolua_function(tolua_S,"addBezierQuadratic",lua_x_imguiDrawList_ImDrawList_AddBezierQuadratic);
         tolua_function(tolua_S,"addCircle",lua_x_imguiDrawList_ImDrawList_AddCircle);
         tolua_function(tolua_S,"addCircleFilled",lua_x_imguiDrawList_ImDrawList_AddCircleFilled);
         tolua_function(tolua_S,"addDrawCmd",lua_x_imguiDrawList_ImDrawList_AddDrawCmd);
@@ -2462,7 +2621,8 @@ int lua_register_x_imguiDrawList_ImDrawList(lua_State* tolua_S)
         tolua_function(tolua_S,"getClipRectMin",lua_x_imguiDrawList_ImDrawList_GetClipRectMin);
         tolua_function(tolua_S,"pathArcTo",lua_x_imguiDrawList_ImDrawList_PathArcTo);
         tolua_function(tolua_S,"pathArcToFast",lua_x_imguiDrawList_ImDrawList_PathArcToFast);
-        tolua_function(tolua_S,"pathBezierCurveTo",lua_x_imguiDrawList_ImDrawList_PathBezierCurveTo);
+        tolua_function(tolua_S,"pathBezierCubicCurveTo",lua_x_imguiDrawList_ImDrawList_PathBezierCubicCurveTo);
+        tolua_function(tolua_S,"pathBezierQuadraticCurveTo",lua_x_imguiDrawList_ImDrawList_PathBezierQuadraticCurveTo);
         tolua_function(tolua_S,"pathClear",lua_x_imguiDrawList_ImDrawList_PathClear);
         tolua_function(tolua_S,"pathFillConvex",lua_x_imguiDrawList_ImDrawList_PathFillConvex);
         tolua_function(tolua_S,"pathLineTo",lua_x_imguiDrawList_ImDrawList_PathLineTo);

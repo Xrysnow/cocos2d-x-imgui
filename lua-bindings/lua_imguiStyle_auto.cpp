@@ -1028,6 +1028,67 @@ tolua_lerror:
     return 0;
 #endif
 }
+int lua_x_imguiStyle_ImGuiStyle_getCellPadding(lua_State* tolua_S)
+{
+    imgui::ImGuiStyle* cobj = nullptr;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiStyle", 0, &tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (imgui::ImGuiStyle*)tolua_tousertype(tolua_S, 1, 0);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiStyle_ImGuiStyle_getCellPadding'", nullptr);
+        return 0;
+    }
+#endif
+    ImVec2_to_luaval(tolua_S, cobj->CellPadding);
+    return 1;
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiStyle_ImGuiStyle_getCellPadding'.", &tolua_err);
+    return 0;
+#endif
+}
+int lua_x_imguiStyle_ImGuiStyle_setCellPadding(lua_State* tolua_S)
+{
+    int argc = 0;
+    imgui::ImGuiStyle* cobj = nullptr;
+    bool ok  = true;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiStyle", 0, &tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (imgui::ImGuiStyle*)tolua_tousertype(tolua_S, 1, 0);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiStyle_ImGuiStyle_setCellPadding'", nullptr);
+        return 0;
+    }
+#endif
+    argc = lua_gettop(tolua_S) - 1;
+    if (1 == argc)
+    {
+        ImVec2 arg0;
+        ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "imgui.ImGuiStyle:CellPadding");
+        if(!ok)
+        {
+            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiStyle_ImGuiStyle'", nullptr);
+            return 0;
+        }
+        cobj->CellPadding = arg0;
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiStyle:CellPadding", argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiStyle_ImGuiStyle_getCellPadding'.", &tolua_err);
+    return 0;
+#endif
+}
 int lua_x_imguiStyle_ImGuiStyle_getTouchExtraPadding(lua_State* tolua_S)
 {
     imgui::ImGuiStyle* cobj = nullptr;
@@ -2309,7 +2370,7 @@ tolua_lerror:
     return 0;
 #endif
 }
-int lua_x_imguiStyle_ImGuiStyle_getCircleSegmentMaxError(lua_State* tolua_S)
+int lua_x_imguiStyle_ImGuiStyle_getCircleTessellationMaxError(lua_State* tolua_S)
 {
     imgui::ImGuiStyle* cobj = nullptr;
 #if COCOS2D_DEBUG >= 1
@@ -2320,19 +2381,19 @@ int lua_x_imguiStyle_ImGuiStyle_getCircleSegmentMaxError(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     if (!cobj) 
     {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiStyle_ImGuiStyle_getCircleSegmentMaxError'", nullptr);
+        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiStyle_ImGuiStyle_getCircleTessellationMaxError'", nullptr);
         return 0;
     }
 #endif
-    tolua_pushnumber(tolua_S,(lua_Number)cobj->CircleSegmentMaxError);
+    tolua_pushnumber(tolua_S,(lua_Number)cobj->CircleTessellationMaxError);
     return 1;
 #if COCOS2D_DEBUG >= 1
 tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiStyle_ImGuiStyle_getCircleSegmentMaxError'.", &tolua_err);
+    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiStyle_ImGuiStyle_getCircleTessellationMaxError'.", &tolua_err);
     return 0;
 #endif
 }
-int lua_x_imguiStyle_ImGuiStyle_setCircleSegmentMaxError(lua_State* tolua_S)
+int lua_x_imguiStyle_ImGuiStyle_setCircleTessellationMaxError(lua_State* tolua_S)
 {
     int argc = 0;
     imgui::ImGuiStyle* cobj = nullptr;
@@ -2345,7 +2406,7 @@ int lua_x_imguiStyle_ImGuiStyle_setCircleSegmentMaxError(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     if (!cobj) 
     {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiStyle_ImGuiStyle_setCircleSegmentMaxError'", nullptr);
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiStyle_ImGuiStyle_setCircleTessellationMaxError'", nullptr);
         return 0;
     }
 #endif
@@ -2353,20 +2414,20 @@ int lua_x_imguiStyle_ImGuiStyle_setCircleSegmentMaxError(lua_State* tolua_S)
     if (1 == argc)
     {
         double arg0;
-        ok &= luaval_to_number(tolua_S, 2,&arg0, "imgui.ImGuiStyle:CircleSegmentMaxError");
+        ok &= luaval_to_number(tolua_S, 2,&arg0, "imgui.ImGuiStyle:CircleTessellationMaxError");
         if(!ok)
         {
             tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiStyle_ImGuiStyle'", nullptr);
             return 0;
         }
-        cobj->CircleSegmentMaxError = arg0;
+        cobj->CircleTessellationMaxError = arg0;
         return 0;
     }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiStyle:CircleSegmentMaxError", argc, 1);
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiStyle:CircleTessellationMaxError", argc, 1);
     return 0;
 #if COCOS2D_DEBUG >= 1
 tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiStyle_ImGuiStyle_getCircleSegmentMaxError'.", &tolua_err);
+    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiStyle_ImGuiStyle_getCircleTessellationMaxError'.", &tolua_err);
     return 0;
 #endif
 }
@@ -2399,6 +2460,7 @@ int lua_register_x_imguiStyle_ImGuiStyle(lua_State* tolua_S)
         tolua_variable(tolua_S,"FrameBorderSize", lua_x_imguiStyle_ImGuiStyle_getFrameBorderSize, lua_x_imguiStyle_ImGuiStyle_setFrameBorderSize);
         tolua_variable(tolua_S,"ItemSpacing", lua_x_imguiStyle_ImGuiStyle_getItemSpacing, lua_x_imguiStyle_ImGuiStyle_setItemSpacing);
         tolua_variable(tolua_S,"ItemInnerSpacing", lua_x_imguiStyle_ImGuiStyle_getItemInnerSpacing, lua_x_imguiStyle_ImGuiStyle_setItemInnerSpacing);
+        tolua_variable(tolua_S,"CellPadding", lua_x_imguiStyle_ImGuiStyle_getCellPadding, lua_x_imguiStyle_ImGuiStyle_setCellPadding);
         tolua_variable(tolua_S,"TouchExtraPadding", lua_x_imguiStyle_ImGuiStyle_getTouchExtraPadding, lua_x_imguiStyle_ImGuiStyle_setTouchExtraPadding);
         tolua_variable(tolua_S,"IndentSpacing", lua_x_imguiStyle_ImGuiStyle_getIndentSpacing, lua_x_imguiStyle_ImGuiStyle_setIndentSpacing);
         tolua_variable(tolua_S,"ColumnsMinSpacing", lua_x_imguiStyle_ImGuiStyle_getColumnsMinSpacing, lua_x_imguiStyle_ImGuiStyle_setColumnsMinSpacing);
@@ -2420,7 +2482,7 @@ int lua_register_x_imguiStyle_ImGuiStyle(lua_State* tolua_S)
         tolua_variable(tolua_S,"AntiAliasedLinesUseTex", lua_x_imguiStyle_ImGuiStyle_getAntiAliasedLinesUseTex, lua_x_imguiStyle_ImGuiStyle_setAntiAliasedLinesUseTex);
         tolua_variable(tolua_S,"AntiAliasedFill", lua_x_imguiStyle_ImGuiStyle_getAntiAliasedFill, lua_x_imguiStyle_ImGuiStyle_setAntiAliasedFill);
         tolua_variable(tolua_S,"CurveTessellationTol", lua_x_imguiStyle_ImGuiStyle_getCurveTessellationTol, lua_x_imguiStyle_ImGuiStyle_setCurveTessellationTol);
-        tolua_variable(tolua_S,"CircleSegmentMaxError", lua_x_imguiStyle_ImGuiStyle_getCircleSegmentMaxError, lua_x_imguiStyle_ImGuiStyle_setCircleSegmentMaxError);
+        tolua_variable(tolua_S,"CircleTessellationMaxError", lua_x_imguiStyle_ImGuiStyle_getCircleTessellationMaxError, lua_x_imguiStyle_ImGuiStyle_setCircleTessellationMaxError);
     tolua_endmodule(tolua_S);
     std::string typeName = typeid(imgui::ImGuiStyle).name();
     g_luaType[typeName] = "imgui.ImGuiStyle";

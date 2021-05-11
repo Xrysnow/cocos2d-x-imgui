@@ -49,7 +49,7 @@ int lua_x_imguiViewport_ImGuiViewport_GetCenter(lua_State* tolua_S)
     return 0;
 #endif
 }
-int lua_x_imguiViewport_ImGuiViewport_GetWorkPos(lua_State* tolua_S)
+int lua_x_imguiViewport_ImGuiViewport_GetWorkCenter(lua_State* tolua_S)
 {
     int argc = 0;
     imgui::ImGuiViewport* cobj = nullptr;
@@ -62,7 +62,7 @@ int lua_x_imguiViewport_ImGuiViewport_GetWorkPos(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     if (!cobj) 
     {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_GetWorkPos'", nullptr);
+        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_GetWorkCenter'", nullptr);
         return 0;
     }
 #endif
@@ -71,55 +71,18 @@ int lua_x_imguiViewport_ImGuiViewport_GetWorkPos(lua_State* tolua_S)
     {
         if(!ok)
         {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiViewport_ImGuiViewport_GetWorkPos'", nullptr);
+            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiViewport_ImGuiViewport_GetWorkCenter'", nullptr);
             return 0;
         }
-        ImVec2 ret = cobj->GetWorkPos();
+        ImVec2 ret = cobj->GetWorkCenter();
         ImVec2_to_luaval(tolua_S, ret);
         return 1;
     }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiViewport:GetWorkPos", argc, 0);
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiViewport:GetWorkCenter", argc, 0);
     return 0;
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiViewport_ImGuiViewport_GetWorkPos'.",&tolua_err);
-    return 0;
-#endif
-}
-int lua_x_imguiViewport_ImGuiViewport_GetWorkSize(lua_State* tolua_S)
-{
-    int argc = 0;
-    imgui::ImGuiViewport* cobj = nullptr;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S,1,"imgui.ImGuiViewport",0,&tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, nullptr);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_GetWorkSize'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-    if (argc == 0) 
-    {
-        if(!ok)
-        {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiViewport_ImGuiViewport_GetWorkSize'", nullptr);
-            return 0;
-        }
-        ImVec2 ret = cobj->GetWorkSize();
-        ImVec2_to_luaval(tolua_S, ret);
-        return 1;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiViewport:GetWorkSize", argc, 0);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-    tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiViewport_ImGuiViewport_GetWorkSize'.",&tolua_err);
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiViewport_ImGuiViewport_GetWorkCenter'.",&tolua_err);
     return 0;
 #endif
 }
@@ -367,7 +330,7 @@ tolua_lerror:
     return 0;
 #endif
 }
-int lua_x_imguiViewport_ImGuiViewport_getWorkOffsetMin(lua_State* tolua_S)
+int lua_x_imguiViewport_ImGuiViewport_getWorkPos(lua_State* tolua_S)
 {
     imgui::ImGuiViewport* cobj = nullptr;
 #if COCOS2D_DEBUG >= 1
@@ -378,19 +341,19 @@ int lua_x_imguiViewport_ImGuiViewport_getWorkOffsetMin(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     if (!cobj) 
     {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_getWorkOffsetMin'", nullptr);
+        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_getWorkPos'", nullptr);
         return 0;
     }
 #endif
-    ImVec2_to_luaval(tolua_S, cobj->WorkOffsetMin);
+    ImVec2_to_luaval(tolua_S, cobj->WorkPos);
     return 1;
 #if COCOS2D_DEBUG >= 1
 tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiViewport_ImGuiViewport_getWorkOffsetMin'.", &tolua_err);
+    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiViewport_ImGuiViewport_getWorkPos'.", &tolua_err);
     return 0;
 #endif
 }
-int lua_x_imguiViewport_ImGuiViewport_setWorkOffsetMin(lua_State* tolua_S)
+int lua_x_imguiViewport_ImGuiViewport_setWorkPos(lua_State* tolua_S)
 {
     int argc = 0;
     imgui::ImGuiViewport* cobj = nullptr;
@@ -403,7 +366,7 @@ int lua_x_imguiViewport_ImGuiViewport_setWorkOffsetMin(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     if (!cobj) 
     {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_setWorkOffsetMin'", nullptr);
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_setWorkPos'", nullptr);
         return 0;
     }
 #endif
@@ -411,24 +374,24 @@ int lua_x_imguiViewport_ImGuiViewport_setWorkOffsetMin(lua_State* tolua_S)
     if (1 == argc)
     {
         ImVec2 arg0;
-        ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "imgui.ImGuiViewport:WorkOffsetMin");
+        ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "imgui.ImGuiViewport:WorkPos");
         if(!ok)
         {
             tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiViewport_ImGuiViewport'", nullptr);
             return 0;
         }
-        cobj->WorkOffsetMin = arg0;
+        cobj->WorkPos = arg0;
         return 0;
     }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiViewport:WorkOffsetMin", argc, 1);
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiViewport:WorkPos", argc, 1);
     return 0;
 #if COCOS2D_DEBUG >= 1
 tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiViewport_ImGuiViewport_getWorkOffsetMin'.", &tolua_err);
+    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiViewport_ImGuiViewport_getWorkPos'.", &tolua_err);
     return 0;
 #endif
 }
-int lua_x_imguiViewport_ImGuiViewport_getWorkOffsetMax(lua_State* tolua_S)
+int lua_x_imguiViewport_ImGuiViewport_getWorkSize(lua_State* tolua_S)
 {
     imgui::ImGuiViewport* cobj = nullptr;
 #if COCOS2D_DEBUG >= 1
@@ -439,19 +402,19 @@ int lua_x_imguiViewport_ImGuiViewport_getWorkOffsetMax(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     if (!cobj) 
     {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_getWorkOffsetMax'", nullptr);
+        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_getWorkSize'", nullptr);
         return 0;
     }
 #endif
-    ImVec2_to_luaval(tolua_S, cobj->WorkOffsetMax);
+    ImVec2_to_luaval(tolua_S, cobj->WorkSize);
     return 1;
 #if COCOS2D_DEBUG >= 1
 tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiViewport_ImGuiViewport_getWorkOffsetMax'.", &tolua_err);
+    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiViewport_ImGuiViewport_getWorkSize'.", &tolua_err);
     return 0;
 #endif
 }
-int lua_x_imguiViewport_ImGuiViewport_setWorkOffsetMax(lua_State* tolua_S)
+int lua_x_imguiViewport_ImGuiViewport_setWorkSize(lua_State* tolua_S)
 {
     int argc = 0;
     imgui::ImGuiViewport* cobj = nullptr;
@@ -464,7 +427,7 @@ int lua_x_imguiViewport_ImGuiViewport_setWorkOffsetMax(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     if (!cobj) 
     {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_setWorkOffsetMax'", nullptr);
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_setWorkSize'", nullptr);
         return 0;
     }
 #endif
@@ -472,20 +435,20 @@ int lua_x_imguiViewport_ImGuiViewport_setWorkOffsetMax(lua_State* tolua_S)
     if (1 == argc)
     {
         ImVec2 arg0;
-        ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "imgui.ImGuiViewport:WorkOffsetMax");
+        ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "imgui.ImGuiViewport:WorkSize");
         if(!ok)
         {
             tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiViewport_ImGuiViewport'", nullptr);
             return 0;
         }
-        cobj->WorkOffsetMax = arg0;
+        cobj->WorkSize = arg0;
         return 0;
     }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiViewport:WorkOffsetMax", argc, 1);
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiViewport:WorkSize", argc, 1);
     return 0;
 #if COCOS2D_DEBUG >= 1
 tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiViewport_ImGuiViewport_getWorkOffsetMax'.", &tolua_err);
+    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiViewport_ImGuiViewport_getWorkSize'.", &tolua_err);
     return 0;
 #endif
 }
@@ -807,14 +770,13 @@ int lua_register_x_imguiViewport_ImGuiViewport(lua_State* tolua_S)
 
     tolua_beginmodule(tolua_S,"ImGuiViewport");
         tolua_function(tolua_S,"getCenter",lua_x_imguiViewport_ImGuiViewport_GetCenter);
-        tolua_function(tolua_S,"getWorkPos",lua_x_imguiViewport_ImGuiViewport_GetWorkPos);
-        tolua_function(tolua_S,"getWorkSize",lua_x_imguiViewport_ImGuiViewport_GetWorkSize);
+        tolua_function(tolua_S,"getWorkCenter",lua_x_imguiViewport_ImGuiViewport_GetWorkCenter);
         tolua_variable(tolua_S,"ID", lua_x_imguiViewport_ImGuiViewport_getID, lua_x_imguiViewport_ImGuiViewport_setID);
         tolua_variable(tolua_S,"Flags", lua_x_imguiViewport_ImGuiViewport_getFlags, lua_x_imguiViewport_ImGuiViewport_setFlags);
         tolua_variable(tolua_S,"Pos", lua_x_imguiViewport_ImGuiViewport_getPos, lua_x_imguiViewport_ImGuiViewport_setPos);
         tolua_variable(tolua_S,"Size", lua_x_imguiViewport_ImGuiViewport_getSize, lua_x_imguiViewport_ImGuiViewport_setSize);
-        tolua_variable(tolua_S,"WorkOffsetMin", lua_x_imguiViewport_ImGuiViewport_getWorkOffsetMin, lua_x_imguiViewport_ImGuiViewport_setWorkOffsetMin);
-        tolua_variable(tolua_S,"WorkOffsetMax", lua_x_imguiViewport_ImGuiViewport_getWorkOffsetMax, lua_x_imguiViewport_ImGuiViewport_setWorkOffsetMax);
+        tolua_variable(tolua_S,"WorkPos", lua_x_imguiViewport_ImGuiViewport_getWorkPos, lua_x_imguiViewport_ImGuiViewport_setWorkPos);
+        tolua_variable(tolua_S,"WorkSize", lua_x_imguiViewport_ImGuiViewport_getWorkSize, lua_x_imguiViewport_ImGuiViewport_setWorkSize);
         tolua_variable(tolua_S,"DpiScale", lua_x_imguiViewport_ImGuiViewport_getDpiScale, lua_x_imguiViewport_ImGuiViewport_setDpiScale);
         tolua_variable(tolua_S,"ParentViewportId", lua_x_imguiViewport_ImGuiViewport_getParentViewportId, lua_x_imguiViewport_ImGuiViewport_setParentViewportId);
         tolua_variable(tolua_S,"PlatformRequestClose", lua_x_imguiViewport_ImGuiViewport_getPlatformRequestClose, lua_x_imguiViewport_ImGuiViewport_setPlatformRequestClose);

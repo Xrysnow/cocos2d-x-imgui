@@ -750,7 +750,7 @@ tolua_lerror:
     return 0;
 #endif
 }
-int lua_x_imguiFont_ImFontConfig_getRasterizerFlags(lua_State* tolua_S)
+int lua_x_imguiFont_ImFontConfig_getFontBuilderFlags(lua_State* tolua_S)
 {
     imgui::ImFontConfig* cobj = nullptr;
 #if COCOS2D_DEBUG >= 1
@@ -761,19 +761,19 @@ int lua_x_imguiFont_ImFontConfig_getRasterizerFlags(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     if (!cobj) 
     {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiFont_ImFontConfig_getRasterizerFlags'", nullptr);
+        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiFont_ImFontConfig_getFontBuilderFlags'", nullptr);
         return 0;
     }
 #endif
-    tolua_pushnumber(tolua_S,(lua_Number)cobj->RasterizerFlags);
+    tolua_pushnumber(tolua_S,(lua_Number)cobj->FontBuilderFlags);
     return 1;
 #if COCOS2D_DEBUG >= 1
 tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiFont_ImFontConfig_getRasterizerFlags'.", &tolua_err);
+    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiFont_ImFontConfig_getFontBuilderFlags'.", &tolua_err);
     return 0;
 #endif
 }
-int lua_x_imguiFont_ImFontConfig_setRasterizerFlags(lua_State* tolua_S)
+int lua_x_imguiFont_ImFontConfig_setFontBuilderFlags(lua_State* tolua_S)
 {
     int argc = 0;
     imgui::ImFontConfig* cobj = nullptr;
@@ -786,7 +786,7 @@ int lua_x_imguiFont_ImFontConfig_setRasterizerFlags(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     if (!cobj) 
     {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiFont_ImFontConfig_setRasterizerFlags'", nullptr);
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiFont_ImFontConfig_setFontBuilderFlags'", nullptr);
         return 0;
     }
 #endif
@@ -794,20 +794,20 @@ int lua_x_imguiFont_ImFontConfig_setRasterizerFlags(lua_State* tolua_S)
     if (1 == argc)
     {
         unsigned int arg0;
-        ok &= luaval_to_uint32(tolua_S, 2,&arg0, "imgui.ImFontConfig:RasterizerFlags");
+        ok &= luaval_to_uint32(tolua_S, 2,&arg0, "imgui.ImFontConfig:FontBuilderFlags");
         if(!ok)
         {
             tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiFont_ImFontConfig'", nullptr);
             return 0;
         }
-        cobj->RasterizerFlags = arg0;
+        cobj->FontBuilderFlags = arg0;
         return 0;
     }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImFontConfig:RasterizerFlags", argc, 1);
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImFontConfig:FontBuilderFlags", argc, 1);
     return 0;
 #if COCOS2D_DEBUG >= 1
 tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiFont_ImFontConfig_getRasterizerFlags'.", &tolua_err);
+    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiFont_ImFontConfig_getFontBuilderFlags'.", &tolua_err);
     return 0;
 #endif
 }
@@ -896,7 +896,7 @@ int lua_register_x_imguiFont_ImFontConfig(lua_State* tolua_S)
         tolua_variable(tolua_S,"GlyphMinAdvanceX", lua_x_imguiFont_ImFontConfig_getGlyphMinAdvanceX, lua_x_imguiFont_ImFontConfig_setGlyphMinAdvanceX);
         tolua_variable(tolua_S,"GlyphMaxAdvanceX", lua_x_imguiFont_ImFontConfig_getGlyphMaxAdvanceX, lua_x_imguiFont_ImFontConfig_setGlyphMaxAdvanceX);
         tolua_variable(tolua_S,"MergeMode", lua_x_imguiFont_ImFontConfig_getMergeMode, lua_x_imguiFont_ImFontConfig_setMergeMode);
-        tolua_variable(tolua_S,"RasterizerFlags", lua_x_imguiFont_ImFontConfig_getRasterizerFlags, lua_x_imguiFont_ImFontConfig_setRasterizerFlags);
+        tolua_variable(tolua_S,"FontBuilderFlags", lua_x_imguiFont_ImFontConfig_getFontBuilderFlags, lua_x_imguiFont_ImFontConfig_setFontBuilderFlags);
         tolua_variable(tolua_S,"RasterizerMultiply", lua_x_imguiFont_ImFontConfig_getRasterizerMultiply, lua_x_imguiFont_ImFontConfig_setRasterizerMultiply);
     tolua_endmodule(tolua_S);
     std::string typeName = typeid(imgui::ImFontConfig).name();
@@ -905,6 +905,67 @@ int lua_register_x_imguiFont_ImFontConfig(lua_State* tolua_S)
     return 1;
 }
 
+int lua_x_imguiFont_ImFontGlyph_getColored(lua_State* tolua_S)
+{
+    imgui::ImFontGlyph* cobj = nullptr;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S, 1, "imgui.ImFontGlyph", 0, &tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (imgui::ImFontGlyph*)tolua_tousertype(tolua_S, 1, 0);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiFont_ImFontGlyph_getColored'", nullptr);
+        return 0;
+    }
+#endif
+    tolua_pushnumber(tolua_S,(lua_Number)cobj->Colored);
+    return 1;
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiFont_ImFontGlyph_getColored'.", &tolua_err);
+    return 0;
+#endif
+}
+int lua_x_imguiFont_ImFontGlyph_setColored(lua_State* tolua_S)
+{
+    int argc = 0;
+    imgui::ImFontGlyph* cobj = nullptr;
+    bool ok  = true;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S, 1, "imgui.ImFontGlyph", 0, &tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (imgui::ImFontGlyph*)tolua_tousertype(tolua_S, 1, 0);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiFont_ImFontGlyph_setColored'", nullptr);
+        return 0;
+    }
+#endif
+    argc = lua_gettop(tolua_S) - 1;
+    if (1 == argc)
+    {
+        unsigned int arg0;
+        ok &= luaval_to_uint32(tolua_S, 2,&arg0, "imgui.ImFontGlyph:Colored");
+        if(!ok)
+        {
+            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiFont_ImFontGlyph'", nullptr);
+            return 0;
+        }
+        cobj->Colored = arg0;
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImFontGlyph:Colored", argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiFont_ImFontGlyph_getColored'.", &tolua_err);
+    return 0;
+#endif
+}
 int lua_x_imguiFont_ImFontGlyph_getCodepoint(lua_State* tolua_S)
 {
     imgui::ImFontGlyph* cobj = nullptr;
@@ -1588,6 +1649,7 @@ int lua_register_x_imguiFont_ImFontGlyph(lua_State* tolua_S)
     tolua_cclass(tolua_S,"ImFontGlyph","imgui.ImFontGlyph","",nullptr);
 
     tolua_beginmodule(tolua_S,"ImFontGlyph");
+        tolua_variable(tolua_S,"Colored", lua_x_imguiFont_ImFontGlyph_getColored, lua_x_imguiFont_ImFontGlyph_setColored);
         tolua_variable(tolua_S,"Codepoint", lua_x_imguiFont_ImFontGlyph_getCodepoint, lua_x_imguiFont_ImFontGlyph_setCodepoint);
         tolua_variable(tolua_S,"Visible", lua_x_imguiFont_ImFontGlyph_getVisible, lua_x_imguiFont_ImFontGlyph_setVisible);
         tolua_variable(tolua_S,"AdvanceX", lua_x_imguiFont_ImFontGlyph_getAdvanceX, lua_x_imguiFont_ImFontGlyph_setAdvanceX);
@@ -2545,67 +2607,6 @@ int lua_x_imguiFont_ImFontAtlas_IsBuilt(lua_State* tolua_S)
     return 0;
 #endif
 }
-int lua_x_imguiFont_ImFontAtlas_getLocked(lua_State* tolua_S)
-{
-    imgui::ImFontAtlas* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "imgui.ImFontAtlas", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImFontAtlas*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiFont_ImFontAtlas_getLocked'", nullptr);
-        return 0;
-    }
-#endif
-    tolua_pushboolean(tolua_S,(bool)cobj->Locked);
-    return 1;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiFont_ImFontAtlas_getLocked'.", &tolua_err);
-    return 0;
-#endif
-}
-int lua_x_imguiFont_ImFontAtlas_setLocked(lua_State* tolua_S)
-{
-    int argc = 0;
-    imgui::ImFontAtlas* cobj = nullptr;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "imgui.ImFontAtlas", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImFontAtlas*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiFont_ImFontAtlas_setLocked'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-    if (1 == argc)
-    {
-        bool arg0;
-        ok &= luaval_to_boolean(tolua_S, 2,&arg0, "imgui.ImFontAtlas:Locked");
-        if(!ok)
-        {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiFont_ImFontAtlas'", nullptr);
-            return 0;
-        }
-        cobj->Locked = arg0;
-        return 0;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImFontAtlas:Locked", argc, 1);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiFont_ImFontAtlas_getLocked'.", &tolua_err);
-    return 0;
-#endif
-}
 int lua_x_imguiFont_ImFontAtlas_getFlags(lua_State* tolua_S)
 {
     imgui::ImFontAtlas* cobj = nullptr;
@@ -2789,6 +2790,67 @@ tolua_lerror:
     return 0;
 #endif
 }
+int lua_x_imguiFont_ImFontAtlas_getLocked(lua_State* tolua_S)
+{
+    imgui::ImFontAtlas* cobj = nullptr;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S, 1, "imgui.ImFontAtlas", 0, &tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (imgui::ImFontAtlas*)tolua_tousertype(tolua_S, 1, 0);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiFont_ImFontAtlas_getLocked'", nullptr);
+        return 0;
+    }
+#endif
+    tolua_pushboolean(tolua_S,(bool)cobj->Locked);
+    return 1;
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiFont_ImFontAtlas_getLocked'.", &tolua_err);
+    return 0;
+#endif
+}
+int lua_x_imguiFont_ImFontAtlas_setLocked(lua_State* tolua_S)
+{
+    int argc = 0;
+    imgui::ImFontAtlas* cobj = nullptr;
+    bool ok  = true;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S, 1, "imgui.ImFontAtlas", 0, &tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (imgui::ImFontAtlas*)tolua_tousertype(tolua_S, 1, 0);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiFont_ImFontAtlas_setLocked'", nullptr);
+        return 0;
+    }
+#endif
+    argc = lua_gettop(tolua_S) - 1;
+    if (1 == argc)
+    {
+        bool arg0;
+        ok &= luaval_to_boolean(tolua_S, 2,&arg0, "imgui.ImFontAtlas:Locked");
+        if(!ok)
+        {
+            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiFont_ImFontAtlas'", nullptr);
+            return 0;
+        }
+        cobj->Locked = arg0;
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImFontAtlas:Locked", argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiFont_ImFontAtlas_getLocked'.", &tolua_err);
+    return 0;
+#endif
+}
 static int lua_x_imguiFont_ImFontAtlas_finalize(lua_State* tolua_S)
 {
     printf("luabindings: finalizing LUA object (ImFontAtlas)");
@@ -2810,10 +2872,10 @@ int lua_register_x_imguiFont_ImFontAtlas(lua_State* tolua_S)
         tolua_function(tolua_S,"clearTexData",lua_x_imguiFont_ImFontAtlas_ClearTexData);
         tolua_function(tolua_S,"getCustomRectByIndex",lua_x_imguiFont_ImFontAtlas_GetCustomRectByIndex);
         tolua_function(tolua_S,"isBuilt",lua_x_imguiFont_ImFontAtlas_IsBuilt);
-        tolua_variable(tolua_S,"Locked", lua_x_imguiFont_ImFontAtlas_getLocked, lua_x_imguiFont_ImFontAtlas_setLocked);
         tolua_variable(tolua_S,"Flags", lua_x_imguiFont_ImFontAtlas_getFlags, lua_x_imguiFont_ImFontAtlas_setFlags);
         tolua_variable(tolua_S,"TexDesiredWidth", lua_x_imguiFont_ImFontAtlas_getTexDesiredWidth, lua_x_imguiFont_ImFontAtlas_setTexDesiredWidth);
         tolua_variable(tolua_S,"TexGlyphPadding", lua_x_imguiFont_ImFontAtlas_getTexGlyphPadding, lua_x_imguiFont_ImFontAtlas_setTexGlyphPadding);
+        tolua_variable(tolua_S,"Locked", lua_x_imguiFont_ImFontAtlas_getLocked, lua_x_imguiFont_ImFontAtlas_setLocked);
     tolua_endmodule(tolua_S);
     std::string typeName = typeid(imgui::ImFontAtlas).name();
     g_luaType[typeName] = "imgui.ImFontAtlas";

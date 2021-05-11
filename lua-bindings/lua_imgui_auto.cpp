@@ -314,6 +314,57 @@ int lua_x_imgui_ImGui_BeginGroup(lua_State* tolua_S)
 #endif
     return 0;
 }
+int lua_x_imgui_ImGui_BeginListBox(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"imgui.ImGui",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 1)
+    {
+        const char* arg0;
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "imgui.ImGui:BeginListBox"); arg0 = arg0_tmp.c_str();
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_BeginListBox'", nullptr);
+            return 0;
+        }
+        bool ret = imgui::ImGui::BeginListBox(arg0);
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
+    if (argc == 2)
+    {
+        const char* arg0;
+        ImVec2 arg1;
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "imgui.ImGui:BeginListBox"); arg0 = arg0_tmp.c_str();
+        ok &= luaval_to_ImVec2(tolua_S, 3, &arg1, "imgui.ImGui:BeginListBox");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_BeginListBox'", nullptr);
+            return 0;
+        }
+        bool ret = imgui::ImGui::BeginListBox(arg0, arg1);
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:BeginListBox",argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imgui_ImGui_BeginListBox'.",&tolua_err);
+#endif
+    return 0;
+}
 int lua_x_imgui_ImGui_BeginMainMenuBar(lua_State* tolua_S)
 {
     int argc = 0;
@@ -718,6 +769,101 @@ int lua_x_imgui_ImGui_BeginTabBar(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
     tolua_error(tolua_S,"#ferror in function 'lua_x_imgui_ImGui_BeginTabBar'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_x_imgui_ImGui_BeginTable(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"imgui.ImGui",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 2)
+    {
+        const char* arg0;
+        int arg1;
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "imgui.ImGui:BeginTable"); arg0 = arg0_tmp.c_str();
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "imgui.ImGui:BeginTable");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_BeginTable'", nullptr);
+            return 0;
+        }
+        bool ret = imgui::ImGui::BeginTable(arg0, arg1);
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
+    if (argc == 3)
+    {
+        const char* arg0;
+        int arg1;
+        int arg2;
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "imgui.ImGui:BeginTable"); arg0 = arg0_tmp.c_str();
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "imgui.ImGui:BeginTable");
+        ok &= luaval_to_int32(tolua_S, 4,(int *)&arg2, "imgui.ImGui:BeginTable");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_BeginTable'", nullptr);
+            return 0;
+        }
+        bool ret = imgui::ImGui::BeginTable(arg0, arg1, arg2);
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
+    if (argc == 4)
+    {
+        const char* arg0;
+        int arg1;
+        int arg2;
+        ImVec2 arg3;
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "imgui.ImGui:BeginTable"); arg0 = arg0_tmp.c_str();
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "imgui.ImGui:BeginTable");
+        ok &= luaval_to_int32(tolua_S, 4,(int *)&arg2, "imgui.ImGui:BeginTable");
+        ok &= luaval_to_ImVec2(tolua_S, 5, &arg3, "imgui.ImGui:BeginTable");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_BeginTable'", nullptr);
+            return 0;
+        }
+        bool ret = imgui::ImGui::BeginTable(arg0, arg1, arg2, arg3);
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
+    if (argc == 5)
+    {
+        const char* arg0;
+        int arg1;
+        int arg2;
+        ImVec2 arg3;
+        double arg4;
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "imgui.ImGui:BeginTable"); arg0 = arg0_tmp.c_str();
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "imgui.ImGui:BeginTable");
+        ok &= luaval_to_int32(tolua_S, 4,(int *)&arg2, "imgui.ImGui:BeginTable");
+        ok &= luaval_to_ImVec2(tolua_S, 5, &arg3, "imgui.ImGui:BeginTable");
+        ok &= luaval_to_number(tolua_S, 6,&arg4, "imgui.ImGui:BeginTable");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_BeginTable'", nullptr);
+            return 0;
+        }
+        bool ret = imgui::ImGui::BeginTable(arg0, arg1, arg2, arg3, arg4);
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:BeginTable",argc, 2);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imgui_ImGui_BeginTable'.",&tolua_err);
 #endif
     return 0;
 }
@@ -1456,8 +1602,8 @@ int lua_x_imgui_ImGui_DockSpace(lua_State* tolua_S)
             tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_DockSpace'", nullptr);
             return 0;
         }
-        imgui::ImGui::DockSpace(arg0);
-        lua_settop(tolua_S, 1);
+        unsigned int ret = imgui::ImGui::DockSpace(arg0);
+        tolua_pushnumber(tolua_S,(lua_Number)ret);
         return 1;
     }
     if (argc == 2)
@@ -1471,8 +1617,8 @@ int lua_x_imgui_ImGui_DockSpace(lua_State* tolua_S)
             tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_DockSpace'", nullptr);
             return 0;
         }
-        imgui::ImGui::DockSpace(arg0, arg1);
-        lua_settop(tolua_S, 1);
+        unsigned int ret = imgui::ImGui::DockSpace(arg0, arg1);
+        tolua_pushnumber(tolua_S,(lua_Number)ret);
         return 1;
     }
     if (argc == 3)
@@ -1488,8 +1634,8 @@ int lua_x_imgui_ImGui_DockSpace(lua_State* tolua_S)
             tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_DockSpace'", nullptr);
             return 0;
         }
-        imgui::ImGui::DockSpace(arg0, arg1, arg2);
-        lua_settop(tolua_S, 1);
+        unsigned int ret = imgui::ImGui::DockSpace(arg0, arg1, arg2);
+        tolua_pushnumber(tolua_S,(lua_Number)ret);
         return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:DockSpace",argc, 1);
@@ -1802,6 +1948,40 @@ int lua_x_imgui_ImGui_EndGroup(lua_State* tolua_S)
 #endif
     return 0;
 }
+int lua_x_imgui_ImGui_EndListBox(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"imgui.ImGui",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 0)
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_EndListBox'", nullptr);
+            return 0;
+        }
+        imgui::ImGui::EndListBox();
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:EndListBox",argc, 0);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imgui_ImGui_EndListBox'.",&tolua_err);
+#endif
+    return 0;
+}
 int lua_x_imgui_ImGui_EndMainMenuBar(lua_State* tolua_S)
 {
     int argc = 0;
@@ -2003,6 +2183,40 @@ int lua_x_imgui_ImGui_EndTabItem(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
     tolua_error(tolua_S,"#ferror in function 'lua_x_imgui_ImGui_EndTabItem'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_x_imgui_ImGui_EndTable(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"imgui.ImGui",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 0)
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_EndTable'", nullptr);
+            return 0;
+        }
+        imgui::ImGui::EndTable();
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:EndTable",argc, 0);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imgui_ImGui_EndTable'.",&tolua_err);
 #endif
     return 0;
 }
@@ -5277,40 +5491,6 @@ int lua_x_imgui_ImGui_LabelText(lua_State* tolua_S)
 #endif
     return 0;
 }
-int lua_x_imgui_ImGui_ListBoxFooter(lua_State* tolua_S)
-{
-    int argc = 0;
-    bool ok  = true;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-#endif
-
-#if COCOS2D_DEBUG >= 1
-    if (!tolua_isusertable(tolua_S,1,"imgui.ImGui",0,&tolua_err)) goto tolua_lerror;
-#endif
-
-    argc = lua_gettop(tolua_S) - 1;
-
-    if (argc == 0)
-    {
-        if(!ok)
-        {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_ListBoxFooter'", nullptr);
-            return 0;
-        }
-        imgui::ImGui::ListBoxFooter();
-        lua_settop(tolua_S, 1);
-        return 1;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:ListBoxFooter",argc, 0);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-    tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_imgui_ImGui_ListBoxFooter'.",&tolua_err);
-#endif
-    return 0;
-}
 int lua_x_imgui_ImGui_LoadIniSettingsFromDisk(lua_State* tolua_S)
 {
     int argc = 0;
@@ -5834,7 +6014,8 @@ int lua_x_imgui_ImGui_OpenPopupOnItemClick(lua_State* tolua_S)
             return 0;
         }
         imgui::ImGui::OpenPopupOnItemClick();
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     if (argc == 1)
     {
@@ -5846,7 +6027,8 @@ int lua_x_imgui_ImGui_OpenPopupOnItemClick(lua_State* tolua_S)
             return 0;
         }
         imgui::ImGui::OpenPopupOnItemClick(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     if (argc == 2)
     {
@@ -5860,7 +6042,8 @@ int lua_x_imgui_ImGui_OpenPopupOnItemClick(lua_State* tolua_S)
             return 0;
         }
         imgui::ImGui::OpenPopupOnItemClick(arg0, arg1);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:OpenPopupOnItemClick",argc, 0);
     return 0;
@@ -8485,6 +8668,622 @@ int lua_x_imgui_ImGui_TabItemButton(lua_State* tolua_S)
 #endif
     return 0;
 }
+int lua_x_imgui_ImGui_TableGetColumnCount(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"imgui.ImGui",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 0)
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_TableGetColumnCount'", nullptr);
+            return 0;
+        }
+        int ret = imgui::ImGui::TableGetColumnCount();
+        tolua_pushnumber(tolua_S,(lua_Number)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:TableGetColumnCount",argc, 0);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imgui_ImGui_TableGetColumnCount'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_x_imgui_ImGui_TableGetColumnFlags(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"imgui.ImGui",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 0)
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_TableGetColumnFlags'", nullptr);
+            return 0;
+        }
+        int ret = imgui::ImGui::TableGetColumnFlags();
+        tolua_pushnumber(tolua_S,(lua_Number)ret);
+        return 1;
+    }
+    if (argc == 1)
+    {
+        int arg0;
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "imgui.ImGui:TableGetColumnFlags");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_TableGetColumnFlags'", nullptr);
+            return 0;
+        }
+        int ret = imgui::ImGui::TableGetColumnFlags(arg0);
+        tolua_pushnumber(tolua_S,(lua_Number)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:TableGetColumnFlags",argc, 0);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imgui_ImGui_TableGetColumnFlags'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_x_imgui_ImGui_TableGetColumnIndex(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"imgui.ImGui",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 0)
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_TableGetColumnIndex'", nullptr);
+            return 0;
+        }
+        int ret = imgui::ImGui::TableGetColumnIndex();
+        tolua_pushnumber(tolua_S,(lua_Number)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:TableGetColumnIndex",argc, 0);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imgui_ImGui_TableGetColumnIndex'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_x_imgui_ImGui_TableGetColumnName(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"imgui.ImGui",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 0)
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_TableGetColumnName'", nullptr);
+            return 0;
+        }
+        const char* ret = imgui::ImGui::TableGetColumnName();
+        tolua_pushstring(tolua_S,(const char*)ret);
+        return 1;
+    }
+    if (argc == 1)
+    {
+        int arg0;
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "imgui.ImGui:TableGetColumnName");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_TableGetColumnName'", nullptr);
+            return 0;
+        }
+        const char* ret = imgui::ImGui::TableGetColumnName(arg0);
+        tolua_pushstring(tolua_S,(const char*)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:TableGetColumnName",argc, 0);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imgui_ImGui_TableGetColumnName'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_x_imgui_ImGui_TableGetRowIndex(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"imgui.ImGui",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 0)
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_TableGetRowIndex'", nullptr);
+            return 0;
+        }
+        int ret = imgui::ImGui::TableGetRowIndex();
+        tolua_pushnumber(tolua_S,(lua_Number)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:TableGetRowIndex",argc, 0);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imgui_ImGui_TableGetRowIndex'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_x_imgui_ImGui_TableHeader(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"imgui.ImGui",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 1)
+    {
+        const char* arg0;
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "imgui.ImGui:TableHeader"); arg0 = arg0_tmp.c_str();
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_TableHeader'", nullptr);
+            return 0;
+        }
+        imgui::ImGui::TableHeader(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:TableHeader",argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imgui_ImGui_TableHeader'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_x_imgui_ImGui_TableHeadersRow(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"imgui.ImGui",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 0)
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_TableHeadersRow'", nullptr);
+            return 0;
+        }
+        imgui::ImGui::TableHeadersRow();
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:TableHeadersRow",argc, 0);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imgui_ImGui_TableHeadersRow'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_x_imgui_ImGui_TableNextColumn(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"imgui.ImGui",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 0)
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_TableNextColumn'", nullptr);
+            return 0;
+        }
+        bool ret = imgui::ImGui::TableNextColumn();
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:TableNextColumn",argc, 0);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imgui_ImGui_TableNextColumn'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_x_imgui_ImGui_TableNextRow(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"imgui.ImGui",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 0)
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_TableNextRow'", nullptr);
+            return 0;
+        }
+        imgui::ImGui::TableNextRow();
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    if (argc == 1)
+    {
+        int arg0;
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "imgui.ImGui:TableNextRow");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_TableNextRow'", nullptr);
+            return 0;
+        }
+        imgui::ImGui::TableNextRow(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    if (argc == 2)
+    {
+        int arg0;
+        double arg1;
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "imgui.ImGui:TableNextRow");
+        ok &= luaval_to_number(tolua_S, 3,&arg1, "imgui.ImGui:TableNextRow");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_TableNextRow'", nullptr);
+            return 0;
+        }
+        imgui::ImGui::TableNextRow(arg0, arg1);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:TableNextRow",argc, 0);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imgui_ImGui_TableNextRow'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_x_imgui_ImGui_TableSetBgColor(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"imgui.ImGui",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 2)
+    {
+        int arg0;
+        unsigned int arg1;
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "imgui.ImGui:TableSetBgColor");
+        ok &= luaval_to_uint32(tolua_S, 3,&arg1, "imgui.ImGui:TableSetBgColor");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_TableSetBgColor'", nullptr);
+            return 0;
+        }
+        imgui::ImGui::TableSetBgColor(arg0, arg1);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    if (argc == 3)
+    {
+        int arg0;
+        unsigned int arg1;
+        int arg2;
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "imgui.ImGui:TableSetBgColor");
+        ok &= luaval_to_uint32(tolua_S, 3,&arg1, "imgui.ImGui:TableSetBgColor");
+        ok &= luaval_to_int32(tolua_S, 4,(int *)&arg2, "imgui.ImGui:TableSetBgColor");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_TableSetBgColor'", nullptr);
+            return 0;
+        }
+        imgui::ImGui::TableSetBgColor(arg0, arg1, arg2);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:TableSetBgColor",argc, 2);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imgui_ImGui_TableSetBgColor'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_x_imgui_ImGui_TableSetColumnEnabled(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"imgui.ImGui",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 2)
+    {
+        int arg0;
+        bool arg1;
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "imgui.ImGui:TableSetColumnEnabled");
+        ok &= luaval_to_boolean(tolua_S, 3,&arg1, "imgui.ImGui:TableSetColumnEnabled");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_TableSetColumnEnabled'", nullptr);
+            return 0;
+        }
+        imgui::ImGui::TableSetColumnEnabled(arg0, arg1);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:TableSetColumnEnabled",argc, 2);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imgui_ImGui_TableSetColumnEnabled'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_x_imgui_ImGui_TableSetColumnIndex(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"imgui.ImGui",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 1)
+    {
+        int arg0;
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "imgui.ImGui:TableSetColumnIndex");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_TableSetColumnIndex'", nullptr);
+            return 0;
+        }
+        bool ret = imgui::ImGui::TableSetColumnIndex(arg0);
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:TableSetColumnIndex",argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imgui_ImGui_TableSetColumnIndex'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_x_imgui_ImGui_TableSetupColumn(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"imgui.ImGui",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 1)
+    {
+        const char* arg0;
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "imgui.ImGui:TableSetupColumn"); arg0 = arg0_tmp.c_str();
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_TableSetupColumn'", nullptr);
+            return 0;
+        }
+        imgui::ImGui::TableSetupColumn(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    if (argc == 2)
+    {
+        const char* arg0;
+        int arg1;
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "imgui.ImGui:TableSetupColumn"); arg0 = arg0_tmp.c_str();
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "imgui.ImGui:TableSetupColumn");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_TableSetupColumn'", nullptr);
+            return 0;
+        }
+        imgui::ImGui::TableSetupColumn(arg0, arg1);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    if (argc == 3)
+    {
+        const char* arg0;
+        int arg1;
+        double arg2;
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "imgui.ImGui:TableSetupColumn"); arg0 = arg0_tmp.c_str();
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "imgui.ImGui:TableSetupColumn");
+        ok &= luaval_to_number(tolua_S, 4,&arg2, "imgui.ImGui:TableSetupColumn");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_TableSetupColumn'", nullptr);
+            return 0;
+        }
+        imgui::ImGui::TableSetupColumn(arg0, arg1, arg2);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    if (argc == 4)
+    {
+        const char* arg0;
+        int arg1;
+        double arg2;
+        unsigned int arg3;
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "imgui.ImGui:TableSetupColumn"); arg0 = arg0_tmp.c_str();
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "imgui.ImGui:TableSetupColumn");
+        ok &= luaval_to_number(tolua_S, 4,&arg2, "imgui.ImGui:TableSetupColumn");
+        ok &= luaval_to_uint32(tolua_S, 5,&arg3, "imgui.ImGui:TableSetupColumn");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_TableSetupColumn'", nullptr);
+            return 0;
+        }
+        imgui::ImGui::TableSetupColumn(arg0, arg1, arg2, arg3);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:TableSetupColumn",argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imgui_ImGui_TableSetupColumn'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_x_imgui_ImGui_TableSetupScrollFreeze(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"imgui.ImGui",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 2)
+    {
+        int arg0;
+        int arg1;
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "imgui.ImGui:TableSetupScrollFreeze");
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "imgui.ImGui:TableSetupScrollFreeze");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_TableSetupScrollFreeze'", nullptr);
+            return 0;
+        }
+        imgui::ImGui::TableSetupScrollFreeze(arg0, arg1);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:TableSetupScrollFreeze",argc, 2);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_imgui_ImGui_TableSetupScrollFreeze'.",&tolua_err);
+#endif
+    return 0;
+}
 int lua_x_imgui_ImGui_Text(lua_State* tolua_S)
 {
     int argc = 0;
@@ -8841,6 +9640,7 @@ int lua_x_imgui_ImGui_TreePush(lua_State* tolua_S)
 {
     int argc = 0;
     bool ok  = true;
+
 #if COCOS2D_DEBUG >= 1
     tolua_Error tolua_err;
 #endif
@@ -8849,32 +9649,22 @@ int lua_x_imgui_ImGui_TreePush(lua_State* tolua_S)
     if (!tolua_isusertable(tolua_S,1,"imgui.ImGui",0,&tolua_err)) goto tolua_lerror;
 #endif
 
-    argc = lua_gettop(tolua_S)-1;
+    argc = lua_gettop(tolua_S) - 1;
 
-    do 
+    if (argc == 1)
     {
-        if (argc == 0)
+        const char* arg0;
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "imgui.ImGui:TreePush"); arg0 = arg0_tmp.c_str();
+        if(!ok)
         {
-            imgui::ImGui::TreePush();
-            lua_settop(tolua_S, 1);
-            return 1;
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_imgui_ImGui_TreePush'", nullptr);
+            return 0;
         }
-    } while (0);
-    ok  = true;
-    do 
-    {
-        if (argc == 1)
-        {
-            const char* arg0;
-            std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "imgui.ImGui:TreePush"); arg0 = arg0_tmp.c_str();
-            if (!ok) { break; }
-            imgui::ImGui::TreePush(arg0);
-            lua_settop(tolua_S, 1);
-            return 1;
-        }
-    } while (0);
-    ok  = true;
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d", "imgui.ImGui:TreePush",argc, 1);
+        imgui::ImGui::TreePush(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "imgui.ImGui:TreePush",argc, 1);
     return 0;
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
@@ -8980,6 +9770,7 @@ int lua_register_x_imgui_ImGui(lua_State* tolua_S)
         tolua_function(tolua_S,"beginDragDropSource", lua_x_imgui_ImGui_BeginDragDropSource);
         tolua_function(tolua_S,"beginDragDropTarget", lua_x_imgui_ImGui_BeginDragDropTarget);
         tolua_function(tolua_S,"beginGroup", lua_x_imgui_ImGui_BeginGroup);
+        tolua_function(tolua_S,"beginListBox", lua_x_imgui_ImGui_BeginListBox);
         tolua_function(tolua_S,"beginMainMenuBar", lua_x_imgui_ImGui_BeginMainMenuBar);
         tolua_function(tolua_S,"beginMenu", lua_x_imgui_ImGui_BeginMenu);
         tolua_function(tolua_S,"beginMenuBar", lua_x_imgui_ImGui_BeginMenuBar);
@@ -8988,6 +9779,7 @@ int lua_register_x_imgui_ImGui(lua_State* tolua_S)
         tolua_function(tolua_S,"beginPopupContextVoid", lua_x_imgui_ImGui_BeginPopupContextVoid);
         tolua_function(tolua_S,"beginPopupContextWindow", lua_x_imgui_ImGui_BeginPopupContextWindow);
         tolua_function(tolua_S,"beginTabBar", lua_x_imgui_ImGui_BeginTabBar);
+        tolua_function(tolua_S,"beginTable", lua_x_imgui_ImGui_BeginTable);
         tolua_function(tolua_S,"beginTooltip", lua_x_imgui_ImGui_BeginTooltip);
         tolua_function(tolua_S,"bullet", lua_x_imgui_ImGui_Bullet);
         tolua_function(tolua_S,"bulletText", lua_x_imgui_ImGui_BulletText);
@@ -9012,12 +9804,14 @@ int lua_register_x_imgui_ImGui(lua_State* tolua_S)
         tolua_function(tolua_S,"endDragDropTarget", lua_x_imgui_ImGui_EndDragDropTarget);
         tolua_function(tolua_S,"endFrame", lua_x_imgui_ImGui_EndFrame);
         tolua_function(tolua_S,"endGroup", lua_x_imgui_ImGui_EndGroup);
+        tolua_function(tolua_S,"endListBox", lua_x_imgui_ImGui_EndListBox);
         tolua_function(tolua_S,"endMainMenuBar", lua_x_imgui_ImGui_EndMainMenuBar);
         tolua_function(tolua_S,"endMenu", lua_x_imgui_ImGui_EndMenu);
         tolua_function(tolua_S,"endMenuBar", lua_x_imgui_ImGui_EndMenuBar);
         tolua_function(tolua_S,"endPopup", lua_x_imgui_ImGui_EndPopup);
         tolua_function(tolua_S,"endTabBar", lua_x_imgui_ImGui_EndTabBar);
         tolua_function(tolua_S,"endTabItem", lua_x_imgui_ImGui_EndTabItem);
+        tolua_function(tolua_S,"endTable", lua_x_imgui_ImGui_EndTable);
         tolua_function(tolua_S,"endTooltip", lua_x_imgui_ImGui_EndTooltip);
         tolua_function(tolua_S,"findViewportByID", lua_x_imgui_ImGui_FindViewportByID);
         tolua_function(tolua_S,"getBackgroundDrawList", lua_x_imgui_ImGui_GetBackgroundDrawList);
@@ -9105,7 +9899,6 @@ int lua_register_x_imgui_ImGui(lua_State* tolua_S)
         tolua_function(tolua_S,"isWindowFocused", lua_x_imgui_ImGui_IsWindowFocused);
         tolua_function(tolua_S,"isWindowHovered", lua_x_imgui_ImGui_IsWindowHovered);
         tolua_function(tolua_S,"labelText", lua_x_imgui_ImGui_LabelText);
-        tolua_function(tolua_S,"listBoxFooter", lua_x_imgui_ImGui_ListBoxFooter);
         tolua_function(tolua_S,"loadIniSettingsFromDisk", lua_x_imgui_ImGui_LoadIniSettingsFromDisk);
         tolua_function(tolua_S,"loadIniSettingsFromMemory", lua_x_imgui_ImGui_LoadIniSettingsFromMemory);
         tolua_function(tolua_S,"logButtons", lua_x_imgui_ImGui_LogButtons);
@@ -9183,6 +9976,20 @@ int lua_register_x_imgui_ImGui(lua_State* tolua_S)
         tolua_function(tolua_S,"smallButton", lua_x_imgui_ImGui_SmallButton);
         tolua_function(tolua_S,"spacing", lua_x_imgui_ImGui_Spacing);
         tolua_function(tolua_S,"tabItemButton", lua_x_imgui_ImGui_TabItemButton);
+        tolua_function(tolua_S,"tableGetColumnCount", lua_x_imgui_ImGui_TableGetColumnCount);
+        tolua_function(tolua_S,"tableGetColumnFlags", lua_x_imgui_ImGui_TableGetColumnFlags);
+        tolua_function(tolua_S,"tableGetColumnIndex", lua_x_imgui_ImGui_TableGetColumnIndex);
+        tolua_function(tolua_S,"tableGetColumnName", lua_x_imgui_ImGui_TableGetColumnName);
+        tolua_function(tolua_S,"tableGetRowIndex", lua_x_imgui_ImGui_TableGetRowIndex);
+        tolua_function(tolua_S,"tableHeader", lua_x_imgui_ImGui_TableHeader);
+        tolua_function(tolua_S,"tableHeadersRow", lua_x_imgui_ImGui_TableHeadersRow);
+        tolua_function(tolua_S,"tableNextColumn", lua_x_imgui_ImGui_TableNextColumn);
+        tolua_function(tolua_S,"tableNextRow", lua_x_imgui_ImGui_TableNextRow);
+        tolua_function(tolua_S,"tableSetBgColor", lua_x_imgui_ImGui_TableSetBgColor);
+        tolua_function(tolua_S,"tableSetColumnEnabled", lua_x_imgui_ImGui_TableSetColumnEnabled);
+        tolua_function(tolua_S,"tableSetColumnIndex", lua_x_imgui_ImGui_TableSetColumnIndex);
+        tolua_function(tolua_S,"tableSetupColumn", lua_x_imgui_ImGui_TableSetupColumn);
+        tolua_function(tolua_S,"tableSetupScrollFreeze", lua_x_imgui_ImGui_TableSetupScrollFreeze);
         tolua_function(tolua_S,"text", lua_x_imgui_ImGui_Text);
         tolua_function(tolua_S,"textColored", lua_x_imgui_ImGui_TextColored);
         tolua_function(tolua_S,"textDisabled", lua_x_imgui_ImGui_TextDisabled);

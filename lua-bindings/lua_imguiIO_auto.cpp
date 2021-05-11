@@ -1271,67 +1271,6 @@ tolua_lerror:
     return 0;
 #endif
 }
-int lua_x_imguiIO_ImGuiIO_getConfigDockingWithShift(lua_State* tolua_S)
-{
-    imgui::ImGuiIO* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiIO", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiIO_ImGuiIO_getConfigDockingWithShift'", nullptr);
-        return 0;
-    }
-#endif
-    tolua_pushboolean(tolua_S,(bool)cobj->ConfigDockingWithShift);
-    return 1;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiIO_ImGuiIO_getConfigDockingWithShift'.", &tolua_err);
-    return 0;
-#endif
-}
-int lua_x_imguiIO_ImGuiIO_setConfigDockingWithShift(lua_State* tolua_S)
-{
-    int argc = 0;
-    imgui::ImGuiIO* cobj = nullptr;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiIO", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiIO_ImGuiIO_setConfigDockingWithShift'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-    if (1 == argc)
-    {
-        bool arg0;
-        ok &= luaval_to_boolean(tolua_S, 2,&arg0, "imgui.ImGuiIO:ConfigDockingWithShift");
-        if(!ok)
-        {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiIO_ImGuiIO'", nullptr);
-            return 0;
-        }
-        cobj->ConfigDockingWithShift = arg0;
-        return 0;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiIO:ConfigDockingWithShift", argc, 1);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiIO_ImGuiIO_getConfigDockingWithShift'.", &tolua_err);
-    return 0;
-#endif
-}
 int lua_x_imguiIO_ImGuiIO_getConfigDockingAlwaysTabBar(lua_State* tolua_S)
 {
     imgui::ImGuiIO* cobj = nullptr;
@@ -1878,6 +1817,67 @@ int lua_x_imguiIO_ImGuiIO_setConfigInputTextCursorBlink(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
 tolua_lerror:
     tolua_error(tolua_S, "#ferror in function 'lua_x_imguiIO_ImGuiIO_getConfigInputTextCursorBlink'.", &tolua_err);
+    return 0;
+#endif
+}
+int lua_x_imguiIO_ImGuiIO_getConfigDragClickToInputText(lua_State* tolua_S)
+{
+    imgui::ImGuiIO* cobj = nullptr;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiIO", 0, &tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiIO_ImGuiIO_getConfigDragClickToInputText'", nullptr);
+        return 0;
+    }
+#endif
+    tolua_pushboolean(tolua_S,(bool)cobj->ConfigDragClickToInputText);
+    return 1;
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiIO_ImGuiIO_getConfigDragClickToInputText'.", &tolua_err);
+    return 0;
+#endif
+}
+int lua_x_imguiIO_ImGuiIO_setConfigDragClickToInputText(lua_State* tolua_S)
+{
+    int argc = 0;
+    imgui::ImGuiIO* cobj = nullptr;
+    bool ok  = true;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiIO", 0, &tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiIO_ImGuiIO_setConfigDragClickToInputText'", nullptr);
+        return 0;
+    }
+#endif
+    argc = lua_gettop(tolua_S) - 1;
+    if (1 == argc)
+    {
+        bool arg0;
+        ok &= luaval_to_boolean(tolua_S, 2,&arg0, "imgui.ImGuiIO:ConfigDragClickToInputText");
+        if(!ok)
+        {
+            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiIO_ImGuiIO'", nullptr);
+            return 0;
+        }
+        cobj->ConfigDragClickToInputText = arg0;
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiIO:ConfigDragClickToInputText", argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiIO_ImGuiIO_getConfigDragClickToInputText'.", &tolua_err);
     return 0;
 #endif
 }
@@ -3562,7 +3562,6 @@ int lua_register_x_imguiIO_ImGuiIO(lua_State* tolua_S)
         tolua_variable(tolua_S,"FontDefault", lua_x_imguiIO_ImGuiIO_getFontDefault, lua_x_imguiIO_ImGuiIO_setFontDefault);
         tolua_variable(tolua_S,"DisplayFramebufferScale", lua_x_imguiIO_ImGuiIO_getDisplayFramebufferScale, lua_x_imguiIO_ImGuiIO_setDisplayFramebufferScale);
         tolua_variable(tolua_S,"ConfigDockingNoSplit", lua_x_imguiIO_ImGuiIO_getConfigDockingNoSplit, lua_x_imguiIO_ImGuiIO_setConfigDockingNoSplit);
-        tolua_variable(tolua_S,"ConfigDockingWithShift", lua_x_imguiIO_ImGuiIO_getConfigDockingWithShift, lua_x_imguiIO_ImGuiIO_setConfigDockingWithShift);
         tolua_variable(tolua_S,"ConfigDockingAlwaysTabBar", lua_x_imguiIO_ImGuiIO_getConfigDockingAlwaysTabBar, lua_x_imguiIO_ImGuiIO_setConfigDockingAlwaysTabBar);
         tolua_variable(tolua_S,"ConfigDockingTransparentPayload", lua_x_imguiIO_ImGuiIO_getConfigDockingTransparentPayload, lua_x_imguiIO_ImGuiIO_setConfigDockingTransparentPayload);
         tolua_variable(tolua_S,"ConfigViewportsNoAutoMerge", lua_x_imguiIO_ImGuiIO_getConfigViewportsNoAutoMerge, lua_x_imguiIO_ImGuiIO_setConfigViewportsNoAutoMerge);
@@ -3572,6 +3571,7 @@ int lua_register_x_imguiIO_ImGuiIO(lua_State* tolua_S)
         tolua_variable(tolua_S,"MouseDrawCursor", lua_x_imguiIO_ImGuiIO_getMouseDrawCursor, lua_x_imguiIO_ImGuiIO_setMouseDrawCursor);
         tolua_variable(tolua_S,"ConfigMacOSXBehaviors", lua_x_imguiIO_ImGuiIO_getConfigMacOSXBehaviors, lua_x_imguiIO_ImGuiIO_setConfigMacOSXBehaviors);
         tolua_variable(tolua_S,"ConfigInputTextCursorBlink", lua_x_imguiIO_ImGuiIO_getConfigInputTextCursorBlink, lua_x_imguiIO_ImGuiIO_setConfigInputTextCursorBlink);
+        tolua_variable(tolua_S,"ConfigDragClickToInputText", lua_x_imguiIO_ImGuiIO_getConfigDragClickToInputText, lua_x_imguiIO_ImGuiIO_setConfigDragClickToInputText);
         tolua_variable(tolua_S,"ConfigWindowsResizeFromEdges", lua_x_imguiIO_ImGuiIO_getConfigWindowsResizeFromEdges, lua_x_imguiIO_ImGuiIO_setConfigWindowsResizeFromEdges);
         tolua_variable(tolua_S,"ConfigWindowsMoveFromTitleBarOnly", lua_x_imguiIO_ImGuiIO_getConfigWindowsMoveFromTitleBarOnly, lua_x_imguiIO_ImGuiIO_setConfigWindowsMoveFromTitleBarOnly);
         tolua_variable(tolua_S,"ConfigMemoryCompactTimer", lua_x_imguiIO_ImGuiIO_getConfigMemoryCompactTimer, lua_x_imguiIO_ImGuiIO_setConfigMemoryCompactTimer);
