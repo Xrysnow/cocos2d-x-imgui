@@ -20,7 +20,6 @@ namespace implot
     using ::ImPlotOrientation_;
     using ::ImPlotYAxis_;
     using ::ImPlotStyle;
-    using ::ImPlotInputMap;
     namespace ImPlot
     {
         using namespace ::ImPlot;
@@ -59,12 +58,17 @@ int lua_register_x_implot_ImPlotAxisFlags_(lua_State* tolua_S)
     tolua_module(tolua_S, "ImPlotAxisFlags", 0);
     tolua_beginmodule(tolua_S,"ImPlotAxisFlags");
         tolua_constant(tolua_S, "None", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_None);
+        tolua_constant(tolua_S, "NoLabel", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_NoLabel);
         tolua_constant(tolua_S, "NoGridLines", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_NoGridLines);
         tolua_constant(tolua_S, "NoTickMarks", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_NoTickMarks);
         tolua_constant(tolua_S, "NoTickLabels", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_NoTickLabels);
+        tolua_constant(tolua_S, "Foreground", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_Foreground);
         tolua_constant(tolua_S, "LogScale", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_LogScale);
         tolua_constant(tolua_S, "Time", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_Time);
         tolua_constant(tolua_S, "Invert", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_Invert);
+        tolua_constant(tolua_S, "NoInitialFit", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_NoInitialFit);
+        tolua_constant(tolua_S, "AutoFit", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_AutoFit);
+        tolua_constant(tolua_S, "RangeFit", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_RangeFit);
         tolua_constant(tolua_S, "LockMin", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_LockMin);
         tolua_constant(tolua_S, "LockMax", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_LockMax);
         tolua_constant(tolua_S, "Lock", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_Lock);
@@ -138,6 +142,7 @@ int lua_register_x_implot_ImPlotStyleVar_(lua_State* tolua_S)
         tolua_constant(tolua_S, "LegendSpacing", (lua_Number)implot::ImPlotStyleVar_::ImPlotStyleVar_LegendSpacing);
         tolua_constant(tolua_S, "MousePosPadding", (lua_Number)implot::ImPlotStyleVar_::ImPlotStyleVar_MousePosPadding);
         tolua_constant(tolua_S, "AnnotationPadding", (lua_Number)implot::ImPlotStyleVar_::ImPlotStyleVar_AnnotationPadding);
+        tolua_constant(tolua_S, "FitPadding", (lua_Number)implot::ImPlotStyleVar_::ImPlotStyleVar_FitPadding);
         tolua_constant(tolua_S, "PlotDefaultSize", (lua_Number)implot::ImPlotStyleVar_::ImPlotStyleVar_PlotDefaultSize);
         tolua_constant(tolua_S, "PlotMinSize", (lua_Number)implot::ImPlotStyleVar_::ImPlotStyleVar_PlotMinSize);
         tolua_constant(tolua_S, "COUNT", (lua_Number)implot::ImPlotStyleVar_::ImPlotStyleVar_COUNT);
@@ -173,7 +178,6 @@ int lua_register_x_implot_ImPlotColormap_(lua_State* tolua_S)
 
     tolua_module(tolua_S, "ImPlotColormap", 0);
     tolua_beginmodule(tolua_S,"ImPlotColormap");
-        tolua_constant(tolua_S, "Default", (lua_Number)implot::ImPlotColormap_::ImPlotColormap_Default);
         tolua_constant(tolua_S, "Deep", (lua_Number)implot::ImPlotColormap_::ImPlotColormap_Deep);
         tolua_constant(tolua_S, "Dark", (lua_Number)implot::ImPlotColormap_::ImPlotColormap_Dark);
         tolua_constant(tolua_S, "Pastel", (lua_Number)implot::ImPlotColormap_::ImPlotColormap_Pastel);
@@ -184,6 +188,12 @@ int lua_register_x_implot_ImPlotColormap_(lua_State* tolua_S)
         tolua_constant(tolua_S, "Cool", (lua_Number)implot::ImPlotColormap_::ImPlotColormap_Cool);
         tolua_constant(tolua_S, "Pink", (lua_Number)implot::ImPlotColormap_::ImPlotColormap_Pink);
         tolua_constant(tolua_S, "Jet", (lua_Number)implot::ImPlotColormap_::ImPlotColormap_Jet);
+        tolua_constant(tolua_S, "Twilight", (lua_Number)implot::ImPlotColormap_::ImPlotColormap_Twilight);
+        tolua_constant(tolua_S, "RdBu", (lua_Number)implot::ImPlotColormap_::ImPlotColormap_RdBu);
+        tolua_constant(tolua_S, "BrBG", (lua_Number)implot::ImPlotColormap_::ImPlotColormap_BrBG);
+        tolua_constant(tolua_S, "PiYG", (lua_Number)implot::ImPlotColormap_::ImPlotColormap_PiYG);
+        tolua_constant(tolua_S, "Spectral", (lua_Number)implot::ImPlotColormap_::ImPlotColormap_Spectral);
+        tolua_constant(tolua_S, "Greys", (lua_Number)implot::ImPlotColormap_::ImPlotColormap_Greys);
     tolua_endmodule(tolua_S);
 
     return 1;
@@ -1697,6 +1707,67 @@ tolua_lerror:
     return 0;
 #endif
 }
+int lua_x_implot_ImPlotStyle_getFitPadding(lua_State* tolua_S)
+{
+    implot::ImPlotStyle* cobj = nullptr;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S, 1, "implot.ImPlotStyle", 0, &tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (implot::ImPlotStyle*)tolua_tousertype(tolua_S, 1, 0);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_implot_ImPlotStyle_getFitPadding'", nullptr);
+        return 0;
+    }
+#endif
+    ImVec2_to_luaval(tolua_S, cobj->FitPadding);
+    return 1;
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+    tolua_error(tolua_S, "#ferror in function 'lua_x_implot_ImPlotStyle_getFitPadding'.", &tolua_err);
+    return 0;
+#endif
+}
+int lua_x_implot_ImPlotStyle_setFitPadding(lua_State* tolua_S)
+{
+    int argc = 0;
+    implot::ImPlotStyle* cobj = nullptr;
+    bool ok  = true;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S, 1, "implot.ImPlotStyle", 0, &tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (implot::ImPlotStyle*)tolua_tousertype(tolua_S, 1, 0);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_implot_ImPlotStyle_setFitPadding'", nullptr);
+        return 0;
+    }
+#endif
+    argc = lua_gettop(tolua_S) - 1;
+    if (1 == argc)
+    {
+        ImVec2 arg0;
+        ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "implot.ImPlotStyle:FitPadding");
+        if(!ok)
+        {
+            tolua_error(tolua_S, "invalid arguments in function 'lua_x_implot_ImPlotStyle'", nullptr);
+            return 0;
+        }
+        cobj->FitPadding = arg0;
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "implot.ImPlotStyle:FitPadding", argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+    tolua_error(tolua_S, "#ferror in function 'lua_x_implot_ImPlotStyle_getFitPadding'.", &tolua_err);
+    return 0;
+#endif
+}
 int lua_x_implot_ImPlotStyle_getPlotDefaultSize(lua_State* tolua_S)
 {
     implot::ImPlotStyle* cobj = nullptr;
@@ -1816,6 +1887,67 @@ int lua_x_implot_ImPlotStyle_setPlotMinSize(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
 tolua_lerror:
     tolua_error(tolua_S, "#ferror in function 'lua_x_implot_ImPlotStyle_getPlotMinSize'.", &tolua_err);
+    return 0;
+#endif
+}
+int lua_x_implot_ImPlotStyle_getColormap(lua_State* tolua_S)
+{
+    implot::ImPlotStyle* cobj = nullptr;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S, 1, "implot.ImPlotStyle", 0, &tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (implot::ImPlotStyle*)tolua_tousertype(tolua_S, 1, 0);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_implot_ImPlotStyle_getColormap'", nullptr);
+        return 0;
+    }
+#endif
+    tolua_pushnumber(tolua_S,(lua_Number)cobj->Colormap);
+    return 1;
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+    tolua_error(tolua_S, "#ferror in function 'lua_x_implot_ImPlotStyle_getColormap'.", &tolua_err);
+    return 0;
+#endif
+}
+int lua_x_implot_ImPlotStyle_setColormap(lua_State* tolua_S)
+{
+    int argc = 0;
+    implot::ImPlotStyle* cobj = nullptr;
+    bool ok  = true;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(tolua_S, 1, "implot.ImPlotStyle", 0, &tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (implot::ImPlotStyle*)tolua_tousertype(tolua_S, 1, 0);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_implot_ImPlotStyle_setColormap'", nullptr);
+        return 0;
+    }
+#endif
+    argc = lua_gettop(tolua_S) - 1;
+    if (1 == argc)
+    {
+        int arg0;
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "implot.ImPlotStyle:Colormap");
+        if(!ok)
+        {
+            tolua_error(tolua_S, "invalid arguments in function 'lua_x_implot_ImPlotStyle'", nullptr);
+            return 0;
+        }
+        cobj->Colormap = arg0;
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "implot.ImPlotStyle:Colormap", argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+    tolua_error(tolua_S, "#ferror in function 'lua_x_implot_ImPlotStyle_getColormap'.", &tolua_err);
     return 0;
 #endif
 }
@@ -2099,8 +2231,10 @@ int lua_register_x_implot_ImPlotStyle(lua_State* tolua_S)
         tolua_variable(tolua_S,"LegendSpacing", lua_x_implot_ImPlotStyle_getLegendSpacing, lua_x_implot_ImPlotStyle_setLegendSpacing);
         tolua_variable(tolua_S,"MousePosPadding", lua_x_implot_ImPlotStyle_getMousePosPadding, lua_x_implot_ImPlotStyle_setMousePosPadding);
         tolua_variable(tolua_S,"AnnotationPadding", lua_x_implot_ImPlotStyle_getAnnotationPadding, lua_x_implot_ImPlotStyle_setAnnotationPadding);
+        tolua_variable(tolua_S,"FitPadding", lua_x_implot_ImPlotStyle_getFitPadding, lua_x_implot_ImPlotStyle_setFitPadding);
         tolua_variable(tolua_S,"PlotDefaultSize", lua_x_implot_ImPlotStyle_getPlotDefaultSize, lua_x_implot_ImPlotStyle_setPlotDefaultSize);
         tolua_variable(tolua_S,"PlotMinSize", lua_x_implot_ImPlotStyle_getPlotMinSize, lua_x_implot_ImPlotStyle_setPlotMinSize);
+        tolua_variable(tolua_S,"Colormap", lua_x_implot_ImPlotStyle_getColormap, lua_x_implot_ImPlotStyle_setColormap);
         tolua_variable(tolua_S,"AntiAliasedLines", lua_x_implot_ImPlotStyle_getAntiAliasedLines, lua_x_implot_ImPlotStyle_setAntiAliasedLines);
         tolua_variable(tolua_S,"UseLocalTime", lua_x_implot_ImPlotStyle_getUseLocalTime, lua_x_implot_ImPlotStyle_setUseLocalTime);
         tolua_variable(tolua_S,"UseISO8601", lua_x_implot_ImPlotStyle_getUseISO8601, lua_x_implot_ImPlotStyle_setUseISO8601);
@@ -2109,769 +2243,6 @@ int lua_register_x_implot_ImPlotStyle(lua_State* tolua_S)
     std::string typeName = typeid(implot::ImPlotStyle).name();
     g_luaType[typeName] = "implot.ImPlotStyle";
     g_typeCast["ImPlotStyle"] = "implot.ImPlotStyle";
-    return 1;
-}
-
-int lua_x_implot_ImPlotInputMap_getPanButton(lua_State* tolua_S)
-{
-    implot::ImPlotInputMap* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "implot.ImPlotInputMap", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (implot::ImPlotInputMap*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_implot_ImPlotInputMap_getPanButton'", nullptr);
-        return 0;
-    }
-#endif
-    tolua_pushnumber(tolua_S,(lua_Number)cobj->PanButton);
-    return 1;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_implot_ImPlotInputMap_getPanButton'.", &tolua_err);
-    return 0;
-#endif
-}
-int lua_x_implot_ImPlotInputMap_setPanButton(lua_State* tolua_S)
-{
-    int argc = 0;
-    implot::ImPlotInputMap* cobj = nullptr;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "implot.ImPlotInputMap", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (implot::ImPlotInputMap*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_implot_ImPlotInputMap_setPanButton'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-    if (1 == argc)
-    {
-        int arg0;
-        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "implot.ImPlotInputMap:PanButton");
-        if(!ok)
-        {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_implot_ImPlotInputMap'", nullptr);
-            return 0;
-        }
-        cobj->PanButton = arg0;
-        return 0;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "implot.ImPlotInputMap:PanButton", argc, 1);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_implot_ImPlotInputMap_getPanButton'.", &tolua_err);
-    return 0;
-#endif
-}
-int lua_x_implot_ImPlotInputMap_getPanMod(lua_State* tolua_S)
-{
-    implot::ImPlotInputMap* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "implot.ImPlotInputMap", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (implot::ImPlotInputMap*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_implot_ImPlotInputMap_getPanMod'", nullptr);
-        return 0;
-    }
-#endif
-    tolua_pushnumber(tolua_S,(lua_Number)cobj->PanMod);
-    return 1;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_implot_ImPlotInputMap_getPanMod'.", &tolua_err);
-    return 0;
-#endif
-}
-int lua_x_implot_ImPlotInputMap_setPanMod(lua_State* tolua_S)
-{
-    int argc = 0;
-    implot::ImPlotInputMap* cobj = nullptr;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "implot.ImPlotInputMap", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (implot::ImPlotInputMap*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_implot_ImPlotInputMap_setPanMod'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-    if (1 == argc)
-    {
-        int arg0;
-        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "implot.ImPlotInputMap:PanMod");
-        if(!ok)
-        {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_implot_ImPlotInputMap'", nullptr);
-            return 0;
-        }
-        cobj->PanMod = arg0;
-        return 0;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "implot.ImPlotInputMap:PanMod", argc, 1);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_implot_ImPlotInputMap_getPanMod'.", &tolua_err);
-    return 0;
-#endif
-}
-int lua_x_implot_ImPlotInputMap_getFitButton(lua_State* tolua_S)
-{
-    implot::ImPlotInputMap* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "implot.ImPlotInputMap", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (implot::ImPlotInputMap*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_implot_ImPlotInputMap_getFitButton'", nullptr);
-        return 0;
-    }
-#endif
-    tolua_pushnumber(tolua_S,(lua_Number)cobj->FitButton);
-    return 1;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_implot_ImPlotInputMap_getFitButton'.", &tolua_err);
-    return 0;
-#endif
-}
-int lua_x_implot_ImPlotInputMap_setFitButton(lua_State* tolua_S)
-{
-    int argc = 0;
-    implot::ImPlotInputMap* cobj = nullptr;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "implot.ImPlotInputMap", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (implot::ImPlotInputMap*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_implot_ImPlotInputMap_setFitButton'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-    if (1 == argc)
-    {
-        int arg0;
-        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "implot.ImPlotInputMap:FitButton");
-        if(!ok)
-        {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_implot_ImPlotInputMap'", nullptr);
-            return 0;
-        }
-        cobj->FitButton = arg0;
-        return 0;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "implot.ImPlotInputMap:FitButton", argc, 1);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_implot_ImPlotInputMap_getFitButton'.", &tolua_err);
-    return 0;
-#endif
-}
-int lua_x_implot_ImPlotInputMap_getContextMenuButton(lua_State* tolua_S)
-{
-    implot::ImPlotInputMap* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "implot.ImPlotInputMap", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (implot::ImPlotInputMap*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_implot_ImPlotInputMap_getContextMenuButton'", nullptr);
-        return 0;
-    }
-#endif
-    tolua_pushnumber(tolua_S,(lua_Number)cobj->ContextMenuButton);
-    return 1;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_implot_ImPlotInputMap_getContextMenuButton'.", &tolua_err);
-    return 0;
-#endif
-}
-int lua_x_implot_ImPlotInputMap_setContextMenuButton(lua_State* tolua_S)
-{
-    int argc = 0;
-    implot::ImPlotInputMap* cobj = nullptr;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "implot.ImPlotInputMap", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (implot::ImPlotInputMap*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_implot_ImPlotInputMap_setContextMenuButton'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-    if (1 == argc)
-    {
-        int arg0;
-        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "implot.ImPlotInputMap:ContextMenuButton");
-        if(!ok)
-        {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_implot_ImPlotInputMap'", nullptr);
-            return 0;
-        }
-        cobj->ContextMenuButton = arg0;
-        return 0;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "implot.ImPlotInputMap:ContextMenuButton", argc, 1);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_implot_ImPlotInputMap_getContextMenuButton'.", &tolua_err);
-    return 0;
-#endif
-}
-int lua_x_implot_ImPlotInputMap_getBoxSelectButton(lua_State* tolua_S)
-{
-    implot::ImPlotInputMap* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "implot.ImPlotInputMap", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (implot::ImPlotInputMap*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_implot_ImPlotInputMap_getBoxSelectButton'", nullptr);
-        return 0;
-    }
-#endif
-    tolua_pushnumber(tolua_S,(lua_Number)cobj->BoxSelectButton);
-    return 1;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_implot_ImPlotInputMap_getBoxSelectButton'.", &tolua_err);
-    return 0;
-#endif
-}
-int lua_x_implot_ImPlotInputMap_setBoxSelectButton(lua_State* tolua_S)
-{
-    int argc = 0;
-    implot::ImPlotInputMap* cobj = nullptr;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "implot.ImPlotInputMap", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (implot::ImPlotInputMap*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_implot_ImPlotInputMap_setBoxSelectButton'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-    if (1 == argc)
-    {
-        int arg0;
-        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "implot.ImPlotInputMap:BoxSelectButton");
-        if(!ok)
-        {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_implot_ImPlotInputMap'", nullptr);
-            return 0;
-        }
-        cobj->BoxSelectButton = arg0;
-        return 0;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "implot.ImPlotInputMap:BoxSelectButton", argc, 1);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_implot_ImPlotInputMap_getBoxSelectButton'.", &tolua_err);
-    return 0;
-#endif
-}
-int lua_x_implot_ImPlotInputMap_getBoxSelectMod(lua_State* tolua_S)
-{
-    implot::ImPlotInputMap* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "implot.ImPlotInputMap", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (implot::ImPlotInputMap*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_implot_ImPlotInputMap_getBoxSelectMod'", nullptr);
-        return 0;
-    }
-#endif
-    tolua_pushnumber(tolua_S,(lua_Number)cobj->BoxSelectMod);
-    return 1;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_implot_ImPlotInputMap_getBoxSelectMod'.", &tolua_err);
-    return 0;
-#endif
-}
-int lua_x_implot_ImPlotInputMap_setBoxSelectMod(lua_State* tolua_S)
-{
-    int argc = 0;
-    implot::ImPlotInputMap* cobj = nullptr;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "implot.ImPlotInputMap", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (implot::ImPlotInputMap*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_implot_ImPlotInputMap_setBoxSelectMod'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-    if (1 == argc)
-    {
-        int arg0;
-        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "implot.ImPlotInputMap:BoxSelectMod");
-        if(!ok)
-        {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_implot_ImPlotInputMap'", nullptr);
-            return 0;
-        }
-        cobj->BoxSelectMod = arg0;
-        return 0;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "implot.ImPlotInputMap:BoxSelectMod", argc, 1);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_implot_ImPlotInputMap_getBoxSelectMod'.", &tolua_err);
-    return 0;
-#endif
-}
-int lua_x_implot_ImPlotInputMap_getBoxSelectCancelButton(lua_State* tolua_S)
-{
-    implot::ImPlotInputMap* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "implot.ImPlotInputMap", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (implot::ImPlotInputMap*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_implot_ImPlotInputMap_getBoxSelectCancelButton'", nullptr);
-        return 0;
-    }
-#endif
-    tolua_pushnumber(tolua_S,(lua_Number)cobj->BoxSelectCancelButton);
-    return 1;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_implot_ImPlotInputMap_getBoxSelectCancelButton'.", &tolua_err);
-    return 0;
-#endif
-}
-int lua_x_implot_ImPlotInputMap_setBoxSelectCancelButton(lua_State* tolua_S)
-{
-    int argc = 0;
-    implot::ImPlotInputMap* cobj = nullptr;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "implot.ImPlotInputMap", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (implot::ImPlotInputMap*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_implot_ImPlotInputMap_setBoxSelectCancelButton'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-    if (1 == argc)
-    {
-        int arg0;
-        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "implot.ImPlotInputMap:BoxSelectCancelButton");
-        if(!ok)
-        {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_implot_ImPlotInputMap'", nullptr);
-            return 0;
-        }
-        cobj->BoxSelectCancelButton = arg0;
-        return 0;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "implot.ImPlotInputMap:BoxSelectCancelButton", argc, 1);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_implot_ImPlotInputMap_getBoxSelectCancelButton'.", &tolua_err);
-    return 0;
-#endif
-}
-int lua_x_implot_ImPlotInputMap_getQueryButton(lua_State* tolua_S)
-{
-    implot::ImPlotInputMap* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "implot.ImPlotInputMap", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (implot::ImPlotInputMap*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_implot_ImPlotInputMap_getQueryButton'", nullptr);
-        return 0;
-    }
-#endif
-    tolua_pushnumber(tolua_S,(lua_Number)cobj->QueryButton);
-    return 1;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_implot_ImPlotInputMap_getQueryButton'.", &tolua_err);
-    return 0;
-#endif
-}
-int lua_x_implot_ImPlotInputMap_setQueryButton(lua_State* tolua_S)
-{
-    int argc = 0;
-    implot::ImPlotInputMap* cobj = nullptr;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "implot.ImPlotInputMap", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (implot::ImPlotInputMap*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_implot_ImPlotInputMap_setQueryButton'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-    if (1 == argc)
-    {
-        int arg0;
-        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "implot.ImPlotInputMap:QueryButton");
-        if(!ok)
-        {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_implot_ImPlotInputMap'", nullptr);
-            return 0;
-        }
-        cobj->QueryButton = arg0;
-        return 0;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "implot.ImPlotInputMap:QueryButton", argc, 1);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_implot_ImPlotInputMap_getQueryButton'.", &tolua_err);
-    return 0;
-#endif
-}
-int lua_x_implot_ImPlotInputMap_getQueryMod(lua_State* tolua_S)
-{
-    implot::ImPlotInputMap* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "implot.ImPlotInputMap", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (implot::ImPlotInputMap*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_implot_ImPlotInputMap_getQueryMod'", nullptr);
-        return 0;
-    }
-#endif
-    tolua_pushnumber(tolua_S,(lua_Number)cobj->QueryMod);
-    return 1;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_implot_ImPlotInputMap_getQueryMod'.", &tolua_err);
-    return 0;
-#endif
-}
-int lua_x_implot_ImPlotInputMap_setQueryMod(lua_State* tolua_S)
-{
-    int argc = 0;
-    implot::ImPlotInputMap* cobj = nullptr;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "implot.ImPlotInputMap", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (implot::ImPlotInputMap*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_implot_ImPlotInputMap_setQueryMod'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-    if (1 == argc)
-    {
-        int arg0;
-        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "implot.ImPlotInputMap:QueryMod");
-        if(!ok)
-        {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_implot_ImPlotInputMap'", nullptr);
-            return 0;
-        }
-        cobj->QueryMod = arg0;
-        return 0;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "implot.ImPlotInputMap:QueryMod", argc, 1);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_implot_ImPlotInputMap_getQueryMod'.", &tolua_err);
-    return 0;
-#endif
-}
-int lua_x_implot_ImPlotInputMap_getQueryToggleMod(lua_State* tolua_S)
-{
-    implot::ImPlotInputMap* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "implot.ImPlotInputMap", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (implot::ImPlotInputMap*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_implot_ImPlotInputMap_getQueryToggleMod'", nullptr);
-        return 0;
-    }
-#endif
-    tolua_pushnumber(tolua_S,(lua_Number)cobj->QueryToggleMod);
-    return 1;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_implot_ImPlotInputMap_getQueryToggleMod'.", &tolua_err);
-    return 0;
-#endif
-}
-int lua_x_implot_ImPlotInputMap_setQueryToggleMod(lua_State* tolua_S)
-{
-    int argc = 0;
-    implot::ImPlotInputMap* cobj = nullptr;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "implot.ImPlotInputMap", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (implot::ImPlotInputMap*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_implot_ImPlotInputMap_setQueryToggleMod'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-    if (1 == argc)
-    {
-        int arg0;
-        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "implot.ImPlotInputMap:QueryToggleMod");
-        if(!ok)
-        {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_implot_ImPlotInputMap'", nullptr);
-            return 0;
-        }
-        cobj->QueryToggleMod = arg0;
-        return 0;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "implot.ImPlotInputMap:QueryToggleMod", argc, 1);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_implot_ImPlotInputMap_getQueryToggleMod'.", &tolua_err);
-    return 0;
-#endif
-}
-int lua_x_implot_ImPlotInputMap_getHorizontalMod(lua_State* tolua_S)
-{
-    implot::ImPlotInputMap* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "implot.ImPlotInputMap", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (implot::ImPlotInputMap*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_implot_ImPlotInputMap_getHorizontalMod'", nullptr);
-        return 0;
-    }
-#endif
-    tolua_pushnumber(tolua_S,(lua_Number)cobj->HorizontalMod);
-    return 1;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_implot_ImPlotInputMap_getHorizontalMod'.", &tolua_err);
-    return 0;
-#endif
-}
-int lua_x_implot_ImPlotInputMap_setHorizontalMod(lua_State* tolua_S)
-{
-    int argc = 0;
-    implot::ImPlotInputMap* cobj = nullptr;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "implot.ImPlotInputMap", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (implot::ImPlotInputMap*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_implot_ImPlotInputMap_setHorizontalMod'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-    if (1 == argc)
-    {
-        int arg0;
-        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "implot.ImPlotInputMap:HorizontalMod");
-        if(!ok)
-        {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_implot_ImPlotInputMap'", nullptr);
-            return 0;
-        }
-        cobj->HorizontalMod = arg0;
-        return 0;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "implot.ImPlotInputMap:HorizontalMod", argc, 1);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_implot_ImPlotInputMap_getHorizontalMod'.", &tolua_err);
-    return 0;
-#endif
-}
-int lua_x_implot_ImPlotInputMap_getVerticalMod(lua_State* tolua_S)
-{
-    implot::ImPlotInputMap* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "implot.ImPlotInputMap", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (implot::ImPlotInputMap*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_implot_ImPlotInputMap_getVerticalMod'", nullptr);
-        return 0;
-    }
-#endif
-    tolua_pushnumber(tolua_S,(lua_Number)cobj->VerticalMod);
-    return 1;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_implot_ImPlotInputMap_getVerticalMod'.", &tolua_err);
-    return 0;
-#endif
-}
-int lua_x_implot_ImPlotInputMap_setVerticalMod(lua_State* tolua_S)
-{
-    int argc = 0;
-    implot::ImPlotInputMap* cobj = nullptr;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "implot.ImPlotInputMap", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (implot::ImPlotInputMap*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_implot_ImPlotInputMap_setVerticalMod'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-    if (1 == argc)
-    {
-        int arg0;
-        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "implot.ImPlotInputMap:VerticalMod");
-        if(!ok)
-        {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_implot_ImPlotInputMap'", nullptr);
-            return 0;
-        }
-        cobj->VerticalMod = arg0;
-        return 0;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "implot.ImPlotInputMap:VerticalMod", argc, 1);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_implot_ImPlotInputMap_getVerticalMod'.", &tolua_err);
-    return 0;
-#endif
-}
-static int lua_x_implot_ImPlotInputMap_finalize(lua_State* tolua_S)
-{
-    printf("luabindings: finalizing LUA object (ImPlotInputMap)");
-    return 0;
-}
-
-int lua_register_x_implot_ImPlotInputMap(lua_State* tolua_S)
-{
-    tolua_usertype(tolua_S,"implot.ImPlotInputMap");
-    tolua_cclass(tolua_S,"ImPlotInputMap","implot.ImPlotInputMap","",nullptr);
-
-    tolua_beginmodule(tolua_S,"ImPlotInputMap");
-        tolua_variable(tolua_S,"PanButton", lua_x_implot_ImPlotInputMap_getPanButton, lua_x_implot_ImPlotInputMap_setPanButton);
-        tolua_variable(tolua_S,"PanMod", lua_x_implot_ImPlotInputMap_getPanMod, lua_x_implot_ImPlotInputMap_setPanMod);
-        tolua_variable(tolua_S,"FitButton", lua_x_implot_ImPlotInputMap_getFitButton, lua_x_implot_ImPlotInputMap_setFitButton);
-        tolua_variable(tolua_S,"ContextMenuButton", lua_x_implot_ImPlotInputMap_getContextMenuButton, lua_x_implot_ImPlotInputMap_setContextMenuButton);
-        tolua_variable(tolua_S,"BoxSelectButton", lua_x_implot_ImPlotInputMap_getBoxSelectButton, lua_x_implot_ImPlotInputMap_setBoxSelectButton);
-        tolua_variable(tolua_S,"BoxSelectMod", lua_x_implot_ImPlotInputMap_getBoxSelectMod, lua_x_implot_ImPlotInputMap_setBoxSelectMod);
-        tolua_variable(tolua_S,"BoxSelectCancelButton", lua_x_implot_ImPlotInputMap_getBoxSelectCancelButton, lua_x_implot_ImPlotInputMap_setBoxSelectCancelButton);
-        tolua_variable(tolua_S,"QueryButton", lua_x_implot_ImPlotInputMap_getQueryButton, lua_x_implot_ImPlotInputMap_setQueryButton);
-        tolua_variable(tolua_S,"QueryMod", lua_x_implot_ImPlotInputMap_getQueryMod, lua_x_implot_ImPlotInputMap_setQueryMod);
-        tolua_variable(tolua_S,"QueryToggleMod", lua_x_implot_ImPlotInputMap_getQueryToggleMod, lua_x_implot_ImPlotInputMap_setQueryToggleMod);
-        tolua_variable(tolua_S,"HorizontalMod", lua_x_implot_ImPlotInputMap_getHorizontalMod, lua_x_implot_ImPlotInputMap_setHorizontalMod);
-        tolua_variable(tolua_S,"VerticalMod", lua_x_implot_ImPlotInputMap_getVerticalMod, lua_x_implot_ImPlotInputMap_setVerticalMod);
-    tolua_endmodule(tolua_S);
-    std::string typeName = typeid(implot::ImPlotInputMap).name();
-    g_luaType[typeName] = "implot.ImPlotInputMap";
-    g_typeCast["ImPlotInputMap"] = "implot.ImPlotInputMap";
     return 1;
 }
 
@@ -3013,7 +2384,69 @@ int lua_x_implot_ImPlot_AnnotateClamped(lua_State* tolua_S)
 #endif
     return 0;
 }
-int lua_x_implot_ImPlot_BeginLegendDragDropSource(lua_State* tolua_S)
+int lua_x_implot_ImPlot_BeginDragDropSource(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"implot.ImPlot",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 0)
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_BeginDragDropSource'", nullptr);
+            return 0;
+        }
+        bool ret = implot::ImPlot::BeginDragDropSource();
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
+    if (argc == 1)
+    {
+        int arg0;
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "implot.ImPlot:BeginDragDropSource");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_BeginDragDropSource'", nullptr);
+            return 0;
+        }
+        bool ret = implot::ImPlot::BeginDragDropSource(arg0);
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
+    if (argc == 2)
+    {
+        int arg0;
+        int arg1;
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "implot.ImPlot:BeginDragDropSource");
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "implot.ImPlot:BeginDragDropSource");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_BeginDragDropSource'", nullptr);
+            return 0;
+        }
+        bool ret = implot::ImPlot::BeginDragDropSource(arg0, arg1);
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "implot.ImPlot:BeginDragDropSource",argc, 0);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_implot_ImPlot_BeginDragDropSource'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_x_implot_ImPlot_BeginDragDropSourceItem(lua_State* tolua_S)
 {
     int argc = 0;
     bool ok  = true;
@@ -3031,13 +2464,13 @@ int lua_x_implot_ImPlot_BeginLegendDragDropSource(lua_State* tolua_S)
     if (argc == 1)
     {
         const char* arg0;
-        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "implot.ImPlot:BeginLegendDragDropSource"); arg0 = arg0_tmp.c_str();
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "implot.ImPlot:BeginDragDropSourceItem"); arg0 = arg0_tmp.c_str();
         if(!ok)
         {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_BeginLegendDragDropSource'", nullptr);
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_BeginDragDropSourceItem'", nullptr);
             return 0;
         }
-        bool ret = implot::ImPlot::BeginLegendDragDropSource(arg0);
+        bool ret = implot::ImPlot::BeginDragDropSourceItem(arg0);
         tolua_pushboolean(tolua_S,(bool)ret);
         return 1;
     }
@@ -3045,22 +2478,312 @@ int lua_x_implot_ImPlot_BeginLegendDragDropSource(lua_State* tolua_S)
     {
         const char* arg0;
         int arg1;
-        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "implot.ImPlot:BeginLegendDragDropSource"); arg0 = arg0_tmp.c_str();
-        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "implot.ImPlot:BeginLegendDragDropSource");
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "implot.ImPlot:BeginDragDropSourceItem"); arg0 = arg0_tmp.c_str();
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "implot.ImPlot:BeginDragDropSourceItem");
         if(!ok)
         {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_BeginLegendDragDropSource'", nullptr);
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_BeginDragDropSourceItem'", nullptr);
             return 0;
         }
-        bool ret = implot::ImPlot::BeginLegendDragDropSource(arg0, arg1);
+        bool ret = implot::ImPlot::BeginDragDropSourceItem(arg0, arg1);
         tolua_pushboolean(tolua_S,(bool)ret);
         return 1;
     }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "implot.ImPlot:BeginLegendDragDropSource",argc, 1);
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "implot.ImPlot:BeginDragDropSourceItem",argc, 1);
     return 0;
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_implot_ImPlot_BeginLegendDragDropSource'.",&tolua_err);
+    tolua_error(tolua_S,"#ferror in function 'lua_x_implot_ImPlot_BeginDragDropSourceItem'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_x_implot_ImPlot_BeginDragDropSourceX(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"implot.ImPlot",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 0)
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_BeginDragDropSourceX'", nullptr);
+            return 0;
+        }
+        bool ret = implot::ImPlot::BeginDragDropSourceX();
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
+    if (argc == 1)
+    {
+        int arg0;
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "implot.ImPlot:BeginDragDropSourceX");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_BeginDragDropSourceX'", nullptr);
+            return 0;
+        }
+        bool ret = implot::ImPlot::BeginDragDropSourceX(arg0);
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
+    if (argc == 2)
+    {
+        int arg0;
+        int arg1;
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "implot.ImPlot:BeginDragDropSourceX");
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "implot.ImPlot:BeginDragDropSourceX");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_BeginDragDropSourceX'", nullptr);
+            return 0;
+        }
+        bool ret = implot::ImPlot::BeginDragDropSourceX(arg0, arg1);
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "implot.ImPlot:BeginDragDropSourceX",argc, 0);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_implot_ImPlot_BeginDragDropSourceX'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_x_implot_ImPlot_BeginDragDropSourceY(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"implot.ImPlot",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 0)
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_BeginDragDropSourceY'", nullptr);
+            return 0;
+        }
+        bool ret = implot::ImPlot::BeginDragDropSourceY();
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
+    if (argc == 1)
+    {
+        int arg0;
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "implot.ImPlot:BeginDragDropSourceY");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_BeginDragDropSourceY'", nullptr);
+            return 0;
+        }
+        bool ret = implot::ImPlot::BeginDragDropSourceY(arg0);
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
+    if (argc == 2)
+    {
+        int arg0;
+        int arg1;
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "implot.ImPlot:BeginDragDropSourceY");
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "implot.ImPlot:BeginDragDropSourceY");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_BeginDragDropSourceY'", nullptr);
+            return 0;
+        }
+        bool ret = implot::ImPlot::BeginDragDropSourceY(arg0, arg1);
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
+    if (argc == 3)
+    {
+        int arg0;
+        int arg1;
+        int arg2;
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "implot.ImPlot:BeginDragDropSourceY");
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "implot.ImPlot:BeginDragDropSourceY");
+        ok &= luaval_to_int32(tolua_S, 4,(int *)&arg2, "implot.ImPlot:BeginDragDropSourceY");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_BeginDragDropSourceY'", nullptr);
+            return 0;
+        }
+        bool ret = implot::ImPlot::BeginDragDropSourceY(arg0, arg1, arg2);
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "implot.ImPlot:BeginDragDropSourceY",argc, 0);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_implot_ImPlot_BeginDragDropSourceY'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_x_implot_ImPlot_BeginDragDropTarget(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"implot.ImPlot",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 0)
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_BeginDragDropTarget'", nullptr);
+            return 0;
+        }
+        bool ret = implot::ImPlot::BeginDragDropTarget();
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "implot.ImPlot:BeginDragDropTarget",argc, 0);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_implot_ImPlot_BeginDragDropTarget'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_x_implot_ImPlot_BeginDragDropTargetLegend(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"implot.ImPlot",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 0)
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_BeginDragDropTargetLegend'", nullptr);
+            return 0;
+        }
+        bool ret = implot::ImPlot::BeginDragDropTargetLegend();
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "implot.ImPlot:BeginDragDropTargetLegend",argc, 0);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_implot_ImPlot_BeginDragDropTargetLegend'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_x_implot_ImPlot_BeginDragDropTargetX(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"implot.ImPlot",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 0)
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_BeginDragDropTargetX'", nullptr);
+            return 0;
+        }
+        bool ret = implot::ImPlot::BeginDragDropTargetX();
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "implot.ImPlot:BeginDragDropTargetX",argc, 0);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_implot_ImPlot_BeginDragDropTargetX'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_x_implot_ImPlot_BeginDragDropTargetY(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"implot.ImPlot",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 0)
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_BeginDragDropTargetY'", nullptr);
+            return 0;
+        }
+        bool ret = implot::ImPlot::BeginDragDropTargetY();
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
+    if (argc == 1)
+    {
+        int arg0;
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "implot.ImPlot:BeginDragDropTargetY");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_BeginDragDropTargetY'", nullptr);
+            return 0;
+        }
+        bool ret = implot::ImPlot::BeginDragDropTargetY(arg0);
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "implot.ImPlot:BeginDragDropTargetY",argc, 0);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_implot_ImPlot_BeginDragDropTargetY'.",&tolua_err);
 #endif
     return 0;
 }
@@ -3115,7 +2838,214 @@ int lua_x_implot_ImPlot_BeginLegendPopup(lua_State* tolua_S)
 #endif
     return 0;
 }
-int lua_x_implot_ImPlot_EndLegendDragDropSource(lua_State* tolua_S)
+int lua_x_implot_ImPlot_ColormapButton(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"implot.ImPlot",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 1)
+    {
+        const char* arg0;
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "implot.ImPlot:ColormapButton"); arg0 = arg0_tmp.c_str();
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_ColormapButton'", nullptr);
+            return 0;
+        }
+        bool ret = implot::ImPlot::ColormapButton(arg0);
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
+    if (argc == 2)
+    {
+        const char* arg0;
+        ImVec2 arg1;
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "implot.ImPlot:ColormapButton"); arg0 = arg0_tmp.c_str();
+        ok &= luaval_to_ImVec2(tolua_S, 3, &arg1, "implot.ImPlot:ColormapButton");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_ColormapButton'", nullptr);
+            return 0;
+        }
+        bool ret = implot::ImPlot::ColormapButton(arg0, arg1);
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
+    if (argc == 3)
+    {
+        const char* arg0;
+        ImVec2 arg1;
+        int arg2;
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "implot.ImPlot:ColormapButton"); arg0 = arg0_tmp.c_str();
+        ok &= luaval_to_ImVec2(tolua_S, 3, &arg1, "implot.ImPlot:ColormapButton");
+        ok &= luaval_to_int32(tolua_S, 4,(int *)&arg2, "implot.ImPlot:ColormapButton");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_ColormapButton'", nullptr);
+            return 0;
+        }
+        bool ret = implot::ImPlot::ColormapButton(arg0, arg1, arg2);
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "implot.ImPlot:ColormapButton",argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_implot_ImPlot_ColormapButton'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_x_implot_ImPlot_ColormapIcon(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"implot.ImPlot",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 1)
+    {
+        int arg0;
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "implot.ImPlot:ColormapIcon");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_ColormapIcon'", nullptr);
+            return 0;
+        }
+        implot::ImPlot::ColormapIcon(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "implot.ImPlot:ColormapIcon",argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_implot_ImPlot_ColormapIcon'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_x_implot_ImPlot_ColormapScale(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"implot.ImPlot",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 3)
+    {
+        const char* arg0;
+        double arg1;
+        double arg2;
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "implot.ImPlot:ColormapScale"); arg0 = arg0_tmp.c_str();
+        ok &= luaval_to_number(tolua_S, 3,&arg1, "implot.ImPlot:ColormapScale");
+        ok &= luaval_to_number(tolua_S, 4,&arg2, "implot.ImPlot:ColormapScale");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_ColormapScale'", nullptr);
+            return 0;
+        }
+        implot::ImPlot::ColormapScale(arg0, arg1, arg2);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    if (argc == 4)
+    {
+        const char* arg0;
+        double arg1;
+        double arg2;
+        ImVec2 arg3;
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "implot.ImPlot:ColormapScale"); arg0 = arg0_tmp.c_str();
+        ok &= luaval_to_number(tolua_S, 3,&arg1, "implot.ImPlot:ColormapScale");
+        ok &= luaval_to_number(tolua_S, 4,&arg2, "implot.ImPlot:ColormapScale");
+        ok &= luaval_to_ImVec2(tolua_S, 5, &arg3, "implot.ImPlot:ColormapScale");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_ColormapScale'", nullptr);
+            return 0;
+        }
+        implot::ImPlot::ColormapScale(arg0, arg1, arg2, arg3);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    if (argc == 5)
+    {
+        const char* arg0;
+        double arg1;
+        double arg2;
+        ImVec2 arg3;
+        int arg4;
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "implot.ImPlot:ColormapScale"); arg0 = arg0_tmp.c_str();
+        ok &= luaval_to_number(tolua_S, 3,&arg1, "implot.ImPlot:ColormapScale");
+        ok &= luaval_to_number(tolua_S, 4,&arg2, "implot.ImPlot:ColormapScale");
+        ok &= luaval_to_ImVec2(tolua_S, 5, &arg3, "implot.ImPlot:ColormapScale");
+        ok &= luaval_to_int32(tolua_S, 6,(int *)&arg4, "implot.ImPlot:ColormapScale");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_ColormapScale'", nullptr);
+            return 0;
+        }
+        implot::ImPlot::ColormapScale(arg0, arg1, arg2, arg3, arg4);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    if (argc == 6)
+    {
+        const char* arg0;
+        double arg1;
+        double arg2;
+        ImVec2 arg3;
+        int arg4;
+        const char* arg5;
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "implot.ImPlot:ColormapScale"); arg0 = arg0_tmp.c_str();
+        ok &= luaval_to_number(tolua_S, 3,&arg1, "implot.ImPlot:ColormapScale");
+        ok &= luaval_to_number(tolua_S, 4,&arg2, "implot.ImPlot:ColormapScale");
+        ok &= luaval_to_ImVec2(tolua_S, 5, &arg3, "implot.ImPlot:ColormapScale");
+        ok &= luaval_to_int32(tolua_S, 6,(int *)&arg4, "implot.ImPlot:ColormapScale");
+        std::string arg5_tmp; ok &= luaval_to_std_string(tolua_S, 7, &arg5_tmp, "implot.ImPlot:ColormapScale"); arg5 = arg5_tmp.c_str();
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_ColormapScale'", nullptr);
+            return 0;
+        }
+        implot::ImPlot::ColormapScale(arg0, arg1, arg2, arg3, arg4, arg5);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "implot.ImPlot:ColormapScale",argc, 3);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_implot_ImPlot_ColormapScale'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_x_implot_ImPlot_EndDragDropSource(lua_State* tolua_S)
 {
     int argc = 0;
     bool ok  = true;
@@ -3134,18 +3064,52 @@ int lua_x_implot_ImPlot_EndLegendDragDropSource(lua_State* tolua_S)
     {
         if(!ok)
         {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_EndLegendDragDropSource'", nullptr);
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_EndDragDropSource'", nullptr);
             return 0;
         }
-        implot::ImPlot::EndLegendDragDropSource();
+        implot::ImPlot::EndDragDropSource();
         lua_settop(tolua_S, 1);
         return 1;
     }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "implot.ImPlot:EndLegendDragDropSource",argc, 0);
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "implot.ImPlot:EndDragDropSource",argc, 0);
     return 0;
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_implot_ImPlot_EndLegendDragDropSource'.",&tolua_err);
+    tolua_error(tolua_S,"#ferror in function 'lua_x_implot_ImPlot_EndDragDropSource'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_x_implot_ImPlot_EndDragDropTarget(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"implot.ImPlot",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 0)
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_EndDragDropTarget'", nullptr);
+            return 0;
+        }
+        implot::ImPlot::EndDragDropTarget();
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "implot.ImPlot:EndDragDropTarget",argc, 0);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_implot_ImPlot_EndDragDropTarget'.",&tolua_err);
 #endif
     return 0;
 }
@@ -3343,11 +3307,96 @@ int lua_x_implot_ImPlot_GetColormapColor(lua_State* tolua_S)
         ImVec4_to_luaval(tolua_S, ret);
         return 1;
     }
+    if (argc == 2)
+    {
+        int arg0;
+        int arg1;
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "implot.ImPlot:GetColormapColor");
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "implot.ImPlot:GetColormapColor");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_GetColormapColor'", nullptr);
+            return 0;
+        }
+        ImVec4 ret = implot::ImPlot::GetColormapColor(arg0, arg1);
+        ImVec4_to_luaval(tolua_S, ret);
+        return 1;
+    }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "implot.ImPlot:GetColormapColor",argc, 1);
     return 0;
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
     tolua_error(tolua_S,"#ferror in function 'lua_x_implot_ImPlot_GetColormapColor'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_x_implot_ImPlot_GetColormapCount(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"implot.ImPlot",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 0)
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_GetColormapCount'", nullptr);
+            return 0;
+        }
+        int ret = implot::ImPlot::GetColormapCount();
+        tolua_pushnumber(tolua_S,(lua_Number)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "implot.ImPlot:GetColormapCount",argc, 0);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_implot_ImPlot_GetColormapCount'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_x_implot_ImPlot_GetColormapIndex(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"implot.ImPlot",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 1)
+    {
+        const char* arg0;
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "implot.ImPlot:GetColormapIndex"); arg0 = arg0_tmp.c_str();
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_GetColormapIndex'", nullptr);
+            return 0;
+        }
+        int ret = implot::ImPlot::GetColormapIndex(arg0);
+        tolua_pushnumber(tolua_S,(lua_Number)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "implot.ImPlot:GetColormapIndex",argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_implot_ImPlot_GetColormapIndex'.",&tolua_err);
 #endif
     return 0;
 }
@@ -3413,45 +3462,24 @@ int lua_x_implot_ImPlot_GetColormapSize(lua_State* tolua_S)
         tolua_pushnumber(tolua_S,(lua_Number)ret);
         return 1;
     }
+    if (argc == 1)
+    {
+        int arg0;
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "implot.ImPlot:GetColormapSize");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_GetColormapSize'", nullptr);
+            return 0;
+        }
+        int ret = implot::ImPlot::GetColormapSize(arg0);
+        tolua_pushnumber(tolua_S,(lua_Number)ret);
+        return 1;
+    }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "implot.ImPlot:GetColormapSize",argc, 0);
     return 0;
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
     tolua_error(tolua_S,"#ferror in function 'lua_x_implot_ImPlot_GetColormapSize'.",&tolua_err);
-#endif
-    return 0;
-}
-int lua_x_implot_ImPlot_GetInputMap(lua_State* tolua_S)
-{
-    int argc = 0;
-    bool ok  = true;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-#endif
-
-#if COCOS2D_DEBUG >= 1
-    if (!tolua_isusertable(tolua_S,1,"implot.ImPlot",0,&tolua_err)) goto tolua_lerror;
-#endif
-
-    argc = lua_gettop(tolua_S) - 1;
-
-    if (argc == 0)
-    {
-        if(!ok)
-        {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_GetInputMap'", nullptr);
-            return 0;
-        }
-        implot::ImPlotInputMap& ret = implot::ImPlot::GetInputMap();
-        native_to_luaval(tolua_S, &ret);
-        return 1;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "implot.ImPlot:GetInputMap",argc, 0);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-    tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_implot_ImPlot_GetInputMap'.",&tolua_err);
 #endif
     return 0;
 }
@@ -3734,6 +3762,53 @@ int lua_x_implot_ImPlot_GetPlotQuery(lua_State* tolua_S)
 #endif
     return 0;
 }
+int lua_x_implot_ImPlot_GetPlotSelection(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"implot.ImPlot",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 0)
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_GetPlotSelection'", nullptr);
+            return 0;
+        }
+        ImPlotLimits ret = implot::ImPlot::GetPlotSelection();
+        native_to_luaval(tolua_S, ret);
+        return 1;
+    }
+    if (argc == 1)
+    {
+        int arg0;
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "implot.ImPlot:GetPlotSelection");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_GetPlotSelection'", nullptr);
+            return 0;
+        }
+        ImPlotLimits ret = implot::ImPlot::GetPlotSelection(arg0);
+        native_to_luaval(tolua_S, ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "implot.ImPlot:GetPlotSelection",argc, 0);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_implot_ImPlot_GetPlotSelection'.",&tolua_err);
+#endif
+    return 0;
+}
 int lua_x_implot_ImPlot_GetPlotSize(lua_State* tolua_S)
 {
     int argc = 0;
@@ -4004,6 +4079,40 @@ int lua_x_implot_ImPlot_IsPlotQueried(lua_State* tolua_S)
 #endif
     return 0;
 }
+int lua_x_implot_ImPlot_IsPlotSelected(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"implot.ImPlot",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 0)
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_IsPlotSelected'", nullptr);
+            return 0;
+        }
+        bool ret = implot::ImPlot::IsPlotSelected();
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "implot.ImPlot:IsPlotSelected",argc, 0);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_implot_ImPlot_IsPlotSelected'.",&tolua_err);
+#endif
+    return 0;
+}
 int lua_x_implot_ImPlot_IsPlotXAxisHovered(lua_State* tolua_S)
 {
     int argc = 0;
@@ -4082,42 +4191,6 @@ int lua_x_implot_ImPlot_IsPlotYAxisHovered(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
     tolua_error(tolua_S,"#ferror in function 'lua_x_implot_ImPlot_IsPlotYAxisHovered'.",&tolua_err);
-#endif
-    return 0;
-}
-int lua_x_implot_ImPlot_LerpColormap(lua_State* tolua_S)
-{
-    int argc = 0;
-    bool ok  = true;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-#endif
-
-#if COCOS2D_DEBUG >= 1
-    if (!tolua_isusertable(tolua_S,1,"implot.ImPlot",0,&tolua_err)) goto tolua_lerror;
-#endif
-
-    argc = lua_gettop(tolua_S) - 1;
-
-    if (argc == 1)
-    {
-        double arg0;
-        ok &= luaval_to_number(tolua_S, 2,&arg0, "implot.ImPlot:LerpColormap");
-        if(!ok)
-        {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_LerpColormap'", nullptr);
-            return 0;
-        }
-        ImVec4 ret = implot::ImPlot::LerpColormap(arg0);
-        ImVec4_to_luaval(tolua_S, ret);
-        return 1;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "implot.ImPlot:LerpColormap",argc, 1);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-    tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_implot_ImPlot_LerpColormap'.",&tolua_err);
 #endif
     return 0;
 }
@@ -4582,11 +4655,75 @@ int lua_x_implot_ImPlot_PushPlotClipRect(lua_State* tolua_S)
         lua_settop(tolua_S, 1);
         return 1;
     }
+    if (argc == 1)
+    {
+        double arg0;
+        ok &= luaval_to_number(tolua_S, 2,&arg0, "implot.ImPlot:PushPlotClipRect");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_PushPlotClipRect'", nullptr);
+            return 0;
+        }
+        implot::ImPlot::PushPlotClipRect(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "implot.ImPlot:PushPlotClipRect",argc, 0);
     return 0;
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
     tolua_error(tolua_S,"#ferror in function 'lua_x_implot_ImPlot_PushPlotClipRect'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_x_implot_ImPlot_SampleColormap(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"implot.ImPlot",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 1)
+    {
+        double arg0;
+        ok &= luaval_to_number(tolua_S, 2,&arg0, "implot.ImPlot:SampleColormap");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_SampleColormap'", nullptr);
+            return 0;
+        }
+        ImVec4 ret = implot::ImPlot::SampleColormap(arg0);
+        ImVec4_to_luaval(tolua_S, ret);
+        return 1;
+    }
+    if (argc == 2)
+    {
+        double arg0;
+        int arg1;
+        ok &= luaval_to_number(tolua_S, 2,&arg0, "implot.ImPlot:SampleColormap");
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "implot.ImPlot:SampleColormap");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_SampleColormap'", nullptr);
+            return 0;
+        }
+        ImVec4 ret = implot::ImPlot::SampleColormap(arg0, arg1);
+        ImVec4_to_luaval(tolua_S, ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "implot.ImPlot:SampleColormap",argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_implot_ImPlot_SampleColormap'.",&tolua_err);
 #endif
     return 0;
 }
@@ -5016,6 +5153,93 @@ int lua_x_implot_ImPlot_SetNextMarkerStyle(lua_State* tolua_S)
 #endif
     return 0;
 }
+int lua_x_implot_ImPlot_SetNextPlotFormatX(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"implot.ImPlot",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 1)
+    {
+        const char* arg0;
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "implot.ImPlot:SetNextPlotFormatX"); arg0 = arg0_tmp.c_str();
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_SetNextPlotFormatX'", nullptr);
+            return 0;
+        }
+        implot::ImPlot::SetNextPlotFormatX(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "implot.ImPlot:SetNextPlotFormatX",argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_implot_ImPlot_SetNextPlotFormatX'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_x_implot_ImPlot_SetNextPlotFormatY(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"implot.ImPlot",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 1)
+    {
+        const char* arg0;
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "implot.ImPlot:SetNextPlotFormatY"); arg0 = arg0_tmp.c_str();
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_SetNextPlotFormatY'", nullptr);
+            return 0;
+        }
+        implot::ImPlot::SetNextPlotFormatY(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    if (argc == 2)
+    {
+        const char* arg0;
+        int arg1;
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "implot.ImPlot:SetNextPlotFormatY"); arg0 = arg0_tmp.c_str();
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "implot.ImPlot:SetNextPlotFormatY");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_SetNextPlotFormatY'", nullptr);
+            return 0;
+        }
+        implot::ImPlot::SetNextPlotFormatY(arg0, arg1);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "implot.ImPlot:SetNextPlotFormatY",argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_implot_ImPlot_SetNextPlotFormatY'.",&tolua_err);
+#endif
+    return 0;
+}
 int lua_x_implot_ImPlot_SetNextPlotLimits(lua_State* tolua_S)
 {
     int argc = 0;
@@ -5208,6 +5432,57 @@ int lua_x_implot_ImPlot_SetNextPlotLimitsY(lua_State* tolua_S)
 #endif
     return 0;
 }
+int lua_x_implot_ImPlot_SetPlotQuery(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"implot.ImPlot",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 1)
+    {
+        ImPlotLimits arg0;
+        ok &= luaval_to_native(tolua_S, 2, &arg0, "implot.ImPlot:SetPlotQuery");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_SetPlotQuery'", nullptr);
+            return 0;
+        }
+        implot::ImPlot::SetPlotQuery(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    if (argc == 2)
+    {
+        ImPlotLimits arg0;
+        int arg1;
+        ok &= luaval_to_native(tolua_S, 2, &arg0, "implot.ImPlot:SetPlotQuery");
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "implot.ImPlot:SetPlotQuery");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_SetPlotQuery'", nullptr);
+            return 0;
+        }
+        implot::ImPlot::SetPlotQuery(arg0, arg1);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "implot.ImPlot:SetPlotQuery",argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_x_implot_ImPlot_SetPlotQuery'.",&tolua_err);
+#endif
+    return 0;
+}
 int lua_x_implot_ImPlot_SetPlotYAxis(lua_State* tolua_S)
 {
     int argc = 0;
@@ -5241,46 +5516,6 @@ int lua_x_implot_ImPlot_SetPlotYAxis(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
     tolua_error(tolua_S,"#ferror in function 'lua_x_implot_ImPlot_SetPlotYAxis'.",&tolua_err);
-#endif
-    return 0;
-}
-int lua_x_implot_ImPlot_ShowColormapScale(lua_State* tolua_S)
-{
-    int argc = 0;
-    bool ok  = true;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-#endif
-
-#if COCOS2D_DEBUG >= 1
-    if (!tolua_isusertable(tolua_S,1,"implot.ImPlot",0,&tolua_err)) goto tolua_lerror;
-#endif
-
-    argc = lua_gettop(tolua_S) - 1;
-
-    if (argc == 3)
-    {
-        double arg0;
-        double arg1;
-        double arg2;
-        ok &= luaval_to_number(tolua_S, 2,&arg0, "implot.ImPlot:ShowColormapScale");
-        ok &= luaval_to_number(tolua_S, 3,&arg1, "implot.ImPlot:ShowColormapScale");
-        ok &= luaval_to_number(tolua_S, 4,&arg2, "implot.ImPlot:ShowColormapScale");
-        if(!ok)
-        {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_x_implot_ImPlot_ShowColormapScale'", nullptr);
-            return 0;
-        }
-        implot::ImPlot::ShowColormapScale(arg0, arg1, arg2);
-        lua_settop(tolua_S, 1);
-        return 1;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "implot.ImPlot:ShowColormapScale",argc, 3);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-    tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_implot_ImPlot_ShowColormapScale'.",&tolua_err);
 #endif
     return 0;
 }
@@ -5572,16 +5807,28 @@ int lua_register_x_implot_ImPlot(lua_State* tolua_S)
     tolua_beginmodule(tolua_S,"_auto");
         tolua_function(tolua_S,"annotate", lua_x_implot_ImPlot_Annotate);
         tolua_function(tolua_S,"annotateClamped", lua_x_implot_ImPlot_AnnotateClamped);
-        tolua_function(tolua_S,"beginLegendDragDropSource", lua_x_implot_ImPlot_BeginLegendDragDropSource);
+        tolua_function(tolua_S,"beginDragDropSource", lua_x_implot_ImPlot_BeginDragDropSource);
+        tolua_function(tolua_S,"beginDragDropSourceItem", lua_x_implot_ImPlot_BeginDragDropSourceItem);
+        tolua_function(tolua_S,"beginDragDropSourceX", lua_x_implot_ImPlot_BeginDragDropSourceX);
+        tolua_function(tolua_S,"beginDragDropSourceY", lua_x_implot_ImPlot_BeginDragDropSourceY);
+        tolua_function(tolua_S,"beginDragDropTarget", lua_x_implot_ImPlot_BeginDragDropTarget);
+        tolua_function(tolua_S,"beginDragDropTargetLegend", lua_x_implot_ImPlot_BeginDragDropTargetLegend);
+        tolua_function(tolua_S,"beginDragDropTargetX", lua_x_implot_ImPlot_BeginDragDropTargetX);
+        tolua_function(tolua_S,"beginDragDropTargetY", lua_x_implot_ImPlot_BeginDragDropTargetY);
         tolua_function(tolua_S,"beginLegendPopup", lua_x_implot_ImPlot_BeginLegendPopup);
-        tolua_function(tolua_S,"endLegendDragDropSource", lua_x_implot_ImPlot_EndLegendDragDropSource);
+        tolua_function(tolua_S,"colormapButton", lua_x_implot_ImPlot_ColormapButton);
+        tolua_function(tolua_S,"colormapIcon", lua_x_implot_ImPlot_ColormapIcon);
+        tolua_function(tolua_S,"colormapScale", lua_x_implot_ImPlot_ColormapScale);
+        tolua_function(tolua_S,"endDragDropSource", lua_x_implot_ImPlot_EndDragDropSource);
+        tolua_function(tolua_S,"endDragDropTarget", lua_x_implot_ImPlot_EndDragDropTarget);
         tolua_function(tolua_S,"endLegendPopup", lua_x_implot_ImPlot_EndLegendPopup);
         tolua_function(tolua_S,"endPlot", lua_x_implot_ImPlot_EndPlot);
         tolua_function(tolua_S,"fitNextPlotAxes", lua_x_implot_ImPlot_FitNextPlotAxes);
         tolua_function(tolua_S,"getColormapColor", lua_x_implot_ImPlot_GetColormapColor);
+        tolua_function(tolua_S,"getColormapCount", lua_x_implot_ImPlot_GetColormapCount);
+        tolua_function(tolua_S,"getColormapIndex", lua_x_implot_ImPlot_GetColormapIndex);
         tolua_function(tolua_S,"getColormapName", lua_x_implot_ImPlot_GetColormapName);
         tolua_function(tolua_S,"getColormapSize", lua_x_implot_ImPlot_GetColormapSize);
-        tolua_function(tolua_S,"getInputMap", lua_x_implot_ImPlot_GetInputMap);
         tolua_function(tolua_S,"getLastItemColor", lua_x_implot_ImPlot_GetLastItemColor);
         tolua_function(tolua_S,"getMarkerName", lua_x_implot_ImPlot_GetMarkerName);
         tolua_function(tolua_S,"getPlotDrawList", lua_x_implot_ImPlot_GetPlotDrawList);
@@ -5589,6 +5836,7 @@ int lua_register_x_implot_ImPlot(lua_State* tolua_S)
         tolua_function(tolua_S,"getPlotMousePos", lua_x_implot_ImPlot_GetPlotMousePos);
         tolua_function(tolua_S,"getPlotPos", lua_x_implot_ImPlot_GetPlotPos);
         tolua_function(tolua_S,"getPlotQuery", lua_x_implot_ImPlot_GetPlotQuery);
+        tolua_function(tolua_S,"getPlotSelection", lua_x_implot_ImPlot_GetPlotSelection);
         tolua_function(tolua_S,"getPlotSize", lua_x_implot_ImPlot_GetPlotSize);
         tolua_function(tolua_S,"getStyle", lua_x_implot_ImPlot_GetStyle);
         tolua_function(tolua_S,"getStyleColorName", lua_x_implot_ImPlot_GetStyleColorName);
@@ -5596,9 +5844,9 @@ int lua_register_x_implot_ImPlot(lua_State* tolua_S)
         tolua_function(tolua_S,"isLegendEntryHovered", lua_x_implot_ImPlot_IsLegendEntryHovered);
         tolua_function(tolua_S,"isPlotHovered", lua_x_implot_ImPlot_IsPlotHovered);
         tolua_function(tolua_S,"isPlotQueried", lua_x_implot_ImPlot_IsPlotQueried);
+        tolua_function(tolua_S,"isPlotSelected", lua_x_implot_ImPlot_IsPlotSelected);
         tolua_function(tolua_S,"isPlotXAxisHovered", lua_x_implot_ImPlot_IsPlotXAxisHovered);
         tolua_function(tolua_S,"isPlotYAxisHovered", lua_x_implot_ImPlot_IsPlotYAxisHovered);
-        tolua_function(tolua_S,"lerpColormap", lua_x_implot_ImPlot_LerpColormap);
         tolua_function(tolua_S,"nextColormapColor", lua_x_implot_ImPlot_NextColormapColor);
         tolua_function(tolua_S,"pixelsToPlot", lua_x_implot_ImPlot_PixelsToPlot);
         tolua_function(tolua_S,"plotDummy", lua_x_implot_ImPlot_PlotDummy);
@@ -5609,17 +5857,20 @@ int lua_register_x_implot_ImPlot(lua_State* tolua_S)
         tolua_function(tolua_S,"popStyleColor", lua_x_implot_ImPlot_PopStyleColor);
         tolua_function(tolua_S,"popStyleVar", lua_x_implot_ImPlot_PopStyleVar);
         tolua_function(tolua_S,"pushPlotClipRect", lua_x_implot_ImPlot_PushPlotClipRect);
+        tolua_function(tolua_S,"sampleColormap", lua_x_implot_ImPlot_SampleColormap);
         tolua_function(tolua_S,"setLegendLocation", lua_x_implot_ImPlot_SetLegendLocation);
         tolua_function(tolua_S,"setMousePosLocation", lua_x_implot_ImPlot_SetMousePosLocation);
         tolua_function(tolua_S,"setNextErrorBarStyle", lua_x_implot_ImPlot_SetNextErrorBarStyle);
         tolua_function(tolua_S,"setNextFillStyle", lua_x_implot_ImPlot_SetNextFillStyle);
         tolua_function(tolua_S,"setNextLineStyle", lua_x_implot_ImPlot_SetNextLineStyle);
         tolua_function(tolua_S,"setNextMarkerStyle", lua_x_implot_ImPlot_SetNextMarkerStyle);
+        tolua_function(tolua_S,"setNextPlotFormatX", lua_x_implot_ImPlot_SetNextPlotFormatX);
+        tolua_function(tolua_S,"setNextPlotFormatY", lua_x_implot_ImPlot_SetNextPlotFormatY);
         tolua_function(tolua_S,"setNextPlotLimits", lua_x_implot_ImPlot_SetNextPlotLimits);
         tolua_function(tolua_S,"setNextPlotLimitsX", lua_x_implot_ImPlot_SetNextPlotLimitsX);
         tolua_function(tolua_S,"setNextPlotLimitsY", lua_x_implot_ImPlot_SetNextPlotLimitsY);
+        tolua_function(tolua_S,"setPlotQuery", lua_x_implot_ImPlot_SetPlotQuery);
         tolua_function(tolua_S,"setPlotYAxis", lua_x_implot_ImPlot_SetPlotYAxis);
-        tolua_function(tolua_S,"showColormapScale", lua_x_implot_ImPlot_ShowColormapScale);
         tolua_function(tolua_S,"showColormapSelector", lua_x_implot_ImPlot_ShowColormapSelector);
         tolua_function(tolua_S,"showStyleEditor", lua_x_implot_ImPlot_ShowStyleEditor);
         tolua_function(tolua_S,"showStyleSelector", lua_x_implot_ImPlot_ShowStyleSelector);
@@ -5646,7 +5897,6 @@ TOLUA_API int register_all_x_implot(lua_State* tolua_S)
 	lua_register_x_implot_ImPlotColormap_(tolua_S);
 	lua_register_x_implot_ImPlotFlags_(tolua_S);
 	lua_register_x_implot_ImPlot(tolua_S);
-	lua_register_x_implot_ImPlotInputMap(tolua_S);
 	lua_register_x_implot_ImPlotAxisFlags_(tolua_S);
 	lua_register_x_implot_ImPlotStyle(tolua_S);
 	lua_register_x_implot_ImPlotOrientation_(tolua_S);
