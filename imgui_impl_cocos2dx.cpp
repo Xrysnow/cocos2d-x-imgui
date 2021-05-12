@@ -398,7 +398,7 @@ bool ImGui_ImplCocos2dx_CreateFontsTexture()
 	g_FontTexture->setAntiAliasTexParameters();
 	g_FontTexture->initWithData(pixels, width*height,
 		backend::PixelFormat::A8, width, height, cocos2d::Size(width, height));
-	io.Fonts->TexID = (ImTextureID)g_FontTexture;
+	io.Fonts->SetTexID((ImTextureID)g_FontTexture);
 	return true;
 }
 
@@ -406,7 +406,7 @@ void ImGui_ImplCocos2dx_DestroyFontsTexture()
 {
 	if (g_FontTexture)
 	{
-		ImGui::GetIO().Fonts->TexID = nullptr;
+		ImGui::GetIO().Fonts->SetTexID(nullptr);
 		CC_SAFE_DELETE(g_FontTexture);
 	}
 }
