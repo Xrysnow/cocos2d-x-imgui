@@ -193,7 +193,7 @@ end
 
 -------------------------------------------------------------------------------
 
---- Plots a shaded (filled) region between two lines, or a line and a horizontal reference.
+--- Plots a shaded (filled) region between two lines, or a line and a horizontal reference. Set y_ref to +/-INFINITY for infinite fill extents.
 ---@param label_id string
 ---@param values number[]
 ---@param count number
@@ -204,7 +204,7 @@ end
 function implot.plotShaded(label_id, values, count, y_ref, xscale, x0, offset)
 end
 
---- Plots a shaded (filled) region between two lines, or a line and a horizontal reference.
+--- Plots a shaded (filled) region between two lines, or a line and a horizontal reference. Set y_ref to +/-INFINITY for infinite fill extents.
 ---@param label_id string
 ---@param xs number[]
 ---@param ys number[]
@@ -214,7 +214,7 @@ end
 function implot.plotShaded(label_id, xs, ys, count, y_ref, offset)
 end
 
---- Plots a shaded (filled) region between two lines, or a line and a horizontal reference.
+--- Plots a shaded (filled) region between two lines, or a line and a horizontal reference. Set y_ref to +/-INFINITY for infinite fill extents.
 ---@param label_id string
 ---@param xs number[]
 ---@param ys1 number[]
@@ -224,7 +224,7 @@ end
 function implot.plotShaded(label_id, xs, ys1, ys2, count, offset)
 end
 
---- Plots a shaded (filled) region between two lines, or a line and a horizontal reference.
+--- Plots a shaded (filled) region between two lines, or a line and a horizontal reference. Set y_ref to +/-INFINITY for infinite fill extents.
 ---@param label_id string
 ---@param dtype number @ImGuiDataType
 ---@param values ffi.cdata
@@ -237,7 +237,7 @@ end
 function implot.plotShadedC(label_id, dtype, values, count, y_ref, xscale, x0, offset, stride)
 end
 
---- Plots a shaded (filled) region between two lines, or a line and a horizontal reference.
+--- Plots a shaded (filled) region between two lines, or a line and a horizontal reference. Set y_ref to +/-INFINITY for infinite fill extents.
 ---@param label_id string
 ---@param dtype number @ImGuiDataType
 ---@param xs ffi.cdata
@@ -249,7 +249,7 @@ end
 function implot.plotShadedC(label_id, dtype, xs, ys, count, y_ref, offset, stride)
 end
 
---- Plots a shaded (filled) region between two lines, or a line and a horizontal reference.
+--- Plots a shaded (filled) region between two lines, or a line and a horizontal reference. Set y_ref to +/-INFINITY for infinite fill extents.
 ---@param label_id string
 ---@param dtype number @ImGuiDataType
 ---@param xs ffi.cdata
@@ -497,6 +497,43 @@ end
 function implot.plotStemsC(label_id, dtype, xs, ys, count, y_ref, offset, stride)
 end
 
+-------------------------------------------------------------------------------
+
+--- Plots infinite vertical lines (e.g. for references or asymptotes).
+---@param label_id string
+---@param xs number[]
+---@param count number
+---@param offset number @optional
+function implot.plotVLines(label_id, xs, count, offset)
+end
+
+--- Plots infinite vertical lines (e.g. for references or asymptotes).
+---@param label_id string
+---@param dtype number @ImGuiDataType
+---@param xs number[]
+---@param count number
+---@param offset number @optional
+function implot.plotVLinesC(label_id, dtype, xs, count, offset)
+end
+
+-------------------------------------------------------------------------------
+
+--- Plots infinite horizontal lines (e.g. for references or asymptotes).
+---@param label_id string
+---@param ys number[]
+---@param count number
+---@param offset number @optional
+function implot.plotHLines(label_id, ys, count, offset)
+end
+
+--- Plots infinite horizontal lines (e.g. for references or asymptotes).
+---@param label_id string
+---@param dtype number @ImGuiDataType
+---@param ys number[]
+---@param count number
+---@param offset number @optional
+function implot.plotHLinesC(label_id, dtype, ys, count, offset)
+end
 
 -------------------------------------------------------------------------------
 
@@ -532,6 +569,7 @@ end
 -------------------------------------------------------------------------------
 
 --- Plots a 2D heatmap chart. Values are expected to be in row-major order.
+--- Leave #scale_min and scale_max both at 0 for automatic color scaling, or set them to a predefined range.
 --- #label_fmt can be set to NULL for no labels.
 ---@param label_id string
 ---@param values number[]
@@ -546,6 +584,7 @@ function implot.plotHeatmap(label_id, values, rows, cols, scale_min, scale_max, 
 end
 
 --- Plots a 2D heatmap chart. Values are expected to be in row-major order.
+--- Leave #scale_min and scale_max both at 0 for automatic color scaling, or set them to a predefined range.
 --- #label_fmt can be set to NULL for no labels.
 ---@param label_id string
 ---@param dtype number @ImGuiDataType
@@ -558,6 +597,72 @@ end
 ---@param bounds_min implot.ImPlotPoint @optional, (0, 0)
 ---@param bounds_max implot.ImPlotPoint @optional, (1, 1)
 function implot.plotHeatmapC(label_id, dtype, values, rows, cols, scale_min, scale_max, label_fmt, bounds_min, bounds_max)
+end
+
+-------------------------------------------------------------------------------
+
+--- Plots a horizontal histogram. #bins can be a positive integer or an ImPlotBin_ method. If #cumulative is true, each bin contains its count plus the counts of all previous bins.
+--- If #density is true, the PDF is visualized. If both are true, the CDF is visualized. If #range is left unspecified, the min/max of #values will be used as the range.
+--- If #range is specified, outlier values outside of the range are not binned. However, outliers still count toward normalizing and cumulative counts unless #outliers is false. The largest bin count or density is returned.
+---@param label_id string
+---@param values number[]
+---@param count number
+---@param bins implot.ImPlotBin @optional, ImPlotBin_Sturges
+---@param cumulative boolean @optional, false
+---@param density boolean @optional, false
+---@param range implot.ImPlotRange @optional
+---@param outliers boolean @optional, true
+---@param bar_scale number @optional, 1.0
+function implot.plotHistogram(label_id, values, count, bins, cumulative, density, range, outliers, bar_scale)
+end
+
+--- Plots a horizontal histogram. #bins can be a positive integer or an ImPlotBin_ method. If #cumulative is true, each bin contains its count plus the counts of all previous bins.
+--- If #density is true, the PDF is visualized. If both are true, the CDF is visualized. If #range is left unspecified, the min/max of #values will be used as the range.
+--- If #range is specified, outlier values outside of the range are not binned. However, outliers still count toward normalizing and cumulative counts unless #outliers is false. The largest bin count or density is returned.
+---@param label_id string
+---@param dtype number @ImGuiDataType
+---@param values ffi.cdata
+---@param count number
+---@param bins implot.ImPlotBin @optional, ImPlotBin_Sturges
+---@param cumulative boolean @optional, false
+---@param density boolean @optional, false
+---@param range implot.ImPlotRange @optional
+---@param outliers boolean @optional, true
+---@param bar_scale number @optional, 1.0
+function implot.plotHistogramC(label_id, dtype, values, count, bins, cumulative, density, range, outliers, bar_scale)
+end
+
+-------------------------------------------------------------------------------
+
+--- Plots two dimensional, bivariate histogram as a heatmap. #x_bins and #y_bins can be a positive integer or an ImPlotBin. If #density is true, the PDF is visualized.
+--- If #range is left unspecified, the min/max of #xs an #ys will be used as the ranges. If #range is specified, outlier values outside of range are not binned.
+--- However, outliers still count toward the normalizing count for density plots unless #outliers is false. The largest bin count or density is returned.
+---@param label_id string
+---@param xs number[]
+---@param ys number[]
+---@param count number
+---@param x_bins implot.ImPlotBin @optional, ImPlotBin_Sturges
+---@param y_bins implot.ImPlotBin @optional, ImPlotBin_Sturges
+---@param density boolean @optional, false
+---@param range implot.ImPlotLimits @optional
+---@param outliers boolean @optional, true
+function implot.plotHistogram2D(label_id, xs, ys, count, x_bins, y_bins, density, range, outliers)
+end
+
+--- Plots two dimensional, bivariate histogram as a heatmap. #x_bins and #y_bins can be a positive integer or an ImPlotBin. If #density is true, the PDF is visualized.
+--- If #range is left unspecified, the min/max of #xs an #ys will be used as the ranges. If #range is specified, outlier values outside of range are not binned.
+--- However, outliers still count toward the normalizing count for density plots unless #outliers is false. The largest bin count or density is returned.
+---@param label_id string
+---@param dtype number @ImGuiDataType
+---@param xs number[]
+---@param ys number[]
+---@param count number
+---@param x_bins implot.ImPlotBin @optional, ImPlotBin_Sturges
+---@param y_bins implot.ImPlotBin @optional, ImPlotBin_Sturges
+---@param density boolean @optional, false
+---@param range implot.ImPlotLimits @optional
+---@param outliers boolean @optional, true
+function implot.plotHistogram2DC(label_id, dtype, xs, ys, count, x_bins, y_bins, density, range, outliers)
 end
 
 -------------------------------------------------------------------------------
@@ -586,7 +691,7 @@ end
 
 -------------------------------------------------------------------------------
 
---- Plots an axis-aligned image. #bounds_min/bounds_max are in plot coordinatse (y-up)
+--- Plots an axis-aligned image. #bounds_min/bounds_max are in plot coordinates (y-up)
 --- and #uv0/uv1 are in texture coordinates (y-down).
 ---@param label_id string
 ---@param texture cc.Texture2D
@@ -598,7 +703,7 @@ end
 function implot.plotImage(label_id, texture, bounds_min, bounds_max, uv0, uv1, tint_col)
 end
 
---- Plots an axis-aligned image. #bounds_min/bounds_max are in plot coordinatse (y-up)
+--- Plots an axis-aligned image. #bounds_min/bounds_max are in plot coordinates (y-up)
 --- and #uv0/uv1 are in texture coordinates (y-down).
 ---@param label_id string
 ---@param sprite cc.Sprite
@@ -616,8 +721,8 @@ end
 ---@param values number[]
 ---@param n_ticks number
 ---@param labels string[] @optional
----@param show_default boolean @optional
-function implot.setNextPlotTicksX(values, n_ticks, labels, show_default)
+---@param keep_default boolean @optional
+function implot.setNextPlotTicksX(values, n_ticks, labels, keep_default)
 end
 
 --- Set the X axis ticks and optionally the labels for the next plot.
@@ -625,8 +730,8 @@ end
 ---@param x_max number
 ---@param n_ticks number
 ---@param labels string @optional
----@param show_default boolean @optional
-function implot.setNextPlotTicksX(x_min, x_max, n_ticks, labels, show_default)
+---@param keep_default boolean @optional
+function implot.setNextPlotTicksX(x_min, x_max, n_ticks, labels, keep_default)
 end
 
 --- Set the Y axis ticks and optionally the labels for the next plot.
@@ -693,7 +798,7 @@ end
 -- will last until the matching call to PopStyleX. You MUST call a pop for
 -- every push, otherwise you will leak memory! This behaves just like ImGui.
 
---- Temporarily modify a plot color. Don't forget to call PopStyleColor!
+--- Temporarily modify a style color. Don't forget to call PopStyleColor!
 ---@param idx number
 ---@param col number|ImVec4
 function implot.pushStyleColor(idx, col)
@@ -709,37 +814,69 @@ end
 -- Colormaps
 -------------------------------------------------------------------------------
 
--- Item styling is based on Colormaps when the relevant ImPlotCol is set to
--- IMPLOT_AUTO_COL (default). Several built in colormaps are available and can be
--- toggled in the demo. You can push/pop or set your own colormaps as well.
-
--- The Colormap data will be ignored and a custom color will be used if you have either:
---     1) Modified an item style color in your ImPlotStyle to anything but IMPLOT_AUTO_COL.
+-- Item styling is based on colormaps when the relevant ImPlotCol_XXX is set to
+-- IMPLOT_AUTO_COL (default). Several built-in colormaps are available. You can
+-- add and then push/pop your own colormaps as well. To permanently set a colormap,
+-- modify the Colormap index member of your ImPlotStyle.
+--
+-- Colormap data will be ignored and a custom color will be used if you have done one of the following:
+--     1) Modified an item style color in your ImPlotStyle to anything other than IMPLOT_AUTO_COL.
 --     2) Pushed an item style color using PushStyleColor().
---     3) Set the next item style with a SetNextXStyle function.
+--     3) Set the next item style with a SetNextXXXStyle function.
 
---- Temporarily switch to one of the built-in colormaps.
----@param colormap number @ImPlotColormap
-function implot.pushColormap(colormap)
+
+--- Add a new colormap. The color data will be copied. The colormap can be used by pushing either the returned index or the
+--- string name with PushColormap. The colormap name must be unique and the size must be greater than 1. You will receive
+--- an assert otherwise! By default colormaps are considered to be qualitative (i.e. discrete). If you want to create a
+--- continuous colormap, set #qual=false. This will treat the colors you provide as keys, and ImPlot will build a linearly
+--- interpolated lookup table. The memory footprint of this table will be exactly ((size-1)*255+1)*4 bytes.
+---@param name string
+---@param cols number[]|ImVec4[]
+---@param qual boolean @optional, true
+---@return implot.ImPlotColormap
+function implot.addColormap(name, cols, qual)
 end
 
---- Permanently sets a custom colormap. The colors will be copied to internal memory.
----@param colormap ImVec4[]
-function implot.setColormap(colormap)
+--- Temporarily switch to one of the built-in (i.e. ImPlotColormap_XXX) or user-added colormaps (i.e. a return value of AddColormap). Don't forget to call PopColormap!
+---@param cmap implot.ImPlotColormap
+function implot.pushColormap(cmap)
 end
 
---- Permanently switch to one of the built-in colormaps. If samples is greater than 1,
---- the map will be linearly resampled. Don't call this each frame.
----@param colormap number @ImPlotColormap
----@param samples number @optional
-function implot.setColormap(colormap, samples)
+--- Push a colormap by string name. Use built-in names such as "Default", "Deep", "Jet", etc. or a string you provided to AddColormap. Don't forget to call PopColormap!
+---@param name string
+function implot.pushColormap(name)
+end
+
+--- Shows a horizontal slider with a colormap gradient background. Optionally returns the color sampled at t in [0 1].
+---@param label string
+---@param t number
+---@param format string @optional, ""
+---@param cmap implot.ImPlotColormap @optional, IMPLOT_AUTO
+---@return boolean,number,ImVec4 @changed, new t, color
+function implot.colormapSlider(label, t, format, cmap)
+end
+
+--- When items in a plot sample their color from a colormap, the color is cached and does not change
+--- unless explicitly overriden. Therefore, if you change the colormap after the item has already been plotted,
+--- item colors will NOT update. If you need item colors to resample the new colormap, then use this
+--- function to bust the cached colors. If #plot_title_id is NULL, then every item in EVERY existing plot
+--- will be cache busted. Otherwise only the plot specified by #plot_title_id will be busted. For the
+--- latter, this function must be called in the same ImGui ID scope that the plot is in. You should rarely if ever
+--- need this function, but it is available for applications that require runtime colormap swaps (e.g. Heatmaps demo).
+---@param plot_title_id string|nil
+function implot.bustColorCache(plot_title_id)
+end
+
+--- Render icons similar to those that appear in legends (nifty for data lists).
+---@param col number|ImVec4
+function implot.itemIcon(col)
 end
 
 -------------------------------------------------------------------------------
 -- Miscellaneous
 -------------------------------------------------------------------------------
 
---- Shows ImPlot metrics/debug information.
+--- Shows ImPlot metrics/debug information window.
 ---@param p_popen boolean @optional
 ---@return boolean|nil
 function implot.showMetricsWindow(p_popen)
@@ -749,7 +886,7 @@ end
 -- Demo (add implot_demo.cpp to your sources!)
 -------------------------------------------------------------------------------
 
---- Shows the ImPlot demo.
+--- Shows the ImPlot demo window.
 ---@param p_popen boolean @optional
 ---@return boolean|nil
 function implot.showDemoWindow(p_popen)
