@@ -11,36 +11,51 @@ implot.AxisFlags = ImPlotAxisFlags
 ---  default
 ---@type number
 ImPlotAxisFlags.None = 0
+---  the axis label will not be displayed (axis labels also hidden if the supplied string name is NULL)
+---@type number
+ImPlotAxisFlags.NoLabel = 1
 ---  no grid lines will be displayed
 ---@type number
-ImPlotAxisFlags.NoGridLines = 1
+ImPlotAxisFlags.NoGridLines = 2
 ---  no tick marks will be displayed
 ---@type number
-ImPlotAxisFlags.NoTickMarks = 2
+ImPlotAxisFlags.NoTickMarks = 4
 ---  no text labels will be displayed
 ---@type number
-ImPlotAxisFlags.NoTickLabels = 4
+ImPlotAxisFlags.NoTickLabels = 8
+---  grid lines will be displayed in the foreground (i.e. on top of data) in stead of the background
+---@type number
+ImPlotAxisFlags.Foreground = 16
 ---  a logartithmic (base 10) axis scale will be used (mutually exclusive with ImPlotAxisFlags_Time)
 ---@type number
-ImPlotAxisFlags.LogScale = 8
+ImPlotAxisFlags.LogScale = 32
 ---  axis will display date/time formatted labels (mutually exclusive with ImPlotAxisFlags_LogScale)
 ---@type number
-ImPlotAxisFlags.Time = 16
+ImPlotAxisFlags.Time = 64
 ---  the axis will be inverted
 ---@type number
-ImPlotAxisFlags.Invert = 32
+ImPlotAxisFlags.Invert = 128
+---  axis will not be initially fit to data extents on the first rendered frame (also the case if SetNextPlotLimits explicitly called)
+---@type number
+ImPlotAxisFlags.NoInitialFit = 256
+---  axis will be auto-fitting to data extents
+---@type number
+ImPlotAxisFlags.AutoFit = 512
+---  axis will only fit points if the point is in the visible range of the **orthoganol** axis
+---@type number
+ImPlotAxisFlags.RangeFit = 1024
 ---  the axis minimum value will be locked when panning/zooming
 ---@type number
-ImPlotAxisFlags.LockMin = 64
+ImPlotAxisFlags.LockMin = 2048
 ---  the axis maximum value will be locked when panning/zooming
 ---@type number
-ImPlotAxisFlags.LockMax = 128
+ImPlotAxisFlags.LockMax = 4096
 --- 
 ---@type number
-ImPlotAxisFlags.Lock = 192
+ImPlotAxisFlags.Lock = 6144
 --- 
 ---@type number
-ImPlotAxisFlags.NoDecorations = 7
+ImPlotAxisFlags.NoDecorations = 15
 
 --------------------------------
 -- @module ImPlotCol_
@@ -138,39 +153,54 @@ local ImPlotColormap = {}
 implot.ImPlotColormap = ImPlotColormap
 implot.Colormap = ImPlotColormap
 
----  ImPlot default colormap         (n=10)
+---   a.k.a. seaborn deep             (qual=true,  n=10) (default)
 ---@type number
-ImPlotColormap.Default = 0
----  a.k.a. seaborn deep             (n=10)
+ImPlotColormap.Deep = 0
+---   a.k.a. matplotlib "Set1"        (qual=true,  n=9 )
 ---@type number
-ImPlotColormap.Deep = 1
----  a.k.a. matplotlib "Set1"        (n=9)
+ImPlotColormap.Dark = 1
+---   a.k.a. matplotlib "Pastel1"     (qual=true,  n=9 )
 ---@type number
-ImPlotColormap.Dark = 2
----  a.k.a. matplotlib "Pastel1"     (n=9)
+ImPlotColormap.Pastel = 2
+---   a.k.a. matplotlib "Paired"      (qual=true,  n=12)
 ---@type number
-ImPlotColormap.Pastel = 3
----  a.k.a. matplotlib "Paired"      (n=12)
+ImPlotColormap.Paired = 3
+---   a.k.a. matplotlib "viridis"     (qual=false, n=11)
 ---@type number
-ImPlotColormap.Paired = 4
----  a.k.a. matplotlib "viridis"     (n=11)
+ImPlotColormap.Viridis = 4
+---   a.k.a. matplotlib "plasma"      (qual=false, n=11)
 ---@type number
-ImPlotColormap.Viridis = 5
----  a.k.a. matplotlib "plasma"      (n=11)
+ImPlotColormap.Plasma = 5
+---   a.k.a. matplotlib/MATLAB "hot"  (qual=false, n=11)
 ---@type number
-ImPlotColormap.Plasma = 6
----  a.k.a. matplotlib/MATLAB "hot"  (n=11)
+ImPlotColormap.Hot = 6
+---   a.k.a. matplotlib/MATLAB "cool" (qual=false, n=11)
 ---@type number
-ImPlotColormap.Hot = 7
----  a.k.a. matplotlib/MATLAB "cool" (n=11)
+ImPlotColormap.Cool = 7
+---   a.k.a. matplotlib/MATLAB "pink" (qual=false, n=11)
 ---@type number
-ImPlotColormap.Cool = 8
----  a.k.a. matplotlib/MATLAB "pink" (n=11)
+ImPlotColormap.Pink = 8
+---   a.k.a. MATLAB "jet"             (qual=false, n=11)
 ---@type number
-ImPlotColormap.Pink = 9
----  a.k.a. MATLAB "jet"             (n=11)
+ImPlotColormap.Jet = 9
+---   a.k.a. matplotlib "twilight"    (qual=false, n=11)
 ---@type number
-ImPlotColormap.Jet = 10
+ImPlotColormap.Twilight = 10
+---   red/blue, Color Brewer          (qual=false, n=11)
+---@type number
+ImPlotColormap.RdBu = 11
+---   brown/blue-green, Color Brewer  (qual=false, n=11)
+---@type number
+ImPlotColormap.BrBG = 12
+---   pink/yellow-green, Color Brewer (qual=false, n=11)
+---@type number
+ImPlotColormap.PiYG = 13
+---   color spectrum, Color Brewer    (qual=false, n=11)
+---@type number
+ImPlotColormap.Spectral = 14
+---   white/black                     (qual=false, n=2 )
+---@type number
+ImPlotColormap.Greys = 15
 
 --------------------------------
 -- @module ImPlotFlags_
@@ -191,10 +221,10 @@ ImPlotFlags.NoTitle = 1
 ---  the legend will not be displayed
 ---@type number
 ImPlotFlags.NoLegend = 2
----  the user will not be able to open context menus with double-right click
+---  the user will not be able to open context menus with right-click
 ---@type number
 ImPlotFlags.NoMenus = 4
----  the user will not be able to box-select with right-mouse
+---  the user will not be able to box-select with right-click drag
 ---@type number
 ImPlotFlags.NoBoxSelect = 8
 ---  the mouse position, in plot coordinates, will not be displayed inside of the plot
@@ -206,7 +236,7 @@ ImPlotFlags.NoHighlight = 32
 ---  a child window region will not be used to capture mouse scroll (can boost performance for single ImGui window applications)
 ---@type number
 ImPlotFlags.NoChild = 64
----  primary x and y axes will be constrained to have the same units/pixel (does not apply to auxiliary y axes)
+---  primary x and y axes will be constrained to have the same units/pixel (does not apply to auxiliary y-axes)
 ---@type number
 ImPlotFlags.Equal = 128
 ---  enable a 2nd y-axis on the right side
@@ -215,16 +245,16 @@ ImPlotFlags.YAxis2 = 256
 ---  enable a 3rd y-axis on the right side
 ---@type number
 ImPlotFlags.YAxis3 = 512
----  the user will be able to draw query rects with middle-mouse
+---  the user will be able to draw query rects with middle-mouse or CTRL + right-click drag
 ---@type number
 ImPlotFlags.Query = 1024
 ---  the default mouse cursor will be replaced with a crosshair when hovered
 ---@type number
 ImPlotFlags.Crosshairs = 2048
----  plot lines will be software anti-aliased (not recommended for density plots, prefer MSAA)
+---  plot lines will be software anti-aliased (not recommended for high density plots, prefer MSAA)
 ---@type number
 ImPlotFlags.AntiAliased = 4096
----  plot lines will be software anti-aliased (not recommended for density plots, prefer MSAA)
+---  plot lines will be software anti-aliased (not recommended for high density plots, prefer MSAA)
 ---@type number
 ImPlotFlags.CanvasOnly = 31
 
@@ -412,15 +442,18 @@ ImPlotStyleVar.MousePosPadding = 22
 ---  ImVec2, text padding around annotation labels
 ---@type number
 ImPlotStyleVar.AnnotationPadding = 23
+---  ImVec2, additional fit padding as a percentage of the fit extents (e.g. ImVec2(0.1f,0.1f) adds 10% to the fit extents of X and Y)
+---@type number
+ImPlotStyleVar.FitPadding = 24
 ---  ImVec2, default size used when ImVec2(0,0) is passed to BeginPlot
 ---@type number
-ImPlotStyleVar.PlotDefaultSize = 24
+ImPlotStyleVar.PlotDefaultSize = 25
 ---  ImVec2, minimum size plot frame can be when shrunk
 ---@type number
-ImPlotStyleVar.PlotMinSize = 25
+ImPlotStyleVar.PlotMinSize = 26
 ---  ImVec2, minimum size plot frame can be when shrunk
 ---@type number
-ImPlotStyleVar.COUNT = 26
+ImPlotStyleVar.COUNT = 27
 
 --------------------------------
 -- @module ImPlotYAxis_
@@ -442,4 +475,3 @@ ImPlotYAxis._2 = 1
 ---@type number
 ImPlotYAxis._3 = 2
 
-return nil

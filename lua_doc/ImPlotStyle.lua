@@ -155,7 +155,7 @@ ImPlotStyle.LegendInnerPadding = nil
 --------------------------------
 
 ---  spacing between legend entries
---- = 0,0 
+--- = 5,0 
 ---@type ImVec2
 ImPlotStyle.LegendSpacing = nil
 
@@ -175,6 +175,13 @@ ImPlotStyle.AnnotationPadding = nil
 
 --------------------------------
 
+---  additional fit padding as a percentage of the fit extents (e.g. ImVec2(0.1f,0.1f) adds 10% to the fit extents of X and Y)
+--- = 0,0 
+---@type ImVec2
+ImPlotStyle.FitPadding = nil
+
+--------------------------------
+
 ---  default size used when ImVec2(0,0) is passed to BeginPlot
 --- = 400,300 
 ---@type ImVec2
@@ -186,6 +193,12 @@ ImPlotStyle.PlotDefaultSize = nil
 --- = 300,225 
 ---@type ImVec2
 ImPlotStyle.PlotMinSize = nil
+
+--------------------------------
+
+---  The current colormap. Set this to either an ImPlotColormap_ enum or an index returned by AddColormap. 
+---@type number
+ImPlotStyle.Colormap = nil
 
 --------------------------------
 
