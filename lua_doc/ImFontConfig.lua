@@ -33,14 +33,14 @@ ImFontConfig.SizePixels = nil
 
 --------------------------------
 
---- Rasterize at higher quality for sub-pixel positioning. Read https:github.com/nothings/stb/blob/master/tests/oversample/README.md for details.
+--- Rasterize at higher quality for sub-pixel positioning. Note the difference between 2 and 3 is minimal so you can reduce this to 2 to save memory. Read https:github.com/nothings/stb/blob/master/tests/oversample/README.md for details.
 --- 3
 ---@type number
 ImFontConfig.OversampleH = nil
 
 --------------------------------
 
---- Rasterize at higher quality for sub-pixel positioning. We don't use sub-pixel positions on the Y axis.
+--- Rasterize at higher quality for sub-pixel positioning. This is not really useful as we don't use sub-pixel positions on the Y axis.
 --- 1
 ---@type number
 ImFontConfig.OversampleV = nil
@@ -89,10 +89,10 @@ ImFontConfig.MergeMode = nil
 
 --------------------------------
 
---- Settings for custom font rasterizer (e.g. ImGuiFreeType). Leave as zero if you aren't using one.
---- 0x00
+--- Settings for custom font builder. THIS IS BUILDER IMPLEMENTATION DEPENDENT. Leave as zero if unsure.
+--- 0
 ---@type number
-ImFontConfig.RasterizerFlags = nil
+ImFontConfig.FontBuilderFlags = nil
 
 --------------------------------
 

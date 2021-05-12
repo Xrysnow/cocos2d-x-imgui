@@ -7,13 +7,19 @@ local ImFontGlyph = {}
 imgui.ImFontGlyph = ImFontGlyph
 --------------------------------
 
---- 0x0000..0xFFFF
+--- Flag to indicate glyph is colored and should generally ignore tinting (make it usable with no shift on little-endian as this is used in loops)
+---@type number
+ImFontGlyph.Colored = nil
+
+--------------------------------
+
+--- 0x0000..0x10FFFF
 ---@type number
 ImFontGlyph.Codepoint = nil
 
 --------------------------------
 
---- Flag to allow early out when rendering
+--- Flag to indicate glyph has no visible pixels (e.g. space). Allow early out when rendering.
 ---@type number
 ImFontGlyph.Visible = nil
 

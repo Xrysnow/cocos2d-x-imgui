@@ -111,6 +111,12 @@ ImGuiStyle.ItemInnerSpacing = nil
 
 --------------------------------
 
+---  Padding within a table cell 
+---@type ImVec2
+ImGuiStyle.CellPadding = nil
+
+--------------------------------
+
 ---  Expand reactive bounding box for touch-based system where touch position is not accurate enough. Unfortunately we don't sort widgets so priority on overlap will always be given to the first widget. So don't grow this too much! 
 ---@type ImVec2
 ImGuiStyle.TouchExtraPadding = nil
@@ -239,7 +245,7 @@ ImGuiStyle.CurveTessellationTol = nil
 
 --- Maximum error (in pixels) allowed when using AddCircle()/AddCircleFilled() or drawing rounded corner rectangles with no explicit segment count specified. Decrease for higher quality but more geometry.
 ---@type number
-ImGuiStyle.CircleSegmentMaxError = nil
+ImGuiStyle.CircleTessellationMaxError = nil
 
 
 

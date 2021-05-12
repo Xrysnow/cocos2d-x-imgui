@@ -79,12 +79,6 @@ end
 
 --------------------------------
 
---- Marked as Locked by ImGui::NewFrame() so attempt to modify the atlas will assert.
----@type boolean
-ImFontAtlas.Locked = nil
-
---------------------------------
-
 --- Build flags (see ImFontAtlasFlags_)
 ---@type number
 ImFontAtlas.Flags = nil
@@ -100,6 +94,12 @@ ImFontAtlas.TexDesiredWidth = nil
 --- Padding between glyphs within texture in pixels. Defaults to 1. If your rendering method doesn't rely on bilinear filtering you may set this to 0.
 ---@type number
 ImFontAtlas.TexGlyphPadding = nil
+
+--------------------------------
+
+--- Marked as Locked by ImGui::NewFrame() so attempt to modify the atlas will assert.
+---@type boolean
+ImFontAtlas.Locked = nil
 
 
 

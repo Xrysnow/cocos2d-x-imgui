@@ -16,14 +16,7 @@ end
 
 --- 
 ---@return ImVec2
-function ImGuiViewport:getWorkPos()
-end
-
---------------------------------
-
---- 
----@return ImVec2
-function ImGuiViewport:getWorkSize()
+function ImGuiViewport:getWorkCenter()
 end
 
 --------------------------------
@@ -40,7 +33,7 @@ ImGuiViewport.Flags = nil
 
 --------------------------------
 
----  Main Area: Position of the viewport (the imgui coordinates are the same as OS desktop/native coordinates) 
+---  Main Area: Position of the viewport (Dear ImGui coordinates are the same as OS desktop/native coordinates) 
 ---@type ImVec2
 ImGuiViewport.Pos = nil
 
@@ -52,15 +45,15 @@ ImGuiViewport.Size = nil
 
 --------------------------------
 
----  Work Area: Offset from Pos to top-left corner of Work Area. Generally (0,0) or (0,+main_menu_bar_height). Work Area is Full Area but without menu-bars/status-bars (so WorkArea always fit inside Pos/Size!) 
+---  Work Area: Position of the viewport minus task bars, menus bars, status bars (>= Pos) 
 ---@type ImVec2
-ImGuiViewport.WorkOffsetMin = nil
+ImGuiViewport.WorkPos = nil
 
 --------------------------------
 
----  Work Area: Offset from Pos+Size to bottom-right corner of Work Area. Generally (0,0) or (0,-status_bar_height). 
+---  Work Area: Size of the viewport minus task bars, menu bars, status bars (<= Size) 
 ---@type ImVec2
-ImGuiViewport.WorkOffsetMax = nil
+ImGuiViewport.WorkSize = nil
 
 --------------------------------
 

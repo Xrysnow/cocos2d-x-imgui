@@ -59,9 +59,9 @@ end
 ---
 ---@param points ImVec2[]
 ---@param col number
----@param closed boolean
+---@param flags number
 ---@param thickness number
-function ImDrawList:addPolyline(points, col, closed, thickness)
+function ImDrawList:addPolyline(points, col, flags, thickness)
 end
 
 --- Note: Anti-aliased filling requires points to be in clockwise order.

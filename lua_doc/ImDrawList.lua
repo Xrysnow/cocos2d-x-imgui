@@ -7,16 +7,29 @@ local ImDrawList = {}
 imgui.ImDrawList = ImDrawList
 --------------------------------
 
---- 
----@param pos0 ImVec2
----@param cp0 ImVec2
----@param cp1 ImVec2
----@param pos1 ImVec2
+---  Cubic Bezier (4 control points) 
+---@param p1 ImVec2
+---@param p2 ImVec2
+---@param p3 ImVec2
+---@param p4 ImVec2
 ---@param col number
 ---@param thickness number
 ---@param num_segments number
 ---@return imgui.ImDrawList
-function ImDrawList:addBezierCurve(pos0, cp0, cp1, pos1, col, thickness, num_segments)
+function ImDrawList:addBezierCubic(p1, p2, p3, p4, col, thickness, num_segments)
+end
+
+--------------------------------
+
+---  Quadratic Bezier (3 control points) 
+---@param p1 ImVec2
+---@param p2 ImVec2
+---@param p3 ImVec2
+---@param col number
+---@param thickness number
+---@param num_segments number
+---@return imgui.ImDrawList
+function ImDrawList:addBezierQuadratic(p1, p2, p3, col, thickness, num_segments)
 end
 
 --------------------------------
@@ -115,10 +128,10 @@ end
 ---@param b ImVec2
 ---@param col number
 ---@param rounding number
----@param rounding_corners_flags number
+---@param flags number
 ---@param thickness number
 ---@return imgui.ImDrawList
-function ImDrawList:addRect(a, b, col, rounding, rounding_corners_flags, thickness)
+function ImDrawList:addRect(a, b, col, rounding, flags, thickness)
 end
 
 --------------------------------
@@ -128,9 +141,9 @@ end
 ---@param b ImVec2
 ---@param col number
 ---@param rounding number
----@param rounding_corners_flags number
+---@param flags number
 ---@return imgui.ImDrawList
-function ImDrawList:addRectFilled(a, b, col, rounding, rounding_corners_flags)
+function ImDrawList:addRectFilled(a, b, col, rounding, flags)
 end
 
 --------------------------------
@@ -238,13 +251,23 @@ end
 
 --------------------------------
 
---- 
+---  Cubic Bezier (4 control points) 
 ---@param p1 ImVec2
 ---@param p2 ImVec2
 ---@param p3 ImVec2
 ---@param num_segments number
 ---@return imgui.ImDrawList
-function ImDrawList:pathBezierCurveTo(p1, p2, p3, num_segments)
+function ImDrawList:pathBezierCubicCurveTo(p1, p2, p3, num_segments)
+end
+
+--------------------------------
+
+---  Quadratic Bezier (3 control points) 
+---@param p2 ImVec2
+---@param p3 ImVec2
+---@param num_segments number
+---@return imgui.ImDrawList
+function ImDrawList:pathBezierQuadraticCurveTo(p2, p3, num_segments)
 end
 
 --------------------------------
@@ -284,19 +307,19 @@ end
 ---@param rect_min ImVec2
 ---@param rect_max ImVec2
 ---@param rounding number
----@param rounding_corners_flags number
+---@param flags number
 ---@return imgui.ImDrawList
-function ImDrawList:pathRect(rect_min, rect_max, rounding, rounding_corners_flags)
+function ImDrawList:pathRect(rect_min, rect_max, rounding, flags)
 end
 
 --------------------------------
 
 --- 
 ---@param col number
----@param closed boolean
+---@param flags number
 ---@param thickness number
 ---@return imgui.ImDrawList
-function ImDrawList:pathStroke(col, closed, thickness)
+function ImDrawList:pathStroke(col, flags, thickness)
 end
 
 --------------------------------
