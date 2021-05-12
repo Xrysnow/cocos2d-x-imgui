@@ -57,6 +57,7 @@ static ImVec2               g_CursorPos = ImVec2(-FLT_MAX, -FLT_MAX);
 
 #ifdef CC_PLATFORM_PC
 static GLFWcursor*          g_MouseCursors[ImGuiMouseCursor_COUNT] = { nullptr };
+static GLFWwindow*          g_KeyOwnerWindows[512] = { nullptr };
 // Chain GLFW callbacks: our callbacks will call the user's previously installed callbacks, if any.
 static GLFWmousebuttonfun   g_PrevUserCallbackMousebutton = nullptr;
 static GLFWscrollfun        g_PrevUserCallbackScroll = nullptr;
@@ -348,10 +349,14 @@ void ImGui_ImplCocos2dx_KeyCallback(GLFWwindow* window, int key, int scancode, i
 	if (key < 0)
 		return;
 	ImGuiIO& io = ImGui::GetIO();
-	if (action == GLFW_PRESS)
+	if (action == GLFW_PRESS) {
 		io.KeysDown[key] = true;
-	if (action == GLFW_RELEASE)
+		g_KeyOwnerWindows[key] = window;
+	}
+	if (action == GLFW_RELEASE) {
 		io.KeysDown[key] = false;
+		g_KeyOwnerWindows[key] = nullptr;
+	}
 
 	// Modifiers are not reliable across systems
 	io.KeyCtrl = io.KeysDown[GLFW_KEY_LEFT_CONTROL] || io.KeysDown[GLFW_KEY_RIGHT_CONTROL];
@@ -1148,6 +1153,13 @@ static void ImGui_ImplGlfw_DestroyWindow(ImGuiViewport* viewport)
 				HWND hwnd = (HWND)viewport->PlatformHandleRaw;
 				::RemovePropA(hwnd, "IMGUI_VIEWPORT");
 #endif
+
+				// Release any keys that were pressed in the window being destroyed and are still held down,
+				// because we will not receive any release events after window is destroyed.
+				for (int i = 0; i < IM_ARRAYSIZE(g_KeyOwnerWindows); i++)
+					if (g_KeyOwnerWindows[i] == window)
+						ImGui_ImplCocos2dx_KeyCallback(window, i, 0, GLFW_RELEASE, 0); // Later params are only used for main viewport, on which this function is never called.
+
 				glfwDestroyWindow(window);
 			});
 		}
