@@ -120,8 +120,9 @@ static void ImGui_ImplCocos2dx_SetupRenderState(ImDrawData* draw_data, int fb_wi
 	AddRendererCommand([=]()
 	{
 		renderer->setCullMode(backend::CullMode::NONE);
-		renderer->setDepthTest(false);
 		renderer->setScissorTest(true);
+		renderer->setDepthTest(false);
+		renderer->setStencilTest(false);
 		renderer->setViewPort(0, 0, fb_width, fb_height);
 	});
 
@@ -139,6 +140,7 @@ struct SavedRenderState
 	ScissorRect scissorRect;
 	bool scissorTest;
 	bool depthTest;
+	bool stencilTest;
 };
 static SavedRenderState g_SavedRenderState;
 
@@ -160,6 +162,7 @@ void ImGui_ImplCocos2dx_RenderDrawData(ImDrawData* draw_data)
 		g_SavedRenderState.scissorTest = renderer->getScissorTest();
 		g_SavedRenderState.scissorRect = renderer->getScissorRect();
 		g_SavedRenderState.depthTest = renderer->getDepthTest();
+		g_SavedRenderState.stencilTest = renderer->getStencilTest();
 	});
 
 	ImGui_ImplCocos2dx_SetupRenderState(draw_data, fb_width, fb_height);
@@ -278,6 +281,7 @@ void ImGui_ImplCocos2dx_RenderDrawData(ImDrawData* draw_data)
 		auto& sc = g_SavedRenderState.scissorRect;
 		renderer->setScissorRect(sc.x, sc.y, sc.width, sc.height);
 		renderer->setDepthTest(g_SavedRenderState.depthTest);
+		renderer->setStencilTest(g_SavedRenderState.stencilTest);
 	});
 }
 
