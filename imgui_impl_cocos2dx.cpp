@@ -249,6 +249,8 @@ void ImGui_ImplCocos2dx_RenderDrawData(ImDrawData* draw_data)
 						*desc.programState->getVertexLayout() = pinfo->layout;
 						desc.programState->setUniform(pinfo->projection, &g_Projection, sizeof(Mat4));
 						desc.programState->setTexture(pinfo->texture, 0, tex->getBackendTexture());
+						// In order to composite our output buffer we need to preserve alpha
+						desc.blendDescriptor.sourceAlphaBlendFactor = BlendFactor::ONE;
 						// set vertex/index buffer
 						cmd->setIndexBuffer(ibuffer, g_IndexFormat);
 						cmd->setVertexBuffer(vbuffer);
