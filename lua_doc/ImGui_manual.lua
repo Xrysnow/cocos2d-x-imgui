@@ -421,14 +421,13 @@ end
 function imgui.colorPicker4(label, color, flags, ref_color)
 end
 
---- if returning 'true' the header is open. doesn't indent nor push on ID stack. user doesn't have to call TreePop().
---- when 'open' is given, display an additional small close button on upper right of the header
+--- when 'p_visible != NULL': if '*p_visible==true' display an additional small close button on upper right of the header which will set the bool to false when clicked, if '*p_visible==false' don't display the header.
 ---@param label string
----@param open boolean
+---@param visible boolean
 ---@param flags number
 ---@return boolean,boolean
 ---@overload fun(label:string,flags:number):boolean
-function imgui.collapsingHeader(label, open, flags)
+function imgui.collapsingHeader(label, visible, flags)
 end
 
 --
@@ -448,7 +447,11 @@ end
 
 --
 -- Widgets: List Boxes
--- - FIXME: To be consistent with all the newer API, ListBoxHeader/ListBoxFooter should in reality be called BeginListBox/EndListBox. Will rename them.
+-- - This is essentially a thin wrapper to using BeginChild/EndChild with some stylistic changes.
+-- - The BeginListBox()/EndListBox() api allows you to manage your contents and selection state however you want it, by creating e.g. Selectable() or any items.
+-- - The simplified/old ListBox() api are helpers over BeginListBox()/EndListBox() which are kept available for convenience purpose. This is analoguous to how Combos are created.
+-- - Choose frame width:   size.x > 0.0f: custom  /  size.x < 0.0f or -FLT_MIN: right-align   /  size.x = 0.0f (default): use current ItemWidth
+-- - Choose frame height:  size.y > 0.0f: custom  /  size.y < 0.0f or -FLT_MIN: bottom-align  /  size.y = 0.0f (default): arbitrary default height which can fit ~7 items
 --
 
 ---
@@ -458,15 +461,6 @@ end
 ---@param height_in_items number
 ---@return boolean,number
 function imgui.listBox(label, current_item, items, height_in_items)
-end
-
----
----@param label string
----@param items_count number
----@param height_in_items number
----@overload fun(label:string,size:ImVec2):boolean
----@return boolean
-function imgui.listBoxHeader(label, items_count, height_in_items)
 end
 
 --
