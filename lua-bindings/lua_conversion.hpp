@@ -440,6 +440,7 @@ namespace lua
             if (lua_isnil(L, -1)) // leave nil on stack
                 return;
             tolua_pushusertype(L, (void*)inValue, className.c_str());
+            lua_remove(L, -2);
         }
     };
 
