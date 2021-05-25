@@ -1,6 +1,4 @@
 #pragma once
-#include "base/ccConfig.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -10,3 +8,4 @@ extern "C" {
 #endif
 
 int register_all_x_ImGuiColorTextEdit(lua_State* tolua_S);
+

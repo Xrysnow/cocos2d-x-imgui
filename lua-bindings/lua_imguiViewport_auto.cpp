@@ -2,793 +2,378 @@
 #include "imgui_lua.hpp"
 #include "scripting/lua-bindings/manual/tolua_fix.h"
 #include "scripting/lua-bindings/manual/LuaBasicConversions.h"
+#include "lua_conversion.hpp"
+using lua::luaval_to_native;
+using lua::native_to_luaval;
+namespace imgui { using ImGuiViewport = ImGuiViewport; }
 
-#ifdef COCOS2D_DEBUG
-#undef COCOS2D_DEBUG
+#ifndef LUA_CHECK_COBJ_TYPE
+	#ifdef LUA_DEBUG
+		#define LUA_CHECK_COBJ_TYPE(L, TYPE, NAME) if(!tolua_isusertype((L), 1, (TYPE), 0, nullptr)) { return luaL_error((L), "invalid 'cobj' in '%s': '%s', expects '%s'", NAME, tolua_typename((L), 1), (TYPE)); }
+	#else
+		#define LUA_CHECK_COBJ_TYPE(L, TYPE, NAME) (void)(TYPE);
+	#endif
 #endif
-#define COCOS2D_DEBUG 0
-namespace imgui
-{
-    using ImGuiViewport = ImGuiViewport;
-}
+#ifndef LUA_CHECK_COBJ
+	#ifdef LUA_DEBUG
+		#define LUA_CHECK_COBJ(L, COBJ, NAME) if(!(COBJ)) { return luaL_error((L), "invalid 'cobj' in '%s'", NAME); }
+	#else
+		#define LUA_CHECK_COBJ(L, COBJ, NAME)
+	#endif
+#endif
+#ifndef LUA_CHECK_PARAMETER
+	#define LUA_CHECK_PARAMETER(L, OK, NAME) if(!(OK)) { return luaL_error((L), "invalid arguments in '%s'", NAME); }
+#endif
+#ifndef LUA_PARAMETER_ERROR
+	#define LUA_PARAMETER_ERROR(L, NAME, ARGC, EXPECT) return luaL_error((L), "wrong number of arguments in '%s': %d, expects %s", NAME, (ARGC), EXPECT);
+#endif
 
 int lua_x_imguiViewport_ImGuiViewport_GetCenter(lua_State* tolua_S)
 {
-    int argc = 0;
-    imgui::ImGuiViewport* cobj = nullptr;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S,1,"imgui.ImGuiViewport",0,&tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, nullptr);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_GetCenter'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-    if (argc == 0) 
-    {
-        if(!ok)
-        {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiViewport_ImGuiViewport_GetCenter'", nullptr);
-            return 0;
-        }
-        ImVec2 ret = cobj->GetCenter();
-        ImVec2_to_luaval(tolua_S, ret);
-        return 1;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiViewport:GetCenter", argc, 0);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-    tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiViewport_ImGuiViewport_GetCenter'.",&tolua_err);
-    return 0;
-#endif
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
+	constexpr auto LUA_FNAME = "imgui.ImGuiViewport:getCenter";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, nullptr);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (argc == 0) {
+		native_to_luaval(tolua_S, cobj->GetCenter());
+		return 1;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
 }
 int lua_x_imguiViewport_ImGuiViewport_GetWorkCenter(lua_State* tolua_S)
 {
-    int argc = 0;
-    imgui::ImGuiViewport* cobj = nullptr;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S,1,"imgui.ImGuiViewport",0,&tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, nullptr);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_GetWorkCenter'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-    if (argc == 0) 
-    {
-        if(!ok)
-        {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiViewport_ImGuiViewport_GetWorkCenter'", nullptr);
-            return 0;
-        }
-        ImVec2 ret = cobj->GetWorkCenter();
-        ImVec2_to_luaval(tolua_S, ret);
-        return 1;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiViewport:GetWorkCenter", argc, 0);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-    tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_x_imguiViewport_ImGuiViewport_GetWorkCenter'.",&tolua_err);
-    return 0;
-#endif
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
+	constexpr auto LUA_FNAME = "imgui.ImGuiViewport:getWorkCenter";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, nullptr);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (argc == 0) {
+		native_to_luaval(tolua_S, cobj->GetWorkCenter());
+		return 1;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
 }
 int lua_x_imguiViewport_ImGuiViewport_getID(lua_State* tolua_S)
 {
-    imgui::ImGuiViewport* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiViewport", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_getID'", nullptr);
-        return 0;
-    }
-#endif
-    tolua_pushnumber(tolua_S,(lua_Number)cobj->ID);
-    return 1;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiViewport_ImGuiViewport_getID'.", &tolua_err);
-    return 0;
-#endif
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
+	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.ID getter";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	native_to_luaval(tolua_S, cobj->ID);
+	return 1;
 }
 int lua_x_imguiViewport_ImGuiViewport_setID(lua_State* tolua_S)
 {
-    int argc = 0;
-    imgui::ImGuiViewport* cobj = nullptr;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiViewport", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_setID'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-    if (1 == argc)
-    {
-        unsigned int arg0;
-        ok &= luaval_to_uint32(tolua_S, 2,&arg0, "imgui.ImGuiViewport:ID");
-        if(!ok)
-        {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiViewport_ImGuiViewport'", nullptr);
-            return 0;
-        }
-        cobj->ID = arg0;
-        return 0;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiViewport:ID", argc, 1);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiViewport_ImGuiViewport_getID'.", &tolua_err);
-    return 0;
-#endif
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
+	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.ID setter";
+	bool ok = true;
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (1 == argc) {
+		ok &= luaval_to_native(tolua_S, 2, &cobj->ID, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
 }
 int lua_x_imguiViewport_ImGuiViewport_getFlags(lua_State* tolua_S)
 {
-    imgui::ImGuiViewport* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiViewport", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_getFlags'", nullptr);
-        return 0;
-    }
-#endif
-    tolua_pushnumber(tolua_S,(lua_Number)cobj->Flags);
-    return 1;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiViewport_ImGuiViewport_getFlags'.", &tolua_err);
-    return 0;
-#endif
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
+	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.Flags getter";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	native_to_luaval(tolua_S, cobj->Flags);
+	return 1;
 }
 int lua_x_imguiViewport_ImGuiViewport_setFlags(lua_State* tolua_S)
 {
-    int argc = 0;
-    imgui::ImGuiViewport* cobj = nullptr;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiViewport", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_setFlags'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-    if (1 == argc)
-    {
-        int arg0;
-        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "imgui.ImGuiViewport:Flags");
-        if(!ok)
-        {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiViewport_ImGuiViewport'", nullptr);
-            return 0;
-        }
-        cobj->Flags = arg0;
-        return 0;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiViewport:Flags", argc, 1);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiViewport_ImGuiViewport_getFlags'.", &tolua_err);
-    return 0;
-#endif
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
+	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.Flags setter";
+	bool ok = true;
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (1 == argc) {
+		ok &= luaval_to_native(tolua_S, 2, &cobj->Flags, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
 }
 int lua_x_imguiViewport_ImGuiViewport_getPos(lua_State* tolua_S)
 {
-    imgui::ImGuiViewport* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiViewport", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_getPos'", nullptr);
-        return 0;
-    }
-#endif
-    ImVec2_to_luaval(tolua_S, cobj->Pos);
-    return 1;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiViewport_ImGuiViewport_getPos'.", &tolua_err);
-    return 0;
-#endif
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
+	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.Pos getter";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	native_to_luaval(tolua_S, cobj->Pos);
+	return 1;
 }
 int lua_x_imguiViewport_ImGuiViewport_setPos(lua_State* tolua_S)
 {
-    int argc = 0;
-    imgui::ImGuiViewport* cobj = nullptr;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiViewport", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_setPos'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-    if (1 == argc)
-    {
-        ImVec2 arg0;
-        ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "imgui.ImGuiViewport:Pos");
-        if(!ok)
-        {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiViewport_ImGuiViewport'", nullptr);
-            return 0;
-        }
-        cobj->Pos = arg0;
-        return 0;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiViewport:Pos", argc, 1);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiViewport_ImGuiViewport_getPos'.", &tolua_err);
-    return 0;
-#endif
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
+	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.Pos setter";
+	bool ok = true;
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (1 == argc) {
+		ok &= luaval_to_native(tolua_S, 2, &cobj->Pos, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
 }
 int lua_x_imguiViewport_ImGuiViewport_getSize(lua_State* tolua_S)
 {
-    imgui::ImGuiViewport* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiViewport", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_getSize'", nullptr);
-        return 0;
-    }
-#endif
-    ImVec2_to_luaval(tolua_S, cobj->Size);
-    return 1;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiViewport_ImGuiViewport_getSize'.", &tolua_err);
-    return 0;
-#endif
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
+	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.Size getter";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	native_to_luaval(tolua_S, cobj->Size);
+	return 1;
 }
 int lua_x_imguiViewport_ImGuiViewport_setSize(lua_State* tolua_S)
 {
-    int argc = 0;
-    imgui::ImGuiViewport* cobj = nullptr;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiViewport", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_setSize'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-    if (1 == argc)
-    {
-        ImVec2 arg0;
-        ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "imgui.ImGuiViewport:Size");
-        if(!ok)
-        {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiViewport_ImGuiViewport'", nullptr);
-            return 0;
-        }
-        cobj->Size = arg0;
-        return 0;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiViewport:Size", argc, 1);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiViewport_ImGuiViewport_getSize'.", &tolua_err);
-    return 0;
-#endif
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
+	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.Size setter";
+	bool ok = true;
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (1 == argc) {
+		ok &= luaval_to_native(tolua_S, 2, &cobj->Size, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
 }
 int lua_x_imguiViewport_ImGuiViewport_getWorkPos(lua_State* tolua_S)
 {
-    imgui::ImGuiViewport* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiViewport", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_getWorkPos'", nullptr);
-        return 0;
-    }
-#endif
-    ImVec2_to_luaval(tolua_S, cobj->WorkPos);
-    return 1;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiViewport_ImGuiViewport_getWorkPos'.", &tolua_err);
-    return 0;
-#endif
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
+	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.WorkPos getter";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	native_to_luaval(tolua_S, cobj->WorkPos);
+	return 1;
 }
 int lua_x_imguiViewport_ImGuiViewport_setWorkPos(lua_State* tolua_S)
 {
-    int argc = 0;
-    imgui::ImGuiViewport* cobj = nullptr;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiViewport", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_setWorkPos'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-    if (1 == argc)
-    {
-        ImVec2 arg0;
-        ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "imgui.ImGuiViewport:WorkPos");
-        if(!ok)
-        {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiViewport_ImGuiViewport'", nullptr);
-            return 0;
-        }
-        cobj->WorkPos = arg0;
-        return 0;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiViewport:WorkPos", argc, 1);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiViewport_ImGuiViewport_getWorkPos'.", &tolua_err);
-    return 0;
-#endif
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
+	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.WorkPos setter";
+	bool ok = true;
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (1 == argc) {
+		ok &= luaval_to_native(tolua_S, 2, &cobj->WorkPos, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
 }
 int lua_x_imguiViewport_ImGuiViewport_getWorkSize(lua_State* tolua_S)
 {
-    imgui::ImGuiViewport* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiViewport", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_getWorkSize'", nullptr);
-        return 0;
-    }
-#endif
-    ImVec2_to_luaval(tolua_S, cobj->WorkSize);
-    return 1;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiViewport_ImGuiViewport_getWorkSize'.", &tolua_err);
-    return 0;
-#endif
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
+	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.WorkSize getter";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	native_to_luaval(tolua_S, cobj->WorkSize);
+	return 1;
 }
 int lua_x_imguiViewport_ImGuiViewport_setWorkSize(lua_State* tolua_S)
 {
-    int argc = 0;
-    imgui::ImGuiViewport* cobj = nullptr;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiViewport", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_setWorkSize'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-    if (1 == argc)
-    {
-        ImVec2 arg0;
-        ok &= luaval_to_ImVec2(tolua_S, 2, &arg0, "imgui.ImGuiViewport:WorkSize");
-        if(!ok)
-        {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiViewport_ImGuiViewport'", nullptr);
-            return 0;
-        }
-        cobj->WorkSize = arg0;
-        return 0;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiViewport:WorkSize", argc, 1);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiViewport_ImGuiViewport_getWorkSize'.", &tolua_err);
-    return 0;
-#endif
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
+	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.WorkSize setter";
+	bool ok = true;
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (1 == argc) {
+		ok &= luaval_to_native(tolua_S, 2, &cobj->WorkSize, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
 }
 int lua_x_imguiViewport_ImGuiViewport_getDpiScale(lua_State* tolua_S)
 {
-    imgui::ImGuiViewport* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiViewport", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_getDpiScale'", nullptr);
-        return 0;
-    }
-#endif
-    tolua_pushnumber(tolua_S,(lua_Number)cobj->DpiScale);
-    return 1;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiViewport_ImGuiViewport_getDpiScale'.", &tolua_err);
-    return 0;
-#endif
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
+	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.DpiScale getter";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	native_to_luaval(tolua_S, cobj->DpiScale);
+	return 1;
 }
 int lua_x_imguiViewport_ImGuiViewport_setDpiScale(lua_State* tolua_S)
 {
-    int argc = 0;
-    imgui::ImGuiViewport* cobj = nullptr;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiViewport", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_setDpiScale'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-    if (1 == argc)
-    {
-        double arg0;
-        ok &= luaval_to_number(tolua_S, 2,&arg0, "imgui.ImGuiViewport:DpiScale");
-        if(!ok)
-        {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiViewport_ImGuiViewport'", nullptr);
-            return 0;
-        }
-        cobj->DpiScale = arg0;
-        return 0;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiViewport:DpiScale", argc, 1);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiViewport_ImGuiViewport_getDpiScale'.", &tolua_err);
-    return 0;
-#endif
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
+	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.DpiScale setter";
+	bool ok = true;
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (1 == argc) {
+		ok &= luaval_to_native(tolua_S, 2, &cobj->DpiScale, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
 }
 int lua_x_imguiViewport_ImGuiViewport_getParentViewportId(lua_State* tolua_S)
 {
-    imgui::ImGuiViewport* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiViewport", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_getParentViewportId'", nullptr);
-        return 0;
-    }
-#endif
-    tolua_pushnumber(tolua_S,(lua_Number)cobj->ParentViewportId);
-    return 1;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiViewport_ImGuiViewport_getParentViewportId'.", &tolua_err);
-    return 0;
-#endif
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
+	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.ParentViewportId getter";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	native_to_luaval(tolua_S, cobj->ParentViewportId);
+	return 1;
 }
 int lua_x_imguiViewport_ImGuiViewport_setParentViewportId(lua_State* tolua_S)
 {
-    int argc = 0;
-    imgui::ImGuiViewport* cobj = nullptr;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiViewport", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_setParentViewportId'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-    if (1 == argc)
-    {
-        unsigned int arg0;
-        ok &= luaval_to_uint32(tolua_S, 2,&arg0, "imgui.ImGuiViewport:ParentViewportId");
-        if(!ok)
-        {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiViewport_ImGuiViewport'", nullptr);
-            return 0;
-        }
-        cobj->ParentViewportId = arg0;
-        return 0;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiViewport:ParentViewportId", argc, 1);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiViewport_ImGuiViewport_getParentViewportId'.", &tolua_err);
-    return 0;
-#endif
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
+	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.ParentViewportId setter";
+	bool ok = true;
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (1 == argc) {
+		ok &= luaval_to_native(tolua_S, 2, &cobj->ParentViewportId, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
 }
 int lua_x_imguiViewport_ImGuiViewport_getPlatformRequestClose(lua_State* tolua_S)
 {
-    imgui::ImGuiViewport* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiViewport", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_getPlatformRequestClose'", nullptr);
-        return 0;
-    }
-#endif
-    tolua_pushboolean(tolua_S,(bool)cobj->PlatformRequestClose);
-    return 1;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiViewport_ImGuiViewport_getPlatformRequestClose'.", &tolua_err);
-    return 0;
-#endif
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
+	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.PlatformRequestClose getter";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	native_to_luaval(tolua_S, cobj->PlatformRequestClose);
+	return 1;
 }
 int lua_x_imguiViewport_ImGuiViewport_setPlatformRequestClose(lua_State* tolua_S)
 {
-    int argc = 0;
-    imgui::ImGuiViewport* cobj = nullptr;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiViewport", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_setPlatformRequestClose'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-    if (1 == argc)
-    {
-        bool arg0;
-        ok &= luaval_to_boolean(tolua_S, 2,&arg0, "imgui.ImGuiViewport:PlatformRequestClose");
-        if(!ok)
-        {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiViewport_ImGuiViewport'", nullptr);
-            return 0;
-        }
-        cobj->PlatformRequestClose = arg0;
-        return 0;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiViewport:PlatformRequestClose", argc, 1);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiViewport_ImGuiViewport_getPlatformRequestClose'.", &tolua_err);
-    return 0;
-#endif
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
+	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.PlatformRequestClose setter";
+	bool ok = true;
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (1 == argc) {
+		ok &= luaval_to_native(tolua_S, 2, &cobj->PlatformRequestClose, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
 }
 int lua_x_imguiViewport_ImGuiViewport_getPlatformRequestMove(lua_State* tolua_S)
 {
-    imgui::ImGuiViewport* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiViewport", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_getPlatformRequestMove'", nullptr);
-        return 0;
-    }
-#endif
-    tolua_pushboolean(tolua_S,(bool)cobj->PlatformRequestMove);
-    return 1;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiViewport_ImGuiViewport_getPlatformRequestMove'.", &tolua_err);
-    return 0;
-#endif
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
+	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.PlatformRequestMove getter";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	native_to_luaval(tolua_S, cobj->PlatformRequestMove);
+	return 1;
 }
 int lua_x_imguiViewport_ImGuiViewport_setPlatformRequestMove(lua_State* tolua_S)
 {
-    int argc = 0;
-    imgui::ImGuiViewport* cobj = nullptr;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiViewport", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_setPlatformRequestMove'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-    if (1 == argc)
-    {
-        bool arg0;
-        ok &= luaval_to_boolean(tolua_S, 2,&arg0, "imgui.ImGuiViewport:PlatformRequestMove");
-        if(!ok)
-        {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiViewport_ImGuiViewport'", nullptr);
-            return 0;
-        }
-        cobj->PlatformRequestMove = arg0;
-        return 0;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiViewport:PlatformRequestMove", argc, 1);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiViewport_ImGuiViewport_getPlatformRequestMove'.", &tolua_err);
-    return 0;
-#endif
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
+	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.PlatformRequestMove setter";
+	bool ok = true;
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (1 == argc) {
+		ok &= luaval_to_native(tolua_S, 2, &cobj->PlatformRequestMove, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
 }
 int lua_x_imguiViewport_ImGuiViewport_getPlatformRequestResize(lua_State* tolua_S)
 {
-    imgui::ImGuiViewport* cobj = nullptr;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiViewport", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S, "invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_getPlatformRequestResize'", nullptr);
-        return 0;
-    }
-#endif
-    tolua_pushboolean(tolua_S,(bool)cobj->PlatformRequestResize);
-    return 1;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiViewport_ImGuiViewport_getPlatformRequestResize'.", &tolua_err);
-    return 0;
-#endif
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
+	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.PlatformRequestResize getter";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	native_to_luaval(tolua_S, cobj->PlatformRequestResize);
+	return 1;
 }
 int lua_x_imguiViewport_ImGuiViewport_setPlatformRequestResize(lua_State* tolua_S)
 {
-    int argc = 0;
-    imgui::ImGuiViewport* cobj = nullptr;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-    if (!tolua_isusertype(tolua_S, 1, "imgui.ImGuiViewport", 0, &tolua_err)) goto tolua_lerror;
-#endif
-    cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_x_imguiViewport_ImGuiViewport_setPlatformRequestResize'", nullptr);
-        return 0;
-    }
-#endif
-    argc = lua_gettop(tolua_S) - 1;
-    if (1 == argc)
-    {
-        bool arg0;
-        ok &= luaval_to_boolean(tolua_S, 2,&arg0, "imgui.ImGuiViewport:PlatformRequestResize");
-        if(!ok)
-        {
-            tolua_error(tolua_S, "invalid arguments in function 'lua_x_imguiViewport_ImGuiViewport'", nullptr);
-            return 0;
-        }
-        cobj->PlatformRequestResize = arg0;
-        return 0;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "imgui.ImGuiViewport:PlatformRequestResize", argc, 1);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(tolua_S, "#ferror in function 'lua_x_imguiViewport_ImGuiViewport_getPlatformRequestResize'.", &tolua_err);
-    return 0;
-#endif
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
+	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.PlatformRequestResize setter";
+	bool ok = true;
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (1 == argc) {
+		ok &= luaval_to_native(tolua_S, 2, &cobj->PlatformRequestResize, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
 }
 static int lua_x_imguiViewport_ImGuiViewport_finalize(lua_State* tolua_S)
 {
-    printf("luabindings: finalizing LUA object (ImGuiViewport)");
-    return 0;
+	return 0;
 }
 
 int lua_register_x_imguiViewport_ImGuiViewport(lua_State* tolua_S)
 {
-    tolua_usertype(tolua_S,"imgui.ImGuiViewport");
-    tolua_cclass(tolua_S,"ImGuiViewport","imgui.ImGuiViewport","",nullptr);
+	tolua_usertype(tolua_S, "imgui.ImGuiViewport");
+	tolua_cclass(tolua_S, "ImGuiViewport", "imgui.ImGuiViewport", "", nullptr);
 
-    tolua_beginmodule(tolua_S,"ImGuiViewport");
-        tolua_function(tolua_S,"getCenter",lua_x_imguiViewport_ImGuiViewport_GetCenter);
-        tolua_function(tolua_S,"getWorkCenter",lua_x_imguiViewport_ImGuiViewport_GetWorkCenter);
-        tolua_variable(tolua_S,"ID", lua_x_imguiViewport_ImGuiViewport_getID, lua_x_imguiViewport_ImGuiViewport_setID);
-        tolua_variable(tolua_S,"Flags", lua_x_imguiViewport_ImGuiViewport_getFlags, lua_x_imguiViewport_ImGuiViewport_setFlags);
-        tolua_variable(tolua_S,"Pos", lua_x_imguiViewport_ImGuiViewport_getPos, lua_x_imguiViewport_ImGuiViewport_setPos);
-        tolua_variable(tolua_S,"Size", lua_x_imguiViewport_ImGuiViewport_getSize, lua_x_imguiViewport_ImGuiViewport_setSize);
-        tolua_variable(tolua_S,"WorkPos", lua_x_imguiViewport_ImGuiViewport_getWorkPos, lua_x_imguiViewport_ImGuiViewport_setWorkPos);
-        tolua_variable(tolua_S,"WorkSize", lua_x_imguiViewport_ImGuiViewport_getWorkSize, lua_x_imguiViewport_ImGuiViewport_setWorkSize);
-        tolua_variable(tolua_S,"DpiScale", lua_x_imguiViewport_ImGuiViewport_getDpiScale, lua_x_imguiViewport_ImGuiViewport_setDpiScale);
-        tolua_variable(tolua_S,"ParentViewportId", lua_x_imguiViewport_ImGuiViewport_getParentViewportId, lua_x_imguiViewport_ImGuiViewport_setParentViewportId);
-        tolua_variable(tolua_S,"PlatformRequestClose", lua_x_imguiViewport_ImGuiViewport_getPlatformRequestClose, lua_x_imguiViewport_ImGuiViewport_setPlatformRequestClose);
-        tolua_variable(tolua_S,"PlatformRequestMove", lua_x_imguiViewport_ImGuiViewport_getPlatformRequestMove, lua_x_imguiViewport_ImGuiViewport_setPlatformRequestMove);
-        tolua_variable(tolua_S,"PlatformRequestResize", lua_x_imguiViewport_ImGuiViewport_getPlatformRequestResize, lua_x_imguiViewport_ImGuiViewport_setPlatformRequestResize);
-    tolua_endmodule(tolua_S);
-    std::string typeName = typeid(imgui::ImGuiViewport).name();
-    g_luaType[typeName] = "imgui.ImGuiViewport";
-    g_typeCast["ImGuiViewport"] = "imgui.ImGuiViewport";
-    return 1;
+	tolua_beginmodule(tolua_S, "ImGuiViewport");
+		tolua_function(tolua_S, "getCenter", lua_x_imguiViewport_ImGuiViewport_GetCenter);
+		tolua_function(tolua_S, "getWorkCenter", lua_x_imguiViewport_ImGuiViewport_GetWorkCenter);
+		tolua_variable(tolua_S, "ID", lua_x_imguiViewport_ImGuiViewport_getID, lua_x_imguiViewport_ImGuiViewport_setID);
+		tolua_variable(tolua_S, "Flags", lua_x_imguiViewport_ImGuiViewport_getFlags, lua_x_imguiViewport_ImGuiViewport_setFlags);
+		tolua_variable(tolua_S, "Pos", lua_x_imguiViewport_ImGuiViewport_getPos, lua_x_imguiViewport_ImGuiViewport_setPos);
+		tolua_variable(tolua_S, "Size", lua_x_imguiViewport_ImGuiViewport_getSize, lua_x_imguiViewport_ImGuiViewport_setSize);
+		tolua_variable(tolua_S, "WorkPos", lua_x_imguiViewport_ImGuiViewport_getWorkPos, lua_x_imguiViewport_ImGuiViewport_setWorkPos);
+		tolua_variable(tolua_S, "WorkSize", lua_x_imguiViewport_ImGuiViewport_getWorkSize, lua_x_imguiViewport_ImGuiViewport_setWorkSize);
+		tolua_variable(tolua_S, "DpiScale", lua_x_imguiViewport_ImGuiViewport_getDpiScale, lua_x_imguiViewport_ImGuiViewport_setDpiScale);
+		tolua_variable(tolua_S, "ParentViewportId", lua_x_imguiViewport_ImGuiViewport_getParentViewportId, lua_x_imguiViewport_ImGuiViewport_setParentViewportId);
+		tolua_variable(tolua_S, "PlatformRequestClose", lua_x_imguiViewport_ImGuiViewport_getPlatformRequestClose, lua_x_imguiViewport_ImGuiViewport_setPlatformRequestClose);
+		tolua_variable(tolua_S, "PlatformRequestMove", lua_x_imguiViewport_ImGuiViewport_getPlatformRequestMove, lua_x_imguiViewport_ImGuiViewport_setPlatformRequestMove);
+		tolua_variable(tolua_S, "PlatformRequestResize", lua_x_imguiViewport_ImGuiViewport_getPlatformRequestResize, lua_x_imguiViewport_ImGuiViewport_setPlatformRequestResize);
+	tolua_endmodule(tolua_S);
+	std::string typeName = typeid(imgui::ImGuiViewport).name();
+	g_luaType[typeName] = "imgui.ImGuiViewport";
+	g_typeCast["ImGuiViewport"] = "imgui.ImGuiViewport";
+	return 1;
 }
-TOLUA_API int register_all_x_imguiViewport(lua_State* tolua_S)
+
+int register_all_x_imguiViewport(lua_State* tolua_S)
 {
 	tolua_open(tolua_S);
 
