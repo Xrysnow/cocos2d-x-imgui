@@ -30,7 +30,7 @@ bool ImGuiLayer::init()
 			return false;
 		return ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow);
 	};
-    getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
+	getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 #endif
 	// add an empty sprite to avoid render problem
 	const auto sp = Sprite::create();

@@ -1,12 +1,13 @@
 #pragma once
 #include "cocos2d.h"
 #include "scripting/lua-bindings/manual/LuaBasicConversions.h"
-#include <cstdint>
-#include <type_traits>
 #include <array>
-#include <vector>
-#include <unordered_set>
+#include <cstdint>
+#include <set>
+#include <type_traits>
 #include <unordered_map>
+#include <unordered_set>
+#include <vector>
 
 namespace lua
 {

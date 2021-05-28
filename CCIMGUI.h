@@ -2,6 +2,8 @@
 #include "cocos2d.h"
 #include "imgui/imgui.h"
 #include "implot/implot.h"
+#include <functional>
+#include <string>
 #include <tuple>
 
 class CCIMGUI
