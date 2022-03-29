@@ -1986,16 +1986,17 @@ template<
 struct implotCFunc
 {
 	static int F(lua_State* L) {
+		// note: ImS64/ImU64 may different from int64_t/uint64_t
 		switch ((ImGuiDataType_)luaL_checkinteger(L, TypeIdx))
 		{
-		case ImGuiDataType_S8: return Fn<int8_t, Offset>::F(L);
-		case ImGuiDataType_U8: return Fn<uint8_t, Offset>::F(L);
-		case ImGuiDataType_S16: return Fn<int16_t, Offset>::F(L);
-		case ImGuiDataType_U16: return Fn<uint16_t, Offset>::F(L);
-		case ImGuiDataType_S32: return Fn<int32_t, Offset>::F(L);
-		case ImGuiDataType_U32: return Fn<uint32_t, Offset>::F(L);
-		case ImGuiDataType_S64: return Fn<int64_t, Offset>::F(L);
-		case ImGuiDataType_U64: return Fn<uint64_t, Offset>::F(L);
+		case ImGuiDataType_S8: return Fn<ImS8, Offset>::F(L);
+		case ImGuiDataType_U8: return Fn<ImU8, Offset>::F(L);
+		case ImGuiDataType_S16: return Fn<ImS16, Offset>::F(L);
+		case ImGuiDataType_U16: return Fn<ImU16, Offset>::F(L);
+		case ImGuiDataType_S32: return Fn<ImS32, Offset>::F(L);
+		case ImGuiDataType_U32: return Fn<ImU32, Offset>::F(L);
+		case ImGuiDataType_S64: return Fn<ImS64, Offset>::F(L);
+		case ImGuiDataType_U64: return Fn<ImU64, Offset>::F(L);
 		case ImGuiDataType_Float: return Fn<float, Offset>::F(L);
 		case ImGuiDataType_Double: return Fn<double, Offset>::F(L);
 		case ImGuiDataType_COUNT: break;
