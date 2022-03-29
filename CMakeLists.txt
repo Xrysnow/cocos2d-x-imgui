@@ -90,6 +90,10 @@ if(BUILD_LUA_LIBS)
     target_compile_definitions(${LIB_NAME} PUBLIC _USRLUASTATIC)
 endif()
 
+if(CC_USE_GFX)
+    target_compile_definitions(${LIB_NAME} PUBLIC CC_USE_GFX)
+endif()
+
 set_target_properties(${LIB_NAME}
     PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"

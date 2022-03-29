@@ -1,6 +1,9 @@
 #include "imgui_impl_cocos2dx.h"
 #include "cocos2d.h"
 #include "renderer/backend/Backend.h"
+#ifdef CC_USE_GFX
+#include "renderer/backend/gfx/DeviceGFX.h"
+#endif
 
 #ifdef CC_PLATFORM_PC
 // GLFW
@@ -46,6 +49,10 @@ static_assert(
 #endif
 
 #endif // CC_PLATFORM_PC
+
+#if defined(CC_USE_GL) && defined(CC_PLATFORM_PC) && !defined(CC_USE_GFX)
+#define IMPL_MULTI_WINDOW
+#endif
 
 using namespace cocos2d;
 using namespace backend;
@@ -179,16 +186,28 @@ void ImGui_ImplCocos2dx_RenderDrawData(ImDrawData* draw_data)
 		size_t ibuffer_offset = 0;
 
 		// Upload vertex/index buffers
+#ifdef CC_USE_GFX
+		const auto device = static_cast<backend::DeviceGFX*>(backend::Device::getInstance());
+		const auto vsize = cmd_list->VtxBuffer.Size * sizeof(ImDrawVert);
+		IM_ASSERT(vsize > 0);
+		auto vbuffer = device->newBuffer(
+			vsize, sizeof(ImDrawVert), BufferType::VERTEX, BufferUsage::STATIC);
+		const auto isize = cmd_list->IdxBuffer.Size * sizeof(ImDrawIdx);
+		IM_ASSERT(isize > 0);
+		auto ibuffer = device->newBuffer(
+			isize, sizeof(ImDrawIdx), BufferType::INDEX, BufferUsage::STATIC);
+#else
 		const auto vsize = cmd_list->VtxBuffer.Size * sizeof(ImDrawVert);
 		IM_ASSERT(vsize > 0);
 		auto vbuffer = backend::Device::getInstance()->newBuffer(
 			vsize, BufferType::VERTEX, BufferUsage::STATIC);
-		vbuffer->autorelease();
-		vbuffer->updateData(cmd_list->VtxBuffer.Data, vsize);
 		const auto isize = cmd_list->IdxBuffer.Size * sizeof(ImDrawIdx);
 		IM_ASSERT(isize > 0);
 		auto ibuffer = backend::Device::getInstance()->newBuffer(
 			isize, BufferType::INDEX, BufferUsage::STATIC);
+#endif
+		vbuffer->autorelease();
+		vbuffer->updateData(cmd_list->VtxBuffer.Data, vsize);
 		ibuffer->autorelease();
 		ibuffer->updateData(cmd_list->IdxBuffer.Data, isize);
 
@@ -420,43 +439,119 @@ void ImGui_ImplCocos2dx_DestroyFontsTexture()
 
 bool ImGui_ImplCocos2dx_CreateDeviceObjects()
 {
-	static auto vertex_shader =
-		"uniform mat4 u_MVPMatrix;\n"
-		"attribute vec2 a_position;\n"
-		"attribute vec2 a_texCoord;\n"
-		"attribute vec4 a_color;\n"
-		"varying vec2 v_texCoord;\n"
-		"varying vec4 v_fragmentColor;\n"
-		"void main()\n"
-		"{\n"
-		"    v_texCoord = a_texCoord;\n"
-		"    v_fragmentColor = a_color;\n"
-		"    gl_Position = u_MVPMatrix * vec4(a_position.xy, 0.0, 1.0);\n"
-		"}\n";
-	static auto fragment_shader =
-		"#ifdef GL_ES\n"
-		"    precision mediump float;\n"
-		"#endif\n"
-		"uniform sampler2D u_texture;\n"
-		"varying vec2 v_texCoord;\n"
-		"varying vec4 v_fragmentColor;\n"
-		"void main()\n"
-		"{\n"
-		"    gl_FragColor = v_fragmentColor * texture2D(u_texture, v_texCoord.st);\n"
-		"}\n";
-	static auto fragment_shader_font =
-		"#ifdef GL_ES\n"
-		"    precision mediump float;\n"
-		"#endif\n"
-		"uniform sampler2D u_texture;\n"
-		"varying vec2 v_texCoord;\n"
-		"varying vec4 v_fragmentColor;\n"
-		"void main()\n"
-		"{\n"
-		"    float a = texture2D(u_texture, v_texCoord.st).a;\n"
-		"    gl_FragColor = vec4(v_fragmentColor.rgb, v_fragmentColor.a * a);\n"
-		"}\n";
+	static auto vertex_shader = R"(
+#if __VERSION__ >= 300
 
+layout(location=0) in vec2 a_position;
+layout(location=1) in vec4 a_color;
+layout(location=2) in vec2 a_texCoord;
+layout(std140, binding=0) uniform VSBlock
+{
+    mat4 u_MVPMatrix;
+};
+layout(location=0) out lowp vec4 v_fragmentColor;
+layout(location=1) out mediump vec2 v_texCoord;
+
+#else
+
+attribute vec2 a_position;
+attribute vec4 a_color;
+attribute vec2 a_texCoord;
+uniform mat4 u_MVPMatrix;
+varying lowp vec4 v_fragmentColor;
+varying mediump vec2 v_texCoord;
+
+#endif
+
+void main()
+{
+    gl_Position = u_MVPMatrix * vec4(a_position.xy, 0.0, 1.0);
+    v_fragmentColor = a_color;
+    v_texCoord = a_texCoord;
+}
+)";
+	static auto fragment_shader = R"(
+#ifdef GL_ES
+precision lowp float;
+#endif
+
+#if __VERSION__ >= 300
+layout(location=0) in vec4 v_fragmentColor;
+layout(location=1) in vec2 v_texCoord;
+layout(binding=2) uniform sampler2D u_texture;
+layout(location=0) out vec4 cc_FragColor;
+#else
+varying vec4 v_fragmentColor;
+varying vec2 v_texCoord;
+uniform sampler2D u_texture;
+#endif
+
+void main()
+{
+#if __VERSION__ >= 300
+    cc_FragColor = v_fragmentColor * texture(u_texture, v_texCoord);
+#else
+    gl_FragColor = v_fragmentColor * texture2D(u_texture, v_texCoord);
+#endif
+}
+)";
+#ifdef CC_USE_GFX
+	static auto fragment_shader_font = R"(
+#ifdef GL_ES
+precision lowp float;
+#endif
+
+#if __VERSION__ >= 300
+layout(location=0) in vec4 v_fragmentColor;
+layout(location=1) in vec2 v_texCoord;
+layout(binding=2) uniform sampler2D u_texture;
+layout(location=0) out vec4 cc_FragColor;
+#else
+varying vec4 v_fragmentColor;
+varying vec2 v_texCoord;
+uniform sampler2D u_texture;
+#endif
+
+void main()
+{
+#if __VERSION__ >= 300
+	float a = texture(u_texture, v_texCoord.st).r;
+    cc_FragColor = vec4(v_fragmentColor.rgb, v_fragmentColor.a * a);
+#else
+	float a = texture2D(u_texture, v_texCoord.st).r;
+    gl_FragColor = vec4(v_fragmentColor.rgb, v_fragmentColor.a * a);
+#endif
+}
+)";
+#else
+	static auto fragment_shader_font = R"(
+#ifdef GL_ES
+precision lowp float;
+#endif
+
+#if __VERSION__ >= 300
+layout(location=0) in vec4 v_fragmentColor;
+layout(location=1) in vec2 v_texCoord;
+layout(binding=2) uniform sampler2D u_texture;
+layout(location=0) out vec4 cc_FragColor;
+#else
+varying vec4 v_fragmentColor;
+varying vec2 v_texCoord;
+uniform sampler2D u_texture;
+#endif
+
+void main()
+{
+#if __VERSION__ >= 300
+	float a = texture(u_texture, v_texCoord.st).a;
+    cc_FragColor = vec4(v_fragmentColor.rgb, v_fragmentColor.a * a);
+#else
+	float a = texture2D(u_texture, v_texCoord.st).a;
+    gl_FragColor = vec4(v_fragmentColor.rgb, v_fragmentColor.a * a);
+#endif
+}
+)";
+#endif
 	CC_SAFE_RELEASE(g_ProgramInfo.program);
 	CC_SAFE_RELEASE(g_ProgramFontInfo.program);
 	g_ProgramInfo.program = backend::Device::getInstance()->newProgram(
@@ -545,7 +640,7 @@ bool ImGui_ImplCocos2dx_Init(bool install_callbacks)
 	io.BackendFlags |= ImGuiBackendFlags_HasMouseHoveredViewport;
 #endif
 	// metal renderer is not supported
-#if CC_TARGET_PLATFORM != CC_PLATFORM_MAC
+#ifdef IMPL_MULTI_WINDOW
 	io.BackendFlags |= ImGuiBackendFlags_RendererHasViewports;
 #endif
 	ImGuiPlatformIO& platform_io = ImGui::GetPlatformIO();
@@ -1109,7 +1204,7 @@ static void ImGui_ImplGlfw_CreateWindow(ImGuiViewport* viewport)
 #if GLFW_HAS_WINDOW_TOPMOST
 	glfwWindowHint(GLFW_FLOATING, (viewport->Flags & ImGuiViewportFlags_TopMost) ? true : false);
 #endif
-#ifdef CC_USE_GL
+#ifdef IMPL_MULTI_WINDOW
 	GLFWwindow* share_window = ImGui_ImplCocos2dx_GetWindow();
 #else
 	GLFWwindow* share_window = nullptr;
@@ -1130,7 +1225,7 @@ static void ImGui_ImplGlfw_CreateWindow(ImGuiViewport* viewport)
 	glfwSetWindowCloseCallback(data->Window, ImGui_ImplGlfw_WindowCloseCallback);
 	glfwSetWindowPosCallback(data->Window, ImGui_ImplGlfw_WindowPosCallback);
 	glfwSetWindowSizeCallback(data->Window, ImGui_ImplGlfw_WindowSizeCallback);
-#ifdef CC_USE_GL
+#ifdef IMPL_MULTI_WINDOW
 	const auto window = data->Window;
 	glfwMakeContextCurrent(window);
 	glfwSwapInterval(0);
@@ -1309,8 +1404,8 @@ static void ImGui_ImplGlfw_SetWindowAlpha(ImGuiViewport* viewport, float alpha)
 
 static void ImGui_ImplGlfw_RenderWindow(ImGuiViewport* viewport, void*)
 {
+#ifdef IMPL_MULTI_WINDOW
 	ImGuiViewportDataGlfw* data = (ImGuiViewportDataGlfw*)viewport->PlatformUserData;
-#ifdef CC_USE_GL
 	const auto window = data->Window;
 	glfwMakeContextCurrent(window);
 	AddRendererCommand([=]()
@@ -1322,8 +1417,8 @@ static void ImGui_ImplGlfw_RenderWindow(ImGuiViewport* viewport, void*)
 
 static void ImGui_ImplGlfw_SwapBuffers(ImGuiViewport* viewport, void*)
 {
+#ifdef IMPL_MULTI_WINDOW
 	ImGuiViewportDataGlfw* data = (ImGuiViewportDataGlfw*)viewport->PlatformUserData;
-#ifdef CC_USE_GL
 	const auto window = data->Window;
 	glfwMakeContextCurrent(window);
 	AddRendererCommand([=]()
