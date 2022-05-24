@@ -440,6 +440,11 @@ void ImGui_ImplCocos2dx_DestroyFontsTexture()
 bool ImGui_ImplCocos2dx_CreateDeviceObjects()
 {
 	static auto vertex_shader = R"(
+#ifndef GL_ES
+#define lowp
+#define mediump
+#endif
+
 #if __VERSION__ >= 300
 
 layout(location=0) in vec2 a_position;
