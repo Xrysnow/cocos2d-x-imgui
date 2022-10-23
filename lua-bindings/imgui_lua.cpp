@@ -29,9 +29,12 @@
 #define lua_opt_imv4(_N, _IDX, _DEF) lua_opt_value(_N, _IDX, _luaval_to_imvec4, _DEF)
 #define lua_opt_impoint(_N, _IDX, _DEF) lua_opt_value(_N, _IDX, _luaval_to_implotPoint, _DEF)
 #define lua_opt_imrange(_N, _IDX, _DEF) lua_opt_value(_N, _IDX, _luaval_to_implotRange, _DEF)
-#define lua_opt_imlimits(_N, _IDX, _DEF) lua_opt_value(_N, _IDX, _luaval_to_implotLimits, _DEF)
+#define lua_opt_imrect(_N, _IDX, _DEF) lua_opt_value(_N, _IDX, _luaval_to_implotRect, _DEF)
 #define lua_opt_string_null(_N, _IDX, _DEF) (_N >= _IDX) ? ( lua_isnil(L, _IDX) ? nullptr : luaL_checkstring(L, _IDX) ) : _DEF
-
+#define lua_param_error(_i) luaL_error(L, "invalid parameter #%d: %s", (_i), luaL_typename(L, (_i)))
+#define lua_checknative(_L, _N, _V)\
+	if(!lua::luaval_to_native(_L, (_N), (_V)))\
+		return luaL_error(L, "invalid parameter #%d: %s", (_N), luaL_typename(_L, (_N)));
 
 ImVec2 _luaval_to_imvec2(lua_State *L, int lo)
 {
@@ -65,10 +68,10 @@ ImPlotRange _luaval_to_implotRange(lua_State* L, int lo)
 	luaval_to_ImPlotRange(L, lo, &v);
 	return v;
 }
-ImPlotLimits _luaval_to_implotLimits(lua_State* L, int lo)
+ImPlotRect _luaval_to_implotRect(lua_State* L, int lo)
 {
-	ImPlotLimits v;
-	luaval_to_ImPlotLimits(L, lo, &v);
+	ImPlotRect v;
+	luaval_to_ImPlotRect(L, lo, &v);
 	return v;
 }
 ImU32 lua_tou32(lua_State *L, int lo)
@@ -154,7 +157,7 @@ bool luaval_to_ImPlotRange(lua_State* L, int lo, ImPlotRange* out, const char* n
 	}
 	return ok;
 }
-bool luaval_to_ImPlotLimits(lua_State* L, int lo, ImPlotLimits* out, const char* name)
+bool luaval_to_ImPlotRect(lua_State* L, int lo, ImPlotRect* out, const char* name)
 {
 	if (!L || !out)
 		return false;
@@ -223,7 +226,7 @@ void ImPlotRange_to_luaval(lua_State* L, const ImPlotRange& val)
 	lua_pushnumber(L, (lua_Number)val.Max);
 	lua_rawset(L, -3);
 }
-void ImPlotLimits_to_luaval(lua_State* L, const ImPlotLimits& val)
+void ImPlotRect_to_luaval(lua_State* L, const ImPlotRect& val)
 {
 	if (!L)
 		return;
@@ -1895,30 +1898,62 @@ static const luaL_Reg font_methods[] = {
 
 // implot
 
-static int implot_beginPlot(lua_State* L) {
+static int implot_beginSubplots(lua_State* L) {
 	const int args = lua_gettop(L);
 	lua_pushboolean(L,
-		ImPlot::BeginPlot(
+		ImPlot::BeginSubplots(
 			luaL_checkstring(L, 1),
-			lua_opt_string_null(args, 2, nullptr),
-			lua_opt_string_null(args, 3, nullptr),
-			lua_opt_imv2(args, 4, ImVec2(-1, 0)),
-			lua_opt_int(args, 5, ImPlotFlags_None),
-			lua_opt_int(args, 6, ImPlotAxisFlags_None),
-			lua_opt_int(args, 7, ImPlotAxisFlags_None),
-			lua_opt_int(args, 8, ImPlotAxisFlags_NoGridLines),
-			lua_opt_int(args, 9, ImPlotAxisFlags_NoGridLines),
-			lua_opt_string_null(args, 10, nullptr),
-			lua_opt_string_null(args, 11, nullptr)
+			luaL_checkint(L, 2),
+			luaL_checkint(L, 3),
+			_luaval_to_imvec2(L, 4),
+			lua_opt_int(args, 5, 0)
 		));
 	return 1;
 }
+static int implot_setupAxisTicks(lua_State* L) {
+	const int args = lua_gettop(L);
+	if (lua_isnumber(L, 2))
+	{
+		// void SetupAxisTicks(ImAxis axis, double v_min, double v_max, int n_ticks, const char* const labels[]=NULL, bool keep_default=false);
+		const char* const* labels = nullptr;
+		std::vector<const char*> arr;
+		if (args >= 5 && lua::luaval_to_native(L, 5, &arr))
+			labels = arr.data();
+		ImPlot::SetupAxisTicks(
+			luaL_checkint(L, 1),
+			luaL_checknumber(L, 2),
+			luaL_checknumber(L, 3),
+			luaL_checkint(L, 4),
+			labels,
+			lua_opt_bool(args, 6, false)
+		);
+	}
+	else
+	{
+		// void SetupAxisTicks(ImAxis axis, const double* values, int n_ticks, const char* const labels[]=NULL, bool keep_default=false);
+		const char* const* labels = nullptr;
+		std::vector<const char*> arr;
+		if (args >= 4 && lua::luaval_to_native(L, 4, &arr))
+			labels = arr.data();
+		std::vector<double> valuesArr;
+		lua_checknative(L, 2, &valuesArr);
+		const double* values = nullptr;
+		ImPlot::SetupAxisTicks(
+			luaL_checkint(L, 1),
+			valuesArr.data(),
+			luaL_checkint(L, 3),
+			labels,
+			lua_opt_bool(args, 6, false)
+		);
+	}
+	return 1;
+}
+
 #define IMPLOT_COUNT_OFFSET(_i1, _i2, _size)\
 	int count = luaL_checkinteger(L, _i1);\
 	int offset = lua_opt_int(args, _i2, 0);\
 	offset = std::max(0, std::min(offset, (_size)));\
 	count = std::max(0, std::min(count, (_size) - offset));
-#define lua_param_error(_i) luaL_error(L, "invalid parameter #%d: %s", (_i), luaL_typename(L, (_i)))
 #define LUA_GET_PTR(_name, _i)\
 	T* _name = (T*)lua_to_cptr(L, (_i));\
 	if (!(_name)) return lua_param_error(_i);
@@ -2009,70 +2044,61 @@ struct implotCFunc
 static int implot_plotLine(lua_State* L) {
 	const int args = lua_gettop(L);
 	const auto label_id = luaL_checkstring(L, 1);
-	if (!lua_type_indexable(lua_type(L, 2)))
+	std::vector<double> v1;
+	if (!lua::luaval_to_native(L, 2, &v1))
 		return lua_param_error(2);
-	const auto len1 = lua_objlen(L, 2);
-	if (len1 == 0)
+	const auto type = lua_type(L, 3);
+	if (type == LUA_TNUMBER) {
+		// values
+		IMPLOT_COUNT_OFFSET(3, 7, (int)v1.size());
+		if (count > 0)
+			ImPlot::PlotLine<double>(label_id, v1.data(), count,
+				lua_opt_number(args, 4, 1), // double xscale=1
+				lua_opt_number(args, 5, 0), // double xstart=0,
+				lua_opt_int(args, 6, 0), // ImPlotLineFlags flags=0,
+				offset);
 		return 0;
-	// check element type
-	lua_pushinteger(L, 1);
-	lua_gettable(L, 2);
-	const auto type_e = lua_type(L, -1);
-	lua_pop(L, 1);
-	if (type_e == LUA_TNUMBER) {
-		std::vector<double> v1;
-		if (!lua::luaval_to_native(L, 2, &v1))
-			return lua_param_error(2);
-		const auto type2 = lua_type(L, 3);
-		if (type2 == LUA_TNUMBER) {
-			// values
-			IMPLOT_COUNT_OFFSET(3, 6, (int)v1.size());
-			if (count > 0)
-				ImPlot::PlotLine<double>(label_id, v1.data(), count,
-					lua_opt_number(args, 4, 1),
-					lua_opt_number(args, 5, 0),
-					offset);
-			return 0;
-		}
-		if (type2 == LUA_TTABLE) {
-			// xs, ys
-			std::vector<double> v2;
-			if (!lua::luaval_to_native(L, 3, &v2))
-				return lua_param_error(3);
-			const int size = std::min(v1.size(), v2.size());
-			IMPLOT_COUNT_OFFSET(4, 5, size);
-			if (count > 0)
-				ImPlot::PlotLine<double>(label_id, v1.data(), v2.data(), count, offset);
-			return 0;
-		}
-		return lua_param_error(3);
 	}
-	return lua_param_error(2);
+	if (type == LUA_TTABLE) {
+		// xs, ys
+		std::vector<double> v2;
+		if (!lua::luaval_to_native(L, 3, &v2))
+			return lua_param_error(3);
+		const int size = std::min(v1.size(), v2.size());
+		IMPLOT_COUNT_OFFSET(4, 6, size);
+		if (count > 0)
+			ImPlot::PlotLine<double>(label_id, v1.data(), v2.data(), count,
+				lua_opt_int(args, 5, 0), // ImPlotLineFlags flags=0,
+				offset);
+		return 0;
+	}
+	return lua_param_error(3);
 }
 DEF_PLOT_T(implot_plotLine)
 {
-	// cdata
 	const int args = lua_gettop(L);
 	const auto label_id = luaL_checkstring(L, 1);
 	LUA_GET_PTR(v1, 2 + Offset);
 	const auto type3 = lua_type(L, 3 + Offset);
 	if (type3 == LUA_TNUMBER) {
-		const int count = luaL_checkinteger(L, 3 + Offset);
+		const int count = luaL_checkint(L, 3 + Offset);
 		if (count > 0)
 			ImPlot::PlotLine<T>(label_id, v1, count,
 				lua_opt_number(args, 4 + Offset, 1),
 				lua_opt_number(args, 5 + Offset, 0),
 				lua_opt_int(args, 6 + Offset, 0),
-				lua_opt_int(args, 7 + Offset, sizeof(T)));
+				lua_opt_int(args, 7 + Offset, 0),
+				lua_opt_int(args, 8 + Offset, sizeof(T)));
 		return 0;
 	}
 	if (type3 == lua::LUA_TCDATA) {
 		LUA_GET_PTR(v2, 3 + Offset);
-		const int count = luaL_checkinteger(L, 4 + Offset);
+		const int count = luaL_checkint(L, 4 + Offset);
 		if (count > 0)
 			ImPlot::PlotLine<T>(label_id, v1, v2, count,
 				lua_opt_int(args, 5 + Offset, 0),
-				lua_opt_int(args, 6 + Offset, sizeof(T)));
+				lua_opt_int(args, 6 + Offset, 0),
+				lua_opt_int(args, 7 + Offset, sizeof(T)));
 		return 0;
 	}
 	return lua_param_error(3 + Offset);
@@ -2081,42 +2107,33 @@ DEF_PLOT_C(implot_plotLine);
 static int implot_plotScatter(lua_State* L) {
 	const int args = lua_gettop(L);
 	const auto label_id = luaL_checkstring(L, 1);
-	if (!lua_type_indexable(lua_type(L, 2)))
+	std::vector<double> v1;
+	if (!lua::luaval_to_native(L, 2, &v1))
 		return lua_param_error(2);
-	const auto len1 = lua_objlen(L, 2);
-	if (len1 == 0)
+	const auto type = lua_type(L, 3);
+	if (type == LUA_TNUMBER) {
+		IMPLOT_COUNT_OFFSET(3, 7, (int)v1.size());
+		if (count > 0)
+			ImPlot::PlotScatter<double>(label_id, v1.data(), count,
+				lua_opt_number(args, 4, 1),
+				lua_opt_number(args, 5, 0),
+				lua_opt_int(args, 6, 0),
+				offset);
 		return 0;
-	lua_pushinteger(L, 1);
-	lua_gettable(L, 2);
-	const auto type_e = lua_type(L, -1);
-	lua_pop(L, 1);
-	if (type_e == LUA_TNUMBER) {
-		std::vector<double> v1;
-		if (!lua::luaval_to_native(L, 2, &v1))
-			return lua_param_error(2);
-		const auto type2 = lua_type(L, 3);
-		if (type2 == LUA_TNUMBER) {
-			IMPLOT_COUNT_OFFSET(3, 6, (int)v1.size());
-			if (count > 0)
-				ImPlot::PlotScatter<double>(label_id, v1.data(), count,
-					lua_opt_number(args, 4, 1),
-					lua_opt_number(args, 5, 0),
-					offset);
-			return 0;
-		}
-		if (type2 == LUA_TTABLE) {
-			std::vector<double> v2;
-			if (!lua::luaval_to_native(L, 3, &v2))
-				return lua_param_error(3);
-			const int size = std::min(v1.size(), v2.size());
-			IMPLOT_COUNT_OFFSET(4, 5, size);
-			if (count > 0)
-				ImPlot::PlotScatter<double>(label_id, v1.data(), v2.data(), count, offset);
-			return 0;
-		}
-		return lua_param_error(3);
 	}
-	return lua_param_error(2);
+	if (type == LUA_TTABLE) {
+		std::vector<double> v2;
+		if (!lua::luaval_to_native(L, 3, &v2))
+			return lua_param_error(3);
+		const int size = std::min(v1.size(), v2.size());
+		IMPLOT_COUNT_OFFSET(4, 6, size);
+		if (count > 0)
+			ImPlot::PlotScatter<double>(label_id, v1.data(), v2.data(), count,
+				lua_opt_int(args, 5, 0),
+				offset);
+		return 0;
+	}
+	return lua_param_error(3);
 }
 DEF_PLOT_T(implot_plotScatter) {
 	const int args = lua_gettop(L);
@@ -2124,22 +2141,24 @@ DEF_PLOT_T(implot_plotScatter) {
 	LUA_GET_PTR(v1, 2 + Offset);
 	const auto type3 = lua_type(L, 3 + Offset);
 	if (type3 == LUA_TNUMBER) {
-		const int count = luaL_checkinteger(L, 3 + Offset);
+		const int count = luaL_checkint(L, 3 + Offset);
 		if (count > 0)
 			ImPlot::PlotScatter<T>(label_id, v1, count,
 				lua_opt_number(args, 4 + Offset, 1),
 				lua_opt_number(args, 5 + Offset, 0),
 				lua_opt_int(args, 6 + Offset, 0),
-				lua_opt_int(args, 7 + Offset, sizeof(T)));
+				lua_opt_int(args, 7 + Offset, 0),
+				lua_opt_int(args, 8 + Offset, sizeof(T)));
 		return 0;
 	}
 	if (type3 == lua::LUA_TCDATA) {
 		LUA_GET_PTR(v2, 3 + Offset);
-		const int count = luaL_checkinteger(L, 4 + Offset);
+		const int count = luaL_checkint(L, 4 + Offset);
 		if (count > 0)
 			ImPlot::PlotScatter<T>(label_id, v1, v2, count,
 				lua_opt_int(args, 5 + Offset, 0),
-				lua_opt_int(args, 6 + Offset, sizeof(T)));
+				lua_opt_int(args, 6 + Offset, 0),
+				lua_opt_int(args, 7 + Offset, sizeof(T)));
 		return 0;
 	}
 	return lua_param_error(3 + Offset);
@@ -2148,42 +2167,33 @@ DEF_PLOT_C(implot_plotScatter);
 static int implot_plotStairs(lua_State* L) {
 	const int args = lua_gettop(L);
 	const auto label_id = luaL_checkstring(L, 1);
-	if (!lua_type_indexable(lua_type(L, 2)))
+	std::vector<double> v1;
+	if (!lua::luaval_to_native(L, 2, &v1))
 		return lua_param_error(2);
-	const auto len1 = lua_objlen(L, 2);
-	if (len1 == 0)
+	const auto type2 = lua_type(L, 3);
+	if (type2 == LUA_TNUMBER) {
+		IMPLOT_COUNT_OFFSET(3, 7, (int)v1.size());
+		if (count > 0)
+			ImPlot::PlotStairs<double>(label_id, v1.data(), count,
+				lua_opt_number(args, 4, 1),
+				lua_opt_number(args, 5, 0),
+				lua_opt_int(args, 6, 0),
+				offset);
 		return 0;
-	lua_pushinteger(L, 1);
-	lua_gettable(L, 2);
-	const auto type_e = lua_type(L, -1);
-	lua_pop(L, 1);
-	if (type_e == LUA_TNUMBER) {
-		std::vector<double> v1;
-		if (!lua::luaval_to_native(L, 2, &v1))
-			return lua_param_error(2);
-		const auto type2 = lua_type(L, 3);
-		if (type2 == LUA_TNUMBER) {
-			IMPLOT_COUNT_OFFSET(3, 6, (int)v1.size());
-			if (count > 0)
-				ImPlot::PlotStairs<double>(label_id, v1.data(), count,
-					lua_opt_number(args, 4, 1),
-					lua_opt_number(args, 5, 0),
-					offset);
-			return 0;
-		}
-		if (type2 == LUA_TTABLE) {
-			std::vector<double> v2;
-			if (!lua::luaval_to_native(L, 3, &v2))
-				return lua_param_error(3);
-			const int size = std::min(v1.size(), v2.size());
-			IMPLOT_COUNT_OFFSET(4, 5, size);
-			if (count > 0)
-				ImPlot::PlotStairs<double>(label_id, v1.data(), v2.data(), count, offset);
-			return 0;
-		}
-		return lua_param_error(3);
 	}
-	return lua_param_error(2);
+	if (type2 == LUA_TTABLE) {
+		std::vector<double> v2;
+		if (!lua::luaval_to_native(L, 3, &v2))
+			return lua_param_error(3);
+		const int size = std::min(v1.size(), v2.size());
+		IMPLOT_COUNT_OFFSET(4, 6, size);
+		if (count > 0)
+			ImPlot::PlotStairs<double>(label_id, v1.data(), v2.data(), count,
+				lua_opt_int(args, 5, 0),
+				offset);
+		return 0;
+	}
+	return lua_param_error(3);
 }
 DEF_PLOT_T(implot_plotStairs) {
 	const int args = lua_gettop(L);
@@ -2191,22 +2201,24 @@ DEF_PLOT_T(implot_plotStairs) {
 	LUA_GET_PTR(v1, 2 + Offset);
 	const auto type3 = lua_type(L, 3 + Offset);
 	if (type3 == LUA_TNUMBER) {
-		const int count = luaL_checkinteger(L, 3 + Offset);
+		const int count = luaL_checkint(L, 3 + Offset);
 		if (count > 0)
 			ImPlot::PlotStairs<T>(label_id, v1, count,
 				lua_opt_number(args, 4 + Offset, 1),
 				lua_opt_number(args, 5 + Offset, 0),
 				lua_opt_int(args, 6 + Offset, 0),
-				lua_opt_int(args, 7 + Offset, sizeof(T)));
+				lua_opt_int(args, 7 + Offset, 0),
+				lua_opt_int(args, 8 + Offset, sizeof(T)));
 		return 0;
 	}
 	if (type3 == lua::LUA_TCDATA) {
 		LUA_GET_PTR(v2, 3 + Offset);
-		const int count = luaL_checkinteger(L, 4 + Offset);
+		const int count = luaL_checkint(L, 4 + Offset);
 		if (count > 0)
 			ImPlot::PlotStairs<T>(label_id, v1, v2, count,
 				lua_opt_int(args, 5 + Offset, 0),
-				lua_opt_int(args, 6 + Offset, sizeof(T)));
+				lua_opt_int(args, 6 + Offset, 0),
+				lua_opt_int(args, 7 + Offset, sizeof(T)));
 		return 0;
 	}
 	return lua_param_error(3 + Offset);
@@ -2222,12 +2234,13 @@ static int implot_plotShaded(lua_State* L) {
 	if (type3 == LUA_TNUMBER) {
 		// values
 		const int size = v1.size();
-		IMPLOT_COUNT_OFFSET(3, 7, size);
+		IMPLOT_COUNT_OFFSET(3, 8, size);
 		if (count > 0)
 			ImPlot::PlotShaded<double>(label_id, v1.data(), count,
 				lua_opt_number(args, 4, 0),
 				lua_opt_number(args, 5, 1),
 				lua_opt_number(args, 6, 0),
+				lua_opt_int(args, 7, 0),
 				offset);
 		return 0;
 	}
@@ -2238,10 +2251,12 @@ static int implot_plotShaded(lua_State* L) {
 	if (type4 == LUA_TNUMBER) {
 		// xs, ys
 		const int size = std::min(v1.size(), v2.size());
-		IMPLOT_COUNT_OFFSET(4, 6, size);
+		IMPLOT_COUNT_OFFSET(4, 7, size);
 		if (count > 0)
 			ImPlot::PlotShaded<double>(label_id, v1.data(), v2.data(), count,
-				lua_opt_number(args, 5, 0), offset);
+				lua_opt_number(args, 5, 0),
+				lua_opt_int(args, 6, 0),
+				offset);
 		return 0;
 	}
 	if (type4 == LUA_TTABLE) {
@@ -2250,9 +2265,12 @@ static int implot_plotShaded(lua_State* L) {
 		if (!lua::luaval_to_native(L, 4, &v3))
 			return lua_param_error(4);
 		const int size = std::min({ v1.size(), v2.size(), v3.size() });
-		IMPLOT_COUNT_OFFSET(5, 6, size);
+		IMPLOT_COUNT_OFFSET(5, 7, size);
 		if (count > 0)
-			ImPlot::PlotShaded<double>(label_id, v1.data(), v2.data(), v3.data(), count, offset);
+			ImPlot::PlotShaded<double>(label_id,
+				v1.data(), v2.data(), v3.data(), count,
+				lua_opt_int(args, 6, 0),
+				offset);
 		return 0;
 	}
 	return lua_param_error(4);
@@ -2264,36 +2282,39 @@ DEF_PLOT_T(implot_plotShaded) {
 	const auto type3 = lua_type(L, 3 + Offset);
 	if (type3 == LUA_TNUMBER) {
 		// values
-		const int count = luaL_checkinteger(L, 3 + Offset);
+		const int count = luaL_checkint(L, 3 + Offset);
 		if (count > 0)
 			ImPlot::PlotShaded<T>(label_id, v1, count,
 				lua_opt_number(args, 4 + Offset, 0),
 				lua_opt_number(args, 5 + Offset, 1),
 				lua_opt_number(args, 6 + Offset, 0),
 				lua_opt_int(args, 7 + Offset, 0),
-				lua_opt_int(args, 8 + Offset, sizeof(T)));
+				lua_opt_int(args, 8 + Offset, 0),
+				lua_opt_int(args, 9 + Offset, sizeof(T)));
 		return 0;
 	}
 	LUA_GET_PTR(v2, 3 + Offset);
 	const auto type4 = lua_type(L, 4 + Offset);
 	if (type4 == LUA_TNUMBER) {
 		// xs, ys
-		const int count = luaL_checkinteger(L, 4 + Offset);
+		const int count = luaL_checkint(L, 4 + Offset);
 		if (count > 0)
 			ImPlot::PlotShaded<T>(label_id, v1, v2, count,
 				lua_opt_number(args, 5 + Offset, 0),
 				lua_opt_int(args, 6 + Offset, 0),
-				lua_opt_int(args, 7 + Offset, sizeof(T)));
+				lua_opt_int(args, 7 + Offset, 0),
+				lua_opt_int(args, 8 + Offset, sizeof(T)));
 		return 0;
 	}
 	if (type4 == lua::LUA_TCDATA) {
 		// xs, ys1, ys2
 		LUA_GET_PTR(v3, 4 + Offset);
-		const int count = luaL_checkinteger(L, 5 + Offset);
+		const int count = luaL_checkint(L, 5 + Offset);
 		if (count > 0)
 			ImPlot::PlotShaded<T>(label_id, v1, v2, v3, count,
 				lua_opt_int(args, 6 + Offset, 0),
-				lua_opt_int(args, 7 + Offset, sizeof(T)));
+				lua_opt_int(args, 7 + Offset, 0),
+				lua_opt_int(args, 8 + Offset, sizeof(T)));
 		return 0;
 	}
 	return lua_param_error(4 + Offset);
@@ -2309,11 +2330,12 @@ static int implot_plotBars(lua_State* L) {
 	if (type3 == LUA_TNUMBER) {
 		// values
 		const int size = v1.size();
-		IMPLOT_COUNT_OFFSET(3, 6, size);
+		IMPLOT_COUNT_OFFSET(3, 7, size);
 		if (count > 0)
 			ImPlot::PlotBars<double>(label_id, v1.data(), count,
 				lua_opt_number(args, 4, 0.67),
 				lua_opt_number(args, 5, 0),
+				lua_opt_int(args, 6, 0),
 				offset);
 		return 0;
 	}
@@ -2323,9 +2345,12 @@ static int implot_plotBars(lua_State* L) {
 		if (!lua::luaval_to_native(L, 3, &v2))
 			return lua_param_error(3);
 		const int size = std::min(v1.size(), v2.size());
-		IMPLOT_COUNT_OFFSET(4, 6, size);
+		IMPLOT_COUNT_OFFSET(4, 7, size);
 		if (count > 0)
-			ImPlot::PlotBars<double>(label_id, v1.data(), v2.data(), count, luaL_checknumber(L, 5), offset);
+			ImPlot::PlotBars<double>(label_id, v1.data(), v2.data(), count,
+				luaL_checknumber(L, 5),
+				lua_opt_int(args, 6, 0),
+				offset);
 		return 0;
 	}
 	return lua_param_error(3);
@@ -2337,86 +2362,65 @@ DEF_PLOT_T(implot_plotBars) {
 	const auto type3 = lua_type(L, 3 + Offset);
 	if (type3 == LUA_TNUMBER) {
 		// values
-		const int count = luaL_checkinteger(L, 3 + Offset);
+		const int count = luaL_checkint(L, 3 + Offset);
 		if (count > 0)
 			ImPlot::PlotBars<T>(label_id, v1, count,
 				lua_opt_number(args, 4 + Offset, 0.67),
 				lua_opt_number(args, 5 + Offset, 0),
 				lua_opt_int(args, 6 + Offset, 0),
-				lua_opt_int(args, 7 + Offset, sizeof(T)));
+				lua_opt_int(args, 7 + Offset, 0),
+				lua_opt_int(args, 8 + Offset, sizeof(T)));
 		return 0;
 	}
 	if (type3 == lua::LUA_TCDATA) {
 		// xs, ys
 		LUA_GET_PTR(v2, 3 + Offset);
-		const int count = luaL_checkinteger(L, 4 + Offset);
+		const int count = luaL_checkint(L, 4 + Offset);
 		if (count > 0)
 			ImPlot::PlotBars<T>(label_id, v1, v2, count,
 				luaL_checknumber(L, 5 + Offset),
 				lua_opt_int(args, 6 + Offset, 0),
-				lua_opt_int(args, 7 + Offset, sizeof(T)));
+				lua_opt_int(args, 7 + Offset, 0),
+				lua_opt_int(args, 8 + Offset, sizeof(T)));
 		return 0;
 	}
 	return lua_param_error(3 + Offset);
 }
 DEF_PLOT_C(implot_plotBars);
-static int implot_plotBarsH(lua_State* L) {
+static int implot_plotBarGroups(lua_State* L) {
 	const int args = lua_gettop(L);
-	const auto label_id = luaL_checkstring(L, 1);
+	std::vector<const char*> labelsArr;
+	lua_checknative(L, 1, &labelsArr);
 	std::vector<double> v1;
 	if (!lua::luaval_to_native(L, 2, &v1))
 		return lua_param_error(2);
-	const auto type1 = lua_type(L, 3);
-	if (type1 == LUA_TNUMBER) {
-		const int size = v1.size();
-		IMPLOT_COUNT_OFFSET(3, 6, size);
-		if (count > 0)
-			ImPlot::PlotBarsH<double>(label_id, v1.data(), count,
-				lua_opt_number(args, 4, 0.67),
-				lua_opt_number(args, 5, 0),
-				offset);
-		return 0;
-	}
-	if (type1 == LUA_TTABLE) {
-		std::vector<double> v2;
-		if (!lua::luaval_to_native(L, 3, &v2))
-			return lua_param_error(3);
-		const int size = std::min(v1.size(), v2.size());
-		IMPLOT_COUNT_OFFSET(4, 6, size);
-		if (count > 0)
-			ImPlot::PlotBarsH<double>(label_id, v1.data(), v2.data(), count, luaL_checknumber(L, 5), offset);
-		return 0;
-	}
-	return lua_param_error(3);
+	const int size = v1.size();
+	const int count = luaL_checkint(L, 3);
+	if (count > 0)
+		ImPlot::PlotBarGroups<double>(labelsArr.data(), v1.data(),
+			std::min(size, count),
+			luaL_checkint(L, 4),
+			lua_opt_number(args, 5, 0.67),
+			lua_opt_number(args, 6, 0),
+			lua_opt_int(args, 7, 0));
+	return 0;
 }
-DEF_PLOT_T(implot_plotBarsH) {
+DEF_PLOT_T(implot_plotBarGroups) {
 	const int args = lua_gettop(L);
-	const auto label_id = luaL_checkstring(L, 1);
+	std::vector<const char*> labelsArr;
+	lua_checknative(L, 1, &labelsArr);
 	LUA_GET_PTR(v1, 2 + Offset);
-	const auto type3 = lua_type(L, 3 + Offset);
-	if (type3 == LUA_TNUMBER) {
-		const int count = luaL_checkinteger(L, 3 + Offset);
-		if (count > 0)
-			ImPlot::PlotBarsH<T>(label_id, v1, count,
-				lua_opt_number(args, 4 + Offset, 0.67),
-				lua_opt_number(args, 5 + Offset, 0.0),
-				lua_opt_int(args, 6 + Offset, 0),
-				lua_opt_int(args, 7 + Offset, sizeof(T)));
-		return 0;
-	}
-	if (type3 == lua::LUA_TCDATA) {
-		LUA_GET_PTR(v2, 3 + Offset);
-		const int count = luaL_checkinteger(L, 4 + Offset);
-		if (count > 0)
-			ImPlot::PlotBarsH<T>(label_id, v1, v2, count,
-				luaL_checknumber(L, 5 + Offset),
-				lua_opt_int(args, 6 + Offset, 0),
-				lua_opt_int(args, 7 + Offset, sizeof(T)));
-		return 0;
-	}
-	return lua_param_error(3 + Offset);
+	const int count = luaL_checkint(L, 3 + Offset);
+	if (count > 0)
+		ImPlot::PlotBarGroups<T>(labelsArr.data(), v1,
+			count,
+			luaL_checkint(L, 4 + Offset),
+			lua_opt_number(args, 5 + Offset, 0.67),
+			lua_opt_number(args, 6 + Offset, 0),
+			lua_opt_int(args, 7 + Offset, 0));
+	return 0;
 }
-DEF_PLOT_C(implot_plotBarsH);
+DEF_PLOT_C(implot_plotBarGroups);
 static int implot_plotErrorBars(lua_State* L) {
 	const int args = lua_gettop(L);
 	const auto label_id = luaL_checkstring(L, 1);
@@ -2433,9 +2437,11 @@ static int implot_plotErrorBars(lua_State* L) {
 	if (type5 == LUA_TNUMBER) {
 		// xs, ys, err
 		const int size = std::min({ v1.size(), v2.size(), v3.size() });
-		IMPLOT_COUNT_OFFSET(5, 6, size);
+		IMPLOT_COUNT_OFFSET(5, 7, size);
 		if (count > 0)
-			ImPlot::PlotErrorBars<double>(label_id, v1.data(), v2.data(), v3.data(), count, offset);
+			ImPlot::PlotErrorBars<double>(label_id, v1.data(), v2.data(), v3.data(), count,
+				lua_opt_int(args, 6, 0),
+				offset);
 		return 0;
 	}
 	if (type5 == LUA_TTABLE) {
@@ -2444,9 +2450,11 @@ static int implot_plotErrorBars(lua_State* L) {
 		if (!lua::luaval_to_native(L, 5, &v4))
 			return lua_param_error(5);
 		const int size = std::min({ v1.size(), v2.size(), v3.size(), v4.size() });
-		IMPLOT_COUNT_OFFSET(6, 7, size);
+		IMPLOT_COUNT_OFFSET(6, 8, size);
 		if (count > 0)
-			ImPlot::PlotErrorBars<double>(label_id, v1.data(), v2.data(), v3.data(), v4.data(), count, offset);
+			ImPlot::PlotErrorBars<double>(label_id, v1.data(), v2.data(), v3.data(), v4.data(), count,
+				lua_opt_int(args, 7, 0),
+				offset);
 		return 0;
 	}
 	return lua_param_error(3);
@@ -2459,84 +2467,27 @@ DEF_PLOT_T(implot_plotErrorBars) {
 	LUA_GET_PTR(v3, 4 + Offset);
 	const auto type5 = lua_type(L, 5 + Offset);
 	if (type5 == LUA_TNUMBER) {
-		const int count = luaL_checkinteger(L, 5 + Offset);
+		const int count = luaL_checkint(L, 5 + Offset);
 		if (count > 0)
 			ImPlot::PlotErrorBars<T>(label_id, v1, v2, v3, count,
 				lua_opt_int(args, 6 + Offset, 0),
-				lua_opt_int(args, 7 + Offset, sizeof(T)));
+				lua_opt_int(args, 7 + Offset, 0),
+				lua_opt_int(args, 8 + Offset, sizeof(T)));
 		return 0;
 	}
 	if (type5 == lua::LUA_TCDATA) {
 		LUA_GET_PTR(v4, 5 + Offset);
-		const int count = luaL_checkinteger(L, 6 + Offset);
+		const int count = luaL_checkint(L, 6 + Offset);
 		if (count > 0)
 			ImPlot::PlotErrorBars<T>(label_id, v1, v2, v3, v4, count,
 				lua_opt_int(args, 7 + Offset, 0),
-				lua_opt_int(args, 8 + Offset, sizeof(T)));
+				lua_opt_int(args, 8 + Offset, 0),
+				lua_opt_int(args, 9 + Offset, sizeof(T)));
 		return 0;
 	}
 	return lua_param_error(5 + Offset);
 }
 DEF_PLOT_C(implot_plotErrorBars);
-static int implot_plotErrorBarsH(lua_State* L) {
-	const int args = lua_gettop(L);
-	const auto label_id = luaL_checkstring(L, 1);
-	std::vector<double> v1;
-	if (!lua::luaval_to_native(L, 2, &v1))
-		return lua_param_error(2);
-	std::vector<double> v2;
-	if (!lua::luaval_to_native(L, 3, &v2))
-		return lua_param_error(3);
-	std::vector<double> v3;
-	if (!lua::luaval_to_native(L, 4, &v3))
-		return lua_param_error(4);
-	const auto type5 = lua_type(L, 5);
-	if (type5 == LUA_TNUMBER) {
-		const int size = std::min({ v1.size(), v2.size(), v3.size() });
-		IMPLOT_COUNT_OFFSET(5, 6, size);
-		if (count > 0)
-			ImPlot::PlotErrorBarsH<double>(label_id, v1.data(), v2.data(), v3.data(), count, offset);
-		return 0;
-	}
-	if (type5 == LUA_TTABLE) {
-		std::vector<double> v4;
-		if (!lua::luaval_to_native(L, 5, &v4))
-			return lua_param_error(5);
-		const int size = std::min({ v1.size(), v2.size(), v3.size(), v4.size() });
-		IMPLOT_COUNT_OFFSET(6, 7, size);
-		if (count > 0)
-			ImPlot::PlotErrorBarsH<double>(label_id, v1.data(), v2.data(), v3.data(), v4.data(), count, offset);
-		return 0;
-	}
-	return lua_param_error(5);
-}
-DEF_PLOT_T(implot_plotErrorBarsH) {
-	const int args = lua_gettop(L);
-	const auto label_id = luaL_checkstring(L, 1);
-	LUA_GET_PTR(v1, 2 + Offset);
-	LUA_GET_PTR(v2, 3 + Offset);
-	LUA_GET_PTR(v3, 4 + Offset);
-	const auto type5 = lua_type(L, 5 + Offset);
-	if (type5 == LUA_TNUMBER) {
-		const int count = luaL_checkinteger(L, 5 + Offset);
-		if (count > 0)
-			ImPlot::PlotErrorBarsH<T>(label_id, v1, v2, v3, count,
-				lua_opt_int(args, 6 + Offset, 0),
-				lua_opt_int(args, 7 + Offset, sizeof(T)));
-		return 0;
-	}
-	if (type5 == lua::LUA_TCDATA) {
-		LUA_GET_PTR(v4, 5 + Offset);
-		const int count = luaL_checkinteger(L, 6 + Offset);
-		if (count > 0)
-			ImPlot::PlotErrorBarsH<T>(label_id, v1, v2, v3, v4, count,
-				lua_opt_int(args, 7 + Offset, 0),
-				lua_opt_int(args, 8 + Offset, sizeof(T)));
-		return 0;
-	}
-	return lua_param_error(5 + Offset);
-}
-DEF_PLOT_C(implot_plotErrorBarsH);
 static int implot_plotStems(lua_State* L) {
 	const int args = lua_gettop(L);
 	const auto label_id = luaL_checkstring(L, 1);
@@ -2547,12 +2498,13 @@ static int implot_plotStems(lua_State* L) {
 	if (type3 == LUA_TNUMBER) {
 		// values
 		const int size = v1.size();
-		IMPLOT_COUNT_OFFSET(3, 7, size);
+		IMPLOT_COUNT_OFFSET(3, 8, size);
 		if (count > 0)
 			ImPlot::PlotStems<double>(label_id, v1.data(), count,
 				lua_opt_number(args, 4, 0),
 				lua_opt_number(args, 5, 1),
 				lua_opt_number(args, 6, 0),
+				lua_opt_int(args, 7, 0),
 				offset);
 		return 0;
 	}
@@ -2561,10 +2513,12 @@ static int implot_plotStems(lua_State* L) {
 		return lua_param_error(3);
 	// xs, ys
 	const int size = std::min(v1.size(), v2.size());
-	IMPLOT_COUNT_OFFSET(4, 6, size);
+	IMPLOT_COUNT_OFFSET(4, 7, size);
 	if (count > 0)
 		ImPlot::PlotStems<double>(label_id, v1.data(), v2.data(), count,
-			lua_opt_number(args, 5, 0), offset);
+			lua_opt_number(args, 5, 0),
+			lua_opt_int(args, 6, 0),
+			offset);
 	return 0;
 }
 DEF_PLOT_T(implot_plotStems) {
@@ -2574,7 +2528,7 @@ DEF_PLOT_T(implot_plotStems) {
 	const auto type3 = lua_type(L, 3 + Offset);
 	if (type3 == LUA_TNUMBER) {
 		// values
-		const int count = luaL_checkinteger(L, 3 + Offset);
+		const int count = luaL_checkint(L, 3 + Offset);
 		if (count > 0)
 			ImPlot::PlotStems<T>(label_id, v1, count,
 				lua_opt_number(args, 4 + Offset, 0),
@@ -2586,59 +2540,42 @@ DEF_PLOT_T(implot_plotStems) {
 	}
 	LUA_GET_PTR(v2, 3 + Offset);
 	// xs, ys
-	const int count = luaL_checkinteger(L, 4 + Offset);
+	const int count = luaL_checkint(L, 4 + Offset);
 	if (count > 0)
 		ImPlot::PlotStems<T>(label_id, v1, v2, count,
 			lua_opt_number(args, 5 + Offset, 0),
 			lua_opt_int(args, 6 + Offset, 0),
-			lua_opt_int(args, 7 + Offset, sizeof(T)));
+			lua_opt_int(args, 7 + Offset, 0),
+			lua_opt_int(args, 8 + Offset, sizeof(T)));
 	return 0;
 }
 DEF_PLOT_C(implot_plotStems);
-static int implot_plotVLines(lua_State* L) {
+static int implot_plotInfLines(lua_State* L) {
 	const int args = lua_gettop(L);
 	const auto label_id = luaL_checkstring(L, 1);
 	std::vector<double> xs;
 	if (!lua::luaval_to_native(L, 2, &xs))
 		return lua_param_error(2);
 	const int size = xs.size();
-	IMPLOT_COUNT_OFFSET(3, 4, size);
+	IMPLOT_COUNT_OFFSET(3, 5, size);
 	if (count > 0)
-		ImPlot::PlotVLines<double>(label_id, xs.data(), count, offset);
+		ImPlot::PlotInfLines<double>(label_id, xs.data(), count,
+			lua_opt_int(args, 4, 0),
+			offset);
 	return 0;
 }
-DEF_PLOT_T(implot_plotVLines) {
+DEF_PLOT_T(implot_plotInfLines) {
 	const int args = lua_gettop(L);
 	const auto label_id = luaL_checkstring(L, 1);
 	LUA_GET_PTR(xs, 2 + Offset);
-	const int count = luaL_checkinteger(L, 3 + Offset);
+	const int count = luaL_checkint(L, 3 + Offset);
 	if (count > 0)
-		ImPlot::PlotVLines(label_id, xs, count, lua_opt_int(args, 4 + Offset, 0));
+		ImPlot::PlotInfLines<T>(label_id, xs, count,
+			lua_opt_int(args, 4 + Offset, 0),
+			lua_opt_int(args, 5 + Offset, 0));
 	return 0;
 }
-DEF_PLOT_C(implot_plotVLines);
-static int implot_plotHLines(lua_State* L) {
-	const int args = lua_gettop(L);
-	const auto label_id = luaL_checkstring(L, 1);
-	std::vector<double> ys;
-	if (!lua::luaval_to_native(L, 2, &ys))
-		return lua_param_error(2);
-	const int size = ys.size();
-	IMPLOT_COUNT_OFFSET(3, 4, size);
-	if (count > 0)
-		ImPlot::PlotHLines<double>(label_id, ys.data(), count, offset);
-	return 0;
-}
-DEF_PLOT_T(implot_plotHLines) {
-	const int args = lua_gettop(L);
-	const auto label_id = luaL_checkstring(L, 1);
-	LUA_GET_PTR(ys, 2 + Offset);
-	const int count = luaL_checkinteger(L, 3 + Offset);
-	if (count > 0)
-		ImPlot::PlotHLines(label_id, ys, count, lua_opt_int(args, 4 + Offset, 0));
-	return 0;
-}
-DEF_PLOT_C(implot_plotHLines);
+DEF_PLOT_C(implot_plotInfLines);
 static int implot_plotPieChart(lua_State* L) {
 	const int args = lua_gettop(L);
 	std::vector<const char*> label_ids;
@@ -2647,15 +2584,15 @@ static int implot_plotPieChart(lua_State* L) {
 	std::vector<double> values;
 	if (!lua::luaval_to_native(L, 2, &values))
 		return lua_param_error(2);
-	int count = luaL_checkinteger(L, 3);
+	int count = luaL_checkint(L, 3);
 	count = std::min({ count, (int)label_ids.size(), (int)values.size() });
-	ImPlot::PlotPieChart(label_ids.data(), values.data(), count,
+	ImPlot::PlotPieChart<double>(label_ids.data(), values.data(), count,
 		luaL_checknumber(L, 4),
 		luaL_checknumber(L, 5),
 		luaL_checknumber(L, 6),
-		lua_opt_bool(args, 7, false),
-		lua_opt_string(args, 8, "%.1f"),
-		lua_opt_number(args, 9, 90));
+		lua_opt_string(args, 7, "%.1f"),
+		lua_opt_number(args, 8, 90),
+		lua_opt_int(args, 9, 0));
 	return 0;
 }
 DEF_PLOT_T(implot_plotPieChart) {
@@ -2664,15 +2601,15 @@ DEF_PLOT_T(implot_plotPieChart) {
 	if (!lua::luaval_to_native(L, 1, &label_ids))
 		return lua_param_error(1);
 	LUA_GET_PTR(v1, 2 + Offset);
-	int count = luaL_checkinteger(L, 3 + Offset);
+	int count = luaL_checkint(L, 3 + Offset);
 	count = std::min({ count, (int)label_ids.size() });
-	ImPlot::PlotPieChart(label_ids.data(), v1, count,
+	ImPlot::PlotPieChart<T>(label_ids.data(), v1, count,
 		luaL_checknumber(L, 4 + Offset),
 		luaL_checknumber(L, 5 + Offset),
 		luaL_checknumber(L, 6 + Offset),
-		lua_opt_bool(args, 7 + Offset, false),
-		lua_opt_string(args, 8 + Offset, "%.1f"),
-		lua_opt_number(args, 9 + Offset, 90));
+		lua_opt_string(args, 7 + Offset, "%.1f"),
+		lua_opt_number(args, 8 + Offset, 90),
+		lua_opt_int(args, 9, 0));
 	return 0;
 }
 DEF_PLOT_C(implot_plotPieChart);
@@ -2682,28 +2619,30 @@ static int implot_plotHeatmap(lua_State* L) {
 	std::vector<double> values;
 	if (!lua::luaval_to_native(L, 2, &values))
 		return lua_param_error(2);
-	ImPlot::PlotHeatmap(label_id, values.data(),
-		luaL_checkinteger(L, 3),
-		luaL_checkinteger(L, 4),
+	ImPlot::PlotHeatmap<double>(label_id, values.data(),
+		luaL_checkint(L, 3),
+		luaL_checkint(L, 4),
 		luaL_optnumber(L, 5, 0),
 		luaL_optnumber(L, 6, 0),
 		lua_opt_string(args, 7, "%.1f"),
 		lua_opt_impoint(args, 8, ImPlotPoint(0, 0)),
-		lua_opt_impoint(args, 9, ImPlotPoint(1, 1)));
+		lua_opt_impoint(args, 9, ImPlotPoint(1, 1)),
+		lua_opt_int(args, 10, 0));
 	return 0;
 }
 DEF_PLOT_T(implot_plotHeatmap) {
 	const int args = lua_gettop(L);
 	const auto label_id = luaL_checkstring(L, 1);
 	LUA_GET_PTR(v1, 2 + Offset);
-	ImPlot::PlotHeatmap(label_id, v1,
-		luaL_checkinteger(L, 3 + Offset),
-		luaL_checkinteger(L, 4 + Offset),
+	ImPlot::PlotHeatmap<T>(label_id, v1,
+		luaL_checkint(L, 3 + Offset),
+		luaL_checkint(L, 4 + Offset),
 		luaL_optnumber(L, 5 + Offset, 0),
 		luaL_optnumber(L, 6 + Offset, 0),
 		lua_opt_string(args, 7 + Offset, "%.1f"),
 		lua_opt_impoint(args, 8 + Offset, ImPlotPoint(0, 0)),
-		lua_opt_impoint(args, 9 + Offset, ImPlotPoint(1, 1)));
+		lua_opt_impoint(args, 9 + Offset, ImPlotPoint(1, 1)),
+		lua_opt_int(args, 10, 0));
 	return 0;
 }
 DEF_PLOT_C(implot_plotHeatmap);
@@ -2713,33 +2652,31 @@ static int implot_plotHistogram(lua_State* L) {
 	std::vector<double> values;
 	if (!lua::luaval_to_native(L, 2, &values))
 		return lua_param_error(2);
-	int count = luaL_checkinteger(L, 3);
+	int count = luaL_checkint(L, 3);
 	count = std::min({ count, (int)values.size() });
 	if (count == 0)
 		return 0;
-	lua_pushnumber(L, ImPlot::PlotHistogram<double>(label_id, values.data(), count,
+	lua_pushnumber(L, ImPlot::PlotHistogram<double>(
+		label_id, values.data(), count,
 		lua_opt_int(args, 4, ImPlotBin_Sturges),
-		lua_opt_bool(args, 5, false),
-		lua_opt_bool(args, 6, false),
-		lua_opt_imrange(args, 7, ImPlotRange()),
-		lua_opt_bool(args, 8, true),
-		lua_opt_number(args, 9, 1.0)));
+		lua_opt_number(args, 5, 1.0),
+		lua_opt_imrange(args, 6, ImPlotRange()),
+		lua_opt_int(args, 7, 0)));
 	return 1;
 }
 DEF_PLOT_T(implot_plotHistogram) {
 	const int args = lua_gettop(L);
 	const auto label_id = luaL_checkstring(L, 1);
 	LUA_GET_PTR(values, 2 + Offset);
-	const int count = luaL_checkinteger(L, 3 + Offset);
+	const int count = luaL_checkint(L, 3 + Offset);
 	if (count == 0)
 		return 0;
-	lua_pushnumber(L, ImPlot::PlotHistogram(label_id, values, count,
+	lua_pushnumber(L, ImPlot::PlotHistogram<T>(
+		label_id, values, count,
 		lua_opt_int(args, 4 + Offset, ImPlotBin_Sturges),
-		lua_opt_bool(args, 5 + Offset, false),
-		lua_opt_bool(args, 6 + Offset, false),
-		lua_opt_imrange(args, 7 + Offset, ImPlotRange()),
-		lua_opt_bool(args, 8 + Offset, true),
-		lua_opt_number(args, 9 + Offset, 1.0)));
+		lua_opt_number(args, 5 + Offset, 1.0),
+		lua_opt_imrange(args, 6 + Offset, ImPlotRange()),
+		lua_opt_int(args, 7 + Offset, 0)));
 	return 1;
 }
 DEF_PLOT_C(implot_plotHistogram);
@@ -2752,16 +2689,16 @@ static int implot_plotHistogram2D(lua_State* L) {
 	std::vector<double> ys;
 	if (!lua::luaval_to_native(L, 3, &ys))
 		return lua_param_error(3);
-	int count = luaL_checkinteger(L, 4);
+	int count = luaL_checkint(L, 4);
 	count = std::min({ count, (int)xs.size(), (int)ys.size() });
 	if (count == 0)
 		return 0;
-	lua_pushnumber(L, ImPlot::PlotHistogram2D<double>(label_id, xs.data(), ys.data(), count,
+	lua_pushnumber(L, ImPlot::PlotHistogram2D<double>(
+		label_id, xs.data(), ys.data(), count,
 		lua_opt_int(args, 5, ImPlotBin_Sturges),
 		lua_opt_int(args, 6, ImPlotBin_Sturges),
-		lua_opt_bool(args, 7, false),
-		lua_opt_imlimits(args, 8, ImPlotLimits()),
-		lua_opt_bool(args, 9, true)));
+		lua_opt_imrect(args, 7, ImPlotRect()),
+		lua_opt_int(args, 8, 0)));
 	return 1;
 }
 DEF_PLOT_T(implot_plotHistogram2D) {
@@ -2769,15 +2706,15 @@ DEF_PLOT_T(implot_plotHistogram2D) {
 	const auto label_id = luaL_checkstring(L, 1);
 	LUA_GET_PTR(xs, 2 + Offset);
 	LUA_GET_PTR(ys, 3 + Offset);
-	const int count = luaL_checkinteger(L, 4 + Offset);
+	const int count = luaL_checkint(L, 4 + Offset);
 	if (count == 0)
 		return 0;
-	lua_pushnumber(L, ImPlot::PlotHistogram2D(label_id, xs, ys, count,
+	lua_pushnumber(L, ImPlot::PlotHistogram2D<T>(
+		label_id, xs, ys, count,
 		lua_opt_int(args, 5 + Offset, ImPlotBin_Sturges),
 		lua_opt_int(args, 6 + Offset, ImPlotBin_Sturges),
-		lua_opt_bool(args, 7 + Offset, false),
-		lua_opt_imlimits(args, 8 + Offset, ImPlotLimits()),
-		lua_opt_bool(args, 9 + Offset, true)));
+		lua_opt_imrect(args, 7 + Offset, ImPlotRect()),
+		lua_opt_int(args, 8 + Offset, 0)));
 	return 1;
 }
 DEF_PLOT_C(implot_plotHistogram2D);
@@ -2791,8 +2728,10 @@ static int implot_plotDigital(lua_State* L) {
 	if (!lua::luaval_to_native(L, 3, &v2))
 		return lua_param_error(3);
 	const int size = std::min({ v1.size(), v2.size() });
-	IMPLOT_COUNT_OFFSET(4, 5, size);
-	ImPlot::PlotDigital(label_id, v1.data(), v2.data(), count, offset);
+	IMPLOT_COUNT_OFFSET(4, 6, size);
+	ImPlot::PlotDigital(label_id, v1.data(), v2.data(), count,
+		lua_opt_int(args, 5, 0),
+		offset);
 	return 0;
 }
 DEF_PLOT_T(implot_plotDigital) {
@@ -2800,9 +2739,11 @@ DEF_PLOT_T(implot_plotDigital) {
 	const auto label_id = luaL_checkstring(L, 1);
 	LUA_GET_PTR(v1, 2 + Offset);
 	LUA_GET_PTR(v2, 3 + Offset);
-	const int count = luaL_checkinteger(L, 4 + Offset);
+	const int count = luaL_checkint(L, 4 + Offset);
 	if (count > 0)
-		ImPlot::PlotDigital(label_id, v1, v2, count, lua_opt_int(args, 5 + Offset, 0));
+		ImPlot::PlotDigital(label_id, v1, v2, count,
+			lua_opt_int(args, 5 + Offset, 0),
+			lua_opt_int(args, 6 + Offset, 0));
 	return 0;
 }
 DEF_PLOT_C(implot_plotDigital);
@@ -2838,115 +2779,32 @@ static int implot_plotImage(lua_State* L) {
 	}
 	return 0;
 }
-static int implot_setNextPlotTicksX(lua_State* L) {
+static int implot_dragPoint(lua_State* L) {
 	const int args = lua_gettop(L);
-	const auto type1 = lua_type(L, 1);
-	if (type1 == LUA_TNUMBER)
-	{
-		const int n_ticks = std::max(0, luaL_checkint(L, 3));
-		if (n_ticks == 0)
-			return 0;
-		const char** labels = nullptr;
-		std::vector<const char*> labels_;
-		if (args >= 4)
-		{
-			if (!lua::luaval_to_native(L, 4, &labels_))
-				return lua_param_error(4);
-			labels_.resize(n_ticks);
-			labels = labels_.data();
-		}
-		ImPlot::SetNextPlotTicksX(
-			luaL_checknumber(L, 1),
-			luaL_checknumber(L, 2),
-			n_ticks,
-			labels,
-			lua_opt_bool(args, 5, false));
-		return 0;
-	}
-	if (type1 == LUA_TTABLE)
-	{
-		std::vector<double> values;
-		if (!lua::luaval_to_native(L, 1, &values))
-			return lua_param_error(1);
-		int n_ticks = std::max(0, luaL_checkint(L, 2));
-		n_ticks = std::min(n_ticks, (int)values.size());
-		if (n_ticks == 0)
-			return 0;
-		const char** labels = nullptr;
-		std::vector<const char*> labels_;
-		if (args >= 3)
-		{
-			if (!lua::luaval_to_native(L, 3, &labels_))
-				return lua_param_error(3);
-			labels_.resize(n_ticks);
-			labels = labels_.data();
-		}
-		ImPlot::SetNextPlotTicksX(values.data(), n_ticks, labels, lua_opt_bool(args, 4, false));
-		return 0;
-	}
-	return lua_param_error(1);
-}
-static int implot_setNextPlotTicksY(lua_State* L) {
-	const int args = lua_gettop(L);
-	const auto type1 = lua_type(L, 1);
-	if (type1 == LUA_TNUMBER)
-	{
-		const int n_ticks = std::max(0, luaL_checkint(L, 3));
-		if (n_ticks == 0)
-			return 0;
-		const char** labels = nullptr;
-		std::vector<const char*> labels_;
-		if (args >= 4)
-		{
-			if (!lua::luaval_to_native(L, 4, &labels_))
-				return lua_param_error(4);
-			labels_.resize(n_ticks);
-			labels = labels_.data();
-		}
-		ImPlot::SetNextPlotTicksY(
-			luaL_checknumber(L, 1),
-			luaL_checknumber(L, 2),
-			n_ticks,
-			labels,
-			lua_opt_bool(args, 5, false),
-			lua_opt_int(args, 6, ImPlotYAxis_1));
-		return 0;
-	}
-	if (type1 == LUA_TTABLE)
-	{
-		std::vector<double> values;
-		if (!lua::luaval_to_native(L, 1, &values))
-			return lua_param_error(1);
-		int n_ticks = std::max(0, luaL_checkint(L, 2));
-		n_ticks = std::min(n_ticks, (int)values.size());
-		if (n_ticks == 0)
-			return 0;
-		const char** labels = nullptr;
-		std::vector<const char*> labels_;
-		if (args >= 3)
-		{
-			if (!lua::luaval_to_native(L, 3, &labels_))
-				return lua_param_error(3);
-			labels_.resize(n_ticks);
-			labels = labels_.data();
-		}
-		ImPlot::SetNextPlotTicksY(values.data(), n_ticks, labels,
-			lua_opt_bool(args, 4, false),
-			lua_opt_int(args, 5, ImPlotYAxis_1));
-		return 0;
-	}
-	return lua_param_error(1);
+	double x = luaL_checknumber(L, 2);
+	double y = luaL_checknumber(L, 3);
+	lua_pushboolean(L,
+		ImPlot::DragPoint(
+			luaL_checkint(L, 1),
+			&x,
+			&y,
+			_luaval_to_imvec4(L, 4),
+			lua_opt_number(args, 5, 4),
+			lua_opt_int(args, 6, 0)));
+	lua_pushnumber(L, x);
+	lua_pushnumber(L, y);
+	return 3;
 }
 static int implot_dragLineX(lua_State* L) {
 	const int args = lua_gettop(L);
 	double value = luaL_checknumber(L, 2);
 	lua_pushboolean(L,
 		ImPlot::DragLineX(
-			luaL_checkstring(L, 1),
+			luaL_checkint(L, 1),
 			&value,
-			lua_opt_bool(args, 3, true),
-			lua_opt_imv4(args,4, IMPLOT_AUTO_COL),
-			lua_opt_number(args, 5, 1)));
+			_luaval_to_imvec4(L, 3),
+			lua_opt_number(args, 4, 1),
+			lua_opt_int(args, 5, 0)));
 	lua_pushnumber(L, value);
 	return 2;
 }
@@ -2955,32 +2813,94 @@ static int implot_dragLineY(lua_State* L) {
 	double value = luaL_checknumber(L, 2);
 	lua_pushboolean(L,
 		ImPlot::DragLineY(
-			luaL_checkstring(L, 1),
+			luaL_checkint(L, 1),
 			&value,
-			lua_opt_bool(args, 3, true),
-			lua_opt_imv4(args, 4, IMPLOT_AUTO_COL),
-			lua_opt_number(args, 5, 1)));
+			_luaval_to_imvec4(L, 3),
+			lua_opt_number(args, 4, 1),
+			lua_opt_int(args, 5, 0)));
 	lua_pushnumber(L, value);
 	return 2;
 }
-static int implot_dragPoint(lua_State* L) {
+static int implot_dragRect(lua_State* L) {
 	const int args = lua_gettop(L);
-	double x = luaL_checknumber(L, 2);
-	double y = luaL_checknumber(L, 3);
+	double x1 = luaL_checknumber(L, 2);
+	double y1 = luaL_checknumber(L, 3);
+	double x2 = luaL_checknumber(L, 4);
+	double y2 = luaL_checknumber(L, 5);
 	lua_pushboolean(L,
-		ImPlot::DragPoint(
-			luaL_checkstring(L, 1),
-			&x,
-			&y,
-			lua_opt_bool(args, 3, true),
-			lua_opt_imv4(args, 4, IMPLOT_AUTO_COL),
-			lua_opt_number(args, 5, 4)));
-	lua_pushnumber(L, x);
-	lua_pushnumber(L, y);
+		ImPlot::DragRect(
+			luaL_checkint(L, 1),
+			&x1, &y1, &x2, &y2,
+			_luaval_to_imvec4(L, 6),
+			lua_opt_int(args, 7, 0)));
+	lua_pushnumber(L, x1);
+	lua_pushnumber(L, y1);
+	lua_pushnumber(L, x2);
+	lua_pushnumber(L, y2);
 	return 3;
 }
+static int implot_annotation(lua_State* L) {
+	const int args = lua_gettop(L);
+	if (args >= 6 && lua_isstring(L, 6))
+	{
+		ImPlot::Annotation(
+			luaL_checknumber(L, 1),
+			luaL_checknumber(L, 2),
+			_luaval_to_imvec4(L, 3),
+			_luaval_to_imvec2(L, 4),
+			lua_toboolean(L, 5),
+			luaL_checkstring(L, 6));
+	}
+	else
+	{
+		ImPlot::Annotation(
+			luaL_checknumber(L, 1),
+			luaL_checknumber(L, 2),
+			_luaval_to_imvec4(L, 3),
+			_luaval_to_imvec2(L, 4),
+			lua_toboolean(L, 5),
+			lua_opt_bool(args, 6, false));
+	}
+	return 0;
+}
+static int implot_tagX(lua_State* L) {
+	const int args = lua_gettop(L);
+	if (args >= 3 && lua_isstring(L, 3))
+	{
+		ImPlot::TagX(
+			luaL_checknumber(L, 1),
+			_luaval_to_imvec4(L, 2),
+			luaL_checkstring(L, 3));
+	}
+	else
+	{
+		ImPlot::TagX(
+			luaL_checknumber(L, 1),
+			_luaval_to_imvec4(L, 2),
+			lua_opt_bool(args, 3, false));
+	}
+	return 0;
+}
+static int implot_tagY(lua_State* L) {
+	const int args = lua_gettop(L);
+	if (args >= 3 && lua_isstring(L, 3))
+	{
+		ImPlot::TagY(
+			luaL_checknumber(L, 1),
+			_luaval_to_imvec4(L, 2),
+			luaL_checkstring(L, 3));
+	}
+	else
+	{
+		ImPlot::TagY(
+			luaL_checknumber(L, 1),
+			_luaval_to_imvec4(L, 2),
+			lua_opt_bool(args, 3, false));
+	}
+	return 0;
+}
 static int implot_pushStyleColor(lua_State* L) {
-	const auto idx = luaL_checkinteger(L, 1);
+	const auto idx = (ImPlotCol)luaL_checkinteger(L, 1);
 	switch (lua_type(L, 2))
 	{
 	case LUA_TNUMBER:
@@ -2996,7 +2916,7 @@ static int implot_pushStyleColor(lua_State* L) {
 }
 static int implot_pushStyleVar(lua_State* L) {
 	enum class ImPlotStyleVarType { Int, Float, ImVec2 };
-	const auto idx = luaL_checkinteger(L, 1);
+	const auto idx = (ImPlotStyleVar)luaL_checkinteger(L, 1);
 	if (idx < ImPlotStyleVar_LineWeight || idx >= ImPlotStyleVar_COUNT)
 		return lua_param_error(1);
 	ImPlotStyleVarType type = ImPlotStyleVarType::Float;
@@ -3056,7 +2976,7 @@ static int implot_pushColormap(lua_State* L) {
 	{
 	case LUA_TNUMBER:
 	{
-		const auto idx = luaL_checkinteger(L, 1);
+		const auto idx = (ImPlotColormap)luaL_checkinteger(L, 1);
 		if (idx < 0 || idx >= ImPlot::GetColormapCount())
 			return lua_param_error(1);
 		ImPlot::PushColormap(idx);
@@ -3120,29 +3040,30 @@ static int implot_showDemoWindow(lua_State* L) {
 #define M(n) {#n, implot_##n}
 #define M_PLOT(n) {#n, implot_##n}, {#n "C", implot_##n##C}
 static const luaL_Reg implot_methods[] = {
-	M(beginPlot),
+	M(beginSubplots),
+	M(setupAxisTicks),
 	M_PLOT(plotLine),
 	M_PLOT(plotScatter),
 	M_PLOT(plotStairs),
 	M_PLOT(plotShaded),
 	M_PLOT(plotBars),
-	M_PLOT(plotBarsH),
+	M_PLOT(plotBarGroups),
 	M_PLOT(plotErrorBars),
-	M_PLOT(plotErrorBarsH),
 	M_PLOT(plotStems),
-	M_PLOT(plotVLines),
-	M_PLOT(plotHLines),
+	M_PLOT(plotInfLines),
 	M_PLOT(plotPieChart),
 	M_PLOT(plotHeatmap),
 	M_PLOT(plotHistogram),
 	M_PLOT(plotHistogram2D),
 	M_PLOT(plotDigital),
 	M(plotImage),
-	M(setNextPlotTicksX),
-	M(setNextPlotTicksY),
+	M(dragPoint),
 	M(dragLineX),
 	M(dragLineY),
-	M(dragPoint),
+	M(dragRect),
+	M(annotation),
+	M(tagX),
+	M(tagY),
 	M(pushStyleColor),
 	M(pushStyleVar),
 	M(addColormap),
