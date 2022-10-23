@@ -1441,7 +1441,7 @@ static void ImGui_ImplGlfw_SwapBuffers(ImGuiViewport* viewport, void*)
 #pragma comment(lib, "imm32")
 #endif
 
-static void ImGui_ImplGlfw_SetImeInputPos(ImGuiViewport* viewport, ImVec2 pos)
+static void ImGui_ImplGlfw_SetImeInputData(ImGuiViewport* viewport, ImGuiPlatformImeData* data)
 {
 	const auto hwnd = (HWND)glfwGetWin32Window(ImGui_ImplCocos2dx_GetWindow());
 	if (hwnd)
@@ -1450,7 +1450,7 @@ static void ImGui_ImplGlfw_SetImeInputPos(ImGuiViewport* viewport, ImVec2 pos)
 		{
 			COMPOSITIONFORM cf = {
 				CFS_FORCE_POSITION,
-				{ (LONG)(pos.x - viewport->Pos.x), (LONG)(pos.y - viewport->Pos.y) },
+				{ (LONG)(data->InputPos.x - viewport->Pos.x), (LONG)(data->InputPos.y - viewport->Pos.y) },
 				{ 0, 0, 0, 0 } };
 			::ImmSetCompositionWindow(himc, &cf);
 			::ImmReleaseContext(hwnd, himc);
@@ -1515,7 +1515,7 @@ static void ImGui_ImplGlfw_InitPlatformInterface()
 #if 0 && GLFW_HAS_VULKAN
 	platform_io.Platform_CreateVkSurface = ImGui_ImplCocos2dx_CreateVkSurface;
 #endif
-	platform_io.Platform_SetImeInputPos = ImGui_ImplGlfw_SetImeInputPos;
+	ImGui::GetIO().SetPlatformImeDataFn = ImGui_ImplGlfw_SetImeInputData;
 
 	// Register main window handle (which is owned by the main application, not by us)
 	// This is mostly for simplicity and consistency, so that our code (e.g. mouse handling etc.) can use same logic for main and secondary viewports.
