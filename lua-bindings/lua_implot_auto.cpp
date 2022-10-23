@@ -13,8 +13,6 @@ using ::ImPlotStyleVar_;
 using ::ImPlotMarker_;
 using ::ImPlotColormap_;
 using ::ImPlotLocation_;
-using ::ImPlotOrientation_;
-using ::ImPlotYAxis_;
 using ::ImPlotStyle;
 namespace ImPlot { using namespace ::ImPlot; }
 }
@@ -48,17 +46,14 @@ int lua_register_x_implot_ImPlotFlags_(lua_State* tolua_S)
 		tolua_constant(tolua_S, "None", (lua_Number)implot::ImPlotFlags_::ImPlotFlags_None);
 		tolua_constant(tolua_S, "NoTitle", (lua_Number)implot::ImPlotFlags_::ImPlotFlags_NoTitle);
 		tolua_constant(tolua_S, "NoLegend", (lua_Number)implot::ImPlotFlags_::ImPlotFlags_NoLegend);
+		tolua_constant(tolua_S, "NoMouseText", (lua_Number)implot::ImPlotFlags_::ImPlotFlags_NoMouseText);
+		tolua_constant(tolua_S, "NoInputs", (lua_Number)implot::ImPlotFlags_::ImPlotFlags_NoInputs);
 		tolua_constant(tolua_S, "NoMenus", (lua_Number)implot::ImPlotFlags_::ImPlotFlags_NoMenus);
 		tolua_constant(tolua_S, "NoBoxSelect", (lua_Number)implot::ImPlotFlags_::ImPlotFlags_NoBoxSelect);
-		tolua_constant(tolua_S, "NoMousePos", (lua_Number)implot::ImPlotFlags_::ImPlotFlags_NoMousePos);
-		tolua_constant(tolua_S, "NoHighlight", (lua_Number)implot::ImPlotFlags_::ImPlotFlags_NoHighlight);
 		tolua_constant(tolua_S, "NoChild", (lua_Number)implot::ImPlotFlags_::ImPlotFlags_NoChild);
+		tolua_constant(tolua_S, "NoFrame", (lua_Number)implot::ImPlotFlags_::ImPlotFlags_NoFrame);
 		tolua_constant(tolua_S, "Equal", (lua_Number)implot::ImPlotFlags_::ImPlotFlags_Equal);
-		tolua_constant(tolua_S, "YAxis2", (lua_Number)implot::ImPlotFlags_::ImPlotFlags_YAxis2);
-		tolua_constant(tolua_S, "YAxis3", (lua_Number)implot::ImPlotFlags_::ImPlotFlags_YAxis3);
-		tolua_constant(tolua_S, "Query", (lua_Number)implot::ImPlotFlags_::ImPlotFlags_Query);
 		tolua_constant(tolua_S, "Crosshairs", (lua_Number)implot::ImPlotFlags_::ImPlotFlags_Crosshairs);
-		tolua_constant(tolua_S, "AntiAliased", (lua_Number)implot::ImPlotFlags_::ImPlotFlags_AntiAliased);
 		tolua_constant(tolua_S, "CanvasOnly", (lua_Number)implot::ImPlotFlags_::ImPlotFlags_CanvasOnly);
 	tolua_endmodule(tolua_S);
 
@@ -75,17 +70,21 @@ int lua_register_x_implot_ImPlotAxisFlags_(lua_State* tolua_S)
 		tolua_constant(tolua_S, "NoGridLines", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_NoGridLines);
 		tolua_constant(tolua_S, "NoTickMarks", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_NoTickMarks);
 		tolua_constant(tolua_S, "NoTickLabels", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_NoTickLabels);
-		tolua_constant(tolua_S, "Foreground", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_Foreground);
-		tolua_constant(tolua_S, "LogScale", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_LogScale);
-		tolua_constant(tolua_S, "Time", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_Time);
-		tolua_constant(tolua_S, "Invert", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_Invert);
 		tolua_constant(tolua_S, "NoInitialFit", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_NoInitialFit);
+		tolua_constant(tolua_S, "NoMenus", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_NoMenus);
+		tolua_constant(tolua_S, "NoSideSwitch", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_NoSideSwitch);
+		tolua_constant(tolua_S, "NoHighlight", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_NoHighlight);
+		tolua_constant(tolua_S, "Opposite", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_Opposite);
+		tolua_constant(tolua_S, "Foreground", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_Foreground);
+		tolua_constant(tolua_S, "Invert", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_Invert);
 		tolua_constant(tolua_S, "AutoFit", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_AutoFit);
 		tolua_constant(tolua_S, "RangeFit", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_RangeFit);
+		tolua_constant(tolua_S, "PanStretch", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_PanStretch);
 		tolua_constant(tolua_S, "LockMin", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_LockMin);
 		tolua_constant(tolua_S, "LockMax", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_LockMax);
 		tolua_constant(tolua_S, "Lock", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_Lock);
 		tolua_constant(tolua_S, "NoDecorations", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_NoDecorations);
+		tolua_constant(tolua_S, "AuxDefault", (lua_Number)implot::ImPlotAxisFlags_::ImPlotAxisFlags_AuxDefault);
 	tolua_endmodule(tolua_S);
 
 	return 1;
@@ -109,16 +108,13 @@ int lua_register_x_implot_ImPlotCol_(lua_State* tolua_S)
 		tolua_constant(tolua_S, "LegendText", (lua_Number)implot::ImPlotCol_::ImPlotCol_LegendText);
 		tolua_constant(tolua_S, "TitleText", (lua_Number)implot::ImPlotCol_::ImPlotCol_TitleText);
 		tolua_constant(tolua_S, "InlayText", (lua_Number)implot::ImPlotCol_::ImPlotCol_InlayText);
-		tolua_constant(tolua_S, "XAxis", (lua_Number)implot::ImPlotCol_::ImPlotCol_XAxis);
-		tolua_constant(tolua_S, "XAxisGrid", (lua_Number)implot::ImPlotCol_::ImPlotCol_XAxisGrid);
-		tolua_constant(tolua_S, "YAxis", (lua_Number)implot::ImPlotCol_::ImPlotCol_YAxis);
-		tolua_constant(tolua_S, "YAxisGrid", (lua_Number)implot::ImPlotCol_::ImPlotCol_YAxisGrid);
-		tolua_constant(tolua_S, "YAxis2", (lua_Number)implot::ImPlotCol_::ImPlotCol_YAxis2);
-		tolua_constant(tolua_S, "YAxisGrid2", (lua_Number)implot::ImPlotCol_::ImPlotCol_YAxisGrid2);
-		tolua_constant(tolua_S, "YAxis3", (lua_Number)implot::ImPlotCol_::ImPlotCol_YAxis3);
-		tolua_constant(tolua_S, "YAxisGrid3", (lua_Number)implot::ImPlotCol_::ImPlotCol_YAxisGrid3);
+		tolua_constant(tolua_S, "AxisText", (lua_Number)implot::ImPlotCol_::ImPlotCol_AxisText);
+		tolua_constant(tolua_S, "AxisGrid", (lua_Number)implot::ImPlotCol_::ImPlotCol_AxisGrid);
+		tolua_constant(tolua_S, "AxisTick", (lua_Number)implot::ImPlotCol_::ImPlotCol_AxisTick);
+		tolua_constant(tolua_S, "AxisBg", (lua_Number)implot::ImPlotCol_::ImPlotCol_AxisBg);
+		tolua_constant(tolua_S, "AxisBgHovered", (lua_Number)implot::ImPlotCol_::ImPlotCol_AxisBgHovered);
+		tolua_constant(tolua_S, "AxisBgActive", (lua_Number)implot::ImPlotCol_::ImPlotCol_AxisBgActive);
 		tolua_constant(tolua_S, "Selection", (lua_Number)implot::ImPlotCol_::ImPlotCol_Selection);
-		tolua_constant(tolua_S, "Query", (lua_Number)implot::ImPlotCol_::ImPlotCol_Query);
 		tolua_constant(tolua_S, "Crosshairs", (lua_Number)implot::ImPlotCol_::ImPlotCol_Crosshairs);
 		tolua_constant(tolua_S, "COUNT", (lua_Number)implot::ImPlotCol_::ImPlotCol_COUNT);
 	tolua_endmodule(tolua_S);
@@ -226,31 +222,6 @@ int lua_register_x_implot_ImPlotLocation_(lua_State* tolua_S)
 		tolua_constant(tolua_S, "NorthEast", (lua_Number)implot::ImPlotLocation_::ImPlotLocation_NorthEast);
 		tolua_constant(tolua_S, "SouthWest", (lua_Number)implot::ImPlotLocation_::ImPlotLocation_SouthWest);
 		tolua_constant(tolua_S, "SouthEast", (lua_Number)implot::ImPlotLocation_::ImPlotLocation_SouthEast);
-	tolua_endmodule(tolua_S);
-
-	return 1;
-}
-
-int lua_register_x_implot_ImPlotOrientation_(lua_State* tolua_S)
-{
-
-	tolua_module(tolua_S, "ImPlotOrientation", 0);
-	tolua_beginmodule(tolua_S,"ImPlotOrientation");
-		tolua_constant(tolua_S, "Horizontal", (lua_Number)implot::ImPlotOrientation_::ImPlotOrientation_Horizontal);
-		tolua_constant(tolua_S, "Vertical", (lua_Number)implot::ImPlotOrientation_::ImPlotOrientation_Vertical);
-	tolua_endmodule(tolua_S);
-
-	return 1;
-}
-
-int lua_register_x_implot_ImPlotYAxis_(lua_State* tolua_S)
-{
-
-	tolua_module(tolua_S, "ImPlotYAxis", 0);
-	tolua_beginmodule(tolua_S,"ImPlotYAxis");
-		tolua_constant(tolua_S, "_1", (lua_Number)implot::ImPlotYAxis_::ImPlotYAxis_1);
-		tolua_constant(tolua_S, "_2", (lua_Number)implot::ImPlotYAxis_::ImPlotYAxis_2);
-		tolua_constant(tolua_S, "_3", (lua_Number)implot::ImPlotYAxis_::ImPlotYAxis_3);
 	tolua_endmodule(tolua_S);
 
 	return 1;
@@ -984,32 +955,6 @@ int lua_x_implot_ImPlotStyle_setColormap(lua_State* tolua_S)
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
 }
-int lua_x_implot_ImPlotStyle_getAntiAliasedLines(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "implot.ImPlotStyle";
-	constexpr auto LUA_FNAME = "implot.ImPlotStyle.AntiAliasedLines getter";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (implot::ImPlotStyle*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	native_to_luaval(tolua_S, cobj->AntiAliasedLines);
-	return 1;
-}
-int lua_x_implot_ImPlotStyle_setAntiAliasedLines(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "implot.ImPlotStyle";
-	constexpr auto LUA_FNAME = "implot.ImPlotStyle.AntiAliasedLines setter";
-	bool ok = true;
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (implot::ImPlotStyle*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (1 == argc) {
-		ok &= luaval_to_native(tolua_S, 2, &cobj->AntiAliasedLines, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
 int lua_x_implot_ImPlotStyle_getUseLocalTime(lua_State* tolua_S)
 {
 	constexpr auto LUA_OBJ_TYPE = "implot.ImPlotStyle";
@@ -1127,7 +1072,6 @@ int lua_register_x_implot_ImPlotStyle(lua_State* tolua_S)
 		tolua_variable(tolua_S, "PlotDefaultSize", lua_x_implot_ImPlotStyle_getPlotDefaultSize, lua_x_implot_ImPlotStyle_setPlotDefaultSize);
 		tolua_variable(tolua_S, "PlotMinSize", lua_x_implot_ImPlotStyle_getPlotMinSize, lua_x_implot_ImPlotStyle_setPlotMinSize);
 		tolua_variable(tolua_S, "Colormap", lua_x_implot_ImPlotStyle_getColormap, lua_x_implot_ImPlotStyle_setColormap);
-		tolua_variable(tolua_S, "AntiAliasedLines", lua_x_implot_ImPlotStyle_getAntiAliasedLines, lua_x_implot_ImPlotStyle_setAntiAliasedLines);
 		tolua_variable(tolua_S, "UseLocalTime", lua_x_implot_ImPlotStyle_getUseLocalTime, lua_x_implot_ImPlotStyle_setUseLocalTime);
 		tolua_variable(tolua_S, "UseISO8601", lua_x_implot_ImPlotStyle_getUseISO8601, lua_x_implot_ImPlotStyle_setUseISO8601);
 		tolua_variable(tolua_S, "Use24HourClock", lua_x_implot_ImPlotStyle_getUse24HourClock, lua_x_implot_ImPlotStyle_setUse24HourClock);
@@ -1138,116 +1082,39 @@ int lua_register_x_implot_ImPlotStyle(lua_State* tolua_S)
 	return 1;
 }
 
-int lua_x_implot_ImPlot_Annotate(lua_State* tolua_S)
+int lua_x_implot_ImPlot_BeginAlignedPlots(lua_State* tolua_S)
 {
 	bool ok = true;
-	constexpr auto LUA_FNAME = "implot.ImPlot.annotate";
+	constexpr auto LUA_FNAME = "implot.ImPlot.beginAlignedPlots";
 	const int argc = lua_gettop(tolua_S);
-	do {
-		if (argc == 5) {
-			double arg0;
-			ok &= luaval_to_number(tolua_S, 1, &arg0, LUA_FNAME);
-			if (!ok) { break; }
-			double arg1;
-			ok &= luaval_to_number(tolua_S, 2, &arg1, LUA_FNAME);
-			if (!ok) { break; }
-			ImVec2 arg2;
-			ok &= luaval_to_ImVec2(tolua_S, 3, &arg2, LUA_FNAME);
-			if (!ok) { break; }
-			ImVec4 arg3;
-			ok &= luaval_to_ImVec4(tolua_S, 4, &arg3, LUA_FNAME);
-			if (!ok) { break; }
-			const char* arg4;
-			ok &= lua_isstring(tolua_S, 5); if (ok) arg4 = luaL_checkstring(tolua_S, 5);
-			if (!ok) { break; }
-			implot::ImPlot::Annotate(arg0, arg1, arg2, arg3, arg4);
-			return 0;
-		}
-	} while (0);
-	ok = true;
-	do {
-		if (argc == 4) {
-			double arg0;
-			ok &= luaval_to_number(tolua_S, 1, &arg0, LUA_FNAME);
-			if (!ok) { break; }
-			double arg1;
-			ok &= luaval_to_number(tolua_S, 2, &arg1, LUA_FNAME);
-			if (!ok) { break; }
-			ImVec2 arg2;
-			ok &= luaval_to_ImVec2(tolua_S, 3, &arg2, LUA_FNAME);
-			if (!ok) { break; }
-			const char* arg3;
-			ok &= lua_isstring(tolua_S, 4); if (ok) arg3 = luaL_checkstring(tolua_S, 4);
-			if (!ok) { break; }
-			implot::ImPlot::Annotate(arg0, arg1, arg2, arg3);
-			return 0;
-		}
-	} while (0);
-	ok = true;
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "4");
-}
-int lua_x_implot_ImPlot_AnnotateClamped(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_FNAME = "implot.ImPlot.annotateClamped";
-	const int argc = lua_gettop(tolua_S);
-	do {
-		if (argc == 5) {
-			double arg0;
-			ok &= luaval_to_number(tolua_S, 1, &arg0, LUA_FNAME);
-			if (!ok) { break; }
-			double arg1;
-			ok &= luaval_to_number(tolua_S, 2, &arg1, LUA_FNAME);
-			if (!ok) { break; }
-			ImVec2 arg2;
-			ok &= luaval_to_ImVec2(tolua_S, 3, &arg2, LUA_FNAME);
-			if (!ok) { break; }
-			ImVec4 arg3;
-			ok &= luaval_to_ImVec4(tolua_S, 4, &arg3, LUA_FNAME);
-			if (!ok) { break; }
-			const char* arg4;
-			ok &= lua_isstring(tolua_S, 5); if (ok) arg4 = luaL_checkstring(tolua_S, 5);
-			if (!ok) { break; }
-			implot::ImPlot::AnnotateClamped(arg0, arg1, arg2, arg3, arg4);
-			return 0;
-		}
-	} while (0);
-	ok = true;
-	do {
-		if (argc == 4) {
-			double arg0;
-			ok &= luaval_to_number(tolua_S, 1, &arg0, LUA_FNAME);
-			if (!ok) { break; }
-			double arg1;
-			ok &= luaval_to_number(tolua_S, 2, &arg1, LUA_FNAME);
-			if (!ok) { break; }
-			ImVec2 arg2;
-			ok &= luaval_to_ImVec2(tolua_S, 3, &arg2, LUA_FNAME);
-			if (!ok) { break; }
-			const char* arg3;
-			ok &= lua_isstring(tolua_S, 4); if (ok) arg3 = luaL_checkstring(tolua_S, 4);
-			if (!ok) { break; }
-			implot::ImPlot::AnnotateClamped(arg0, arg1, arg2, arg3);
-			return 0;
-		}
-	} while (0);
-	ok = true;
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "4");
-}
-int lua_x_implot_ImPlot_BeginDragDropSource(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_FNAME = "implot.ImPlot.beginDragDropSource";
-	const int argc = lua_gettop(tolua_S);
-	if (argc == 0) {
-		native_to_luaval(tolua_S, implot::ImPlot::BeginDragDropSource());
+	if (argc == 1) {
+		const char* arg0;
+		ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		native_to_luaval(tolua_S, implot::ImPlot::BeginAlignedPlots(arg0));
 		return 1;
 	}
+	if (argc == 2) {
+		const char* arg0;
+		bool arg1;
+		ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
+		ok &= luaval_to_boolean(tolua_S, 2, &arg1, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		native_to_luaval(tolua_S, implot::ImPlot::BeginAlignedPlots(arg0, arg1));
+		return 1;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1 to 2");
+}
+int lua_x_implot_ImPlot_BeginDragDropSourceAxis(lua_State* tolua_S)
+{
+	bool ok = true;
+	constexpr auto LUA_FNAME = "implot.ImPlot.beginDragDropSourceAxis";
+	const int argc = lua_gettop(tolua_S);
 	if (argc == 1) {
 		int arg0;
 		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
 		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		native_to_luaval(tolua_S, implot::ImPlot::BeginDragDropSource(arg0));
+		native_to_luaval(tolua_S, implot::ImPlot::BeginDragDropSourceAxis(arg0));
 		return 1;
 	}
 	if (argc == 2) {
@@ -1256,10 +1123,10 @@ int lua_x_implot_ImPlot_BeginDragDropSource(lua_State* tolua_S)
 		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
 		ok &= luaval_to_int32(tolua_S, 2, &arg1, LUA_FNAME);
 		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		native_to_luaval(tolua_S, implot::ImPlot::BeginDragDropSource(arg0, arg1));
+		native_to_luaval(tolua_S, implot::ImPlot::BeginDragDropSourceAxis(arg0, arg1));
 		return 1;
 	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0 to 2");
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1 to 2");
 }
 int lua_x_implot_ImPlot_BeginDragDropSourceItem(lua_State* tolua_S)
 {
@@ -1284,80 +1151,37 @@ int lua_x_implot_ImPlot_BeginDragDropSourceItem(lua_State* tolua_S)
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1 to 2");
 }
-int lua_x_implot_ImPlot_BeginDragDropSourceX(lua_State* tolua_S)
+int lua_x_implot_ImPlot_BeginDragDropSourcePlot(lua_State* tolua_S)
 {
 	bool ok = true;
-	constexpr auto LUA_FNAME = "implot.ImPlot.beginDragDropSourceX";
+	constexpr auto LUA_FNAME = "implot.ImPlot.beginDragDropSourcePlot";
 	const int argc = lua_gettop(tolua_S);
 	if (argc == 0) {
-		native_to_luaval(tolua_S, implot::ImPlot::BeginDragDropSourceX());
+		native_to_luaval(tolua_S, implot::ImPlot::BeginDragDropSourcePlot());
 		return 1;
 	}
 	if (argc == 1) {
 		int arg0;
 		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
 		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		native_to_luaval(tolua_S, implot::ImPlot::BeginDragDropSourceX(arg0));
+		native_to_luaval(tolua_S, implot::ImPlot::BeginDragDropSourcePlot(arg0));
 		return 1;
 	}
-	if (argc == 2) {
-		int arg0;
-		int arg1;
-		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
-		ok &= luaval_to_int32(tolua_S, 2, &arg1, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		native_to_luaval(tolua_S, implot::ImPlot::BeginDragDropSourceX(arg0, arg1));
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0 to 2");
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0 to 1");
 }
-int lua_x_implot_ImPlot_BeginDragDropSourceY(lua_State* tolua_S)
+int lua_x_implot_ImPlot_BeginDragDropTargetAxis(lua_State* tolua_S)
 {
 	bool ok = true;
-	constexpr auto LUA_FNAME = "implot.ImPlot.beginDragDropSourceY";
+	constexpr auto LUA_FNAME = "implot.ImPlot.beginDragDropTargetAxis";
 	const int argc = lua_gettop(tolua_S);
-	if (argc == 0) {
-		native_to_luaval(tolua_S, implot::ImPlot::BeginDragDropSourceY());
-		return 1;
-	}
 	if (argc == 1) {
 		int arg0;
 		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
 		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		native_to_luaval(tolua_S, implot::ImPlot::BeginDragDropSourceY(arg0));
+		native_to_luaval(tolua_S, implot::ImPlot::BeginDragDropTargetAxis(arg0));
 		return 1;
 	}
-	if (argc == 2) {
-		int arg0;
-		int arg1;
-		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
-		ok &= luaval_to_int32(tolua_S, 2, &arg1, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		native_to_luaval(tolua_S, implot::ImPlot::BeginDragDropSourceY(arg0, arg1));
-		return 1;
-	}
-	if (argc == 3) {
-		int arg0;
-		int arg1;
-		int arg2;
-		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
-		ok &= luaval_to_int32(tolua_S, 2, &arg1, LUA_FNAME);
-		ok &= luaval_to_int32(tolua_S, 3, &arg2, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		native_to_luaval(tolua_S, implot::ImPlot::BeginDragDropSourceY(arg0, arg1, arg2));
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0 to 3");
-}
-int lua_x_implot_ImPlot_BeginDragDropTarget(lua_State* tolua_S)
-{
-	constexpr auto LUA_FNAME = "implot.ImPlot.beginDragDropTarget";
-	const int argc = lua_gettop(tolua_S);
-	if (argc == 0) {
-		native_to_luaval(tolua_S, implot::ImPlot::BeginDragDropTarget());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
 }
 int lua_x_implot_ImPlot_BeginDragDropTargetLegend(lua_State* tolua_S)
 {
@@ -1369,33 +1193,15 @@ int lua_x_implot_ImPlot_BeginDragDropTargetLegend(lua_State* tolua_S)
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
 }
-int lua_x_implot_ImPlot_BeginDragDropTargetX(lua_State* tolua_S)
+int lua_x_implot_ImPlot_BeginDragDropTargetPlot(lua_State* tolua_S)
 {
-	constexpr auto LUA_FNAME = "implot.ImPlot.beginDragDropTargetX";
+	constexpr auto LUA_FNAME = "implot.ImPlot.beginDragDropTargetPlot";
 	const int argc = lua_gettop(tolua_S);
 	if (argc == 0) {
-		native_to_luaval(tolua_S, implot::ImPlot::BeginDragDropTargetX());
+		native_to_luaval(tolua_S, implot::ImPlot::BeginDragDropTargetPlot());
 		return 1;
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_implot_ImPlot_BeginDragDropTargetY(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_FNAME = "implot.ImPlot.beginDragDropTargetY";
-	const int argc = lua_gettop(tolua_S);
-	if (argc == 0) {
-		native_to_luaval(tolua_S, implot::ImPlot::BeginDragDropTargetY());
-		return 1;
-	}
-	if (argc == 1) {
-		int arg0;
-		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		native_to_luaval(tolua_S, implot::ImPlot::BeginDragDropTargetY(arg0));
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0 to 1");
 }
 int lua_x_implot_ImPlot_BeginLegendPopup(lua_State* tolua_S)
 {
@@ -1419,6 +1225,50 @@ int lua_x_implot_ImPlot_BeginLegendPopup(lua_State* tolua_S)
 		return 1;
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1 to 2");
+}
+int lua_x_implot_ImPlot_BeginPlot(lua_State* tolua_S)
+{
+	bool ok = true;
+	constexpr auto LUA_FNAME = "implot.ImPlot.beginPlot";
+	const int argc = lua_gettop(tolua_S);
+	if (argc == 1) {
+		const char* arg0;
+		ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		native_to_luaval(tolua_S, implot::ImPlot::BeginPlot(arg0));
+		return 1;
+	}
+	if (argc == 2) {
+		const char* arg0;
+		ImVec2 arg1;
+		ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
+		ok &= luaval_to_ImVec2(tolua_S, 2, &arg1, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		native_to_luaval(tolua_S, implot::ImPlot::BeginPlot(arg0, arg1));
+		return 1;
+	}
+	if (argc == 3) {
+		const char* arg0;
+		ImVec2 arg1;
+		int arg2;
+		ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
+		ok &= luaval_to_ImVec2(tolua_S, 2, &arg1, LUA_FNAME);
+		ok &= luaval_to_int32(tolua_S, 3, &arg2, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		native_to_luaval(tolua_S, implot::ImPlot::BeginPlot(arg0, arg1, arg2));
+		return 1;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1 to 3");
+}
+int lua_x_implot_ImPlot_CancelPlotSelection(lua_State* tolua_S)
+{
+	constexpr auto LUA_FNAME = "implot.ImPlot.cancelPlotSelection";
+	const int argc = lua_gettop(tolua_S);
+	if (argc == 0) {
+		implot::ImPlot::CancelPlotSelection();
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
 }
 int lua_x_implot_ImPlot_ColormapButton(lua_State* tolua_S)
 {
@@ -1502,12 +1352,12 @@ int lua_x_implot_ImPlot_ColormapScale(lua_State* tolua_S)
 		double arg1;
 		double arg2;
 		ImVec2 arg3;
-		int arg4;
+		const char* arg4;
 		ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
 		ok &= luaval_to_number(tolua_S, 2, &arg1, LUA_FNAME);
 		ok &= luaval_to_number(tolua_S, 3, &arg2, LUA_FNAME);
 		ok &= luaval_to_ImVec2(tolua_S, 4, &arg3, LUA_FNAME);
-		ok &= luaval_to_int32(tolua_S, 5, &arg4, LUA_FNAME);
+		ok &= lua_isstring(tolua_S, 5); if (ok) arg4 = luaL_checkstring(tolua_S, 5);
 		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
 		implot::ImPlot::ColormapScale(arg0, arg1, arg2, arg3, arg4);
 		return 0;
@@ -1517,19 +1367,48 @@ int lua_x_implot_ImPlot_ColormapScale(lua_State* tolua_S)
 		double arg1;
 		double arg2;
 		ImVec2 arg3;
-		int arg4;
-		const char* arg5;
+		const char* arg4;
+		int arg5;
 		ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
 		ok &= luaval_to_number(tolua_S, 2, &arg1, LUA_FNAME);
 		ok &= luaval_to_number(tolua_S, 3, &arg2, LUA_FNAME);
 		ok &= luaval_to_ImVec2(tolua_S, 4, &arg3, LUA_FNAME);
-		ok &= luaval_to_int32(tolua_S, 5, &arg4, LUA_FNAME);
-		ok &= lua_isstring(tolua_S, 6); if (ok) arg5 = luaL_checkstring(tolua_S, 6);
+		ok &= lua_isstring(tolua_S, 5); if (ok) arg4 = luaL_checkstring(tolua_S, 5);
+		ok &= luaval_to_int32(tolua_S, 6, &arg5, LUA_FNAME);
 		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
 		implot::ImPlot::ColormapScale(arg0, arg1, arg2, arg3, arg4, arg5);
 		return 0;
 	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "3 to 6");
+	if (argc == 7) {
+		const char* arg0;
+		double arg1;
+		double arg2;
+		ImVec2 arg3;
+		const char* arg4;
+		int arg5;
+		int arg6;
+		ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
+		ok &= luaval_to_number(tolua_S, 2, &arg1, LUA_FNAME);
+		ok &= luaval_to_number(tolua_S, 3, &arg2, LUA_FNAME);
+		ok &= luaval_to_ImVec2(tolua_S, 4, &arg3, LUA_FNAME);
+		ok &= lua_isstring(tolua_S, 5); if (ok) arg4 = luaL_checkstring(tolua_S, 5);
+		ok &= luaval_to_int32(tolua_S, 6, &arg5, LUA_FNAME);
+		ok &= luaval_to_int32(tolua_S, 7, &arg6, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		implot::ImPlot::ColormapScale(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "3 to 7");
+}
+int lua_x_implot_ImPlot_EndAlignedPlots(lua_State* tolua_S)
+{
+	constexpr auto LUA_FNAME = "implot.ImPlot.endAlignedPlots";
+	const int argc = lua_gettop(tolua_S);
+	if (argc == 0) {
+		implot::ImPlot::EndAlignedPlots();
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
 }
 int lua_x_implot_ImPlot_EndDragDropSource(lua_State* tolua_S)
 {
@@ -1571,56 +1450,15 @@ int lua_x_implot_ImPlot_EndPlot(lua_State* tolua_S)
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
 }
-int lua_x_implot_ImPlot_FitNextPlotAxes(lua_State* tolua_S)
+int lua_x_implot_ImPlot_EndSubplots(lua_State* tolua_S)
 {
-	bool ok = true;
-	constexpr auto LUA_FNAME = "implot.ImPlot.fitNextPlotAxes";
+	constexpr auto LUA_FNAME = "implot.ImPlot.endSubplots";
 	const int argc = lua_gettop(tolua_S);
 	if (argc == 0) {
-		implot::ImPlot::FitNextPlotAxes();
+		implot::ImPlot::EndSubplots();
 		return 0;
 	}
-	if (argc == 1) {
-		bool arg0;
-		ok &= luaval_to_boolean(tolua_S, 1, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		implot::ImPlot::FitNextPlotAxes(arg0);
-		return 0;
-	}
-	if (argc == 2) {
-		bool arg0;
-		bool arg1;
-		ok &= luaval_to_boolean(tolua_S, 1, &arg0, LUA_FNAME);
-		ok &= luaval_to_boolean(tolua_S, 2, &arg1, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		implot::ImPlot::FitNextPlotAxes(arg0, arg1);
-		return 0;
-	}
-	if (argc == 3) {
-		bool arg0;
-		bool arg1;
-		bool arg2;
-		ok &= luaval_to_boolean(tolua_S, 1, &arg0, LUA_FNAME);
-		ok &= luaval_to_boolean(tolua_S, 2, &arg1, LUA_FNAME);
-		ok &= luaval_to_boolean(tolua_S, 3, &arg2, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		implot::ImPlot::FitNextPlotAxes(arg0, arg1, arg2);
-		return 0;
-	}
-	if (argc == 4) {
-		bool arg0;
-		bool arg1;
-		bool arg2;
-		bool arg3;
-		ok &= luaval_to_boolean(tolua_S, 1, &arg0, LUA_FNAME);
-		ok &= luaval_to_boolean(tolua_S, 2, &arg1, LUA_FNAME);
-		ok &= luaval_to_boolean(tolua_S, 3, &arg2, LUA_FNAME);
-		ok &= luaval_to_boolean(tolua_S, 4, &arg3, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		implot::ImPlot::FitNextPlotAxes(arg0, arg1, arg2, arg3);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0 to 4");
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
 }
 int lua_x_implot_ImPlot_GetColormapColor(lua_State* tolua_S)
 {
@@ -1751,7 +1589,16 @@ int lua_x_implot_ImPlot_GetPlotLimits(lua_State* tolua_S)
 		native_to_luaval(tolua_S, implot::ImPlot::GetPlotLimits(arg0));
 		return 1;
 	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0 to 1");
+	if (argc == 2) {
+		int arg0;
+		int arg1;
+		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
+		ok &= luaval_to_int32(tolua_S, 2, &arg1, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		native_to_luaval(tolua_S, implot::ImPlot::GetPlotLimits(arg0, arg1));
+		return 1;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0 to 2");
 }
 int lua_x_implot_ImPlot_GetPlotMousePos(lua_State* tolua_S)
 {
@@ -1769,7 +1616,16 @@ int lua_x_implot_ImPlot_GetPlotMousePos(lua_State* tolua_S)
 		native_to_luaval(tolua_S, implot::ImPlot::GetPlotMousePos(arg0));
 		return 1;
 	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0 to 1");
+	if (argc == 2) {
+		int arg0;
+		int arg1;
+		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
+		ok &= luaval_to_int32(tolua_S, 2, &arg1, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		native_to_luaval(tolua_S, implot::ImPlot::GetPlotMousePos(arg0, arg1));
+		return 1;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0 to 2");
 }
 int lua_x_implot_ImPlot_GetPlotPos(lua_State* tolua_S)
 {
@@ -1780,24 +1636,6 @@ int lua_x_implot_ImPlot_GetPlotPos(lua_State* tolua_S)
 		return 1;
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_implot_ImPlot_GetPlotQuery(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_FNAME = "implot.ImPlot.getPlotQuery";
-	const int argc = lua_gettop(tolua_S);
-	if (argc == 0) {
-		native_to_luaval(tolua_S, implot::ImPlot::GetPlotQuery());
-		return 1;
-	}
-	if (argc == 1) {
-		int arg0;
-		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		native_to_luaval(tolua_S, implot::ImPlot::GetPlotQuery(arg0));
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0 to 1");
 }
 int lua_x_implot_ImPlot_GetPlotSelection(lua_State* tolua_S)
 {
@@ -1815,7 +1653,16 @@ int lua_x_implot_ImPlot_GetPlotSelection(lua_State* tolua_S)
 		native_to_luaval(tolua_S, implot::ImPlot::GetPlotSelection(arg0));
 		return 1;
 	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0 to 1");
+	if (argc == 2) {
+		int arg0;
+		int arg1;
+		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
+		ok &= luaval_to_int32(tolua_S, 2, &arg1, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		native_to_luaval(tolua_S, implot::ImPlot::GetPlotSelection(arg0, arg1));
+		return 1;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0 to 2");
 }
 int lua_x_implot_ImPlot_GetPlotSize(lua_State* tolua_S)
 {
@@ -1878,6 +1725,20 @@ int lua_x_implot_ImPlot_HideNextItem(lua_State* tolua_S)
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0 to 2");
 }
+int lua_x_implot_ImPlot_IsAxisHovered(lua_State* tolua_S)
+{
+	bool ok = true;
+	constexpr auto LUA_FNAME = "implot.ImPlot.isAxisHovered";
+	const int argc = lua_gettop(tolua_S);
+	if (argc == 1) {
+		int arg0;
+		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		native_to_luaval(tolua_S, implot::ImPlot::IsAxisHovered(arg0));
+		return 1;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
+}
 int lua_x_implot_ImPlot_IsLegendEntryHovered(lua_State* tolua_S)
 {
 	bool ok = true;
@@ -1902,16 +1763,6 @@ int lua_x_implot_ImPlot_IsPlotHovered(lua_State* tolua_S)
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
 }
-int lua_x_implot_ImPlot_IsPlotQueried(lua_State* tolua_S)
-{
-	constexpr auto LUA_FNAME = "implot.ImPlot.isPlotQueried";
-	const int argc = lua_gettop(tolua_S);
-	if (argc == 0) {
-		native_to_luaval(tolua_S, implot::ImPlot::IsPlotQueried());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
 int lua_x_implot_ImPlot_IsPlotSelected(lua_State* tolua_S)
 {
 	constexpr auto LUA_FNAME = "implot.ImPlot.isPlotSelected";
@@ -1922,33 +1773,15 @@ int lua_x_implot_ImPlot_IsPlotSelected(lua_State* tolua_S)
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
 }
-int lua_x_implot_ImPlot_IsPlotXAxisHovered(lua_State* tolua_S)
+int lua_x_implot_ImPlot_IsSubplotsHovered(lua_State* tolua_S)
 {
-	constexpr auto LUA_FNAME = "implot.ImPlot.isPlotXAxisHovered";
+	constexpr auto LUA_FNAME = "implot.ImPlot.isSubplotsHovered";
 	const int argc = lua_gettop(tolua_S);
 	if (argc == 0) {
-		native_to_luaval(tolua_S, implot::ImPlot::IsPlotXAxisHovered());
+		native_to_luaval(tolua_S, implot::ImPlot::IsSubplotsHovered());
 		return 1;
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_implot_ImPlot_IsPlotYAxisHovered(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_FNAME = "implot.ImPlot.isPlotYAxisHovered";
-	const int argc = lua_gettop(tolua_S);
-	if (argc == 0) {
-		native_to_luaval(tolua_S, implot::ImPlot::IsPlotYAxisHovered());
-		return 1;
-	}
-	if (argc == 1) {
-		int arg0;
-		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		native_to_luaval(tolua_S, implot::ImPlot::IsPlotYAxisHovered(arg0));
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0 to 1");
 }
 int lua_x_implot_ImPlot_NextColormapColor(lua_State* tolua_S)
 {
@@ -1985,7 +1818,20 @@ int lua_x_implot_ImPlot_PixelsToPlot(lua_State* tolua_S)
 		native_to_luaval(tolua_S, implot::ImPlot::PixelsToPlot(arg0, arg1, arg2));
 		return 1;
 	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "2 to 3");
+	if (argc == 4) {
+		double arg0;
+		double arg1;
+		int arg2;
+		int arg3;
+		ok &= luaval_to_number(tolua_S, 1, &arg0, LUA_FNAME);
+		ok &= luaval_to_number(tolua_S, 2, &arg1, LUA_FNAME);
+		ok &= luaval_to_int32(tolua_S, 3, &arg2, LUA_FNAME);
+		ok &= luaval_to_int32(tolua_S, 4, &arg3, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		native_to_luaval(tolua_S, implot::ImPlot::PixelsToPlot(arg0, arg1, arg2, arg3));
+		return 1;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "2 to 4");
 }
 int lua_x_implot_ImPlot_PlotDummy(lua_State* tolua_S)
 {
@@ -1999,7 +1845,16 @@ int lua_x_implot_ImPlot_PlotDummy(lua_State* tolua_S)
 		implot::ImPlot::PlotDummy(arg0);
 		return 0;
 	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
+	if (argc == 2) {
+		const char* arg0;
+		int arg1;
+		ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
+		ok &= luaval_to_int32(tolua_S, 2, &arg1, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		implot::ImPlot::PlotDummy(arg0, arg1);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1 to 2");
 }
 int lua_x_implot_ImPlot_PlotText(lua_State* tolua_S)
 {
@@ -2021,11 +1876,11 @@ int lua_x_implot_ImPlot_PlotText(lua_State* tolua_S)
 		const char* arg0;
 		double arg1;
 		double arg2;
-		bool arg3;
+		ImVec2 arg3;
 		ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
 		ok &= luaval_to_number(tolua_S, 2, &arg1, LUA_FNAME);
 		ok &= luaval_to_number(tolua_S, 3, &arg2, LUA_FNAME);
-		ok &= luaval_to_boolean(tolua_S, 4, &arg3, LUA_FNAME);
+		ok &= luaval_to_ImVec2(tolua_S, 4, &arg3, LUA_FNAME);
 		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
 		implot::ImPlot::PlotText(arg0, arg1, arg2, arg3);
 		return 0;
@@ -2034,13 +1889,13 @@ int lua_x_implot_ImPlot_PlotText(lua_State* tolua_S)
 		const char* arg0;
 		double arg1;
 		double arg2;
-		bool arg3;
-		ImVec2 arg4;
+		ImVec2 arg3;
+		int arg4;
 		ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
 		ok &= luaval_to_number(tolua_S, 2, &arg1, LUA_FNAME);
 		ok &= luaval_to_number(tolua_S, 3, &arg2, LUA_FNAME);
-		ok &= luaval_to_boolean(tolua_S, 4, &arg3, LUA_FNAME);
-		ok &= luaval_to_ImVec2(tolua_S, 5, &arg4, LUA_FNAME);
+		ok &= luaval_to_ImVec2(tolua_S, 4, &arg3, LUA_FNAME);
+		ok &= luaval_to_int32(tolua_S, 5, &arg4, LUA_FNAME);
 		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
 		implot::ImPlot::PlotText(arg0, arg1, arg2, arg3, arg4);
 		return 0;
@@ -2072,7 +1927,20 @@ int lua_x_implot_ImPlot_PlotToPixels(lua_State* tolua_S)
 		native_to_luaval(tolua_S, implot::ImPlot::PlotToPixels(arg0, arg1, arg2));
 		return 1;
 	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "2 to 3");
+	if (argc == 4) {
+		double arg0;
+		double arg1;
+		int arg2;
+		int arg3;
+		ok &= luaval_to_number(tolua_S, 1, &arg0, LUA_FNAME);
+		ok &= luaval_to_number(tolua_S, 2, &arg1, LUA_FNAME);
+		ok &= luaval_to_int32(tolua_S, 3, &arg2, LUA_FNAME);
+		ok &= luaval_to_int32(tolua_S, 4, &arg3, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		native_to_luaval(tolua_S, implot::ImPlot::PlotToPixels(arg0, arg1, arg2, arg3));
+		return 1;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "2 to 4");
 }
 int lua_x_implot_ImPlot_PopColormap(lua_State* tolua_S)
 {
@@ -2179,50 +2047,122 @@ int lua_x_implot_ImPlot_SampleColormap(lua_State* tolua_S)
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1 to 2");
 }
-int lua_x_implot_ImPlot_SetLegendLocation(lua_State* tolua_S)
+int lua_x_implot_ImPlot_SetAxes(lua_State* tolua_S)
 {
 	bool ok = true;
-	constexpr auto LUA_FNAME = "implot.ImPlot.setLegendLocation";
+	constexpr auto LUA_FNAME = "implot.ImPlot.setAxes";
 	const int argc = lua_gettop(tolua_S);
-	if (argc == 1) {
-		int arg0;
-		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		implot::ImPlot::SetLegendLocation(arg0);
-		return 0;
-	}
 	if (argc == 2) {
 		int arg0;
 		int arg1;
 		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
 		ok &= luaval_to_int32(tolua_S, 2, &arg1, LUA_FNAME);
 		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		implot::ImPlot::SetLegendLocation(arg0, arg1);
+		implot::ImPlot::SetAxes(arg0, arg1);
 		return 0;
 	}
-	if (argc == 3) {
-		int arg0;
-		int arg1;
-		bool arg2;
-		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
-		ok &= luaval_to_int32(tolua_S, 2, &arg1, LUA_FNAME);
-		ok &= luaval_to_boolean(tolua_S, 3, &arg2, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		implot::ImPlot::SetLegendLocation(arg0, arg1, arg2);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1 to 3");
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "2");
 }
-int lua_x_implot_ImPlot_SetMousePosLocation(lua_State* tolua_S)
+int lua_x_implot_ImPlot_SetAxis(lua_State* tolua_S)
 {
 	bool ok = true;
-	constexpr auto LUA_FNAME = "implot.ImPlot.setMousePosLocation";
+	constexpr auto LUA_FNAME = "implot.ImPlot.setAxis";
 	const int argc = lua_gettop(tolua_S);
 	if (argc == 1) {
 		int arg0;
 		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
 		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		implot::ImPlot::SetMousePosLocation(arg0);
+		implot::ImPlot::SetAxis(arg0);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
+}
+int lua_x_implot_ImPlot_SetNextAxesLimits(lua_State* tolua_S)
+{
+	bool ok = true;
+	constexpr auto LUA_FNAME = "implot.ImPlot.setNextAxesLimits";
+	const int argc = lua_gettop(tolua_S);
+	if (argc == 4) {
+		double arg0;
+		double arg1;
+		double arg2;
+		double arg3;
+		ok &= luaval_to_number(tolua_S, 1, &arg0, LUA_FNAME);
+		ok &= luaval_to_number(tolua_S, 2, &arg1, LUA_FNAME);
+		ok &= luaval_to_number(tolua_S, 3, &arg2, LUA_FNAME);
+		ok &= luaval_to_number(tolua_S, 4, &arg3, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		implot::ImPlot::SetNextAxesLimits(arg0, arg1, arg2, arg3);
+		return 0;
+	}
+	if (argc == 5) {
+		double arg0;
+		double arg1;
+		double arg2;
+		double arg3;
+		int arg4;
+		ok &= luaval_to_number(tolua_S, 1, &arg0, LUA_FNAME);
+		ok &= luaval_to_number(tolua_S, 2, &arg1, LUA_FNAME);
+		ok &= luaval_to_number(tolua_S, 3, &arg2, LUA_FNAME);
+		ok &= luaval_to_number(tolua_S, 4, &arg3, LUA_FNAME);
+		ok &= luaval_to_int32(tolua_S, 5, &arg4, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		implot::ImPlot::SetNextAxesLimits(arg0, arg1, arg2, arg3, arg4);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "4 to 5");
+}
+int lua_x_implot_ImPlot_SetNextAxesToFit(lua_State* tolua_S)
+{
+	constexpr auto LUA_FNAME = "implot.ImPlot.setNextAxesToFit";
+	const int argc = lua_gettop(tolua_S);
+	if (argc == 0) {
+		implot::ImPlot::SetNextAxesToFit();
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
+}
+int lua_x_implot_ImPlot_SetNextAxisLimits(lua_State* tolua_S)
+{
+	bool ok = true;
+	constexpr auto LUA_FNAME = "implot.ImPlot.setNextAxisLimits";
+	const int argc = lua_gettop(tolua_S);
+	if (argc == 3) {
+		int arg0;
+		double arg1;
+		double arg2;
+		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
+		ok &= luaval_to_number(tolua_S, 2, &arg1, LUA_FNAME);
+		ok &= luaval_to_number(tolua_S, 3, &arg2, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		implot::ImPlot::SetNextAxisLimits(arg0, arg1, arg2);
+		return 0;
+	}
+	if (argc == 4) {
+		int arg0;
+		double arg1;
+		double arg2;
+		int arg3;
+		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
+		ok &= luaval_to_number(tolua_S, 2, &arg1, LUA_FNAME);
+		ok &= luaval_to_number(tolua_S, 3, &arg2, LUA_FNAME);
+		ok &= luaval_to_int32(tolua_S, 4, &arg3, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		implot::ImPlot::SetNextAxisLimits(arg0, arg1, arg2, arg3);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "3 to 4");
+}
+int lua_x_implot_ImPlot_SetNextAxisToFit(lua_State* tolua_S)
+{
+	bool ok = true;
+	constexpr auto LUA_FNAME = "implot.ImPlot.setNextAxisToFit";
+	const int argc = lua_gettop(tolua_S);
+	if (argc == 1) {
+		int arg0;
+		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		implot::ImPlot::SetNextAxisToFit(arg0);
 		return 0;
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
@@ -2385,47 +2325,50 @@ int lua_x_implot_ImPlot_SetNextMarkerStyle(lua_State* tolua_S)
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0 to 5");
 }
-int lua_x_implot_ImPlot_SetNextPlotFormatX(lua_State* tolua_S)
+int lua_x_implot_ImPlot_SetupAxes(lua_State* tolua_S)
 {
 	bool ok = true;
-	constexpr auto LUA_FNAME = "implot.ImPlot.setNextPlotFormatX";
+	constexpr auto LUA_FNAME = "implot.ImPlot.setupAxes";
 	const int argc = lua_gettop(tolua_S);
-	if (argc == 1) {
-		const char* arg0;
-		ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		implot::ImPlot::SetNextPlotFormatX(arg0);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_implot_ImPlot_SetNextPlotFormatY(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_FNAME = "implot.ImPlot.setNextPlotFormatY";
-	const int argc = lua_gettop(tolua_S);
-	if (argc == 1) {
-		const char* arg0;
-		ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		implot::ImPlot::SetNextPlotFormatY(arg0);
-		return 0;
-	}
 	if (argc == 2) {
 		const char* arg0;
-		int arg1;
+		const char* arg1;
 		ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
-		ok &= luaval_to_int32(tolua_S, 2, &arg1, LUA_FNAME);
+		ok &= lua_isstring(tolua_S, 2); if (ok) arg1 = luaL_checkstring(tolua_S, 2);
 		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		implot::ImPlot::SetNextPlotFormatY(arg0, arg1);
+		implot::ImPlot::SetupAxes(arg0, arg1);
 		return 0;
 	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1 to 2");
+	if (argc == 3) {
+		const char* arg0;
+		const char* arg1;
+		int arg2;
+		ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
+		ok &= lua_isstring(tolua_S, 2); if (ok) arg1 = luaL_checkstring(tolua_S, 2);
+		ok &= luaval_to_int32(tolua_S, 3, &arg2, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		implot::ImPlot::SetupAxes(arg0, arg1, arg2);
+		return 0;
+	}
+	if (argc == 4) {
+		const char* arg0;
+		const char* arg1;
+		int arg2;
+		int arg3;
+		ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
+		ok &= lua_isstring(tolua_S, 2); if (ok) arg1 = luaL_checkstring(tolua_S, 2);
+		ok &= luaval_to_int32(tolua_S, 3, &arg2, LUA_FNAME);
+		ok &= luaval_to_int32(tolua_S, 4, &arg3, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		implot::ImPlot::SetupAxes(arg0, arg1, arg2, arg3);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "2 to 4");
 }
-int lua_x_implot_ImPlot_SetNextPlotLimits(lua_State* tolua_S)
+int lua_x_implot_ImPlot_SetupAxesLimits(lua_State* tolua_S)
 {
 	bool ok = true;
-	constexpr auto LUA_FNAME = "implot.ImPlot.setNextPlotLimits";
+	constexpr auto LUA_FNAME = "implot.ImPlot.setupAxesLimits";
 	const int argc = lua_gettop(tolua_S);
 	if (argc == 4) {
 		double arg0;
@@ -2437,7 +2380,7 @@ int lua_x_implot_ImPlot_SetNextPlotLimits(lua_State* tolua_S)
 		ok &= luaval_to_number(tolua_S, 3, &arg2, LUA_FNAME);
 		ok &= luaval_to_number(tolua_S, 4, &arg3, LUA_FNAME);
 		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		implot::ImPlot::SetNextPlotLimits(arg0, arg1, arg2, arg3);
+		implot::ImPlot::SetupAxesLimits(arg0, arg1, arg2, arg3);
 		return 0;
 	}
 	if (argc == 5) {
@@ -2452,114 +2395,199 @@ int lua_x_implot_ImPlot_SetNextPlotLimits(lua_State* tolua_S)
 		ok &= luaval_to_number(tolua_S, 4, &arg3, LUA_FNAME);
 		ok &= luaval_to_int32(tolua_S, 5, &arg4, LUA_FNAME);
 		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		implot::ImPlot::SetNextPlotLimits(arg0, arg1, arg2, arg3, arg4);
+		implot::ImPlot::SetupAxesLimits(arg0, arg1, arg2, arg3, arg4);
 		return 0;
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "4 to 5");
 }
-int lua_x_implot_ImPlot_SetNextPlotLimitsX(lua_State* tolua_S)
+int lua_x_implot_ImPlot_SetupAxis(lua_State* tolua_S)
 {
 	bool ok = true;
-	constexpr auto LUA_FNAME = "implot.ImPlot.setNextPlotLimitsX";
-	const int argc = lua_gettop(tolua_S);
-	if (argc == 2) {
-		double arg0;
-		double arg1;
-		ok &= luaval_to_number(tolua_S, 1, &arg0, LUA_FNAME);
-		ok &= luaval_to_number(tolua_S, 2, &arg1, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		implot::ImPlot::SetNextPlotLimitsX(arg0, arg1);
-		return 0;
-	}
-	if (argc == 3) {
-		double arg0;
-		double arg1;
-		int arg2;
-		ok &= luaval_to_number(tolua_S, 1, &arg0, LUA_FNAME);
-		ok &= luaval_to_number(tolua_S, 2, &arg1, LUA_FNAME);
-		ok &= luaval_to_int32(tolua_S, 3, &arg2, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		implot::ImPlot::SetNextPlotLimitsX(arg0, arg1, arg2);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "2 to 3");
-}
-int lua_x_implot_ImPlot_SetNextPlotLimitsY(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_FNAME = "implot.ImPlot.setNextPlotLimitsY";
-	const int argc = lua_gettop(tolua_S);
-	if (argc == 2) {
-		double arg0;
-		double arg1;
-		ok &= luaval_to_number(tolua_S, 1, &arg0, LUA_FNAME);
-		ok &= luaval_to_number(tolua_S, 2, &arg1, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		implot::ImPlot::SetNextPlotLimitsY(arg0, arg1);
-		return 0;
-	}
-	if (argc == 3) {
-		double arg0;
-		double arg1;
-		int arg2;
-		ok &= luaval_to_number(tolua_S, 1, &arg0, LUA_FNAME);
-		ok &= luaval_to_number(tolua_S, 2, &arg1, LUA_FNAME);
-		ok &= luaval_to_int32(tolua_S, 3, &arg2, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		implot::ImPlot::SetNextPlotLimitsY(arg0, arg1, arg2);
-		return 0;
-	}
-	if (argc == 4) {
-		double arg0;
-		double arg1;
-		int arg2;
-		int arg3;
-		ok &= luaval_to_number(tolua_S, 1, &arg0, LUA_FNAME);
-		ok &= luaval_to_number(tolua_S, 2, &arg1, LUA_FNAME);
-		ok &= luaval_to_int32(tolua_S, 3, &arg2, LUA_FNAME);
-		ok &= luaval_to_int32(tolua_S, 4, &arg3, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		implot::ImPlot::SetNextPlotLimitsY(arg0, arg1, arg2, arg3);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "2 to 4");
-}
-int lua_x_implot_ImPlot_SetPlotQuery(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_FNAME = "implot.ImPlot.setPlotQuery";
-	const int argc = lua_gettop(tolua_S);
-	if (argc == 1) {
-		ImPlotLimits arg0;
-		ok &= luaval_to_native(tolua_S, 1, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		implot::ImPlot::SetPlotQuery(arg0);
-		return 0;
-	}
-	if (argc == 2) {
-		ImPlotLimits arg0;
-		int arg1;
-		ok &= luaval_to_native(tolua_S, 1, &arg0, LUA_FNAME);
-		ok &= luaval_to_int32(tolua_S, 2, &arg1, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		implot::ImPlot::SetPlotQuery(arg0, arg1);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1 to 2");
-}
-int lua_x_implot_ImPlot_SetPlotYAxis(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_FNAME = "implot.ImPlot.setPlotYAxis";
+	constexpr auto LUA_FNAME = "implot.ImPlot.setupAxis";
 	const int argc = lua_gettop(tolua_S);
 	if (argc == 1) {
 		int arg0;
 		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
 		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		implot::ImPlot::SetPlotYAxis(arg0);
+		implot::ImPlot::SetupAxis(arg0);
 		return 0;
 	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
+	if (argc == 2) {
+		int arg0;
+		const char* arg1;
+		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
+		ok &= lua_isstring(tolua_S, 2); if (ok) arg1 = luaL_checkstring(tolua_S, 2);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		implot::ImPlot::SetupAxis(arg0, arg1);
+		return 0;
+	}
+	if (argc == 3) {
+		int arg0;
+		const char* arg1;
+		int arg2;
+		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
+		ok &= lua_isstring(tolua_S, 2); if (ok) arg1 = luaL_checkstring(tolua_S, 2);
+		ok &= luaval_to_int32(tolua_S, 3, &arg2, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		implot::ImPlot::SetupAxis(arg0, arg1, arg2);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1 to 3");
+}
+int lua_x_implot_ImPlot_SetupAxisFormat(lua_State* tolua_S)
+{
+	bool ok = true;
+	constexpr auto LUA_FNAME = "implot.ImPlot.setupAxisFormat";
+	const int argc = lua_gettop(tolua_S);
+	if (argc == 2) {
+		int arg0;
+		const char* arg1;
+		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
+		ok &= lua_isstring(tolua_S, 2); if (ok) arg1 = luaL_checkstring(tolua_S, 2);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		implot::ImPlot::SetupAxisFormat(arg0, arg1);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "2");
+}
+int lua_x_implot_ImPlot_SetupAxisLimits(lua_State* tolua_S)
+{
+	bool ok = true;
+	constexpr auto LUA_FNAME = "implot.ImPlot.setupAxisLimits";
+	const int argc = lua_gettop(tolua_S);
+	if (argc == 3) {
+		int arg0;
+		double arg1;
+		double arg2;
+		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
+		ok &= luaval_to_number(tolua_S, 2, &arg1, LUA_FNAME);
+		ok &= luaval_to_number(tolua_S, 3, &arg2, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		implot::ImPlot::SetupAxisLimits(arg0, arg1, arg2);
+		return 0;
+	}
+	if (argc == 4) {
+		int arg0;
+		double arg1;
+		double arg2;
+		int arg3;
+		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
+		ok &= luaval_to_number(tolua_S, 2, &arg1, LUA_FNAME);
+		ok &= luaval_to_number(tolua_S, 3, &arg2, LUA_FNAME);
+		ok &= luaval_to_int32(tolua_S, 4, &arg3, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		implot::ImPlot::SetupAxisLimits(arg0, arg1, arg2, arg3);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "3 to 4");
+}
+int lua_x_implot_ImPlot_SetupAxisLimitsConstraints(lua_State* tolua_S)
+{
+	bool ok = true;
+	constexpr auto LUA_FNAME = "implot.ImPlot.setupAxisLimitsConstraints";
+	const int argc = lua_gettop(tolua_S);
+	if (argc == 3) {
+		int arg0;
+		double arg1;
+		double arg2;
+		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
+		ok &= luaval_to_number(tolua_S, 2, &arg1, LUA_FNAME);
+		ok &= luaval_to_number(tolua_S, 3, &arg2, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		implot::ImPlot::SetupAxisLimitsConstraints(arg0, arg1, arg2);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "3");
+}
+int lua_x_implot_ImPlot_SetupAxisScale(lua_State* tolua_S)
+{
+	bool ok = true;
+	constexpr auto LUA_FNAME = "implot.ImPlot.setupAxisScale";
+	const int argc = lua_gettop(tolua_S);
+	if (argc == 2) {
+		int arg0;
+		int arg1;
+		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
+		ok &= luaval_to_int32(tolua_S, 2, &arg1, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		implot::ImPlot::SetupAxisScale(arg0, arg1);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "2");
+}
+int lua_x_implot_ImPlot_SetupAxisZoomConstraints(lua_State* tolua_S)
+{
+	bool ok = true;
+	constexpr auto LUA_FNAME = "implot.ImPlot.setupAxisZoomConstraints";
+	const int argc = lua_gettop(tolua_S);
+	if (argc == 3) {
+		int arg0;
+		double arg1;
+		double arg2;
+		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
+		ok &= luaval_to_number(tolua_S, 2, &arg1, LUA_FNAME);
+		ok &= luaval_to_number(tolua_S, 3, &arg2, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		implot::ImPlot::SetupAxisZoomConstraints(arg0, arg1, arg2);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "3");
+}
+int lua_x_implot_ImPlot_SetupFinish(lua_State* tolua_S)
+{
+	constexpr auto LUA_FNAME = "implot.ImPlot.setupFinish";
+	const int argc = lua_gettop(tolua_S);
+	if (argc == 0) {
+		implot::ImPlot::SetupFinish();
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
+}
+int lua_x_implot_ImPlot_SetupLegend(lua_State* tolua_S)
+{
+	bool ok = true;
+	constexpr auto LUA_FNAME = "implot.ImPlot.setupLegend";
+	const int argc = lua_gettop(tolua_S);
+	if (argc == 1) {
+		int arg0;
+		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		implot::ImPlot::SetupLegend(arg0);
+		return 0;
+	}
+	if (argc == 2) {
+		int arg0;
+		int arg1;
+		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
+		ok &= luaval_to_int32(tolua_S, 2, &arg1, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		implot::ImPlot::SetupLegend(arg0, arg1);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1 to 2");
+}
+int lua_x_implot_ImPlot_SetupMouseText(lua_State* tolua_S)
+{
+	bool ok = true;
+	constexpr auto LUA_FNAME = "implot.ImPlot.setupMouseText";
+	const int argc = lua_gettop(tolua_S);
+	if (argc == 1) {
+		int arg0;
+		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		implot::ImPlot::SetupMouseText(arg0);
+		return 0;
+	}
+	if (argc == 2) {
+		int arg0;
+		int arg1;
+		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
+		ok &= luaval_to_int32(tolua_S, 2, &arg1, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		implot::ImPlot::SetupMouseText(arg0, arg1);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1 to 2");
 }
 int lua_x_implot_ImPlot_ShowColormapSelector(lua_State* tolua_S)
 {
@@ -2571,6 +2599,20 @@ int lua_x_implot_ImPlot_ShowColormapSelector(lua_State* tolua_S)
 		ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
 		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
 		native_to_luaval(tolua_S, implot::ImPlot::ShowColormapSelector(arg0));
+		return 1;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
+}
+int lua_x_implot_ImPlot_ShowInputMapSelector(lua_State* tolua_S)
+{
+	bool ok = true;
+	constexpr auto LUA_FNAME = "implot.ImPlot.showInputMapSelector";
+	const int argc = lua_gettop(tolua_S);
+	if (argc == 1) {
+		const char* arg0;
+		ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		native_to_luaval(tolua_S, implot::ImPlot::ShowInputMapSelector(arg0));
 		return 1;
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
@@ -2657,25 +2699,25 @@ static int lua_x_implot_ImPlot_finalize(lua_State* tolua_S)
 int lua_register_x_implot_ImPlot(lua_State* tolua_S)
 {
 	// tolua_beginmodule(tolua_S, "ImPlot");
-		tolua_function(tolua_S, "annotate", lua_x_implot_ImPlot_Annotate);
-		tolua_function(tolua_S, "annotateClamped", lua_x_implot_ImPlot_AnnotateClamped);
-		tolua_function(tolua_S, "beginDragDropSource", lua_x_implot_ImPlot_BeginDragDropSource);
+		tolua_function(tolua_S, "beginAlignedPlots", lua_x_implot_ImPlot_BeginAlignedPlots);
+		tolua_function(tolua_S, "beginDragDropSourceAxis", lua_x_implot_ImPlot_BeginDragDropSourceAxis);
 		tolua_function(tolua_S, "beginDragDropSourceItem", lua_x_implot_ImPlot_BeginDragDropSourceItem);
-		tolua_function(tolua_S, "beginDragDropSourceX", lua_x_implot_ImPlot_BeginDragDropSourceX);
-		tolua_function(tolua_S, "beginDragDropSourceY", lua_x_implot_ImPlot_BeginDragDropSourceY);
-		tolua_function(tolua_S, "beginDragDropTarget", lua_x_implot_ImPlot_BeginDragDropTarget);
+		tolua_function(tolua_S, "beginDragDropSourcePlot", lua_x_implot_ImPlot_BeginDragDropSourcePlot);
+		tolua_function(tolua_S, "beginDragDropTargetAxis", lua_x_implot_ImPlot_BeginDragDropTargetAxis);
 		tolua_function(tolua_S, "beginDragDropTargetLegend", lua_x_implot_ImPlot_BeginDragDropTargetLegend);
-		tolua_function(tolua_S, "beginDragDropTargetX", lua_x_implot_ImPlot_BeginDragDropTargetX);
-		tolua_function(tolua_S, "beginDragDropTargetY", lua_x_implot_ImPlot_BeginDragDropTargetY);
+		tolua_function(tolua_S, "beginDragDropTargetPlot", lua_x_implot_ImPlot_BeginDragDropTargetPlot);
 		tolua_function(tolua_S, "beginLegendPopup", lua_x_implot_ImPlot_BeginLegendPopup);
+		tolua_function(tolua_S, "beginPlot", lua_x_implot_ImPlot_BeginPlot);
+		tolua_function(tolua_S, "cancelPlotSelection", lua_x_implot_ImPlot_CancelPlotSelection);
 		tolua_function(tolua_S, "colormapButton", lua_x_implot_ImPlot_ColormapButton);
 		tolua_function(tolua_S, "colormapIcon", lua_x_implot_ImPlot_ColormapIcon);
 		tolua_function(tolua_S, "colormapScale", lua_x_implot_ImPlot_ColormapScale);
+		tolua_function(tolua_S, "endAlignedPlots", lua_x_implot_ImPlot_EndAlignedPlots);
 		tolua_function(tolua_S, "endDragDropSource", lua_x_implot_ImPlot_EndDragDropSource);
 		tolua_function(tolua_S, "endDragDropTarget", lua_x_implot_ImPlot_EndDragDropTarget);
 		tolua_function(tolua_S, "endLegendPopup", lua_x_implot_ImPlot_EndLegendPopup);
 		tolua_function(tolua_S, "endPlot", lua_x_implot_ImPlot_EndPlot);
-		tolua_function(tolua_S, "fitNextPlotAxes", lua_x_implot_ImPlot_FitNextPlotAxes);
+		tolua_function(tolua_S, "endSubplots", lua_x_implot_ImPlot_EndSubplots);
 		tolua_function(tolua_S, "getColormapColor", lua_x_implot_ImPlot_GetColormapColor);
 		tolua_function(tolua_S, "getColormapCount", lua_x_implot_ImPlot_GetColormapCount);
 		tolua_function(tolua_S, "getColormapIndex", lua_x_implot_ImPlot_GetColormapIndex);
@@ -2687,18 +2729,16 @@ int lua_register_x_implot_ImPlot(lua_State* tolua_S)
 		tolua_function(tolua_S, "getPlotLimits", lua_x_implot_ImPlot_GetPlotLimits);
 		tolua_function(tolua_S, "getPlotMousePos", lua_x_implot_ImPlot_GetPlotMousePos);
 		tolua_function(tolua_S, "getPlotPos", lua_x_implot_ImPlot_GetPlotPos);
-		tolua_function(tolua_S, "getPlotQuery", lua_x_implot_ImPlot_GetPlotQuery);
 		tolua_function(tolua_S, "getPlotSelection", lua_x_implot_ImPlot_GetPlotSelection);
 		tolua_function(tolua_S, "getPlotSize", lua_x_implot_ImPlot_GetPlotSize);
 		tolua_function(tolua_S, "getStyle", lua_x_implot_ImPlot_GetStyle);
 		tolua_function(tolua_S, "getStyleColorName", lua_x_implot_ImPlot_GetStyleColorName);
 		tolua_function(tolua_S, "hideNextItem", lua_x_implot_ImPlot_HideNextItem);
+		tolua_function(tolua_S, "isAxisHovered", lua_x_implot_ImPlot_IsAxisHovered);
 		tolua_function(tolua_S, "isLegendEntryHovered", lua_x_implot_ImPlot_IsLegendEntryHovered);
 		tolua_function(tolua_S, "isPlotHovered", lua_x_implot_ImPlot_IsPlotHovered);
-		tolua_function(tolua_S, "isPlotQueried", lua_x_implot_ImPlot_IsPlotQueried);
 		tolua_function(tolua_S, "isPlotSelected", lua_x_implot_ImPlot_IsPlotSelected);
-		tolua_function(tolua_S, "isPlotXAxisHovered", lua_x_implot_ImPlot_IsPlotXAxisHovered);
-		tolua_function(tolua_S, "isPlotYAxisHovered", lua_x_implot_ImPlot_IsPlotYAxisHovered);
+		tolua_function(tolua_S, "isSubplotsHovered", lua_x_implot_ImPlot_IsSubplotsHovered);
 		tolua_function(tolua_S, "nextColormapColor", lua_x_implot_ImPlot_NextColormapColor);
 		tolua_function(tolua_S, "pixelsToPlot", lua_x_implot_ImPlot_PixelsToPlot);
 		tolua_function(tolua_S, "plotDummy", lua_x_implot_ImPlot_PlotDummy);
@@ -2710,20 +2750,29 @@ int lua_register_x_implot_ImPlot(lua_State* tolua_S)
 		tolua_function(tolua_S, "popStyleVar", lua_x_implot_ImPlot_PopStyleVar);
 		tolua_function(tolua_S, "pushPlotClipRect", lua_x_implot_ImPlot_PushPlotClipRect);
 		tolua_function(tolua_S, "sampleColormap", lua_x_implot_ImPlot_SampleColormap);
-		tolua_function(tolua_S, "setLegendLocation", lua_x_implot_ImPlot_SetLegendLocation);
-		tolua_function(tolua_S, "setMousePosLocation", lua_x_implot_ImPlot_SetMousePosLocation);
+		tolua_function(tolua_S, "setAxes", lua_x_implot_ImPlot_SetAxes);
+		tolua_function(tolua_S, "setAxis", lua_x_implot_ImPlot_SetAxis);
+		tolua_function(tolua_S, "setNextAxesLimits", lua_x_implot_ImPlot_SetNextAxesLimits);
+		tolua_function(tolua_S, "setNextAxesToFit", lua_x_implot_ImPlot_SetNextAxesToFit);
+		tolua_function(tolua_S, "setNextAxisLimits", lua_x_implot_ImPlot_SetNextAxisLimits);
+		tolua_function(tolua_S, "setNextAxisToFit", lua_x_implot_ImPlot_SetNextAxisToFit);
 		tolua_function(tolua_S, "setNextErrorBarStyle", lua_x_implot_ImPlot_SetNextErrorBarStyle);
 		tolua_function(tolua_S, "setNextFillStyle", lua_x_implot_ImPlot_SetNextFillStyle);
 		tolua_function(tolua_S, "setNextLineStyle", lua_x_implot_ImPlot_SetNextLineStyle);
 		tolua_function(tolua_S, "setNextMarkerStyle", lua_x_implot_ImPlot_SetNextMarkerStyle);
-		tolua_function(tolua_S, "setNextPlotFormatX", lua_x_implot_ImPlot_SetNextPlotFormatX);
-		tolua_function(tolua_S, "setNextPlotFormatY", lua_x_implot_ImPlot_SetNextPlotFormatY);
-		tolua_function(tolua_S, "setNextPlotLimits", lua_x_implot_ImPlot_SetNextPlotLimits);
-		tolua_function(tolua_S, "setNextPlotLimitsX", lua_x_implot_ImPlot_SetNextPlotLimitsX);
-		tolua_function(tolua_S, "setNextPlotLimitsY", lua_x_implot_ImPlot_SetNextPlotLimitsY);
-		tolua_function(tolua_S, "setPlotQuery", lua_x_implot_ImPlot_SetPlotQuery);
-		tolua_function(tolua_S, "setPlotYAxis", lua_x_implot_ImPlot_SetPlotYAxis);
+		tolua_function(tolua_S, "setupAxes", lua_x_implot_ImPlot_SetupAxes);
+		tolua_function(tolua_S, "setupAxesLimits", lua_x_implot_ImPlot_SetupAxesLimits);
+		tolua_function(tolua_S, "setupAxis", lua_x_implot_ImPlot_SetupAxis);
+		tolua_function(tolua_S, "setupAxisFormat", lua_x_implot_ImPlot_SetupAxisFormat);
+		tolua_function(tolua_S, "setupAxisLimits", lua_x_implot_ImPlot_SetupAxisLimits);
+		tolua_function(tolua_S, "setupAxisLimitsConstraints", lua_x_implot_ImPlot_SetupAxisLimitsConstraints);
+		tolua_function(tolua_S, "setupAxisScale", lua_x_implot_ImPlot_SetupAxisScale);
+		tolua_function(tolua_S, "setupAxisZoomConstraints", lua_x_implot_ImPlot_SetupAxisZoomConstraints);
+		tolua_function(tolua_S, "setupFinish", lua_x_implot_ImPlot_SetupFinish);
+		tolua_function(tolua_S, "setupLegend", lua_x_implot_ImPlot_SetupLegend);
+		tolua_function(tolua_S, "setupMouseText", lua_x_implot_ImPlot_SetupMouseText);
 		tolua_function(tolua_S, "showColormapSelector", lua_x_implot_ImPlot_ShowColormapSelector);
+		tolua_function(tolua_S, "showInputMapSelector", lua_x_implot_ImPlot_ShowInputMapSelector);
 		tolua_function(tolua_S, "showStyleEditor", lua_x_implot_ImPlot_ShowStyleEditor);
 		tolua_function(tolua_S, "showStyleSelector", lua_x_implot_ImPlot_ShowStyleSelector);
 		tolua_function(tolua_S, "showUserGuide", lua_x_implot_ImPlot_ShowUserGuide);
@@ -2749,8 +2798,6 @@ int register_all_x_implot(lua_State* tolua_S)
 	lua_register_x_implot_ImPlotMarker_(tolua_S);
 	lua_register_x_implot_ImPlotColormap_(tolua_S);
 	lua_register_x_implot_ImPlotLocation_(tolua_S);
-	lua_register_x_implot_ImPlotOrientation_(tolua_S);
-	lua_register_x_implot_ImPlotYAxis_(tolua_S);
 	lua_register_x_implot_ImPlotStyle(tolua_S);
 	lua_register_x_implot_ImPlot(tolua_S);
 

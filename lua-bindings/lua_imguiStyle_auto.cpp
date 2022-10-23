@@ -73,6 +73,32 @@ int lua_x_imguiStyle_ImGuiStyle_setAlpha(lua_State* tolua_S)
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
 }
+int lua_x_imguiStyle_ImGuiStyle_getDisabledAlpha(lua_State* tolua_S)
+{
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiStyle";
+	constexpr auto LUA_FNAME = "imgui.ImGuiStyle.DisabledAlpha getter";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiStyle*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	native_to_luaval(tolua_S, cobj->DisabledAlpha);
+	return 1;
+}
+int lua_x_imguiStyle_ImGuiStyle_setDisabledAlpha(lua_State* tolua_S)
+{
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiStyle";
+	constexpr auto LUA_FNAME = "imgui.ImGuiStyle.DisabledAlpha setter";
+	bool ok = true;
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiStyle*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (1 == argc) {
+		ok &= luaval_to_native(tolua_S, 2, &cobj->DisabledAlpha, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
+}
 int lua_x_imguiStyle_ImGuiStyle_getWindowPadding(lua_State* tolua_S)
 {
 	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiStyle";
@@ -1074,6 +1100,7 @@ int lua_register_x_imguiStyle_ImGuiStyle(lua_State* tolua_S)
 	tolua_beginmodule(tolua_S, "ImGuiStyle");
 		tolua_function(tolua_S, "scaleAllSizes", lua_x_imguiStyle_ImGuiStyle_ScaleAllSizes);
 		tolua_variable(tolua_S, "Alpha", lua_x_imguiStyle_ImGuiStyle_getAlpha, lua_x_imguiStyle_ImGuiStyle_setAlpha);
+		tolua_variable(tolua_S, "DisabledAlpha", lua_x_imguiStyle_ImGuiStyle_getDisabledAlpha, lua_x_imguiStyle_ImGuiStyle_setDisabledAlpha);
 		tolua_variable(tolua_S, "WindowPadding", lua_x_imguiStyle_ImGuiStyle_getWindowPadding, lua_x_imguiStyle_ImGuiStyle_setWindowPadding);
 		tolua_variable(tolua_S, "WindowRounding", lua_x_imguiStyle_ImGuiStyle_getWindowRounding, lua_x_imguiStyle_ImGuiStyle_setWindowRounding);
 		tolua_variable(tolua_S, "WindowBorderSize", lua_x_imguiStyle_ImGuiStyle_getWindowBorderSize, lua_x_imguiStyle_ImGuiStyle_setWindowBorderSize);

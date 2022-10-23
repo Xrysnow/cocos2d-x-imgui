@@ -28,6 +28,25 @@ namespace imgui { using ImGuiIO = ImGuiIO; }
 	#define LUA_PARAMETER_ERROR(L, NAME, ARGC, EXPECT) return luaL_error((L), "wrong number of arguments in '%s': %d, expects %s", NAME, (ARGC), EXPECT);
 #endif
 
+int lua_x_imguiIO_ImGuiIO_AddFocusEvent(lua_State* tolua_S)
+{
+	bool ok = true;
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
+	constexpr auto LUA_FNAME = "imgui.ImGuiIO:addFocusEvent";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, nullptr);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (argc == 1) {
+		bool arg0;
+		ok &= luaval_to_boolean(tolua_S, 2, &arg0, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		cobj->AddFocusEvent(arg0);
+		lua_settop(tolua_S, 1);
+		return 1;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
+}
 int lua_x_imguiIO_ImGuiIO_AddInputCharacter(lua_State* tolua_S)
 {
 	bool ok = true;
@@ -85,6 +104,132 @@ int lua_x_imguiIO_ImGuiIO_AddInputCharactersUTF8(lua_State* tolua_S)
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
 }
+int lua_x_imguiIO_ImGuiIO_AddKeyAnalogEvent(lua_State* tolua_S)
+{
+	bool ok = true;
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
+	constexpr auto LUA_FNAME = "imgui.ImGuiIO:addKeyAnalogEvent";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, nullptr);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (argc == 3) {
+		ImGuiKey arg0;
+		bool arg1;
+		double arg2;
+		ok &= luaval_to_native(tolua_S, 2, &arg0, LUA_FNAME);
+		ok &= luaval_to_boolean(tolua_S, 3, &arg1, LUA_FNAME);
+		ok &= luaval_to_number(tolua_S, 4, &arg2, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		cobj->AddKeyAnalogEvent(arg0, arg1, arg2);
+		lua_settop(tolua_S, 1);
+		return 1;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "3");
+}
+int lua_x_imguiIO_ImGuiIO_AddKeyEvent(lua_State* tolua_S)
+{
+	bool ok = true;
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
+	constexpr auto LUA_FNAME = "imgui.ImGuiIO:addKeyEvent";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, nullptr);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (argc == 2) {
+		ImGuiKey arg0;
+		bool arg1;
+		ok &= luaval_to_native(tolua_S, 2, &arg0, LUA_FNAME);
+		ok &= luaval_to_boolean(tolua_S, 3, &arg1, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		cobj->AddKeyEvent(arg0, arg1);
+		lua_settop(tolua_S, 1);
+		return 1;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "2");
+}
+int lua_x_imguiIO_ImGuiIO_AddMouseButtonEvent(lua_State* tolua_S)
+{
+	bool ok = true;
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
+	constexpr auto LUA_FNAME = "imgui.ImGuiIO:addMouseButtonEvent";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, nullptr);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (argc == 2) {
+		int arg0;
+		bool arg1;
+		ok &= luaval_to_int32(tolua_S, 2, &arg0, LUA_FNAME);
+		ok &= luaval_to_boolean(tolua_S, 3, &arg1, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		cobj->AddMouseButtonEvent(arg0, arg1);
+		lua_settop(tolua_S, 1);
+		return 1;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "2");
+}
+int lua_x_imguiIO_ImGuiIO_AddMousePosEvent(lua_State* tolua_S)
+{
+	bool ok = true;
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
+	constexpr auto LUA_FNAME = "imgui.ImGuiIO:addMousePosEvent";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, nullptr);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (argc == 2) {
+		double arg0;
+		double arg1;
+		ok &= luaval_to_number(tolua_S, 2, &arg0, LUA_FNAME);
+		ok &= luaval_to_number(tolua_S, 3, &arg1, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		cobj->AddMousePosEvent(arg0, arg1);
+		lua_settop(tolua_S, 1);
+		return 1;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "2");
+}
+int lua_x_imguiIO_ImGuiIO_AddMouseViewportEvent(lua_State* tolua_S)
+{
+	bool ok = true;
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
+	constexpr auto LUA_FNAME = "imgui.ImGuiIO:addMouseViewportEvent";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, nullptr);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (argc == 1) {
+		unsigned int arg0;
+		ok &= luaval_to_uint32(tolua_S, 2, &arg0, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		cobj->AddMouseViewportEvent(arg0);
+		lua_settop(tolua_S, 1);
+		return 1;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
+}
+int lua_x_imguiIO_ImGuiIO_AddMouseWheelEvent(lua_State* tolua_S)
+{
+	bool ok = true;
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
+	constexpr auto LUA_FNAME = "imgui.ImGuiIO:addMouseWheelEvent";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, nullptr);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (argc == 2) {
+		double arg0;
+		double arg1;
+		ok &= luaval_to_number(tolua_S, 2, &arg0, LUA_FNAME);
+		ok &= luaval_to_number(tolua_S, 3, &arg1, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		cobj->AddMouseWheelEvent(arg0, arg1);
+		lua_settop(tolua_S, 1);
+		return 1;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "2");
+}
 int lua_x_imguiIO_ImGuiIO_ClearInputCharacters(lua_State* tolua_S)
 {
 	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
@@ -99,6 +244,77 @@ int lua_x_imguiIO_ImGuiIO_ClearInputCharacters(lua_State* tolua_S)
 		return 1;
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
+}
+int lua_x_imguiIO_ImGuiIO_ClearInputKeys(lua_State* tolua_S)
+{
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
+	constexpr auto LUA_FNAME = "imgui.ImGuiIO:clearInputKeys";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, nullptr);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (argc == 0) {
+		cobj->ClearInputKeys();
+		lua_settop(tolua_S, 1);
+		return 1;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
+}
+int lua_x_imguiIO_ImGuiIO_SetAppAcceptingEvents(lua_State* tolua_S)
+{
+	bool ok = true;
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
+	constexpr auto LUA_FNAME = "imgui.ImGuiIO:setAppAcceptingEvents";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, nullptr);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (argc == 1) {
+		bool arg0;
+		ok &= luaval_to_boolean(tolua_S, 2, &arg0, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		cobj->SetAppAcceptingEvents(arg0);
+		lua_settop(tolua_S, 1);
+		return 1;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
+}
+int lua_x_imguiIO_ImGuiIO_SetKeyEventNativeData(lua_State* tolua_S)
+{
+	bool ok = true;
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
+	constexpr auto LUA_FNAME = "imgui.ImGuiIO:setKeyEventNativeData";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, nullptr);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (argc == 3) {
+		ImGuiKey arg0;
+		int arg1;
+		int arg2;
+		ok &= luaval_to_native(tolua_S, 2, &arg0, LUA_FNAME);
+		ok &= luaval_to_int32(tolua_S, 3, &arg1, LUA_FNAME);
+		ok &= luaval_to_int32(tolua_S, 4, &arg2, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		cobj->SetKeyEventNativeData(arg0, arg1, arg2);
+		lua_settop(tolua_S, 1);
+		return 1;
+	}
+	if (argc == 4) {
+		ImGuiKey arg0;
+		int arg1;
+		int arg2;
+		int arg3;
+		ok &= luaval_to_native(tolua_S, 2, &arg0, LUA_FNAME);
+		ok &= luaval_to_int32(tolua_S, 3, &arg1, LUA_FNAME);
+		ok &= luaval_to_int32(tolua_S, 4, &arg2, LUA_FNAME);
+		ok &= luaval_to_int32(tolua_S, 5, &arg3, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		cobj->SetKeyEventNativeData(arg0, arg1, arg2, arg3);
+		lua_settop(tolua_S, 1);
+		return 1;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "3 to 4");
 }
 int lua_x_imguiIO_ImGuiIO_getConfigFlags(lua_State* tolua_S)
 {
@@ -412,6 +628,58 @@ int lua_x_imguiIO_ImGuiIO_setKeyRepeatRate(lua_State* tolua_S)
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
 }
+int lua_x_imguiIO_ImGuiIO_getHoverDelayNormal(lua_State* tolua_S)
+{
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
+	constexpr auto LUA_FNAME = "imgui.ImGuiIO.HoverDelayNormal getter";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	native_to_luaval(tolua_S, cobj->HoverDelayNormal);
+	return 1;
+}
+int lua_x_imguiIO_ImGuiIO_setHoverDelayNormal(lua_State* tolua_S)
+{
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
+	constexpr auto LUA_FNAME = "imgui.ImGuiIO.HoverDelayNormal setter";
+	bool ok = true;
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (1 == argc) {
+		ok &= luaval_to_native(tolua_S, 2, &cobj->HoverDelayNormal, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
+}
+int lua_x_imguiIO_ImGuiIO_getHoverDelayShort(lua_State* tolua_S)
+{
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
+	constexpr auto LUA_FNAME = "imgui.ImGuiIO.HoverDelayShort getter";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	native_to_luaval(tolua_S, cobj->HoverDelayShort);
+	return 1;
+}
+int lua_x_imguiIO_ImGuiIO_setHoverDelayShort(lua_State* tolua_S)
+{
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
+	constexpr auto LUA_FNAME = "imgui.ImGuiIO.HoverDelayShort setter";
+	bool ok = true;
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (1 == argc) {
+		ok &= luaval_to_native(tolua_S, 2, &cobj->HoverDelayShort, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
+}
 int lua_x_imguiIO_ImGuiIO_getFonts(lua_State* tolua_S)
 {
 	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
@@ -563,6 +831,32 @@ int lua_x_imguiIO_ImGuiIO_setConfigDockingNoSplit(lua_State* tolua_S)
 	const int argc = lua_gettop(tolua_S) - 1;
 	if (1 == argc) {
 		ok &= luaval_to_native(tolua_S, 2, &cobj->ConfigDockingNoSplit, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
+}
+int lua_x_imguiIO_ImGuiIO_getConfigDockingWithShift(lua_State* tolua_S)
+{
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
+	constexpr auto LUA_FNAME = "imgui.ImGuiIO.ConfigDockingWithShift getter";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	native_to_luaval(tolua_S, cobj->ConfigDockingWithShift);
+	return 1;
+}
+int lua_x_imguiIO_ImGuiIO_setConfigDockingWithShift(lua_State* tolua_S)
+{
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
+	constexpr auto LUA_FNAME = "imgui.ImGuiIO.ConfigDockingWithShift setter";
+	bool ok = true;
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (1 == argc) {
+		ok &= luaval_to_native(tolua_S, 2, &cobj->ConfigDockingWithShift, LUA_FNAME);
 		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
 		return 0;
 	}
@@ -776,6 +1070,32 @@ int lua_x_imguiIO_ImGuiIO_setConfigMacOSXBehaviors(lua_State* tolua_S)
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
 }
+int lua_x_imguiIO_ImGuiIO_getConfigInputTrickleEventQueue(lua_State* tolua_S)
+{
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
+	constexpr auto LUA_FNAME = "imgui.ImGuiIO.ConfigInputTrickleEventQueue getter";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	native_to_luaval(tolua_S, cobj->ConfigInputTrickleEventQueue);
+	return 1;
+}
+int lua_x_imguiIO_ImGuiIO_setConfigInputTrickleEventQueue(lua_State* tolua_S)
+{
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
+	constexpr auto LUA_FNAME = "imgui.ImGuiIO.ConfigInputTrickleEventQueue setter";
+	bool ok = true;
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (1 == argc) {
+		ok &= luaval_to_native(tolua_S, 2, &cobj->ConfigInputTrickleEventQueue, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
+}
 int lua_x_imguiIO_ImGuiIO_getConfigInputTextCursorBlink(lua_State* tolua_S)
 {
 	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
@@ -797,6 +1117,32 @@ int lua_x_imguiIO_ImGuiIO_setConfigInputTextCursorBlink(lua_State* tolua_S)
 	const int argc = lua_gettop(tolua_S) - 1;
 	if (1 == argc) {
 		ok &= luaval_to_native(tolua_S, 2, &cobj->ConfigInputTextCursorBlink, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
+}
+int lua_x_imguiIO_ImGuiIO_getConfigInputTextEnterKeepActive(lua_State* tolua_S)
+{
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
+	constexpr auto LUA_FNAME = "imgui.ImGuiIO.ConfigInputTextEnterKeepActive getter";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	native_to_luaval(tolua_S, cobj->ConfigInputTextEnterKeepActive);
+	return 1;
+}
+int lua_x_imguiIO_ImGuiIO_setConfigInputTextEnterKeepActive(lua_State* tolua_S)
+{
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
+	constexpr auto LUA_FNAME = "imgui.ImGuiIO.ConfigInputTextEnterKeepActive setter";
+	bool ok = true;
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (1 == argc) {
+		ok &= luaval_to_native(tolua_S, 2, &cobj->ConfigInputTextEnterKeepActive, LUA_FNAME);
 		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
 		return 0;
 	}
@@ -953,214 +1299,6 @@ int lua_x_imguiIO_ImGuiIO_setBackendRendererName(lua_State* tolua_S)
 	const int argc = lua_gettop(tolua_S) - 1;
 	if (1 == argc) {
 		ok &= luaval_to_native(tolua_S, 2, &cobj->BackendRendererName, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_imguiIO_ImGuiIO_getMousePos(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
-	constexpr auto LUA_FNAME = "imgui.ImGuiIO.MousePos getter";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	native_to_luaval(tolua_S, cobj->MousePos);
-	return 1;
-}
-int lua_x_imguiIO_ImGuiIO_setMousePos(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
-	constexpr auto LUA_FNAME = "imgui.ImGuiIO.MousePos setter";
-	bool ok = true;
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (1 == argc) {
-		ok &= luaval_to_native(tolua_S, 2, &cobj->MousePos, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_imguiIO_ImGuiIO_getMouseWheel(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
-	constexpr auto LUA_FNAME = "imgui.ImGuiIO.MouseWheel getter";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	native_to_luaval(tolua_S, cobj->MouseWheel);
-	return 1;
-}
-int lua_x_imguiIO_ImGuiIO_setMouseWheel(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
-	constexpr auto LUA_FNAME = "imgui.ImGuiIO.MouseWheel setter";
-	bool ok = true;
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (1 == argc) {
-		ok &= luaval_to_native(tolua_S, 2, &cobj->MouseWheel, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_imguiIO_ImGuiIO_getMouseWheelH(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
-	constexpr auto LUA_FNAME = "imgui.ImGuiIO.MouseWheelH getter";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	native_to_luaval(tolua_S, cobj->MouseWheelH);
-	return 1;
-}
-int lua_x_imguiIO_ImGuiIO_setMouseWheelH(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
-	constexpr auto LUA_FNAME = "imgui.ImGuiIO.MouseWheelH setter";
-	bool ok = true;
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (1 == argc) {
-		ok &= luaval_to_native(tolua_S, 2, &cobj->MouseWheelH, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_imguiIO_ImGuiIO_getMouseHoveredViewport(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
-	constexpr auto LUA_FNAME = "imgui.ImGuiIO.MouseHoveredViewport getter";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	native_to_luaval(tolua_S, cobj->MouseHoveredViewport);
-	return 1;
-}
-int lua_x_imguiIO_ImGuiIO_setMouseHoveredViewport(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
-	constexpr auto LUA_FNAME = "imgui.ImGuiIO.MouseHoveredViewport setter";
-	bool ok = true;
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (1 == argc) {
-		ok &= luaval_to_native(tolua_S, 2, &cobj->MouseHoveredViewport, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_imguiIO_ImGuiIO_getKeyCtrl(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
-	constexpr auto LUA_FNAME = "imgui.ImGuiIO.KeyCtrl getter";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	native_to_luaval(tolua_S, cobj->KeyCtrl);
-	return 1;
-}
-int lua_x_imguiIO_ImGuiIO_setKeyCtrl(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
-	constexpr auto LUA_FNAME = "imgui.ImGuiIO.KeyCtrl setter";
-	bool ok = true;
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (1 == argc) {
-		ok &= luaval_to_native(tolua_S, 2, &cobj->KeyCtrl, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_imguiIO_ImGuiIO_getKeyShift(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
-	constexpr auto LUA_FNAME = "imgui.ImGuiIO.KeyShift getter";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	native_to_luaval(tolua_S, cobj->KeyShift);
-	return 1;
-}
-int lua_x_imguiIO_ImGuiIO_setKeyShift(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
-	constexpr auto LUA_FNAME = "imgui.ImGuiIO.KeyShift setter";
-	bool ok = true;
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (1 == argc) {
-		ok &= luaval_to_native(tolua_S, 2, &cobj->KeyShift, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_imguiIO_ImGuiIO_getKeyAlt(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
-	constexpr auto LUA_FNAME = "imgui.ImGuiIO.KeyAlt getter";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	native_to_luaval(tolua_S, cobj->KeyAlt);
-	return 1;
-}
-int lua_x_imguiIO_ImGuiIO_setKeyAlt(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
-	constexpr auto LUA_FNAME = "imgui.ImGuiIO.KeyAlt setter";
-	bool ok = true;
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (1 == argc) {
-		ok &= luaval_to_native(tolua_S, 2, &cobj->KeyAlt, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_imguiIO_ImGuiIO_getKeySuper(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
-	constexpr auto LUA_FNAME = "imgui.ImGuiIO.KeySuper getter";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	native_to_luaval(tolua_S, cobj->KeySuper);
-	return 1;
-}
-int lua_x_imguiIO_ImGuiIO_setKeySuper(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiIO";
-	constexpr auto LUA_FNAME = "imgui.ImGuiIO.KeySuper setter";
-	bool ok = true;
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiIO*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (1 == argc) {
-		ok &= luaval_to_native(tolua_S, 2, &cobj->KeySuper, LUA_FNAME);
 		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
 		return 0;
 	}
@@ -1541,10 +1679,20 @@ int lua_register_x_imguiIO_ImGuiIO(lua_State* tolua_S)
 	tolua_cclass(tolua_S, "ImGuiIO", "imgui.ImGuiIO", "", nullptr);
 
 	tolua_beginmodule(tolua_S, "ImGuiIO");
+		tolua_function(tolua_S, "addFocusEvent", lua_x_imguiIO_ImGuiIO_AddFocusEvent);
 		tolua_function(tolua_S, "addInputCharacter", lua_x_imguiIO_ImGuiIO_AddInputCharacter);
 		tolua_function(tolua_S, "addInputCharacterUTF16", lua_x_imguiIO_ImGuiIO_AddInputCharacterUTF16);
 		tolua_function(tolua_S, "addInputCharactersUTF8", lua_x_imguiIO_ImGuiIO_AddInputCharactersUTF8);
+		tolua_function(tolua_S, "addKeyAnalogEvent", lua_x_imguiIO_ImGuiIO_AddKeyAnalogEvent);
+		tolua_function(tolua_S, "addKeyEvent", lua_x_imguiIO_ImGuiIO_AddKeyEvent);
+		tolua_function(tolua_S, "addMouseButtonEvent", lua_x_imguiIO_ImGuiIO_AddMouseButtonEvent);
+		tolua_function(tolua_S, "addMousePosEvent", lua_x_imguiIO_ImGuiIO_AddMousePosEvent);
+		tolua_function(tolua_S, "addMouseViewportEvent", lua_x_imguiIO_ImGuiIO_AddMouseViewportEvent);
+		tolua_function(tolua_S, "addMouseWheelEvent", lua_x_imguiIO_ImGuiIO_AddMouseWheelEvent);
 		tolua_function(tolua_S, "clearInputCharacters", lua_x_imguiIO_ImGuiIO_ClearInputCharacters);
+		tolua_function(tolua_S, "clearInputKeys", lua_x_imguiIO_ImGuiIO_ClearInputKeys);
+		tolua_function(tolua_S, "setAppAcceptingEvents", lua_x_imguiIO_ImGuiIO_SetAppAcceptingEvents);
+		tolua_function(tolua_S, "setKeyEventNativeData", lua_x_imguiIO_ImGuiIO_SetKeyEventNativeData);
 		tolua_variable(tolua_S, "ConfigFlags", lua_x_imguiIO_ImGuiIO_getConfigFlags, lua_x_imguiIO_ImGuiIO_setConfigFlags);
 		tolua_variable(tolua_S, "BackendFlags", lua_x_imguiIO_ImGuiIO_getBackendFlags, lua_x_imguiIO_ImGuiIO_setBackendFlags);
 		tolua_variable(tolua_S, "DisplaySize", lua_x_imguiIO_ImGuiIO_getDisplaySize, lua_x_imguiIO_ImGuiIO_setDisplaySize);
@@ -1557,12 +1705,15 @@ int lua_register_x_imguiIO_ImGuiIO(lua_State* tolua_S)
 		tolua_variable(tolua_S, "MouseDragThreshold", lua_x_imguiIO_ImGuiIO_getMouseDragThreshold, lua_x_imguiIO_ImGuiIO_setMouseDragThreshold);
 		tolua_variable(tolua_S, "KeyRepeatDelay", lua_x_imguiIO_ImGuiIO_getKeyRepeatDelay, lua_x_imguiIO_ImGuiIO_setKeyRepeatDelay);
 		tolua_variable(tolua_S, "KeyRepeatRate", lua_x_imguiIO_ImGuiIO_getKeyRepeatRate, lua_x_imguiIO_ImGuiIO_setKeyRepeatRate);
+		tolua_variable(tolua_S, "HoverDelayNormal", lua_x_imguiIO_ImGuiIO_getHoverDelayNormal, lua_x_imguiIO_ImGuiIO_setHoverDelayNormal);
+		tolua_variable(tolua_S, "HoverDelayShort", lua_x_imguiIO_ImGuiIO_getHoverDelayShort, lua_x_imguiIO_ImGuiIO_setHoverDelayShort);
 		tolua_variable(tolua_S, "Fonts", lua_x_imguiIO_ImGuiIO_getFonts, lua_x_imguiIO_ImGuiIO_setFonts);
 		tolua_variable(tolua_S, "FontGlobalScale", lua_x_imguiIO_ImGuiIO_getFontGlobalScale, lua_x_imguiIO_ImGuiIO_setFontGlobalScale);
 		tolua_variable(tolua_S, "FontAllowUserScaling", lua_x_imguiIO_ImGuiIO_getFontAllowUserScaling, lua_x_imguiIO_ImGuiIO_setFontAllowUserScaling);
 		tolua_variable(tolua_S, "FontDefault", lua_x_imguiIO_ImGuiIO_getFontDefault, lua_x_imguiIO_ImGuiIO_setFontDefault);
 		tolua_variable(tolua_S, "DisplayFramebufferScale", lua_x_imguiIO_ImGuiIO_getDisplayFramebufferScale, lua_x_imguiIO_ImGuiIO_setDisplayFramebufferScale);
 		tolua_variable(tolua_S, "ConfigDockingNoSplit", lua_x_imguiIO_ImGuiIO_getConfigDockingNoSplit, lua_x_imguiIO_ImGuiIO_setConfigDockingNoSplit);
+		tolua_variable(tolua_S, "ConfigDockingWithShift", lua_x_imguiIO_ImGuiIO_getConfigDockingWithShift, lua_x_imguiIO_ImGuiIO_setConfigDockingWithShift);
 		tolua_variable(tolua_S, "ConfigDockingAlwaysTabBar", lua_x_imguiIO_ImGuiIO_getConfigDockingAlwaysTabBar, lua_x_imguiIO_ImGuiIO_setConfigDockingAlwaysTabBar);
 		tolua_variable(tolua_S, "ConfigDockingTransparentPayload", lua_x_imguiIO_ImGuiIO_getConfigDockingTransparentPayload, lua_x_imguiIO_ImGuiIO_setConfigDockingTransparentPayload);
 		tolua_variable(tolua_S, "ConfigViewportsNoAutoMerge", lua_x_imguiIO_ImGuiIO_getConfigViewportsNoAutoMerge, lua_x_imguiIO_ImGuiIO_setConfigViewportsNoAutoMerge);
@@ -1571,21 +1722,15 @@ int lua_register_x_imguiIO_ImGuiIO(lua_State* tolua_S)
 		tolua_variable(tolua_S, "ConfigViewportsNoDefaultParent", lua_x_imguiIO_ImGuiIO_getConfigViewportsNoDefaultParent, lua_x_imguiIO_ImGuiIO_setConfigViewportsNoDefaultParent);
 		tolua_variable(tolua_S, "MouseDrawCursor", lua_x_imguiIO_ImGuiIO_getMouseDrawCursor, lua_x_imguiIO_ImGuiIO_setMouseDrawCursor);
 		tolua_variable(tolua_S, "ConfigMacOSXBehaviors", lua_x_imguiIO_ImGuiIO_getConfigMacOSXBehaviors, lua_x_imguiIO_ImGuiIO_setConfigMacOSXBehaviors);
+		tolua_variable(tolua_S, "ConfigInputTrickleEventQueue", lua_x_imguiIO_ImGuiIO_getConfigInputTrickleEventQueue, lua_x_imguiIO_ImGuiIO_setConfigInputTrickleEventQueue);
 		tolua_variable(tolua_S, "ConfigInputTextCursorBlink", lua_x_imguiIO_ImGuiIO_getConfigInputTextCursorBlink, lua_x_imguiIO_ImGuiIO_setConfigInputTextCursorBlink);
+		tolua_variable(tolua_S, "ConfigInputTextEnterKeepActive", lua_x_imguiIO_ImGuiIO_getConfigInputTextEnterKeepActive, lua_x_imguiIO_ImGuiIO_setConfigInputTextEnterKeepActive);
 		tolua_variable(tolua_S, "ConfigDragClickToInputText", lua_x_imguiIO_ImGuiIO_getConfigDragClickToInputText, lua_x_imguiIO_ImGuiIO_setConfigDragClickToInputText);
 		tolua_variable(tolua_S, "ConfigWindowsResizeFromEdges", lua_x_imguiIO_ImGuiIO_getConfigWindowsResizeFromEdges, lua_x_imguiIO_ImGuiIO_setConfigWindowsResizeFromEdges);
 		tolua_variable(tolua_S, "ConfigWindowsMoveFromTitleBarOnly", lua_x_imguiIO_ImGuiIO_getConfigWindowsMoveFromTitleBarOnly, lua_x_imguiIO_ImGuiIO_setConfigWindowsMoveFromTitleBarOnly);
 		tolua_variable(tolua_S, "ConfigMemoryCompactTimer", lua_x_imguiIO_ImGuiIO_getConfigMemoryCompactTimer, lua_x_imguiIO_ImGuiIO_setConfigMemoryCompactTimer);
 		tolua_variable(tolua_S, "BackendPlatformName", lua_x_imguiIO_ImGuiIO_getBackendPlatformName, lua_x_imguiIO_ImGuiIO_setBackendPlatformName);
 		tolua_variable(tolua_S, "BackendRendererName", lua_x_imguiIO_ImGuiIO_getBackendRendererName, lua_x_imguiIO_ImGuiIO_setBackendRendererName);
-		tolua_variable(tolua_S, "MousePos", lua_x_imguiIO_ImGuiIO_getMousePos, lua_x_imguiIO_ImGuiIO_setMousePos);
-		tolua_variable(tolua_S, "MouseWheel", lua_x_imguiIO_ImGuiIO_getMouseWheel, lua_x_imguiIO_ImGuiIO_setMouseWheel);
-		tolua_variable(tolua_S, "MouseWheelH", lua_x_imguiIO_ImGuiIO_getMouseWheelH, lua_x_imguiIO_ImGuiIO_setMouseWheelH);
-		tolua_variable(tolua_S, "MouseHoveredViewport", lua_x_imguiIO_ImGuiIO_getMouseHoveredViewport, lua_x_imguiIO_ImGuiIO_setMouseHoveredViewport);
-		tolua_variable(tolua_S, "KeyCtrl", lua_x_imguiIO_ImGuiIO_getKeyCtrl, lua_x_imguiIO_ImGuiIO_setKeyCtrl);
-		tolua_variable(tolua_S, "KeyShift", lua_x_imguiIO_ImGuiIO_getKeyShift, lua_x_imguiIO_ImGuiIO_setKeyShift);
-		tolua_variable(tolua_S, "KeyAlt", lua_x_imguiIO_ImGuiIO_getKeyAlt, lua_x_imguiIO_ImGuiIO_setKeyAlt);
-		tolua_variable(tolua_S, "KeySuper", lua_x_imguiIO_ImGuiIO_getKeySuper, lua_x_imguiIO_ImGuiIO_setKeySuper);
 		tolua_variable(tolua_S, "WantCaptureMouse", lua_x_imguiIO_ImGuiIO_getWantCaptureMouse, lua_x_imguiIO_ImGuiIO_setWantCaptureMouse);
 		tolua_variable(tolua_S, "WantCaptureKeyboard", lua_x_imguiIO_ImGuiIO_getWantCaptureKeyboard, lua_x_imguiIO_ImGuiIO_setWantCaptureKeyboard);
 		tolua_variable(tolua_S, "WantTextInput", lua_x_imguiIO_ImGuiIO_getWantTextInput, lua_x_imguiIO_ImGuiIO_setWantTextInput);

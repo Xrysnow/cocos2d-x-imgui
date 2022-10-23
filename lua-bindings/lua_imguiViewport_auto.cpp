@@ -264,32 +264,6 @@ int lua_x_imguiViewport_ImGuiViewport_setParentViewportId(lua_State* tolua_S)
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
 }
-int lua_x_imguiViewport_ImGuiViewport_getPlatformRequestClose(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
-	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.PlatformRequestClose getter";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	native_to_luaval(tolua_S, cobj->PlatformRequestClose);
-	return 1;
-}
-int lua_x_imguiViewport_ImGuiViewport_setPlatformRequestClose(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
-	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.PlatformRequestClose setter";
-	bool ok = true;
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (1 == argc) {
-		ok &= luaval_to_native(tolua_S, 2, &cobj->PlatformRequestClose, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
 int lua_x_imguiViewport_ImGuiViewport_getPlatformRequestMove(lua_State* tolua_S)
 {
 	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
@@ -342,6 +316,32 @@ int lua_x_imguiViewport_ImGuiViewport_setPlatformRequestResize(lua_State* tolua_
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
 }
+int lua_x_imguiViewport_ImGuiViewport_getPlatformRequestClose(lua_State* tolua_S)
+{
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
+	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.PlatformRequestClose getter";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	native_to_luaval(tolua_S, cobj->PlatformRequestClose);
+	return 1;
+}
+int lua_x_imguiViewport_ImGuiViewport_setPlatformRequestClose(lua_State* tolua_S)
+{
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
+	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.PlatformRequestClose setter";
+	bool ok = true;
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (1 == argc) {
+		ok &= luaval_to_native(tolua_S, 2, &cobj->PlatformRequestClose, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
+}
 static int lua_x_imguiViewport_ImGuiViewport_finalize(lua_State* tolua_S)
 {
 	return 0;
@@ -363,9 +363,9 @@ int lua_register_x_imguiViewport_ImGuiViewport(lua_State* tolua_S)
 		tolua_variable(tolua_S, "WorkSize", lua_x_imguiViewport_ImGuiViewport_getWorkSize, lua_x_imguiViewport_ImGuiViewport_setWorkSize);
 		tolua_variable(tolua_S, "DpiScale", lua_x_imguiViewport_ImGuiViewport_getDpiScale, lua_x_imguiViewport_ImGuiViewport_setDpiScale);
 		tolua_variable(tolua_S, "ParentViewportId", lua_x_imguiViewport_ImGuiViewport_getParentViewportId, lua_x_imguiViewport_ImGuiViewport_setParentViewportId);
-		tolua_variable(tolua_S, "PlatformRequestClose", lua_x_imguiViewport_ImGuiViewport_getPlatformRequestClose, lua_x_imguiViewport_ImGuiViewport_setPlatformRequestClose);
 		tolua_variable(tolua_S, "PlatformRequestMove", lua_x_imguiViewport_ImGuiViewport_getPlatformRequestMove, lua_x_imguiViewport_ImGuiViewport_setPlatformRequestMove);
 		tolua_variable(tolua_S, "PlatformRequestResize", lua_x_imguiViewport_ImGuiViewport_getPlatformRequestResize, lua_x_imguiViewport_ImGuiViewport_setPlatformRequestResize);
+		tolua_variable(tolua_S, "PlatformRequestClose", lua_x_imguiViewport_ImGuiViewport_getPlatformRequestClose, lua_x_imguiViewport_ImGuiViewport_setPlatformRequestClose);
 	tolua_endmodule(tolua_S);
 	std::string typeName = typeid(imgui::ImGuiViewport).name();
 	g_luaType[typeName] = "imgui.ImGuiViewport";

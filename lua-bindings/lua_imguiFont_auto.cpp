@@ -398,6 +398,32 @@ int lua_x_imguiFont_ImFontConfig_setRasterizerMultiply(lua_State* tolua_S)
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
 }
+int lua_x_imguiFont_ImFontConfig_getEllipsisChar(lua_State* tolua_S)
+{
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImFontConfig";
+	constexpr auto LUA_FNAME = "imgui.ImFontConfig.EllipsisChar getter";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImFontConfig*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	native_to_luaval(tolua_S, cobj->EllipsisChar);
+	return 1;
+}
+int lua_x_imguiFont_ImFontConfig_setEllipsisChar(lua_State* tolua_S)
+{
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImFontConfig";
+	constexpr auto LUA_FNAME = "imgui.ImFontConfig.EllipsisChar setter";
+	bool ok = true;
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImFontConfig*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (1 == argc) {
+		ok &= luaval_to_native(tolua_S, 2, &cobj->EllipsisChar, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
+}
 static int lua_x_imguiFont_ImFontConfig_finalize(lua_State* tolua_S)
 {
 	return 0;
@@ -423,6 +449,7 @@ int lua_register_x_imguiFont_ImFontConfig(lua_State* tolua_S)
 		tolua_variable(tolua_S, "MergeMode", lua_x_imguiFont_ImFontConfig_getMergeMode, lua_x_imguiFont_ImFontConfig_setMergeMode);
 		tolua_variable(tolua_S, "FontBuilderFlags", lua_x_imguiFont_ImFontConfig_getFontBuilderFlags, lua_x_imguiFont_ImFontConfig_setFontBuilderFlags);
 		tolua_variable(tolua_S, "RasterizerMultiply", lua_x_imguiFont_ImFontConfig_getRasterizerMultiply, lua_x_imguiFont_ImFontConfig_setRasterizerMultiply);
+		tolua_variable(tolua_S, "EllipsisChar", lua_x_imguiFont_ImFontConfig_getEllipsisChar, lua_x_imguiFont_ImFontConfig_setEllipsisChar);
 	tolua_endmodule(tolua_S);
 	std::string typeName = typeid(imgui::ImFontConfig).name();
 	g_luaType[typeName] = "imgui.ImFontConfig";
@@ -458,34 +485,6 @@ int lua_x_imguiFont_ImFontGlyph_setColored(lua_State* tolua_S)
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
 }
-int lua_x_imguiFont_ImFontGlyph_getCodepoint(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImFontGlyph";
-	constexpr auto LUA_FNAME = "imgui.ImFontGlyph.Codepoint getter";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImFontGlyph*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	native_to_luaval(tolua_S, cobj->Codepoint);
-	return 1;
-}
-int lua_x_imguiFont_ImFontGlyph_setCodepoint(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImFontGlyph";
-	constexpr auto LUA_FNAME = "imgui.ImFontGlyph.Codepoint setter";
-	bool ok = true;
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImFontGlyph*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (1 == argc) {
-		unsigned arg0;
-		ok &= luaval_to_native(tolua_S, 2, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->Codepoint = arg0;
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
 int lua_x_imguiFont_ImFontGlyph_getVisible(lua_State* tolua_S)
 {
 	constexpr auto LUA_OBJ_TYPE = "imgui.ImFontGlyph";
@@ -510,6 +509,34 @@ int lua_x_imguiFont_ImFontGlyph_setVisible(lua_State* tolua_S)
 		ok &= luaval_to_native(tolua_S, 2, &arg0, LUA_FNAME);
 		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
 		cobj->Visible = arg0;
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
+}
+int lua_x_imguiFont_ImFontGlyph_getCodepoint(lua_State* tolua_S)
+{
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImFontGlyph";
+	constexpr auto LUA_FNAME = "imgui.ImFontGlyph.Codepoint getter";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImFontGlyph*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	native_to_luaval(tolua_S, cobj->Codepoint);
+	return 1;
+}
+int lua_x_imguiFont_ImFontGlyph_setCodepoint(lua_State* tolua_S)
+{
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImFontGlyph";
+	constexpr auto LUA_FNAME = "imgui.ImFontGlyph.Codepoint setter";
+	bool ok = true;
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImFontGlyph*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (1 == argc) {
+		unsigned arg0;
+		ok &= luaval_to_native(tolua_S, 2, &arg0, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		cobj->Codepoint = arg0;
 		return 0;
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
@@ -760,8 +787,8 @@ int lua_register_x_imguiFont_ImFontGlyph(lua_State* tolua_S)
 
 	tolua_beginmodule(tolua_S, "ImFontGlyph");
 		tolua_variable(tolua_S, "Colored", lua_x_imguiFont_ImFontGlyph_getColored, lua_x_imguiFont_ImFontGlyph_setColored);
-		tolua_variable(tolua_S, "Codepoint", lua_x_imguiFont_ImFontGlyph_getCodepoint, lua_x_imguiFont_ImFontGlyph_setCodepoint);
 		tolua_variable(tolua_S, "Visible", lua_x_imguiFont_ImFontGlyph_getVisible, lua_x_imguiFont_ImFontGlyph_setVisible);
+		tolua_variable(tolua_S, "Codepoint", lua_x_imguiFont_ImFontGlyph_getCodepoint, lua_x_imguiFont_ImFontGlyph_setCodepoint);
 		tolua_variable(tolua_S, "AdvanceX", lua_x_imguiFont_ImFontGlyph_getAdvanceX, lua_x_imguiFont_ImFontGlyph_setAdvanceX);
 		tolua_variable(tolua_S, "X0", lua_x_imguiFont_ImFontGlyph_getX0, lua_x_imguiFont_ImFontGlyph_setX0);
 		tolua_variable(tolua_S, "Y0", lua_x_imguiFont_ImFontGlyph_getY0, lua_x_imguiFont_ImFontGlyph_setY0);
@@ -1621,6 +1648,32 @@ int lua_x_imguiFont_ImFont_setEllipsisChar(lua_State* tolua_S)
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
 }
+int lua_x_imguiFont_ImFont_getDotChar(lua_State* tolua_S)
+{
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImFont";
+	constexpr auto LUA_FNAME = "imgui.ImFont.DotChar getter";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImFont*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	native_to_luaval(tolua_S, cobj->DotChar);
+	return 1;
+}
+int lua_x_imguiFont_ImFont_setDotChar(lua_State* tolua_S)
+{
+	constexpr auto LUA_OBJ_TYPE = "imgui.ImFont";
+	constexpr auto LUA_FNAME = "imgui.ImFont.DotChar setter";
+	bool ok = true;
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (imgui::ImFont*)tolua_tousertype(tolua_S, 1, 0);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (1 == argc) {
+		ok &= luaval_to_native(tolua_S, 2, &cobj->DotChar, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
+}
 int lua_x_imguiFont_ImFont_getDirtyLookupTables(lua_State* tolua_S)
 {
 	constexpr auto LUA_OBJ_TYPE = "imgui.ImFont";
@@ -1775,6 +1828,7 @@ int lua_register_x_imguiFont_ImFont(lua_State* tolua_S)
 		tolua_variable(tolua_S, "ConfigDataCount", lua_x_imguiFont_ImFont_getConfigDataCount, lua_x_imguiFont_ImFont_setConfigDataCount);
 		tolua_variable(tolua_S, "FallbackChar", lua_x_imguiFont_ImFont_getFallbackChar, lua_x_imguiFont_ImFont_setFallbackChar);
 		tolua_variable(tolua_S, "EllipsisChar", lua_x_imguiFont_ImFont_getEllipsisChar, lua_x_imguiFont_ImFont_setEllipsisChar);
+		tolua_variable(tolua_S, "DotChar", lua_x_imguiFont_ImFont_getDotChar, lua_x_imguiFont_ImFont_setDotChar);
 		tolua_variable(tolua_S, "DirtyLookupTables", lua_x_imguiFont_ImFont_getDirtyLookupTables, lua_x_imguiFont_ImFont_setDirtyLookupTables);
 		tolua_variable(tolua_S, "Scale", lua_x_imguiFont_ImFont_getScale, lua_x_imguiFont_ImFont_setScale);
 		tolua_variable(tolua_S, "Ascent", lua_x_imguiFont_ImFont_getAscent, lua_x_imguiFont_ImFont_setAscent);

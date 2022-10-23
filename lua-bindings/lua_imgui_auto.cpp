@@ -108,6 +108,24 @@ int lua_x_imgui_ImGui_BeginCombo(lua_State* tolua_S)
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "2 to 3");
 }
+int lua_x_imgui_ImGui_BeginDisabled(lua_State* tolua_S)
+{
+	bool ok = true;
+	constexpr auto LUA_FNAME = "imgui.ImGui.beginDisabled";
+	const int argc = lua_gettop(tolua_S);
+	if (argc == 0) {
+		imgui::ImGui::BeginDisabled();
+		return 0;
+	}
+	if (argc == 1) {
+		bool arg0;
+		ok &= luaval_to_boolean(tolua_S, 1, &arg0, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		imgui::ImGui::BeginDisabled(arg0);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0 to 1");
+}
 int lua_x_imgui_ImGui_BeginDragDropSource(lua_State* tolua_S)
 {
 	bool ok = true;
@@ -461,89 +479,6 @@ int lua_x_imgui_ImGui_CalcItemWidth(lua_State* tolua_S)
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
 }
-int lua_x_imgui_ImGui_CalcTextSize(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_FNAME = "imgui.ImGui.calcTextSize";
-	const int argc = lua_gettop(tolua_S);
-	if (argc == 1) {
-		const char* arg0;
-		ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		native_to_luaval(tolua_S, imgui::ImGui::CalcTextSize(arg0));
-		return 1;
-	}
-	if (argc == 2) {
-		const char* arg0;
-		const char* arg1;
-		ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
-		ok &= lua_isstring(tolua_S, 2); if (ok) arg1 = luaL_checkstring(tolua_S, 2);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		native_to_luaval(tolua_S, imgui::ImGui::CalcTextSize(arg0, arg1));
-		return 1;
-	}
-	if (argc == 3) {
-		const char* arg0;
-		const char* arg1;
-		bool arg2;
-		ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
-		ok &= lua_isstring(tolua_S, 2); if (ok) arg1 = luaL_checkstring(tolua_S, 2);
-		ok &= luaval_to_boolean(tolua_S, 3, &arg2, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		native_to_luaval(tolua_S, imgui::ImGui::CalcTextSize(arg0, arg1, arg2));
-		return 1;
-	}
-	if (argc == 4) {
-		const char* arg0;
-		const char* arg1;
-		bool arg2;
-		double arg3;
-		ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
-		ok &= lua_isstring(tolua_S, 2); if (ok) arg1 = luaL_checkstring(tolua_S, 2);
-		ok &= luaval_to_boolean(tolua_S, 3, &arg2, LUA_FNAME);
-		ok &= luaval_to_number(tolua_S, 4, &arg3, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		native_to_luaval(tolua_S, imgui::ImGui::CalcTextSize(arg0, arg1, arg2, arg3));
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1 to 4");
-}
-int lua_x_imgui_ImGui_CaptureKeyboardFromApp(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_FNAME = "imgui.ImGui.captureKeyboardFromApp";
-	const int argc = lua_gettop(tolua_S);
-	if (argc == 0) {
-		imgui::ImGui::CaptureKeyboardFromApp();
-		return 0;
-	}
-	if (argc == 1) {
-		bool arg0;
-		ok &= luaval_to_boolean(tolua_S, 1, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		imgui::ImGui::CaptureKeyboardFromApp(arg0);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0 to 1");
-}
-int lua_x_imgui_ImGui_CaptureMouseFromApp(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_FNAME = "imgui.ImGui.captureMouseFromApp";
-	const int argc = lua_gettop(tolua_S);
-	if (argc == 0) {
-		imgui::ImGui::CaptureMouseFromApp();
-		return 0;
-	}
-	if (argc == 1) {
-		bool arg0;
-		ok &= luaval_to_boolean(tolua_S, 1, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		imgui::ImGui::CaptureMouseFromApp(arg0);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0 to 1");
-}
 int lua_x_imgui_ImGui_CloseCurrentPopup(lua_State* tolua_S)
 {
 	constexpr auto LUA_FNAME = "imgui.ImGui.closeCurrentPopup";
@@ -686,6 +621,20 @@ int lua_x_imgui_ImGui_DebugCheckVersionAndDataLayout(lua_State* tolua_S)
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "7");
 }
+int lua_x_imgui_ImGui_DebugTextEncoding(lua_State* tolua_S)
+{
+	bool ok = true;
+	constexpr auto LUA_FNAME = "imgui.ImGui.debugTextEncoding";
+	const int argc = lua_gettop(tolua_S);
+	if (argc == 1) {
+		const char* arg0;
+		ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		imgui::ImGui::DebugTextEncoding(arg0);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
+}
 int lua_x_imgui_ImGui_DestroyPlatformWindows(lua_State* tolua_S)
 {
 	constexpr auto LUA_FNAME = "imgui.ImGui.destroyPlatformWindows";
@@ -787,6 +736,16 @@ int lua_x_imgui_ImGui_EndCombo(lua_State* tolua_S)
 	const int argc = lua_gettop(tolua_S);
 	if (argc == 0) {
 		imgui::ImGui::EndCombo();
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
+}
+int lua_x_imgui_ImGui_EndDisabled(lua_State* tolua_S)
+{
+	constexpr auto LUA_FNAME = "imgui.ImGui.endDisabled";
+	const int argc = lua_gettop(tolua_S);
+	if (argc == 0) {
+		imgui::ImGui::EndDisabled();
 		return 0;
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
@@ -1229,16 +1188,16 @@ int lua_x_imgui_ImGui_GetItemRectSize(lua_State* tolua_S)
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
 }
-int lua_x_imgui_ImGui_GetKeyIndex(lua_State* tolua_S)
+int lua_x_imgui_ImGui_GetKeyName(lua_State* tolua_S)
 {
 	bool ok = true;
-	constexpr auto LUA_FNAME = "imgui.ImGui.getKeyIndex";
+	constexpr auto LUA_FNAME = "imgui.ImGui.getKeyName";
 	const int argc = lua_gettop(tolua_S);
 	if (argc == 1) {
-		int arg0;
-		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
+		ImGuiKey arg0;
+		ok &= luaval_to_native(tolua_S, 1, &arg0, LUA_FNAME);
 		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		native_to_luaval(tolua_S, imgui::ImGui::GetKeyIndex(arg0));
+		native_to_luaval(tolua_S, imgui::ImGui::GetKeyName(arg0));
 		return 1;
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
@@ -1249,10 +1208,10 @@ int lua_x_imgui_ImGui_GetKeyPressedAmount(lua_State* tolua_S)
 	constexpr auto LUA_FNAME = "imgui.ImGui.getKeyPressedAmount";
 	const int argc = lua_gettop(tolua_S);
 	if (argc == 3) {
-		int arg0;
+		ImGuiKey arg0;
 		double arg1;
 		double arg2;
-		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
+		ok &= luaval_to_native(tolua_S, 1, &arg0, LUA_FNAME);
 		ok &= luaval_to_number(tolua_S, 2, &arg1, LUA_FNAME);
 		ok &= luaval_to_number(tolua_S, 3, &arg2, LUA_FNAME);
 		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
@@ -1270,6 +1229,20 @@ int lua_x_imgui_ImGui_GetMainViewport(lua_State* tolua_S)
 		return 1;
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
+}
+int lua_x_imgui_ImGui_GetMouseClickedCount(lua_State* tolua_S)
+{
+	bool ok = true;
+	constexpr auto LUA_FNAME = "imgui.ImGui.getMouseClickedCount";
+	const int argc = lua_gettop(tolua_S);
+	if (argc == 1) {
+		int arg0;
+		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		native_to_luaval(tolua_S, imgui::ImGui::GetMouseClickedCount(arg0));
+		return 1;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
 }
 int lua_x_imgui_ImGui_GetMouseCursor(lua_State* tolua_S)
 {
@@ -1462,16 +1435,6 @@ int lua_x_imgui_ImGui_GetWindowContentRegionMin(lua_State* tolua_S)
 	const int argc = lua_gettop(tolua_S);
 	if (argc == 0) {
 		native_to_luaval(tolua_S, imgui::ImGui::GetWindowContentRegionMin());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_imgui_ImGui_GetWindowContentRegionWidth(lua_State* tolua_S)
-{
-	constexpr auto LUA_FNAME = "imgui.ImGui.getWindowContentRegionWidth";
-	const int argc = lua_gettop(tolua_S);
-	if (argc == 0) {
-		native_to_luaval(tolua_S, imgui::ImGui::GetWindowContentRegionWidth());
 		return 1;
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
@@ -1763,8 +1726,8 @@ int lua_x_imgui_ImGui_IsKeyDown(lua_State* tolua_S)
 	constexpr auto LUA_FNAME = "imgui.ImGui.isKeyDown";
 	const int argc = lua_gettop(tolua_S);
 	if (argc == 1) {
-		int arg0;
-		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
+		ImGuiKey arg0;
+		ok &= luaval_to_native(tolua_S, 1, &arg0, LUA_FNAME);
 		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
 		native_to_luaval(tolua_S, imgui::ImGui::IsKeyDown(arg0));
 		return 1;
@@ -1777,16 +1740,16 @@ int lua_x_imgui_ImGui_IsKeyPressed(lua_State* tolua_S)
 	constexpr auto LUA_FNAME = "imgui.ImGui.isKeyPressed";
 	const int argc = lua_gettop(tolua_S);
 	if (argc == 1) {
-		int arg0;
-		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
+		ImGuiKey arg0;
+		ok &= luaval_to_native(tolua_S, 1, &arg0, LUA_FNAME);
 		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
 		native_to_luaval(tolua_S, imgui::ImGui::IsKeyPressed(arg0));
 		return 1;
 	}
 	if (argc == 2) {
-		int arg0;
+		ImGuiKey arg0;
 		bool arg1;
-		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
+		ok &= luaval_to_native(tolua_S, 1, &arg0, LUA_FNAME);
 		ok &= luaval_to_boolean(tolua_S, 2, &arg1, LUA_FNAME);
 		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
 		native_to_luaval(tolua_S, imgui::ImGui::IsKeyPressed(arg0, arg1));
@@ -1800,8 +1763,8 @@ int lua_x_imgui_ImGui_IsKeyReleased(lua_State* tolua_S)
 	constexpr auto LUA_FNAME = "imgui.ImGui.isKeyReleased";
 	const int argc = lua_gettop(tolua_S);
 	if (argc == 1) {
-		int arg0;
-		ok &= luaval_to_int32(tolua_S, 1, &arg0, LUA_FNAME);
+		ImGuiKey arg0;
+		ok &= luaval_to_native(tolua_S, 1, &arg0, LUA_FNAME);
 		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
 		native_to_luaval(tolua_S, imgui::ImGui::IsKeyReleased(arg0));
 		return 1;
@@ -2763,6 +2726,34 @@ int lua_x_imgui_ImGui_SetMouseCursor(lua_State* tolua_S)
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
 }
+int lua_x_imgui_ImGui_SetNextFrameWantCaptureKeyboard(lua_State* tolua_S)
+{
+	bool ok = true;
+	constexpr auto LUA_FNAME = "imgui.ImGui.setNextFrameWantCaptureKeyboard";
+	const int argc = lua_gettop(tolua_S);
+	if (argc == 1) {
+		bool arg0;
+		ok &= luaval_to_boolean(tolua_S, 1, &arg0, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		imgui::ImGui::SetNextFrameWantCaptureKeyboard(arg0);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
+}
+int lua_x_imgui_ImGui_SetNextFrameWantCaptureMouse(lua_State* tolua_S)
+{
+	bool ok = true;
+	constexpr auto LUA_FNAME = "imgui.ImGui.setNextFrameWantCaptureMouse";
+	const int argc = lua_gettop(tolua_S);
+	if (argc == 1) {
+		bool arg0;
+		ok &= luaval_to_boolean(tolua_S, 1, &arg0, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		imgui::ImGui::SetNextFrameWantCaptureMouse(arg0);
+		return 0;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
+}
 int lua_x_imgui_ImGui_SetNextItemOpen(lua_State* tolua_S)
 {
 	bool ok = true;
@@ -3114,41 +3105,83 @@ int lua_x_imgui_ImGui_SetWindowCollapsed(lua_State* tolua_S)
 	bool ok = true;
 	constexpr auto LUA_FNAME = "imgui.ImGui.setWindowCollapsed";
 	const int argc = lua_gettop(tolua_S);
-	if (argc == 2) {
-		const char* arg0;
-		bool arg1;
-		ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
-		ok &= luaval_to_boolean(tolua_S, 2, &arg1, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		imgui::ImGui::SetWindowCollapsed(arg0, arg1);
-		return 0;
-	}
-	if (argc == 3) {
-		const char* arg0;
-		bool arg1;
-		int arg2;
-		ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
-		ok &= luaval_to_boolean(tolua_S, 2, &arg1, LUA_FNAME);
-		ok &= luaval_to_int32(tolua_S, 3, &arg2, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		imgui::ImGui::SetWindowCollapsed(arg0, arg1, arg2);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "2 to 3");
+	do {
+		if (argc == 2) {
+			const char* arg0;
+			ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
+			if (!ok) { break; }
+			bool arg1;
+			ok &= luaval_to_boolean(tolua_S, 2, &arg1, LUA_FNAME);
+			if (!ok) { break; }
+			imgui::ImGui::SetWindowCollapsed(arg0, arg1);
+			return 0;
+		}
+	} while (0);
+	ok = true;
+	do {
+		if (argc == 3) {
+			const char* arg0;
+			ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
+			if (!ok) { break; }
+			bool arg1;
+			ok &= luaval_to_boolean(tolua_S, 2, &arg1, LUA_FNAME);
+			if (!ok) { break; }
+			int arg2;
+			ok &= luaval_to_int32(tolua_S, 3, &arg2, LUA_FNAME);
+			if (!ok) { break; }
+			imgui::ImGui::SetWindowCollapsed(arg0, arg1, arg2);
+			return 0;
+		}
+	} while (0);
+	ok = true;
+	do {
+		if (argc == 1) {
+			bool arg0;
+			ok &= luaval_to_boolean(tolua_S, 1, &arg0, LUA_FNAME);
+			if (!ok) { break; }
+			imgui::ImGui::SetWindowCollapsed(arg0);
+			return 0;
+		}
+	} while (0);
+	ok = true;
+	do {
+		if (argc == 2) {
+			bool arg0;
+			ok &= luaval_to_boolean(tolua_S, 1, &arg0, LUA_FNAME);
+			if (!ok) { break; }
+			int arg1;
+			ok &= luaval_to_int32(tolua_S, 2, &arg1, LUA_FNAME);
+			if (!ok) { break; }
+			imgui::ImGui::SetWindowCollapsed(arg0, arg1);
+			return 0;
+		}
+	} while (0);
+	ok = true;
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
 }
 int lua_x_imgui_ImGui_SetWindowFocus(lua_State* tolua_S)
 {
 	bool ok = true;
 	constexpr auto LUA_FNAME = "imgui.ImGui.setWindowFocus";
 	const int argc = lua_gettop(tolua_S);
-	if (argc == 1) {
-		const char* arg0;
-		ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		imgui::ImGui::SetWindowFocus(arg0);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
+	do {
+		if (argc == 1) {
+			const char* arg0;
+			ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
+			if (!ok) { break; }
+			imgui::ImGui::SetWindowFocus(arg0);
+			return 0;
+		}
+	} while (0);
+	ok = true;
+	do {
+		if (argc == 0) {
+			imgui::ImGui::SetWindowFocus();
+			return 0;
+		}
+	} while (0);
+	ok = true;
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
 }
 int lua_x_imgui_ImGui_SetWindowFontScale(lua_State* tolua_S)
 {
@@ -3169,54 +3202,118 @@ int lua_x_imgui_ImGui_SetWindowPos(lua_State* tolua_S)
 	bool ok = true;
 	constexpr auto LUA_FNAME = "imgui.ImGui.setWindowPos";
 	const int argc = lua_gettop(tolua_S);
-	if (argc == 2) {
-		const char* arg0;
-		ImVec2 arg1;
-		ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
-		ok &= luaval_to_ImVec2(tolua_S, 2, &arg1, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		imgui::ImGui::SetWindowPos(arg0, arg1);
-		return 0;
-	}
-	if (argc == 3) {
-		const char* arg0;
-		ImVec2 arg1;
-		int arg2;
-		ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
-		ok &= luaval_to_ImVec2(tolua_S, 2, &arg1, LUA_FNAME);
-		ok &= luaval_to_int32(tolua_S, 3, &arg2, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		imgui::ImGui::SetWindowPos(arg0, arg1, arg2);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "2 to 3");
+	do {
+		if (argc == 2) {
+			const char* arg0;
+			ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
+			if (!ok) { break; }
+			ImVec2 arg1;
+			ok &= luaval_to_ImVec2(tolua_S, 2, &arg1, LUA_FNAME);
+			if (!ok) { break; }
+			imgui::ImGui::SetWindowPos(arg0, arg1);
+			return 0;
+		}
+	} while (0);
+	ok = true;
+	do {
+		if (argc == 3) {
+			const char* arg0;
+			ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
+			if (!ok) { break; }
+			ImVec2 arg1;
+			ok &= luaval_to_ImVec2(tolua_S, 2, &arg1, LUA_FNAME);
+			if (!ok) { break; }
+			int arg2;
+			ok &= luaval_to_int32(tolua_S, 3, &arg2, LUA_FNAME);
+			if (!ok) { break; }
+			imgui::ImGui::SetWindowPos(arg0, arg1, arg2);
+			return 0;
+		}
+	} while (0);
+	ok = true;
+	do {
+		if (argc == 1) {
+			ImVec2 arg0;
+			ok &= luaval_to_ImVec2(tolua_S, 1, &arg0, LUA_FNAME);
+			if (!ok) { break; }
+			imgui::ImGui::SetWindowPos(arg0);
+			return 0;
+		}
+	} while (0);
+	ok = true;
+	do {
+		if (argc == 2) {
+			ImVec2 arg0;
+			ok &= luaval_to_ImVec2(tolua_S, 1, &arg0, LUA_FNAME);
+			if (!ok) { break; }
+			int arg1;
+			ok &= luaval_to_int32(tolua_S, 2, &arg1, LUA_FNAME);
+			if (!ok) { break; }
+			imgui::ImGui::SetWindowPos(arg0, arg1);
+			return 0;
+		}
+	} while (0);
+	ok = true;
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
 }
 int lua_x_imgui_ImGui_SetWindowSize(lua_State* tolua_S)
 {
 	bool ok = true;
 	constexpr auto LUA_FNAME = "imgui.ImGui.setWindowSize";
 	const int argc = lua_gettop(tolua_S);
-	if (argc == 2) {
-		const char* arg0;
-		ImVec2 arg1;
-		ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
-		ok &= luaval_to_ImVec2(tolua_S, 2, &arg1, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		imgui::ImGui::SetWindowSize(arg0, arg1);
-		return 0;
-	}
-	if (argc == 3) {
-		const char* arg0;
-		ImVec2 arg1;
-		int arg2;
-		ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
-		ok &= luaval_to_ImVec2(tolua_S, 2, &arg1, LUA_FNAME);
-		ok &= luaval_to_int32(tolua_S, 3, &arg2, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		imgui::ImGui::SetWindowSize(arg0, arg1, arg2);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "2 to 3");
+	do {
+		if (argc == 2) {
+			const char* arg0;
+			ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
+			if (!ok) { break; }
+			ImVec2 arg1;
+			ok &= luaval_to_ImVec2(tolua_S, 2, &arg1, LUA_FNAME);
+			if (!ok) { break; }
+			imgui::ImGui::SetWindowSize(arg0, arg1);
+			return 0;
+		}
+	} while (0);
+	ok = true;
+	do {
+		if (argc == 3) {
+			const char* arg0;
+			ok &= lua_isstring(tolua_S, 1); if (ok) arg0 = luaL_checkstring(tolua_S, 1);
+			if (!ok) { break; }
+			ImVec2 arg1;
+			ok &= luaval_to_ImVec2(tolua_S, 2, &arg1, LUA_FNAME);
+			if (!ok) { break; }
+			int arg2;
+			ok &= luaval_to_int32(tolua_S, 3, &arg2, LUA_FNAME);
+			if (!ok) { break; }
+			imgui::ImGui::SetWindowSize(arg0, arg1, arg2);
+			return 0;
+		}
+	} while (0);
+	ok = true;
+	do {
+		if (argc == 1) {
+			ImVec2 arg0;
+			ok &= luaval_to_ImVec2(tolua_S, 1, &arg0, LUA_FNAME);
+			if (!ok) { break; }
+			imgui::ImGui::SetWindowSize(arg0);
+			return 0;
+		}
+	} while (0);
+	ok = true;
+	do {
+		if (argc == 2) {
+			ImVec2 arg0;
+			ok &= luaval_to_ImVec2(tolua_S, 1, &arg0, LUA_FNAME);
+			if (!ok) { break; }
+			int arg1;
+			ok &= luaval_to_int32(tolua_S, 2, &arg1, LUA_FNAME);
+			if (!ok) { break; }
+			imgui::ImGui::SetWindowSize(arg0, arg1);
+			return 0;
+		}
+	} while (0);
+	ok = true;
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
 }
 int lua_x_imgui_ImGui_ShowFontSelector(lua_State* tolua_S)
 {
@@ -3771,6 +3868,7 @@ int lua_register_x_imgui_ImGui(lua_State* tolua_S)
 		tolua_function(tolua_S, "arrowButton", lua_x_imgui_ImGui_ArrowButton);
 		tolua_function(tolua_S, "beginChildFrame", lua_x_imgui_ImGui_BeginChildFrame);
 		tolua_function(tolua_S, "beginCombo", lua_x_imgui_ImGui_BeginCombo);
+		tolua_function(tolua_S, "beginDisabled", lua_x_imgui_ImGui_BeginDisabled);
 		tolua_function(tolua_S, "beginDragDropSource", lua_x_imgui_ImGui_BeginDragDropSource);
 		tolua_function(tolua_S, "beginDragDropTarget", lua_x_imgui_ImGui_BeginDragDropTarget);
 		tolua_function(tolua_S, "beginGroup", lua_x_imgui_ImGui_BeginGroup);
@@ -3789,21 +3887,20 @@ int lua_register_x_imgui_ImGui(lua_State* tolua_S)
 		tolua_function(tolua_S, "bulletText", lua_x_imgui_ImGui_BulletText);
 		tolua_function(tolua_S, "button", lua_x_imgui_ImGui_Button);
 		tolua_function(tolua_S, "calcItemWidth", lua_x_imgui_ImGui_CalcItemWidth);
-		tolua_function(tolua_S, "calcTextSize", lua_x_imgui_ImGui_CalcTextSize);
-		tolua_function(tolua_S, "captureKeyboardFromApp", lua_x_imgui_ImGui_CaptureKeyboardFromApp);
-		tolua_function(tolua_S, "captureMouseFromApp", lua_x_imgui_ImGui_CaptureMouseFromApp);
 		tolua_function(tolua_S, "closeCurrentPopup", lua_x_imgui_ImGui_CloseCurrentPopup);
 		tolua_function(tolua_S, "colorButton", lua_x_imgui_ImGui_ColorButton);
 		tolua_function(tolua_S, "colorConvertFloat4ToU32", lua_x_imgui_ImGui_ColorConvertFloat4ToU32);
 		tolua_function(tolua_S, "colorConvertU32ToFloat4", lua_x_imgui_ImGui_ColorConvertU32ToFloat4);
 		tolua_function(tolua_S, "columns", lua_x_imgui_ImGui_Columns);
 		tolua_function(tolua_S, "debugCheckVersionAndDataLayout", lua_x_imgui_ImGui_DebugCheckVersionAndDataLayout);
+		tolua_function(tolua_S, "debugTextEncoding", lua_x_imgui_ImGui_DebugTextEncoding);
 		tolua_function(tolua_S, "destroyPlatformWindows", lua_x_imgui_ImGui_DestroyPlatformWindows);
 		tolua_function(tolua_S, "dockSpace", lua_x_imgui_ImGui_DockSpace);
 		tolua_function(tolua_S, "dockSpaceOverViewport", lua_x_imgui_ImGui_DockSpaceOverViewport);
 		tolua_function(tolua_S, "dummy", lua_x_imgui_ImGui_Dummy);
 		tolua_function(tolua_S, "endChildFrame", lua_x_imgui_ImGui_EndChildFrame);
 		tolua_function(tolua_S, "endCombo", lua_x_imgui_ImGui_EndCombo);
+		tolua_function(tolua_S, "endDisabled", lua_x_imgui_ImGui_EndDisabled);
 		tolua_function(tolua_S, "endDragDropSource", lua_x_imgui_ImGui_EndDragDropSource);
 		tolua_function(tolua_S, "endDragDropTarget", lua_x_imgui_ImGui_EndDragDropTarget);
 		tolua_function(tolua_S, "endFrame", lua_x_imgui_ImGui_EndFrame);
@@ -3841,9 +3938,10 @@ int lua_register_x_imgui_ImGui(lua_State* tolua_S)
 		tolua_function(tolua_S, "getItemRectMax", lua_x_imgui_ImGui_GetItemRectMax);
 		tolua_function(tolua_S, "getItemRectMin", lua_x_imgui_ImGui_GetItemRectMin);
 		tolua_function(tolua_S, "getItemRectSize", lua_x_imgui_ImGui_GetItemRectSize);
-		tolua_function(tolua_S, "getKeyIndex", lua_x_imgui_ImGui_GetKeyIndex);
+		tolua_function(tolua_S, "getKeyName", lua_x_imgui_ImGui_GetKeyName);
 		tolua_function(tolua_S, "getKeyPressedAmount", lua_x_imgui_ImGui_GetKeyPressedAmount);
 		tolua_function(tolua_S, "getMainViewport", lua_x_imgui_ImGui_GetMainViewport);
+		tolua_function(tolua_S, "getMouseClickedCount", lua_x_imgui_ImGui_GetMouseClickedCount);
 		tolua_function(tolua_S, "getMouseCursor", lua_x_imgui_ImGui_GetMouseCursor);
 		tolua_function(tolua_S, "getMouseDragDelta", lua_x_imgui_ImGui_GetMouseDragDelta);
 		tolua_function(tolua_S, "getMousePos", lua_x_imgui_ImGui_GetMousePos);
@@ -3861,7 +3959,6 @@ int lua_register_x_imgui_ImGui(lua_State* tolua_S)
 		tolua_function(tolua_S, "getVersion", lua_x_imgui_ImGui_GetVersion);
 		tolua_function(tolua_S, "getWindowContentRegionMax", lua_x_imgui_ImGui_GetWindowContentRegionMax);
 		tolua_function(tolua_S, "getWindowContentRegionMin", lua_x_imgui_ImGui_GetWindowContentRegionMin);
-		tolua_function(tolua_S, "getWindowContentRegionWidth", lua_x_imgui_ImGui_GetWindowContentRegionWidth);
 		tolua_function(tolua_S, "getWindowDockID", lua_x_imgui_ImGui_GetWindowDockID);
 		tolua_function(tolua_S, "getWindowDpiScale", lua_x_imgui_ImGui_GetWindowDpiScale);
 		tolua_function(tolua_S, "getWindowDrawList", lua_x_imgui_ImGui_GetWindowDrawList);
@@ -3950,6 +4047,8 @@ int lua_register_x_imgui_ImGui(lua_State* tolua_S)
 		tolua_function(tolua_S, "setItemDefaultFocus", lua_x_imgui_ImGui_SetItemDefaultFocus);
 		tolua_function(tolua_S, "setKeyboardFocusHere", lua_x_imgui_ImGui_SetKeyboardFocusHere);
 		tolua_function(tolua_S, "setMouseCursor", lua_x_imgui_ImGui_SetMouseCursor);
+		tolua_function(tolua_S, "setNextFrameWantCaptureKeyboard", lua_x_imgui_ImGui_SetNextFrameWantCaptureKeyboard);
+		tolua_function(tolua_S, "setNextFrameWantCaptureMouse", lua_x_imgui_ImGui_SetNextFrameWantCaptureMouse);
 		tolua_function(tolua_S, "setNextItemOpen", lua_x_imgui_ImGui_SetNextItemOpen);
 		tolua_function(tolua_S, "setNextItemWidth", lua_x_imgui_ImGui_SetNextItemWidth);
 		tolua_function(tolua_S, "setNextWindowBgAlpha", lua_x_imgui_ImGui_SetNextWindowBgAlpha);
