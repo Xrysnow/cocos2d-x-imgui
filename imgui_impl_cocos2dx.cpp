@@ -275,7 +275,7 @@ void ImGui_ImplCocos2dx_RenderDrawData(ImDrawData* draw_data)
 						cmd->setVertexBuffer(vbuffer);
 						cmd->setDrawType(CustomCommand::DrawType::ELEMENT);
 						cmd->setPrimitiveType(PrimitiveType::TRIANGLE);
-						cmd->setIndexDrawInfo(ibuffer_offset, pcmd->ElemCount);
+						cmd->setIndexDrawInfo(ibuffer_offset + pcmd->IdxOffset, pcmd->ElemCount);
 						renderer->addCommand(cmd.get());						
 					}
 					else
@@ -290,7 +290,6 @@ void ImGui_ImplCocos2dx_RenderDrawData(ImDrawData* draw_data)
 					}
 				}
 			}
-			ibuffer_offset += pcmd->ElemCount;
 		}
 	}
 	// restore
