@@ -1622,6 +1622,10 @@ static const luaL_Reg imgui_methods[] = {
 	// Miscellaneous Utilities
 	M(calcListClipping),
 
+	// Color Utilities
+	M(colorConvertRGBtoHSV),
+	M(colorConvertHSVtoRGB),
+
 	// Inputs Utilities
 	M(isMousePosValid),
 
