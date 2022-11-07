@@ -1173,10 +1173,38 @@ static int imgui_getDragDropPayload(lua_State *L) {
 static int imgui_calcListClipping(lua_State *L) {
 	int start = 0;
 	int end = 0;
-	ImGui::CalcListClipping(luaL_checkinteger(L, 1), luaL_checknumber(L, 2), &start, &end);
+	ImGui::CalcListClipping(luaL_checkint(L, 1), luaL_checknumber(L, 2), &start, &end);
 	lua_pushinteger(L, start);
 	lua_pushinteger(L, end);
 	return 2;
+}
+
+// Color Utilities
+
+static int imgui_colorConvertRGBtoHSV(lua_State* L) {
+	float h = 0, s = 0, v = 0;
+	ImGui::ColorConvertRGBtoHSV(
+		luaL_checknumber(L, 1),
+		luaL_checknumber(L, 2),
+		luaL_checknumber(L, 3),
+		h, s, v);
+	lua_pushinteger(L, h);
+	lua_pushinteger(L, s);
+	lua_pushinteger(L, v);
+	return 3;
+}
+
+static int imgui_colorConvertHSVtoRGB(lua_State* L) {
+	float r = 0, g = 0, b = 0;
+	ImGui::ColorConvertHSVtoRGB(
+		luaL_checknumber(L, 1),
+		luaL_checknumber(L, 2),
+		luaL_checknumber(L, 3),
+		r, g, b);
+	lua_pushinteger(L, r);
+	lua_pushinteger(L, g);
+	lua_pushinteger(L, b);
+	return 3;
 }
 
 // Inputs Utilities
