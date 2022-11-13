@@ -10,10 +10,49 @@ local col = im.Col
 local function copy(idx_dst, idx_src)
     set(idx_dst, im.getStyleColorVec4(idx_src))
 end
+function M.styleVarsDefault()
+    style.Alpha = 1.0
+    style.WindowPadding = ImVec2(8, 8)
+    style.WindowRounding = 7.0
+    style.WindowBorderSize = 1.0
+    style.WindowMinSize = ImVec2(32, 32)
+    style.WindowTitleAlign = ImVec2(0.0, 0.5)
+    style.WindowMenuButtonPosition = im.Dir.Left
+    style.ChildRounding = 0.0
+    style.ChildBorderSize = 1.0
+    style.PopupRounding = 0.0
+    style.PopupBorderSize = 1.0
+    style.FramePadding = ImVec2(4, 3)
+    style.FrameRounding = 0.0
+    style.FrameBorderSize = 0.0
+    style.ItemSpacing = ImVec2(8, 4)
+    style.ItemInnerSpacing = ImVec2(4, 4)
+    style.TouchExtraPadding = ImVec2(0, 0)
+    style.IndentSpacing = 21.0
+    style.ColumnsMinSpacing = 6.0
+    style.ScrollbarSize = 14.0
+    style.ScrollbarRounding = 9.0
+    style.GrabMinSize = 10.0
+    style.GrabRounding = 0.0
+    style.TabRounding = 4.0
+    style.TabBorderSize = 0.0
+    style.TabMinWidthForUnselectedCloseButton = 0.0
+    style.ColorButtonPosition = im.Dir.Right
+    style.ButtonTextAlign = ImVec2(0.5, 0.5)
+    style.SelectableTextAlign = ImVec2(0.0, 0.0)
+    style.DisplayWindowPadding = ImVec2(19, 19)
+    style.DisplaySafeAreaPadding = ImVec2(3, 3)
+    style.MouseCursorScale = 1.0
+    style.AntiAliasedLines = true
+    style.AntiAliasedFill = true
+    style.CurveTessellationTol = 1.25
+    style.CircleSegmentMaxError = 1.60
+end
 
 --- by @usernameiwantedwasalreadytaken
 function M.Microsoft()
     im.styleColorsLight()
+    M.styleVarsDefault()
     local hspacing = 8
     local vspacing = 6
     style.DisplaySafeAreaPadding = ImVec2(0, 0)
@@ -26,13 +65,13 @@ function M.Microsoft()
     style.WindowRounding = 0.0
     style.FrameRounding = 0.0
 
-    style.WindowBorderSize = 0.0
+    --style.WindowBorderSize = 0.0
     style.FrameBorderSize = 1.0
     style.PopupBorderSize = 1.0
 
     style.ScrollbarSize = 20.0
     style.ScrollbarRounding = 0.0
-    style.GrabMinSize = 5.0
+    --style.GrabMinSize = 5.0
     style.GrabRounding = 0.0
 
     local white = ImVec4(1.00, 1.00, 1.00, 1.00)
@@ -80,15 +119,20 @@ function M.Microsoft()
     set(col.ScrollbarGrab, grab)
     set(col.ScrollbarGrabHovered, dark)
     set(col.ScrollbarGrabActive, darker)
+
+    --
+    style.WindowBorderSize = 1
+    style.GrabMinSize = 10
 end
 
 --- by @ice1000
 function M.JetBrainsDarcula()
     im.styleColorsDark()
+    M.styleVarsDefault()
     style.WindowRounding = 5.3
     style.GrabRounding = 2.3
     style.FrameRounding = 2.3
-    style.ScrollbarRounding = 5.0
+    --style.ScrollbarRounding = 5.0
     style.FrameBorderSize = 1.0
     style.ItemSpacing.y = 6.5
 
@@ -102,9 +146,9 @@ function M.JetBrainsDarcula()
     set(col.FrameBg, ImVec4(0.16862746, 0.16862746, 0.16862746, 0.54))
     set(col.FrameBgHovered, ImVec4(0.453125, 0.67578125, 0.99609375, 0.67))
     set(col.FrameBgActive, ImVec4(0.47058827, 0.47058827, 0.47058827, 0.67))
-    set(col.TitleBg, ImVec4(0.04, 0.04, 0.04, 1.00))
-    set(col.TitleBgCollapsed, ImVec4(0.16, 0.29, 0.48, 1.00))
-    set(col.TitleBgActive, ImVec4(0.00, 0.00, 0.00, 0.51))
+    --set(col.TitleBg, ImVec4(0.04, 0.04, 0.04, 1.00))
+    --set(col.TitleBgCollapsed, ImVec4(0.16, 0.29, 0.48, 1.00))
+    --set(col.TitleBgActive, ImVec4(0.00, 0.00, 0.00, 0.51))
     set(col.MenuBarBg, ImVec4(0.27058825, 0.28627452, 0.2901961, 0.80))
     set(col.ScrollbarBg, ImVec4(0.27058825, 0.28627452, 0.2901961, 0.60))
     set(col.ScrollbarGrab, ImVec4(0.21960786, 0.30980393, 0.41960788, 0.51))
@@ -131,11 +175,28 @@ function M.JetBrainsDarcula()
     set(col.PlotHistogram, ImVec4(0.90, 0.70, 0.00, 1.00))
     set(col.PlotHistogramHovered, ImVec4(1.00, 0.60, 0.00, 1.00))
     set(col.TextSelectedBg, ImVec4(0.18431373, 0.39607847, 0.79215693, 0.90))
+
+    --
+    style.TabRounding = 0
+    style.ScrollbarRounding = 0
+    set(col.Tab, ImVec4(60 / 255, 63 / 255, 65 / 255, 1))
+    set(col.TabHovered, ImVec4(51 / 255, 53 / 255, 55 / 255, 1))
+    set(col.TabActive, ImVec4(78 / 255, 82 / 255, 84 / 255, 1))
+    set(col.TabUnfocused, ImVec4(51 / 255, 53 / 255, 55 / 255, 1))
+    set(col.TabUnfocusedActive, ImVec4(78 / 255, 82 / 255, 84 / 255, 1))
+    set(col.TitleBg, ImVec4(60 / 255, 63 / 255, 65 / 255, 1))
+    set(col.TitleBgCollapsed, ImVec4(60 / 255, 63 / 255, 65 / 255, 1))
+    set(col.TitleBgActive, ImVec4(60 / 255, 63 / 255, 65 / 255, 1))
+    set(col.ScrollbarBg, ImVec4(0, 0, 0, 0))
+    set(col.ScrollbarGrab, ImVec4(1, 1, 1, 47 / 255))
+    set(col.ScrollbarGrabHovered, ImVec4(1, 1, 1, 58 / 255))
+    set(col.ScrollbarGrabActive, ImVec4(1, 1, 1, 58 / 255))
 end
 
 --- by @r-lyeh
 function M.CherryTheme()
     im.styleColorsDark()
+    M.styleVarsDefault()
     -- cherry colors, 3 intensities
     local function HI(v)
         return ImVec4(0.502, 0.075, 0.256, v)
@@ -219,6 +280,7 @@ end
 --- by @ebachard
 function M.LightGreen()
     im.styleColorsLight()
+    M.styleVarsDefault()
     style.WindowRounding = 2.0    -- Radius of window corners rounding. Set to 0.0f to have rectangular windows
     style.ScrollbarRounding = 3.0 -- Radius of grab corners rounding for scrollbar
     style.GrabRounding = 2.0      -- Radius of grabs corners rounding. Set to 0.0f to have rectangular slider grabs.
@@ -288,11 +350,12 @@ end
 --- by @Derydoca
 function M.AdobeDark()
     im.styleColorsDark()
-    set(col.Text, ImVec4(1.000, 1.000, 1.000, 1.000))
-    set(col.TextDisabled, ImVec4(0.500, 0.500, 0.500, 1.000))
-    set(col.WindowBg, ImVec4(0.180, 0.180, 0.180, 1.000))
-    set(col.ChildBg, ImVec4(0.280, 0.280, 0.280, 0.000))
-    set(col.PopupBg, ImVec4(0.313, 0.313, 0.313, 1.000))
+    M.styleVarsDefault()
+    --set(col.Text, ImVec4(1.000, 1.000, 1.000, 1.000))
+    --set(col.TextDisabled, ImVec4(0.500, 0.500, 0.500, 1.000))
+    --set(col.WindowBg, ImVec4(0.180, 0.180, 0.180, 1.000))
+    --set(col.ChildBg, ImVec4(0.280, 0.280, 0.280, 0.000))
+    --set(col.PopupBg, ImVec4(0.313, 0.313, 0.313, 1.000))
     set(col.Border, ImVec4(0.266, 0.266, 0.266, 1.000))
     set(col.BorderShadow, ImVec4(0.000, 0.000, 0.000, 0.000))
     set(col.FrameBg, ImVec4(0.160, 0.160, 0.160, 1.000))
@@ -302,10 +365,10 @@ function M.AdobeDark()
     set(col.TitleBgActive, ImVec4(0.148, 0.148, 0.148, 1.000))
     set(col.TitleBgCollapsed, ImVec4(0.148, 0.148, 0.148, 1.000))
     set(col.MenuBarBg, ImVec4(0.195, 0.195, 0.195, 1.000))
-    set(col.ScrollbarBg, ImVec4(0.160, 0.160, 0.160, 1.000))
-    set(col.ScrollbarGrab, ImVec4(0.277, 0.277, 0.277, 1.000))
-    set(col.ScrollbarGrabHovered, ImVec4(0.300, 0.300, 0.300, 1.000))
-    set(col.ScrollbarGrabActive, ImVec4(1.000, 0.391, 0.000, 1.000))
+    --set(col.ScrollbarBg, ImVec4(0.160, 0.160, 0.160, 1.000))
+    --set(col.ScrollbarGrab, ImVec4(0.277, 0.277, 0.277, 1.000))
+    --set(col.ScrollbarGrabHovered, ImVec4(0.300, 0.300, 0.300, 1.000))
+    --set(col.ScrollbarGrabActive, ImVec4(1.000, 0.391, 0.000, 1.000))
     set(col.CheckMark, ImVec4(1.000, 1.000, 1.000, 1.000))
     set(col.SliderGrab, ImVec4(0.391, 0.391, 0.391, 1.000))
     set(col.SliderGrabActive, ImVec4(1.000, 0.391, 0.000, 1.000))
@@ -321,11 +384,11 @@ function M.AdobeDark()
     set(col.ResizeGrip, ImVec4(1.000, 1.000, 1.000, 0.250))
     set(col.ResizeGripHovered, ImVec4(1.000, 1.000, 1.000, 0.670))
     set(col.ResizeGripActive, ImVec4(1.000, 0.391, 0.000, 1.000))
-    set(col.Tab, ImVec4(0.098, 0.098, 0.098, 1.000))
-    set(col.TabHovered, ImVec4(0.352, 0.352, 0.352, 1.000))
-    set(col.TabActive, ImVec4(0.195, 0.195, 0.195, 1.000))
-    set(col.TabUnfocused, ImVec4(0.098, 0.098, 0.098, 1.000))
-    set(col.TabUnfocusedActive, ImVec4(0.195, 0.195, 0.195, 1.000))
+    --set(col.Tab, ImVec4(0.098, 0.098, 0.098, 1.000))
+    --set(col.TabHovered, ImVec4(0.352, 0.352, 0.352, 1.000))
+    --set(col.TabActive, ImVec4(0.195, 0.195, 0.195, 1.000))
+    --set(col.TabUnfocused, ImVec4(0.098, 0.098, 0.098, 1.000))
+    --set(col.TabUnfocusedActive, ImVec4(0.195, 0.195, 0.195, 1.000))
     set(col.DockingPreview, ImVec4(1.000, 0.391, 0.000, 0.781))
     set(col.DockingEmptyBg, ImVec4(0.180, 0.180, 0.180, 1.000))
     set(col.PlotLines, ImVec4(0.469, 0.469, 0.469, 1.000))
@@ -344,16 +407,37 @@ function M.AdobeDark()
     style.FrameRounding = 2.0
     style.GrabMinSize = 7.0
     style.PopupRounding = 2.0
-    style.ScrollbarRounding = 12.0
-    style.ScrollbarSize = 13.0
+    --style.ScrollbarRounding = 12.0
+    --style.ScrollbarSize = 13.0
     style.TabBorderSize = 1.0
     style.TabRounding = 0.0
-    style.WindowRounding = 4.0
+    --style.WindowRounding = 4.0
+
+    --
+    set(col.Text, ImVec4(225 / 255, 225 / 255, 225 / 255, 1))
+    set(col.TextDisabled, ImVec4(135 / 255, 135 / 255, 135 / 255, 1))
+    set(col.WindowBg, ImVec4(50 / 255, 50 / 255, 50 / 255, 1))
+    set(col.ChildBg, ImVec4(50 / 255, 50 / 255, 50 / 255, 1))
+    set(col.PopupBg, ImVec4(50 / 255, 50 / 255, 50 / 255, 1))
+    set(col.Tab, ImVec4(38 / 255, 38 / 255, 38 / 255, 1))
+    set(col.TabHovered, ImVec4(50 / 255, 50 / 255, 50 / 255, 1))
+    set(col.TabActive, ImVec4(050 / 255, 50 / 255, 50 / 255, 1))
+    set(col.TabUnfocused, ImVec4(38 / 255, 38 / 255, 38 / 255, 1))
+    set(col.TabUnfocusedActive, ImVec4(46 / 255, 46 / 255, 46 / 255, 1))
+    set(col.ScrollbarBg, ImVec4(41 / 255, 41 / 255, 41 / 255, 1))
+    set(col.ScrollbarGrab, ImVec4(71 / 255, 71 / 255, 71 / 255, 1.000))
+    set(col.ScrollbarGrabHovered, ImVec4(71 / 255, 71 / 255, 71 / 255, 1.000))
+    set(col.ScrollbarGrabActive, ImVec4(71 / 255, 71 / 255, 71 / 255, 1.000))
+    style.ScrollbarRounding = 0
+    style.ScrollbarSize = 16
+    style.WindowRounding = 0
+    style.FramePadding = ImVec2(6, 4)
 end
 
 --- by @malamanteau
 function M.CorporateGrey()
     im.styleColorsDark()
+    M.styleVarsDefault()
     -- 0 = FLAT APPEARENCE
     -- 1 = MORE "3D" LOOK
     local is3D = 0
@@ -444,6 +528,7 @@ end
 --- by @Raikiri
 function M.DarkTheme2()
     im.styleColorsDark()
+    M.styleVarsDefault()
     style.FrameRounding = 4.0
     style.GrabRounding = 4.0
 
