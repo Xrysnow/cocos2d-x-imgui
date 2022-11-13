@@ -462,10 +462,12 @@ function M.propertyHeader(label, data, k, params)
     local h = im.getFrameHeight()
     local id = tostring(data) .. label .. k
     im.invisibleButton('wi.pinput.ib.' .. id, im.p(w, h))
-    local tip = params.tip
+    local tooltip = params.tooltip
     if im.isItemHovered() then
-        if tip then
-            im.setTooltip(tip)
+        if type(tooltip) == 'string' then
+            im.setTooltip(tooltip)
+        elseif type(tooltip) == 'function' then
+            tooltip()
         end
         textcolor = im.getStyleColorVec4(im.Col.ButtonHovered)
     elseif not textcolor then
