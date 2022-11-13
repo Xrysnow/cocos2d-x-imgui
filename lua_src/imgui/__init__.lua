@@ -5,8 +5,6 @@ if imgui then
 
     for _, v in pairs({ imgui.ColorTextEdit }) do
         local mt = getmetatable(v)
-        print('imgui.ColorTextEdit', mt)
-        print(v.create, v.new)
         if mt and (v.create or v.new) then
             if v.create then
                 mt.__call = function(t, ...)

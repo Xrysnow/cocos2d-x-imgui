@@ -1,5 +1,5 @@
 ---@class im.TextFilter
-local M = class('im.TextFilter', {})
+local M = class('im.TextFilter')
 
 function M:ctor()
     self._filters = {}
