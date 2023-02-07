@@ -1,388 +1,214 @@
 #include "lua_imguiViewport_auto.hpp"
+#include "imgui.h"
 #include "imgui_lua.hpp"
-#include "scripting/lua-bindings/manual/tolua_fix.h"
-#include "scripting/lua-bindings/manual/LuaBasicConversions.h"
-#include "lua_conversion.hpp"
-using lua::luaval_to_native;
-using lua::native_to_luaval;
-namespace imgui { using ImGuiViewport = ImGuiViewport; }
 
-#ifndef LUA_CHECK_COBJ_TYPE
-	#ifdef LUA_DEBUG
-		#define LUA_CHECK_COBJ_TYPE(L, TYPE, NAME) if(!tolua_isusertype((L), 1, (TYPE), 0, nullptr)) { return luaL_error((L), "invalid 'cobj' in '%s': '%s', expects '%s'", NAME, tolua_typename((L), 1), (TYPE)); }
-	#else
-		#define LUA_CHECK_COBJ_TYPE(L, TYPE, NAME) (void)(TYPE);
-	#endif
-#endif
-#ifndef LUA_CHECK_COBJ
-	#ifdef LUA_DEBUG
-		#define LUA_CHECK_COBJ(L, COBJ, NAME) if(!(COBJ)) { return luaL_error((L), "invalid 'cobj' in '%s'", NAME); }
-	#else
-		#define LUA_CHECK_COBJ(L, COBJ, NAME)
-	#endif
-#endif
-#ifndef LUA_CHECK_PARAMETER
-	#define LUA_CHECK_PARAMETER(L, OK, NAME) if(!(OK)) { return luaL_error((L), "invalid arguments in '%s'", NAME); }
-#endif
-#ifndef LUA_PARAMETER_ERROR
-	#define LUA_PARAMETER_ERROR(L, NAME, ARGC, EXPECT) return luaL_error((L), "wrong number of arguments in '%s': %d, expects %s", NAME, (ARGC), EXPECT);
-#endif
-
-int lua_x_imguiViewport_ImGuiViewport_GetCenter(lua_State* tolua_S)
+int luaReg_imguiViewport_imguiImGuiViewportFlags(lua_State* lua_S)
 {
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
-	constexpr auto LUA_FNAME = "imgui.ImGuiViewport:getCenter";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		native_to_luaval(tolua_S, cobj->GetCenter());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_imguiViewport_ImGuiViewport_GetWorkCenter(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
-	constexpr auto LUA_FNAME = "imgui.ImGuiViewport:getWorkCenter";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		native_to_luaval(tolua_S, cobj->GetWorkCenter());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_imguiViewport_ImGuiViewport_getID(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
-	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.ID getter";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	native_to_luaval(tolua_S, cobj->ID);
-	return 1;
-}
-int lua_x_imguiViewport_ImGuiViewport_setID(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
-	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.ID setter";
-	bool ok = true;
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (1 == argc) {
-		ok &= luaval_to_native(tolua_S, 2, &cobj->ID, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_imguiViewport_ImGuiViewport_getFlags(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
-	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.Flags getter";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	native_to_luaval(tolua_S, cobj->Flags);
-	return 1;
-}
-int lua_x_imguiViewport_ImGuiViewport_setFlags(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
-	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.Flags setter";
-	bool ok = true;
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (1 == argc) {
-		ok &= luaval_to_native(tolua_S, 2, &cobj->Flags, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_imguiViewport_ImGuiViewport_getPos(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
-	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.Pos getter";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	native_to_luaval(tolua_S, cobj->Pos);
-	return 1;
-}
-int lua_x_imguiViewport_ImGuiViewport_setPos(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
-	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.Pos setter";
-	bool ok = true;
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (1 == argc) {
-		ok &= luaval_to_native(tolua_S, 2, &cobj->Pos, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_imguiViewport_ImGuiViewport_getSize(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
-	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.Size getter";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	native_to_luaval(tolua_S, cobj->Size);
-	return 1;
-}
-int lua_x_imguiViewport_ImGuiViewport_setSize(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
-	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.Size setter";
-	bool ok = true;
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (1 == argc) {
-		ok &= luaval_to_native(tolua_S, 2, &cobj->Size, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_imguiViewport_ImGuiViewport_getWorkPos(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
-	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.WorkPos getter";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	native_to_luaval(tolua_S, cobj->WorkPos);
-	return 1;
-}
-int lua_x_imguiViewport_ImGuiViewport_setWorkPos(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
-	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.WorkPos setter";
-	bool ok = true;
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (1 == argc) {
-		ok &= luaval_to_native(tolua_S, 2, &cobj->WorkPos, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_imguiViewport_ImGuiViewport_getWorkSize(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
-	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.WorkSize getter";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	native_to_luaval(tolua_S, cobj->WorkSize);
-	return 1;
-}
-int lua_x_imguiViewport_ImGuiViewport_setWorkSize(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
-	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.WorkSize setter";
-	bool ok = true;
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (1 == argc) {
-		ok &= luaval_to_native(tolua_S, 2, &cobj->WorkSize, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_imguiViewport_ImGuiViewport_getDpiScale(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
-	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.DpiScale getter";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	native_to_luaval(tolua_S, cobj->DpiScale);
-	return 1;
-}
-int lua_x_imguiViewport_ImGuiViewport_setDpiScale(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
-	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.DpiScale setter";
-	bool ok = true;
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (1 == argc) {
-		ok &= luaval_to_native(tolua_S, 2, &cobj->DpiScale, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_imguiViewport_ImGuiViewport_getParentViewportId(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
-	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.ParentViewportId getter";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	native_to_luaval(tolua_S, cobj->ParentViewportId);
-	return 1;
-}
-int lua_x_imguiViewport_ImGuiViewport_setParentViewportId(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
-	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.ParentViewportId setter";
-	bool ok = true;
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (1 == argc) {
-		ok &= luaval_to_native(tolua_S, 2, &cobj->ParentViewportId, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_imguiViewport_ImGuiViewport_getPlatformRequestMove(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
-	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.PlatformRequestMove getter";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	native_to_luaval(tolua_S, cobj->PlatformRequestMove);
-	return 1;
-}
-int lua_x_imguiViewport_ImGuiViewport_setPlatformRequestMove(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
-	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.PlatformRequestMove setter";
-	bool ok = true;
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (1 == argc) {
-		ok &= luaval_to_native(tolua_S, 2, &cobj->PlatformRequestMove, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_imguiViewport_ImGuiViewport_getPlatformRequestResize(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
-	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.PlatformRequestResize getter";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	native_to_luaval(tolua_S, cobj->PlatformRequestResize);
-	return 1;
-}
-int lua_x_imguiViewport_ImGuiViewport_setPlatformRequestResize(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
-	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.PlatformRequestResize setter";
-	bool ok = true;
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (1 == argc) {
-		ok &= luaval_to_native(tolua_S, 2, &cobj->PlatformRequestResize, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_imguiViewport_ImGuiViewport_getPlatformRequestClose(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
-	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.PlatformRequestClose getter";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	native_to_luaval(tolua_S, cobj->PlatformRequestClose);
-	return 1;
-}
-int lua_x_imguiViewport_ImGuiViewport_setPlatformRequestClose(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ImGuiViewport";
-	constexpr auto LUA_FNAME = "imgui.ImGuiViewport.PlatformRequestClose setter";
-	bool ok = true;
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (imgui::ImGuiViewport*)tolua_tousertype(tolua_S, 1, 0);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (1 == argc) {
-		ok &= luaval_to_native(tolua_S, 2, &cobj->PlatformRequestClose, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		return 0;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-static int lua_x_imguiViewport_ImGuiViewport_finalize(lua_State* tolua_S)
-{
+	LUA_ENTRY("imgui");
+	LUA_ENUM_DEF("ImGuiViewportFlags");
+	LUA_ENUM_ENTRY("None", ImGuiViewportFlags_::ImGuiViewportFlags_None);
+	LUA_ENUM_ENTRY("IsPlatformWindow", ImGuiViewportFlags_::ImGuiViewportFlags_IsPlatformWindow);
+	LUA_ENUM_ENTRY("IsPlatformMonitor", ImGuiViewportFlags_::ImGuiViewportFlags_IsPlatformMonitor);
+	LUA_ENUM_ENTRY("OwnedByApp", ImGuiViewportFlags_::ImGuiViewportFlags_OwnedByApp);
+	LUA_ENUM_ENTRY("NoDecoration", ImGuiViewportFlags_::ImGuiViewportFlags_NoDecoration);
+	LUA_ENUM_ENTRY("NoTaskBarIcon", ImGuiViewportFlags_::ImGuiViewportFlags_NoTaskBarIcon);
+	LUA_ENUM_ENTRY("NoFocusOnAppearing", ImGuiViewportFlags_::ImGuiViewportFlags_NoFocusOnAppearing);
+	LUA_ENUM_ENTRY("NoFocusOnClick", ImGuiViewportFlags_::ImGuiViewportFlags_NoFocusOnClick);
+	LUA_ENUM_ENTRY("NoInputs", ImGuiViewportFlags_::ImGuiViewportFlags_NoInputs);
+	LUA_ENUM_ENTRY("NoRendererClear", ImGuiViewportFlags_::ImGuiViewportFlags_NoRendererClear);
+	LUA_ENUM_ENTRY("TopMost", ImGuiViewportFlags_::ImGuiViewportFlags_TopMost);
+	LUA_ENUM_ENTRY("Minimized", ImGuiViewportFlags_::ImGuiViewportFlags_Minimized);
+	LUA_ENUM_ENTRY("NoAutoMerge", ImGuiViewportFlags_::ImGuiViewportFlags_NoAutoMerge);
+	LUA_ENUM_ENTRY("CanHostOtherWindows", ImGuiViewportFlags_::ImGuiViewportFlags_CanHostOtherWindows);
+	LUA_ENUM_END();
+	LUA_ENTRY_END(1);
 	return 0;
 }
-
-int lua_register_x_imguiViewport_ImGuiViewport(lua_State* tolua_S)
+int lua_ImGuiViewport_DpiScale_getter(lua_State* lua_S)
 {
-	tolua_usertype(tolua_S, "imgui.ImGuiViewport");
-	tolua_cclass(tolua_S, "ImGuiViewport", "imgui.ImGuiViewport", "", nullptr);
-
-	tolua_beginmodule(tolua_S, "ImGuiViewport");
-		tolua_function(tolua_S, "getCenter", lua_x_imguiViewport_ImGuiViewport_GetCenter);
-		tolua_function(tolua_S, "getWorkCenter", lua_x_imguiViewport_ImGuiViewport_GetWorkCenter);
-		tolua_variable(tolua_S, "ID", lua_x_imguiViewport_ImGuiViewport_getID, lua_x_imguiViewport_ImGuiViewport_setID);
-		tolua_variable(tolua_S, "Flags", lua_x_imguiViewport_ImGuiViewport_getFlags, lua_x_imguiViewport_ImGuiViewport_setFlags);
-		tolua_variable(tolua_S, "Pos", lua_x_imguiViewport_ImGuiViewport_getPos, lua_x_imguiViewport_ImGuiViewport_setPos);
-		tolua_variable(tolua_S, "Size", lua_x_imguiViewport_ImGuiViewport_getSize, lua_x_imguiViewport_ImGuiViewport_setSize);
-		tolua_variable(tolua_S, "WorkPos", lua_x_imguiViewport_ImGuiViewport_getWorkPos, lua_x_imguiViewport_ImGuiViewport_setWorkPos);
-		tolua_variable(tolua_S, "WorkSize", lua_x_imguiViewport_ImGuiViewport_getWorkSize, lua_x_imguiViewport_ImGuiViewport_setWorkSize);
-		tolua_variable(tolua_S, "DpiScale", lua_x_imguiViewport_ImGuiViewport_getDpiScale, lua_x_imguiViewport_ImGuiViewport_setDpiScale);
-		tolua_variable(tolua_S, "ParentViewportId", lua_x_imguiViewport_ImGuiViewport_getParentViewportId, lua_x_imguiViewport_ImGuiViewport_setParentViewportId);
-		tolua_variable(tolua_S, "PlatformRequestMove", lua_x_imguiViewport_ImGuiViewport_getPlatformRequestMove, lua_x_imguiViewport_ImGuiViewport_setPlatformRequestMove);
-		tolua_variable(tolua_S, "PlatformRequestResize", lua_x_imguiViewport_ImGuiViewport_getPlatformRequestResize, lua_x_imguiViewport_ImGuiViewport_setPlatformRequestResize);
-		tolua_variable(tolua_S, "PlatformRequestClose", lua_x_imguiViewport_ImGuiViewport_getPlatformRequestClose, lua_x_imguiViewport_ImGuiViewport_setPlatformRequestClose);
-	tolua_endmodule(tolua_S);
-	std::string typeName = typeid(imgui::ImGuiViewport).name();
-	g_luaType[typeName] = "imgui.ImGuiViewport";
-	g_typeCast["ImGuiViewport"] = "imgui.ImGuiViewport";
+	LUA_CUR_FNAME("imgui.ImGuiViewport.DpiScale/getter");
+	auto cobj = LUA_TO_COBJ(ImGuiViewport*, 1);
+	LUA_PUSH_NATIVE(cobj->DpiScale);
 	return 1;
 }
-
-int register_all_x_imguiViewport(lua_State* tolua_S)
+int lua_ImGuiViewport_DpiScale_setter(lua_State* lua_S)
 {
-	tolua_open(tolua_S);
-
-	tolua_module(tolua_S, "imgui", 0);
-	tolua_beginmodule(tolua_S, "imgui");
-
-	lua_register_x_imguiViewport_ImGuiViewport(tolua_S);
-
-	tolua_endmodule(tolua_S);
+	LUA_CUR_FNAME("imgui.ImGuiViewport.DpiScale/setter");
+	auto cobj = LUA_TO_COBJ(ImGuiViewport*, 1);
+	LUA_NATIVE_SETTER(cobj->DpiScale, 2);
+	return 0;
+}
+int lua_ImGuiViewport_Flags_getter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImGuiViewport.Flags/getter");
+	auto cobj = LUA_TO_COBJ(ImGuiViewport*, 1);
+	LUA_PUSH_NATIVE(cobj->Flags);
 	return 1;
 }
-
+int lua_ImGuiViewport_Flags_setter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImGuiViewport.Flags/setter");
+	auto cobj = LUA_TO_COBJ(ImGuiViewport*, 1);
+	LUA_NATIVE_SETTER(cobj->Flags, 2);
+	return 0;
+}
+int lua_ImGuiViewport_ID_getter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImGuiViewport.ID/getter");
+	auto cobj = LUA_TO_COBJ(ImGuiViewport*, 1);
+	LUA_PUSH_NATIVE(cobj->ID);
+	return 1;
+}
+int lua_ImGuiViewport_ID_setter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImGuiViewport.ID/setter");
+	auto cobj = LUA_TO_COBJ(ImGuiViewport*, 1);
+	LUA_NATIVE_SETTER(cobj->ID, 2);
+	return 0;
+}
+int lua_ImGuiViewport_ParentViewportId_getter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImGuiViewport.ParentViewportId/getter");
+	auto cobj = LUA_TO_COBJ(ImGuiViewport*, 1);
+	LUA_PUSH_NATIVE(cobj->ParentViewportId);
+	return 1;
+}
+int lua_ImGuiViewport_ParentViewportId_setter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImGuiViewport.ParentViewportId/setter");
+	auto cobj = LUA_TO_COBJ(ImGuiViewport*, 1);
+	LUA_NATIVE_SETTER(cobj->ParentViewportId, 2);
+	return 0;
+}
+int lua_ImGuiViewport_PlatformRequestClose_getter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImGuiViewport.PlatformRequestClose/getter");
+	auto cobj = LUA_TO_COBJ(ImGuiViewport*, 1);
+	LUA_PUSH_NATIVE(cobj->PlatformRequestClose);
+	return 1;
+}
+int lua_ImGuiViewport_PlatformRequestClose_setter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImGuiViewport.PlatformRequestClose/setter");
+	auto cobj = LUA_TO_COBJ(ImGuiViewport*, 1);
+	LUA_NATIVE_SETTER(cobj->PlatformRequestClose, 2);
+	return 0;
+}
+int lua_ImGuiViewport_PlatformRequestMove_getter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImGuiViewport.PlatformRequestMove/getter");
+	auto cobj = LUA_TO_COBJ(ImGuiViewport*, 1);
+	LUA_PUSH_NATIVE(cobj->PlatformRequestMove);
+	return 1;
+}
+int lua_ImGuiViewport_PlatformRequestMove_setter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImGuiViewport.PlatformRequestMove/setter");
+	auto cobj = LUA_TO_COBJ(ImGuiViewport*, 1);
+	LUA_NATIVE_SETTER(cobj->PlatformRequestMove, 2);
+	return 0;
+}
+int lua_ImGuiViewport_PlatformRequestResize_getter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImGuiViewport.PlatformRequestResize/getter");
+	auto cobj = LUA_TO_COBJ(ImGuiViewport*, 1);
+	LUA_PUSH_NATIVE(cobj->PlatformRequestResize);
+	return 1;
+}
+int lua_ImGuiViewport_PlatformRequestResize_setter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImGuiViewport.PlatformRequestResize/setter");
+	auto cobj = LUA_TO_COBJ(ImGuiViewport*, 1);
+	LUA_NATIVE_SETTER(cobj->PlatformRequestResize, 2);
+	return 0;
+}
+int lua_ImGuiViewport_Pos_getter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImGuiViewport.Pos/getter");
+	auto cobj = LUA_TO_COBJ(ImGuiViewport*, 1);
+	LUA_PUSH_NATIVE(cobj->Pos);
+	return 1;
+}
+int lua_ImGuiViewport_Pos_setter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImGuiViewport.Pos/setter");
+	auto cobj = LUA_TO_COBJ(ImGuiViewport*, 1);
+	LUA_NATIVE_SETTER(cobj->Pos, 2);
+	return 0;
+}
+int lua_ImGuiViewport_Size_getter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImGuiViewport.Size/getter");
+	auto cobj = LUA_TO_COBJ(ImGuiViewport*, 1);
+	LUA_PUSH_NATIVE(cobj->Size);
+	return 1;
+}
+int lua_ImGuiViewport_Size_setter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImGuiViewport.Size/setter");
+	auto cobj = LUA_TO_COBJ(ImGuiViewport*, 1);
+	LUA_NATIVE_SETTER(cobj->Size, 2);
+	return 0;
+}
+int lua_ImGuiViewport_WorkPos_getter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImGuiViewport.WorkPos/getter");
+	auto cobj = LUA_TO_COBJ(ImGuiViewport*, 1);
+	LUA_PUSH_NATIVE(cobj->WorkPos);
+	return 1;
+}
+int lua_ImGuiViewport_WorkPos_setter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImGuiViewport.WorkPos/setter");
+	auto cobj = LUA_TO_COBJ(ImGuiViewport*, 1);
+	LUA_NATIVE_SETTER(cobj->WorkPos, 2);
+	return 0;
+}
+int lua_ImGuiViewport_WorkSize_getter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImGuiViewport.WorkSize/getter");
+	auto cobj = LUA_TO_COBJ(ImGuiViewport*, 1);
+	LUA_PUSH_NATIVE(cobj->WorkSize);
+	return 1;
+}
+int lua_ImGuiViewport_WorkSize_setter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImGuiViewport.WorkSize/setter");
+	auto cobj = LUA_TO_COBJ(ImGuiViewport*, 1);
+	LUA_NATIVE_SETTER(cobj->WorkSize, 2);
+	return 0;
+}
+int lua_ImGuiViewport_getCenter(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ImGuiViewport", "imgui.ImGuiViewport:getCenter");
+	LUA_TRY_INVOKE_R(0, &ImGuiViewport::GetCenter);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGuiViewport_getWorkCenter(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ImGuiViewport", "imgui.ImGuiViewport:getWorkCenter");
+	LUA_TRY_INVOKE_R(0, &ImGuiViewport::GetWorkCenter);
+	LUA_INVOKE_FOOTER("0");
+}
+int luaReg_imguiViewport_imguiImGuiViewport(lua_State* lua_S)
+{
+	LUA_ENTRY("imgui");
+	LUA_CLS_DEF(ImGuiViewport, "ImGuiViewport", "imgui.ImGuiViewport",
+		nullptr, nullptr);
+	LUA_FIELD("DpiScale", lua_ImGuiViewport_DpiScale_getter, lua_ImGuiViewport_DpiScale_setter);
+	LUA_FIELD("Flags", lua_ImGuiViewport_Flags_getter, lua_ImGuiViewport_Flags_setter);
+	LUA_FIELD("ID", lua_ImGuiViewport_ID_getter, lua_ImGuiViewport_ID_setter);
+	LUA_FIELD("ParentViewportId", lua_ImGuiViewport_ParentViewportId_getter, lua_ImGuiViewport_ParentViewportId_setter);
+	LUA_FIELD("PlatformRequestClose", lua_ImGuiViewport_PlatformRequestClose_getter, lua_ImGuiViewport_PlatformRequestClose_setter);
+	LUA_FIELD("PlatformRequestMove", lua_ImGuiViewport_PlatformRequestMove_getter, lua_ImGuiViewport_PlatformRequestMove_setter);
+	LUA_FIELD("PlatformRequestResize", lua_ImGuiViewport_PlatformRequestResize_getter, lua_ImGuiViewport_PlatformRequestResize_setter);
+	LUA_FIELD("Pos", lua_ImGuiViewport_Pos_getter, lua_ImGuiViewport_Pos_setter);
+	LUA_FIELD("Size", lua_ImGuiViewport_Size_getter, lua_ImGuiViewport_Size_setter);
+	LUA_FIELD("WorkPos", lua_ImGuiViewport_WorkPos_getter, lua_ImGuiViewport_WorkPos_setter);
+	LUA_FIELD("WorkSize", lua_ImGuiViewport_WorkSize_getter, lua_ImGuiViewport_WorkSize_setter);
+	LUA_METHOD("getCenter", lua_ImGuiViewport_getCenter);
+	LUA_METHOD("getWorkCenter", lua_ImGuiViewport_getWorkCenter);
+	LUA_CLS_END();
+	LUA_ENTRY_END(1);
+	return 0;
+}

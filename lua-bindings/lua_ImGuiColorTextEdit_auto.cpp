@@ -1,1666 +1,607 @@
-#include "lua_ImGuiColorTextEdit_auto.hpp"
+#include "lua_imguiColorTextEdit_auto.hpp"
 #include "../CCImGuiColorTextEdit.h"
-#include "scripting/lua-bindings/manual/tolua_fix.h"
-#include "scripting/lua-bindings/manual/LuaBasicConversions.h"
-#include "lua_conversion.hpp"
-using lua::luaval_to_native;
-using lua::native_to_luaval;
+#include "imgui_lua.hpp"
 
-#ifndef LUA_CHECK_COBJ_TYPE
-	#ifdef LUA_DEBUG
-		#define LUA_CHECK_COBJ_TYPE(L, TYPE, NAME) if(!tolua_isusertype((L), 1, (TYPE), 0, nullptr)) { return luaL_error((L), "invalid 'cobj' in '%s': '%s', expects '%s'", NAME, tolua_typename((L), 1), (TYPE)); }
-	#else
-		#define LUA_CHECK_COBJ_TYPE(L, TYPE, NAME) (void)(TYPE);
-	#endif
-#endif
-#ifndef LUA_CHECK_COBJ
-	#ifdef LUA_DEBUG
-		#define LUA_CHECK_COBJ(L, COBJ, NAME) if(!(COBJ)) { return luaL_error((L), "invalid 'cobj' in '%s'", NAME); }
-	#else
-		#define LUA_CHECK_COBJ(L, COBJ, NAME)
-	#endif
-#endif
-#ifndef LUA_CHECK_PARAMETER
-	#define LUA_CHECK_PARAMETER(L, OK, NAME) if(!(OK)) { return luaL_error((L), "invalid arguments in '%s'", NAME); }
-#endif
-#ifndef LUA_PARAMETER_ERROR
-	#define LUA_PARAMETER_ERROR(L, NAME, ARGC, EXPECT) return luaL_error((L), "wrong number of arguments in '%s': %d, expects %s", NAME, (ARGC), EXPECT);
-#endif
-
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_addLanguageIdentifier(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:addLanguageIdentifier";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 1) {
-		std::unordered_map<std::string, std::string> arg0;
-		ok &= luaval_to_native(tolua_S, 2, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->addLanguageIdentifier(arg0);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_addLanguagePreprocIdentifier(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:addLanguagePreprocIdentifier";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 1) {
-		std::unordered_map<std::string, std::string> arg0;
-		ok &= luaval_to_native(tolua_S, 2, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->addLanguagePreprocIdentifier(arg0);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_canRedo(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:canRedo";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		native_to_luaval(tolua_S, cobj->canRedo());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_canUndo(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:canUndo";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		native_to_luaval(tolua_S, cobj->canUndo());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_copy(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:copy";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		cobj->copy();
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_create(lua_State* tolua_S)
-{
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:create";
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		native_to_luaval(tolua_S, ImGui::ColorTextEdit::create());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_cut(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:cut";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		cobj->cut();
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_delete_(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:delete";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		cobj->delete_();
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_getCurrentLineText(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:getCurrentLineText";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		native_to_luaval(tolua_S, cobj->getCurrentLineText());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_getCursorPosition(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:getCursorPosition";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		native_to_luaval(tolua_S, cobj->getCursorPosition());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_getHoveredCoordinates(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:getHoveredCoordinates";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		native_to_luaval(tolua_S, cobj->getHoveredCoordinates());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_getHoveredDeclaration(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:getHoveredDeclaration";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		native_to_luaval(tolua_S, cobj->getHoveredDeclaration());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_getHoveredWord(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:getHoveredWord";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		native_to_luaval(tolua_S, cobj->getHoveredWord());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_getHoveredWordIndex(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:getHoveredWordIndex";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		native_to_luaval(tolua_S, cobj->getHoveredWordIndex());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_getPalette(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:getPalette";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		native_to_luaval(tolua_S, cobj->getPalette());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_getSelectedText(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:getSelectedText";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		native_to_luaval(tolua_S, cobj->getSelectedText());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_getTabSize(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:getTabSize";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		native_to_luaval(tolua_S, cobj->getTabSize());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_getText(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:getText";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		native_to_luaval(tolua_S, cobj->getText());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_getTextLines(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:getTextLines";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		native_to_luaval(tolua_S, cobj->getTextLines());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_getTotalLines(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:getTotalLines";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		native_to_luaval(tolua_S, cobj->getTotalLines());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_hasSelection(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:hasSelection";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		native_to_luaval(tolua_S, cobj->hasSelection());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_insertText(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:insertText";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 1) {
-		std::string arg0;
-		ok &= luaval_to_std_string(tolua_S, 2, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->insertText(arg0);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_isAutoTooltip(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:isAutoTooltip";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		native_to_luaval(tolua_S, cobj->isAutoTooltip());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_isColorizerEnabled(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:isColorizerEnabled";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		native_to_luaval(tolua_S, cobj->isColorizerEnabled());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_isCursorPositionChanged(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:isCursorPositionChanged";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		native_to_luaval(tolua_S, cobj->isCursorPositionChanged());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_isHandleKeyboardInputsEnabled(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:isHandleKeyboardInputsEnabled";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		native_to_luaval(tolua_S, cobj->isHandleKeyboardInputsEnabled());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_isHandleMouseInputsEnabled(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:isHandleMouseInputsEnabled";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		native_to_luaval(tolua_S, cobj->isHandleMouseInputsEnabled());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_isImGuiChildIgnored(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:isImGuiChildIgnored";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		native_to_luaval(tolua_S, cobj->isImGuiChildIgnored());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_isOverwrite(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:isOverwrite";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		native_to_luaval(tolua_S, cobj->isOverwrite());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_isReadOnly(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:isReadOnly";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		native_to_luaval(tolua_S, cobj->isReadOnly());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_isShowingShortTabGlyphs(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:isShowingShortTabGlyphs";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		native_to_luaval(tolua_S, cobj->isShowingShortTabGlyphs());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_isShowingWhitespaces(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:isShowingWhitespaces";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		native_to_luaval(tolua_S, cobj->isShowingWhitespaces());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_isTextChanged(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:isTextChanged";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		native_to_luaval(tolua_S, cobj->isTextChanged());
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_moveBottom(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:moveBottom";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		cobj->moveBottom();
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	if (argc == 1) {
-		bool arg0;
-		ok &= luaval_to_boolean(tolua_S, 2, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->moveBottom(arg0);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0 to 1");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_moveDown(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:moveDown";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		cobj->moveDown();
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	if (argc == 1) {
-		int arg0;
-		ok &= luaval_to_int32(tolua_S, 2, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->moveDown(arg0);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	if (argc == 2) {
-		int arg0;
-		bool arg1;
-		ok &= luaval_to_int32(tolua_S, 2, &arg0, LUA_FNAME);
-		ok &= luaval_to_boolean(tolua_S, 3, &arg1, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->moveDown(arg0, arg1);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0 to 2");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_moveEnd(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:moveEnd";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		cobj->moveEnd();
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	if (argc == 1) {
-		bool arg0;
-		ok &= luaval_to_boolean(tolua_S, 2, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->moveEnd(arg0);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0 to 1");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_moveHome(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:moveHome";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		cobj->moveHome();
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	if (argc == 1) {
-		bool arg0;
-		ok &= luaval_to_boolean(tolua_S, 2, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->moveHome(arg0);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0 to 1");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_moveLeft(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:moveLeft";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		cobj->moveLeft();
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	if (argc == 1) {
-		int arg0;
-		ok &= luaval_to_int32(tolua_S, 2, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->moveLeft(arg0);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	if (argc == 2) {
-		int arg0;
-		bool arg1;
-		ok &= luaval_to_int32(tolua_S, 2, &arg0, LUA_FNAME);
-		ok &= luaval_to_boolean(tolua_S, 3, &arg1, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->moveLeft(arg0, arg1);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	if (argc == 3) {
-		int arg0;
-		bool arg1;
-		bool arg2;
-		ok &= luaval_to_int32(tolua_S, 2, &arg0, LUA_FNAME);
-		ok &= luaval_to_boolean(tolua_S, 3, &arg1, LUA_FNAME);
-		ok &= luaval_to_boolean(tolua_S, 4, &arg2, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->moveLeft(arg0, arg1, arg2);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0 to 3");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_moveRight(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:moveRight";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		cobj->moveRight();
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	if (argc == 1) {
-		int arg0;
-		ok &= luaval_to_int32(tolua_S, 2, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->moveRight(arg0);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	if (argc == 2) {
-		int arg0;
-		bool arg1;
-		ok &= luaval_to_int32(tolua_S, 2, &arg0, LUA_FNAME);
-		ok &= luaval_to_boolean(tolua_S, 3, &arg1, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->moveRight(arg0, arg1);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	if (argc == 3) {
-		int arg0;
-		bool arg1;
-		bool arg2;
-		ok &= luaval_to_int32(tolua_S, 2, &arg0, LUA_FNAME);
-		ok &= luaval_to_boolean(tolua_S, 3, &arg1, LUA_FNAME);
-		ok &= luaval_to_boolean(tolua_S, 4, &arg2, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->moveRight(arg0, arg1, arg2);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0 to 3");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_moveTop(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:moveTop";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		cobj->moveTop();
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	if (argc == 1) {
-		bool arg0;
-		ok &= luaval_to_boolean(tolua_S, 2, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->moveTop(arg0);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0 to 1");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_moveUp(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:moveUp";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		cobj->moveUp();
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	if (argc == 1) {
-		int arg0;
-		ok &= luaval_to_int32(tolua_S, 2, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->moveUp(arg0);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	if (argc == 2) {
-		int arg0;
-		bool arg1;
-		ok &= luaval_to_int32(tolua_S, 2, &arg0, LUA_FNAME);
-		ok &= luaval_to_boolean(tolua_S, 3, &arg1, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->moveUp(arg0, arg1);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0 to 2");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_paste(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:paste";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		cobj->paste();
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_redo(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:redo";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		cobj->redo();
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	if (argc == 1) {
-		int arg0;
-		ok &= luaval_to_int32(tolua_S, 2, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->redo(arg0);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0 to 1");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_render(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:render";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 2) {
-		const char* arg0;
-		cocos2d::Vec2 arg1;
-		ok &= lua_isstring(tolua_S, 2); if (ok) arg0 = luaL_checkstring(tolua_S, 2);
-		ok &= luaval_to_vec2(tolua_S, 3, &arg1, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->render(arg0, arg1);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	if (argc == 3) {
-		const char* arg0;
-		cocos2d::Vec2 arg1;
-		bool arg2;
-		ok &= lua_isstring(tolua_S, 2); if (ok) arg0 = luaL_checkstring(tolua_S, 2);
-		ok &= luaval_to_vec2(tolua_S, 3, &arg1, LUA_FNAME);
-		ok &= luaval_to_boolean(tolua_S, 4, &arg2, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->render(arg0, arg1, arg2);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "2 to 3");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_selectAll(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:selectAll";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		cobj->selectAll();
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_selectWordUnderCursor(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:selectWordUnderCursor";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		cobj->selectWordUnderCursor();
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_setAutoTooltip(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:setAutoTooltip";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 1) {
-		bool arg0;
-		ok &= luaval_to_boolean(tolua_S, 2, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->setAutoTooltip(arg0);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_setBreakpoints(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:setBreakpoints";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 1) {
-		std::unordered_set<int> arg0;
-		ok &= luaval_to_native(tolua_S, 2, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->setBreakpoints(arg0);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_setColorizerEnable(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:setColorizerEnable";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 1) {
-		bool arg0;
-		ok &= luaval_to_boolean(tolua_S, 2, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->setColorizerEnable(arg0);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_setCursorPosition(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:setCursorPosition";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 2) {
-		int arg0;
-		int arg1;
-		ok &= luaval_to_int32(tolua_S, 2, &arg0, LUA_FNAME);
-		ok &= luaval_to_int32(tolua_S, 3, &arg1, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->setCursorPosition(arg0, arg1);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "2");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_setErrorMarkers(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:setErrorMarkers";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 1) {
-		std::map<int, std::string> arg0;
-		ok &= luaval_to_native(tolua_S, 2, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->setErrorMarkers(arg0);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_setHandleKeyboardInputs(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:setHandleKeyboardInputs";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 1) {
-		bool arg0;
-		ok &= luaval_to_boolean(tolua_S, 2, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->setHandleKeyboardInputs(arg0);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_setHandleMouseInputs(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:setHandleMouseInputs";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 1) {
-		bool arg0;
-		ok &= luaval_to_boolean(tolua_S, 2, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->setHandleMouseInputs(arg0);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_setImGuiChildIgnored(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:setImGuiChildIgnored";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 1) {
-		bool arg0;
-		ok &= luaval_to_boolean(tolua_S, 2, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->setImGuiChildIgnored(arg0);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageAngelScript(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:setLanguageAngelScript";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		cobj->setLanguageAngelScript();
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageC(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:setLanguageC";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		cobj->setLanguageC();
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageCPlusPlus(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:setLanguageCPlusPlus";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		cobj->setLanguageCPlusPlus();
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageDefinition(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:setLanguageDefinition";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 8) {
-		std::string arg0;
-		std::unordered_set<std::string> arg1;
-		std::unordered_map<std::string, std::string> arg2;
-		std::unordered_map<std::string, std::string> arg3;
-		std::vector<std::pair<std::string, ImGui::ColorTextEdit::PaletteIndex>> arg4;
-		std::string arg5;
-		std::string arg6;
-		std::string arg7;
-		ok &= luaval_to_std_string(tolua_S, 2, &arg0, LUA_FNAME);
-		ok &= luaval_to_native(tolua_S, 3, &arg1, LUA_FNAME);
-		ok &= luaval_to_native(tolua_S, 4, &arg2, LUA_FNAME);
-		ok &= luaval_to_native(tolua_S, 5, &arg3, LUA_FNAME);
-		ok &= luaval_to_native(tolua_S, 6, &arg4, LUA_FNAME);
-		ok &= luaval_to_std_string(tolua_S, 7, &arg5, LUA_FNAME);
-		ok &= luaval_to_std_string(tolua_S, 8, &arg6, LUA_FNAME);
-		ok &= luaval_to_std_string(tolua_S, 9, &arg7, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->setLanguageDefinition(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	if (argc == 9) {
-		std::string arg0;
-		std::unordered_set<std::string> arg1;
-		std::unordered_map<std::string, std::string> arg2;
-		std::unordered_map<std::string, std::string> arg3;
-		std::vector<std::pair<std::string, ImGui::ColorTextEdit::PaletteIndex>> arg4;
-		std::string arg5;
-		std::string arg6;
-		std::string arg7;
-		std::string arg8;
-		ok &= luaval_to_std_string(tolua_S, 2, &arg0, LUA_FNAME);
-		ok &= luaval_to_native(tolua_S, 3, &arg1, LUA_FNAME);
-		ok &= luaval_to_native(tolua_S, 4, &arg2, LUA_FNAME);
-		ok &= luaval_to_native(tolua_S, 5, &arg3, LUA_FNAME);
-		ok &= luaval_to_native(tolua_S, 6, &arg4, LUA_FNAME);
-		ok &= luaval_to_std_string(tolua_S, 7, &arg5, LUA_FNAME);
-		ok &= luaval_to_std_string(tolua_S, 8, &arg6, LUA_FNAME);
-		ok &= luaval_to_std_string(tolua_S, 9, &arg7, LUA_FNAME);
-		ok &= luaval_to_std_string(tolua_S, 10, &arg8, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->setLanguageDefinition(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	if (argc == 10) {
-		std::string arg0;
-		std::unordered_set<std::string> arg1;
-		std::unordered_map<std::string, std::string> arg2;
-		std::unordered_map<std::string, std::string> arg3;
-		std::vector<std::pair<std::string, ImGui::ColorTextEdit::PaletteIndex>> arg4;
-		std::string arg5;
-		std::string arg6;
-		std::string arg7;
-		std::string arg8;
-		bool arg9;
-		ok &= luaval_to_std_string(tolua_S, 2, &arg0, LUA_FNAME);
-		ok &= luaval_to_native(tolua_S, 3, &arg1, LUA_FNAME);
-		ok &= luaval_to_native(tolua_S, 4, &arg2, LUA_FNAME);
-		ok &= luaval_to_native(tolua_S, 5, &arg3, LUA_FNAME);
-		ok &= luaval_to_native(tolua_S, 6, &arg4, LUA_FNAME);
-		ok &= luaval_to_std_string(tolua_S, 7, &arg5, LUA_FNAME);
-		ok &= luaval_to_std_string(tolua_S, 8, &arg6, LUA_FNAME);
-		ok &= luaval_to_std_string(tolua_S, 9, &arg7, LUA_FNAME);
-		ok &= luaval_to_std_string(tolua_S, 10, &arg8, LUA_FNAME);
-		ok &= luaval_to_boolean(tolua_S, 11, &arg9, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->setLanguageDefinition(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	if (argc == 11) {
-		std::string arg0;
-		std::unordered_set<std::string> arg1;
-		std::unordered_map<std::string, std::string> arg2;
-		std::unordered_map<std::string, std::string> arg3;
-		std::vector<std::pair<std::string, ImGui::ColorTextEdit::PaletteIndex>> arg4;
-		std::string arg5;
-		std::string arg6;
-		std::string arg7;
-		std::string arg8;
-		bool arg9;
-		bool arg10;
-		ok &= luaval_to_std_string(tolua_S, 2, &arg0, LUA_FNAME);
-		ok &= luaval_to_native(tolua_S, 3, &arg1, LUA_FNAME);
-		ok &= luaval_to_native(tolua_S, 4, &arg2, LUA_FNAME);
-		ok &= luaval_to_native(tolua_S, 5, &arg3, LUA_FNAME);
-		ok &= luaval_to_native(tolua_S, 6, &arg4, LUA_FNAME);
-		ok &= luaval_to_std_string(tolua_S, 7, &arg5, LUA_FNAME);
-		ok &= luaval_to_std_string(tolua_S, 8, &arg6, LUA_FNAME);
-		ok &= luaval_to_std_string(tolua_S, 9, &arg7, LUA_FNAME);
-		ok &= luaval_to_std_string(tolua_S, 10, &arg8, LUA_FNAME);
-		ok &= luaval_to_boolean(tolua_S, 11, &arg9, LUA_FNAME);
-		ok &= luaval_to_boolean(tolua_S, 12, &arg10, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->setLanguageDefinition(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "8 to 11");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageGLSL(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:setLanguageGLSL";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		cobj->setLanguageGLSL();
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageHLSL(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:setLanguageHLSL";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		cobj->setLanguageHLSL();
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageLua(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:setLanguageLua";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		cobj->setLanguageLua();
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageSQL(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:setLanguageSQL";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		cobj->setLanguageSQL();
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_setPalette(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:setPalette";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 1) {
-		std::vector<unsigned int> arg0;
-		ok &= luaval_to_native(tolua_S, 2, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->setPalette(arg0);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_setPaletteDark(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:setPaletteDark";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		cobj->setPaletteDark();
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_setPaletteLight(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:setPaletteLight";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		cobj->setPaletteLight();
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_setPaletteRetroBlue(lua_State* tolua_S)
-{
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:setPaletteRetroBlue";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		cobj->setPaletteRetroBlue();
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_setReadOnly(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:setReadOnly";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 1) {
-		bool arg0;
-		ok &= luaval_to_boolean(tolua_S, 2, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->setReadOnly(arg0);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_setSelection(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:setSelection";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 4) {
-		int arg0;
-		int arg1;
-		int arg2;
-		int arg3;
-		ok &= luaval_to_int32(tolua_S, 2, &arg0, LUA_FNAME);
-		ok &= luaval_to_int32(tolua_S, 3, &arg1, LUA_FNAME);
-		ok &= luaval_to_int32(tolua_S, 4, &arg2, LUA_FNAME);
-		ok &= luaval_to_int32(tolua_S, 5, &arg3, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->setSelection(arg0, arg1, arg2, arg3);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	if (argc == 5) {
-		int arg0;
-		int arg1;
-		int arg2;
-		int arg3;
-		ImGui::ColorTextEdit::SelectionMode arg4;
-		ok &= luaval_to_int32(tolua_S, 2, &arg0, LUA_FNAME);
-		ok &= luaval_to_int32(tolua_S, 3, &arg1, LUA_FNAME);
-		ok &= luaval_to_int32(tolua_S, 4, &arg2, LUA_FNAME);
-		ok &= luaval_to_int32(tolua_S, 5, &arg3, LUA_FNAME);
-		ok &= luaval_to_native(tolua_S, 6, &arg4, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->setSelection(arg0, arg1, arg2, arg3, arg4);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "4 to 5");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_setSelectionEnd(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:setSelectionEnd";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 2) {
-		int arg0;
-		int arg1;
-		ok &= luaval_to_int32(tolua_S, 2, &arg0, LUA_FNAME);
-		ok &= luaval_to_int32(tolua_S, 3, &arg1, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->setSelectionEnd(arg0, arg1);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "2");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_setSelectionStart(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:setSelectionStart";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 2) {
-		int arg0;
-		int arg1;
-		ok &= luaval_to_int32(tolua_S, 2, &arg0, LUA_FNAME);
-		ok &= luaval_to_int32(tolua_S, 3, &arg1, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->setSelectionStart(arg0, arg1);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "2");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_setShowShortTabGlyphs(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:setShowShortTabGlyphs";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 1) {
-		bool arg0;
-		ok &= luaval_to_boolean(tolua_S, 2, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->setShowShortTabGlyphs(arg0);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_setShowWhitespaces(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:setShowWhitespaces";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 1) {
-		bool arg0;
-		ok &= luaval_to_boolean(tolua_S, 2, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->setShowWhitespaces(arg0);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_setTabSize(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:setTabSize";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 1) {
-		int arg0;
-		ok &= luaval_to_int32(tolua_S, 2, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->setTabSize(arg0);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_setText(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:setText";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 1) {
-		std::string arg0;
-		ok &= luaval_to_std_string(tolua_S, 2, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->setText(arg0);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_setTextLines(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:setTextLines";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 1) {
-		std::vector<std::string> arg0;
-		ok &= luaval_to_std_vector_string(tolua_S, 2, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->setTextLines(arg0);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
-}
-int lua_x_ImGuiColorTextEdit_ColorTextEdit_undo(lua_State* tolua_S)
-{
-	bool ok = true;
-	constexpr auto LUA_OBJ_TYPE = "imgui.ColorTextEdit";
-	constexpr auto LUA_FNAME = "imgui.ColorTextEdit:undo";
-	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
-	auto cobj = (ImGui::ColorTextEdit*)tolua_tousertype(tolua_S, 1, nullptr);
-	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
-	const int argc = lua_gettop(tolua_S) - 1;
-	if (argc == 0) {
-		cobj->undo();
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	if (argc == 1) {
-		int arg0;
-		ok &= luaval_to_int32(tolua_S, 2, &arg0, LUA_FNAME);
-		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
-		cobj->undo(arg0);
-		lua_settop(tolua_S, 1);
-		return 1;
-	}
-	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "0 to 1");
-}
-static int lua_x_ImGuiColorTextEdit_ColorTextEdit_finalize(lua_State* tolua_S)
-{
+int luaReg_imguiColorTextEdit_imguiColorTextEditPaletteIndex(lua_State* lua_S)
+{
+	LUA_ENUM_DEF("PaletteIndex");
+	LUA_ENUM_ENTRY("Default", ImGui::ColorTextEdit::PaletteIndex::Default);
+	LUA_ENUM_ENTRY("Keyword", ImGui::ColorTextEdit::PaletteIndex::Keyword);
+	LUA_ENUM_ENTRY("Number", ImGui::ColorTextEdit::PaletteIndex::Number);
+	LUA_ENUM_ENTRY("String", ImGui::ColorTextEdit::PaletteIndex::String);
+	LUA_ENUM_ENTRY("CharLiteral", ImGui::ColorTextEdit::PaletteIndex::CharLiteral);
+	LUA_ENUM_ENTRY("Punctuation", ImGui::ColorTextEdit::PaletteIndex::Punctuation);
+	LUA_ENUM_ENTRY("Preprocessor", ImGui::ColorTextEdit::PaletteIndex::Preprocessor);
+	LUA_ENUM_ENTRY("Identifier", ImGui::ColorTextEdit::PaletteIndex::Identifier);
+	LUA_ENUM_ENTRY("KnownIdentifier", ImGui::ColorTextEdit::PaletteIndex::KnownIdentifier);
+	LUA_ENUM_ENTRY("PreprocIdentifier", ImGui::ColorTextEdit::PaletteIndex::PreprocIdentifier);
+	LUA_ENUM_ENTRY("Comment", ImGui::ColorTextEdit::PaletteIndex::Comment);
+	LUA_ENUM_ENTRY("MultiLineComment", ImGui::ColorTextEdit::PaletteIndex::MultiLineComment);
+	LUA_ENUM_ENTRY("Background", ImGui::ColorTextEdit::PaletteIndex::Background);
+	LUA_ENUM_ENTRY("Cursor", ImGui::ColorTextEdit::PaletteIndex::Cursor);
+	LUA_ENUM_ENTRY("Selection", ImGui::ColorTextEdit::PaletteIndex::Selection);
+	LUA_ENUM_ENTRY("ErrorMarker", ImGui::ColorTextEdit::PaletteIndex::ErrorMarker);
+	LUA_ENUM_ENTRY("Breakpoint", ImGui::ColorTextEdit::PaletteIndex::Breakpoint);
+	LUA_ENUM_ENTRY("LineNumber", ImGui::ColorTextEdit::PaletteIndex::LineNumber);
+	LUA_ENUM_ENTRY("CurrentLineFill", ImGui::ColorTextEdit::PaletteIndex::CurrentLineFill);
+	LUA_ENUM_ENTRY("CurrentLineFillInactive", ImGui::ColorTextEdit::PaletteIndex::CurrentLineFillInactive);
+	LUA_ENUM_ENTRY("CurrentLineEdge", ImGui::ColorTextEdit::PaletteIndex::CurrentLineEdge);
+	LUA_ENUM_ENTRY("Max", ImGui::ColorTextEdit::PaletteIndex::Max);
+	LUA_ENUM_END();
 	return 0;
 }
-
-int lua_register_x_ImGuiColorTextEdit_ColorTextEdit(lua_State* tolua_S)
+int luaReg_imguiColorTextEdit_imguiColorTextEditSelectionMode(lua_State* lua_S)
 {
-	tolua_usertype(tolua_S, "imgui.ColorTextEdit");
-	tolua_cclass(tolua_S, "ColorTextEdit", "imgui.ColorTextEdit", "cc.Node", nullptr);
-
-	tolua_beginmodule(tolua_S, "ColorTextEdit");
-		tolua_function(tolua_S, "addLanguageIdentifier", lua_x_ImGuiColorTextEdit_ColorTextEdit_addLanguageIdentifier);
-		tolua_function(tolua_S, "addLanguagePreprocIdentifier", lua_x_ImGuiColorTextEdit_ColorTextEdit_addLanguagePreprocIdentifier);
-		tolua_function(tolua_S, "canRedo", lua_x_ImGuiColorTextEdit_ColorTextEdit_canRedo);
-		tolua_function(tolua_S, "canUndo", lua_x_ImGuiColorTextEdit_ColorTextEdit_canUndo);
-		tolua_function(tolua_S, "copy", lua_x_ImGuiColorTextEdit_ColorTextEdit_copy);
-		tolua_function(tolua_S, "cut", lua_x_ImGuiColorTextEdit_ColorTextEdit_cut);
-		tolua_function(tolua_S, "delete", lua_x_ImGuiColorTextEdit_ColorTextEdit_delete_);
-		tolua_function(tolua_S, "getCurrentLineText", lua_x_ImGuiColorTextEdit_ColorTextEdit_getCurrentLineText);
-		tolua_function(tolua_S, "getCursorPosition", lua_x_ImGuiColorTextEdit_ColorTextEdit_getCursorPosition);
-		tolua_function(tolua_S, "getHoveredCoordinates", lua_x_ImGuiColorTextEdit_ColorTextEdit_getHoveredCoordinates);
-		tolua_function(tolua_S, "getHoveredDeclaration", lua_x_ImGuiColorTextEdit_ColorTextEdit_getHoveredDeclaration);
-		tolua_function(tolua_S, "getHoveredWord", lua_x_ImGuiColorTextEdit_ColorTextEdit_getHoveredWord);
-		tolua_function(tolua_S, "getHoveredWordIndex", lua_x_ImGuiColorTextEdit_ColorTextEdit_getHoveredWordIndex);
-		tolua_function(tolua_S, "getPalette", lua_x_ImGuiColorTextEdit_ColorTextEdit_getPalette);
-		tolua_function(tolua_S, "getSelectedText", lua_x_ImGuiColorTextEdit_ColorTextEdit_getSelectedText);
-		tolua_function(tolua_S, "getTabSize", lua_x_ImGuiColorTextEdit_ColorTextEdit_getTabSize);
-		tolua_function(tolua_S, "getText", lua_x_ImGuiColorTextEdit_ColorTextEdit_getText);
-		tolua_function(tolua_S, "getTextLines", lua_x_ImGuiColorTextEdit_ColorTextEdit_getTextLines);
-		tolua_function(tolua_S, "getTotalLines", lua_x_ImGuiColorTextEdit_ColorTextEdit_getTotalLines);
-		tolua_function(tolua_S, "hasSelection", lua_x_ImGuiColorTextEdit_ColorTextEdit_hasSelection);
-		tolua_function(tolua_S, "insertText", lua_x_ImGuiColorTextEdit_ColorTextEdit_insertText);
-		tolua_function(tolua_S, "isAutoTooltip", lua_x_ImGuiColorTextEdit_ColorTextEdit_isAutoTooltip);
-		tolua_function(tolua_S, "isColorizerEnabled", lua_x_ImGuiColorTextEdit_ColorTextEdit_isColorizerEnabled);
-		tolua_function(tolua_S, "isCursorPositionChanged", lua_x_ImGuiColorTextEdit_ColorTextEdit_isCursorPositionChanged);
-		tolua_function(tolua_S, "isHandleKeyboardInputsEnabled", lua_x_ImGuiColorTextEdit_ColorTextEdit_isHandleKeyboardInputsEnabled);
-		tolua_function(tolua_S, "isHandleMouseInputsEnabled", lua_x_ImGuiColorTextEdit_ColorTextEdit_isHandleMouseInputsEnabled);
-		tolua_function(tolua_S, "isImGuiChildIgnored", lua_x_ImGuiColorTextEdit_ColorTextEdit_isImGuiChildIgnored);
-		tolua_function(tolua_S, "isOverwrite", lua_x_ImGuiColorTextEdit_ColorTextEdit_isOverwrite);
-		tolua_function(tolua_S, "isReadOnly", lua_x_ImGuiColorTextEdit_ColorTextEdit_isReadOnly);
-		tolua_function(tolua_S, "isShowingShortTabGlyphs", lua_x_ImGuiColorTextEdit_ColorTextEdit_isShowingShortTabGlyphs);
-		tolua_function(tolua_S, "isShowingWhitespaces", lua_x_ImGuiColorTextEdit_ColorTextEdit_isShowingWhitespaces);
-		tolua_function(tolua_S, "isTextChanged", lua_x_ImGuiColorTextEdit_ColorTextEdit_isTextChanged);
-		tolua_function(tolua_S, "moveBottom", lua_x_ImGuiColorTextEdit_ColorTextEdit_moveBottom);
-		tolua_function(tolua_S, "moveDown", lua_x_ImGuiColorTextEdit_ColorTextEdit_moveDown);
-		tolua_function(tolua_S, "moveEnd", lua_x_ImGuiColorTextEdit_ColorTextEdit_moveEnd);
-		tolua_function(tolua_S, "moveHome", lua_x_ImGuiColorTextEdit_ColorTextEdit_moveHome);
-		tolua_function(tolua_S, "moveLeft", lua_x_ImGuiColorTextEdit_ColorTextEdit_moveLeft);
-		tolua_function(tolua_S, "moveRight", lua_x_ImGuiColorTextEdit_ColorTextEdit_moveRight);
-		tolua_function(tolua_S, "moveTop", lua_x_ImGuiColorTextEdit_ColorTextEdit_moveTop);
-		tolua_function(tolua_S, "moveUp", lua_x_ImGuiColorTextEdit_ColorTextEdit_moveUp);
-		tolua_function(tolua_S, "paste", lua_x_ImGuiColorTextEdit_ColorTextEdit_paste);
-		tolua_function(tolua_S, "redo", lua_x_ImGuiColorTextEdit_ColorTextEdit_redo);
-		tolua_function(tolua_S, "render", lua_x_ImGuiColorTextEdit_ColorTextEdit_render);
-		tolua_function(tolua_S, "selectAll", lua_x_ImGuiColorTextEdit_ColorTextEdit_selectAll);
-		tolua_function(tolua_S, "selectWordUnderCursor", lua_x_ImGuiColorTextEdit_ColorTextEdit_selectWordUnderCursor);
-		tolua_function(tolua_S, "setAutoTooltip", lua_x_ImGuiColorTextEdit_ColorTextEdit_setAutoTooltip);
-		tolua_function(tolua_S, "setBreakpoints", lua_x_ImGuiColorTextEdit_ColorTextEdit_setBreakpoints);
-		tolua_function(tolua_S, "setColorizerEnable", lua_x_ImGuiColorTextEdit_ColorTextEdit_setColorizerEnable);
-		tolua_function(tolua_S, "setCursorPosition", lua_x_ImGuiColorTextEdit_ColorTextEdit_setCursorPosition);
-		tolua_function(tolua_S, "setErrorMarkers", lua_x_ImGuiColorTextEdit_ColorTextEdit_setErrorMarkers);
-		tolua_function(tolua_S, "setHandleKeyboardInputs", lua_x_ImGuiColorTextEdit_ColorTextEdit_setHandleKeyboardInputs);
-		tolua_function(tolua_S, "setHandleMouseInputs", lua_x_ImGuiColorTextEdit_ColorTextEdit_setHandleMouseInputs);
-		tolua_function(tolua_S, "setImGuiChildIgnored", lua_x_ImGuiColorTextEdit_ColorTextEdit_setImGuiChildIgnored);
-		tolua_function(tolua_S, "setLanguageAngelScript", lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageAngelScript);
-		tolua_function(tolua_S, "setLanguageC", lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageC);
-		tolua_function(tolua_S, "setLanguageCPlusPlus", lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageCPlusPlus);
-		tolua_function(tolua_S, "setLanguageDefinition", lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageDefinition);
-		tolua_function(tolua_S, "setLanguageGLSL", lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageGLSL);
-		tolua_function(tolua_S, "setLanguageHLSL", lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageHLSL);
-		tolua_function(tolua_S, "setLanguageLua", lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageLua);
-		tolua_function(tolua_S, "setLanguageSQL", lua_x_ImGuiColorTextEdit_ColorTextEdit_setLanguageSQL);
-		tolua_function(tolua_S, "setPalette", lua_x_ImGuiColorTextEdit_ColorTextEdit_setPalette);
-		tolua_function(tolua_S, "setPaletteDark", lua_x_ImGuiColorTextEdit_ColorTextEdit_setPaletteDark);
-		tolua_function(tolua_S, "setPaletteLight", lua_x_ImGuiColorTextEdit_ColorTextEdit_setPaletteLight);
-		tolua_function(tolua_S, "setPaletteRetroBlue", lua_x_ImGuiColorTextEdit_ColorTextEdit_setPaletteRetroBlue);
-		tolua_function(tolua_S, "setReadOnly", lua_x_ImGuiColorTextEdit_ColorTextEdit_setReadOnly);
-		tolua_function(tolua_S, "setSelection", lua_x_ImGuiColorTextEdit_ColorTextEdit_setSelection);
-		tolua_function(tolua_S, "setSelectionEnd", lua_x_ImGuiColorTextEdit_ColorTextEdit_setSelectionEnd);
-		tolua_function(tolua_S, "setSelectionStart", lua_x_ImGuiColorTextEdit_ColorTextEdit_setSelectionStart);
-		tolua_function(tolua_S, "setShowShortTabGlyphs", lua_x_ImGuiColorTextEdit_ColorTextEdit_setShowShortTabGlyphs);
-		tolua_function(tolua_S, "setShowWhitespaces", lua_x_ImGuiColorTextEdit_ColorTextEdit_setShowWhitespaces);
-		tolua_function(tolua_S, "setTabSize", lua_x_ImGuiColorTextEdit_ColorTextEdit_setTabSize);
-		tolua_function(tolua_S, "setText", lua_x_ImGuiColorTextEdit_ColorTextEdit_setText);
-		tolua_function(tolua_S, "setTextLines", lua_x_ImGuiColorTextEdit_ColorTextEdit_setTextLines);
-		tolua_function(tolua_S, "undo", lua_x_ImGuiColorTextEdit_ColorTextEdit_undo);
-		tolua_function(tolua_S, "create", lua_x_ImGuiColorTextEdit_ColorTextEdit_create);
-		{
-			tolua_module(tolua_S, "PaletteIndex", 0);
-			tolua_beginmodule(tolua_S, "PaletteIndex");
-			{
-				tolua_constant(tolua_S, "Default", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Default);
-				tolua_constant(tolua_S, "Keyword", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Keyword);
-				tolua_constant(tolua_S, "Number", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Number);
-				tolua_constant(tolua_S, "String", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::String);
-				tolua_constant(tolua_S, "CharLiteral", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::CharLiteral);
-				tolua_constant(tolua_S, "Punctuation", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Punctuation);
-				tolua_constant(tolua_S, "Preprocessor", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Preprocessor);
-				tolua_constant(tolua_S, "Identifier", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Identifier);
-				tolua_constant(tolua_S, "KnownIdentifier", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::KnownIdentifier);
-				tolua_constant(tolua_S, "PreprocIdentifier", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::PreprocIdentifier);
-				tolua_constant(tolua_S, "Comment", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Comment);
-				tolua_constant(tolua_S, "MultiLineComment", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::MultiLineComment);
-				tolua_constant(tolua_S, "Background", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Background);
-				tolua_constant(tolua_S, "Cursor", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Cursor);
-				tolua_constant(tolua_S, "Selection", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Selection);
-				tolua_constant(tolua_S, "ErrorMarker", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::ErrorMarker);
-				tolua_constant(tolua_S, "Breakpoint", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Breakpoint);
-				tolua_constant(tolua_S, "LineNumber", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::LineNumber);
-				tolua_constant(tolua_S, "CurrentLineFill", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::CurrentLineFill);
-				tolua_constant(tolua_S, "CurrentLineFillInactive", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::CurrentLineFillInactive);
-				tolua_constant(tolua_S, "CurrentLineEdge", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::CurrentLineEdge);
-				tolua_constant(tolua_S, "Max", (lua_Number)ImGui::ColorTextEdit::PaletteIndex::Max);
-			}
-			tolua_endmodule(tolua_S);
-		}
-		{
-			tolua_module(tolua_S, "SelectionMode", 0);
-			tolua_beginmodule(tolua_S, "SelectionMode");
-			{
-				tolua_constant(tolua_S, "Normal", (lua_Number)ImGui::ColorTextEdit::SelectionMode::Normal);
-				tolua_constant(tolua_S, "Word", (lua_Number)ImGui::ColorTextEdit::SelectionMode::Word);
-				tolua_constant(tolua_S, "Line", (lua_Number)ImGui::ColorTextEdit::SelectionMode::Line);
-			}
-			tolua_endmodule(tolua_S);
-		}
-	tolua_endmodule(tolua_S);
-	std::string typeName = typeid(ImGui::ColorTextEdit).name();
-	g_luaType[typeName] = "imgui.ColorTextEdit";
-	g_typeCast["ColorTextEdit"] = "imgui.ColorTextEdit";
-	return 1;
+	LUA_ENUM_DEF("SelectionMode");
+	LUA_ENUM_ENTRY("Normal", ImGui::ColorTextEdit::SelectionMode::Normal);
+	LUA_ENUM_ENTRY("Word", ImGui::ColorTextEdit::SelectionMode::Word);
+	LUA_ENUM_ENTRY("Line", ImGui::ColorTextEdit::SelectionMode::Line);
+	LUA_ENUM_END();
+	return 0;
 }
-
-int register_all_x_ImGuiColorTextEdit(lua_State* tolua_S)
+int lua_ImGui_ColorTextEdit_addLanguageIdentifier(lua_State* lua_S)
 {
-	tolua_open(tolua_S);
-
-	tolua_module(tolua_S, "imgui", 0);
-	tolua_beginmodule(tolua_S, "imgui");
-
-	lua_register_x_ImGuiColorTextEdit_ColorTextEdit(tolua_S);
-
-	tolua_endmodule(tolua_S);
-	return 1;
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:addLanguageIdentifier");
+	LUA_TRY_INVOKE(1, &ImGui::ColorTextEdit::addLanguageIdentifier);
+	LUA_INVOKE_FOOTER("1");
 }
-
+int lua_ImGui_ColorTextEdit_addLanguagePreprocIdentifier(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:addLanguagePreprocIdentifier");
+	LUA_TRY_INVOKE(1, &ImGui::ColorTextEdit::addLanguagePreprocIdentifier);
+	LUA_INVOKE_FOOTER("1");
+}
+int lua_ImGui_ColorTextEdit_canRedo(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:canRedo");
+	LUA_TRY_INVOKE_R(0, &ImGui::ColorTextEdit::canRedo);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_canUndo(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:canUndo");
+	LUA_TRY_INVOKE_R(0, &ImGui::ColorTextEdit::canUndo);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_copy(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:copy");
+	LUA_TRY_INVOKE(0, &ImGui::ColorTextEdit::copy);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_cut(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:cut");
+	LUA_TRY_INVOKE(0, &ImGui::ColorTextEdit::cut);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_delete(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:delete");
+	LUA_TRY_INVOKE(0, &ImGui::ColorTextEdit::delete_);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_getCurrentLineText(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:getCurrentLineText");
+	LUA_TRY_INVOKE_R(0, &ImGui::ColorTextEdit::getCurrentLineText);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_getCursorPosition(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:getCursorPosition");
+	LUA_TRY_INVOKE_R(0, &ImGui::ColorTextEdit::getCursorPosition);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_getHoveredCoordinates(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:getHoveredCoordinates");
+	LUA_TRY_INVOKE_R(0, &ImGui::ColorTextEdit::getHoveredCoordinates);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_getHoveredDeclaration(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:getHoveredDeclaration");
+	LUA_TRY_INVOKE_R(0, &ImGui::ColorTextEdit::getHoveredDeclaration);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_getHoveredWord(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:getHoveredWord");
+	LUA_TRY_INVOKE_R(0, &ImGui::ColorTextEdit::getHoveredWord);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_getHoveredWordIndex(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:getHoveredWordIndex");
+	LUA_TRY_INVOKE_R(0, &ImGui::ColorTextEdit::getHoveredWordIndex);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_getPalette(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:getPalette");
+	LUA_TRY_INVOKE_R(0, &ImGui::ColorTextEdit::getPalette);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_getSelectedText(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:getSelectedText");
+	LUA_TRY_INVOKE_R(0, &ImGui::ColorTextEdit::getSelectedText);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_getTabSize(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:getTabSize");
+	LUA_TRY_INVOKE_R(0, &ImGui::ColorTextEdit::getTabSize);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_getText(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:getText");
+	LUA_TRY_INVOKE_R(0, &ImGui::ColorTextEdit::getText);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_getTextLines(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:getTextLines");
+	LUA_TRY_INVOKE_R(0, &ImGui::ColorTextEdit::getTextLines);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_getTotalLines(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:getTotalLines");
+	LUA_TRY_INVOKE_R(0, &ImGui::ColorTextEdit::getTotalLines);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_hasSelection(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:hasSelection");
+	LUA_TRY_INVOKE_R(0, &ImGui::ColorTextEdit::hasSelection);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_insertText(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:insertText");
+	LUA_TRY_INVOKE(1, &ImGui::ColorTextEdit::insertText);
+	LUA_INVOKE_FOOTER("1");
+}
+int lua_ImGui_ColorTextEdit_isAutoTooltip(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:isAutoTooltip");
+	LUA_TRY_INVOKE_R(0, &ImGui::ColorTextEdit::isAutoTooltip);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_isColorizerEnabled(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:isColorizerEnabled");
+	LUA_TRY_INVOKE_R(0, &ImGui::ColorTextEdit::isColorizerEnabled);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_isCursorPositionChanged(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:isCursorPositionChanged");
+	LUA_TRY_INVOKE_R(0, &ImGui::ColorTextEdit::isCursorPositionChanged);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_isHandleKeyboardInputsEnabled(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:isHandleKeyboardInputsEnabled");
+	LUA_TRY_INVOKE_R(0, &ImGui::ColorTextEdit::isHandleKeyboardInputsEnabled);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_isHandleMouseInputsEnabled(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:isHandleMouseInputsEnabled");
+	LUA_TRY_INVOKE_R(0, &ImGui::ColorTextEdit::isHandleMouseInputsEnabled);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_isImGuiChildIgnored(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:isImGuiChildIgnored");
+	LUA_TRY_INVOKE_R(0, &ImGui::ColorTextEdit::isImGuiChildIgnored);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_isOverwrite(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:isOverwrite");
+	LUA_TRY_INVOKE_R(0, &ImGui::ColorTextEdit::isOverwrite);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_isReadOnly(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:isReadOnly");
+	LUA_TRY_INVOKE_R(0, &ImGui::ColorTextEdit::isReadOnly);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_isShowingShortTabGlyphs(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:isShowingShortTabGlyphs");
+	LUA_TRY_INVOKE_R(0, &ImGui::ColorTextEdit::isShowingShortTabGlyphs);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_isShowingWhitespaces(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:isShowingWhitespaces");
+	LUA_TRY_INVOKE_R(0, &ImGui::ColorTextEdit::isShowingWhitespaces);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_isTextChanged(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:isTextChanged");
+	LUA_TRY_INVOKE_R(0, &ImGui::ColorTextEdit::isTextChanged);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_moveBottom(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:moveBottom");
+	LUA_TRY_INVOKE(1, static_cast<void(ImGui::ColorTextEdit::*)(bool)>(&ImGui::ColorTextEdit::moveBottom));
+	LUA_TRY_INVOKE(0, [](ImGui::ColorTextEdit* obj){{return obj->moveBottom();}});
+	LUA_INVOKE_FOOTER("0,1");
+}
+int lua_ImGui_ColorTextEdit_moveDown(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:moveDown");
+	LUA_TRY_INVOKE(2, static_cast<void(ImGui::ColorTextEdit::*)(int, bool)>(&ImGui::ColorTextEdit::moveDown));
+	LUA_TRY_INVOKE(1, [](ImGui::ColorTextEdit* obj, int arg0){{return obj->moveDown(std::move(arg0));}});
+	LUA_TRY_INVOKE(0, [](ImGui::ColorTextEdit* obj){{return obj->moveDown();}});
+	LUA_INVOKE_FOOTER("0,1,2");
+}
+int lua_ImGui_ColorTextEdit_moveEnd(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:moveEnd");
+	LUA_TRY_INVOKE(1, static_cast<void(ImGui::ColorTextEdit::*)(bool)>(&ImGui::ColorTextEdit::moveEnd));
+	LUA_TRY_INVOKE(0, [](ImGui::ColorTextEdit* obj){{return obj->moveEnd();}});
+	LUA_INVOKE_FOOTER("0,1");
+}
+int lua_ImGui_ColorTextEdit_moveHome(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:moveHome");
+	LUA_TRY_INVOKE(1, static_cast<void(ImGui::ColorTextEdit::*)(bool)>(&ImGui::ColorTextEdit::moveHome));
+	LUA_TRY_INVOKE(0, [](ImGui::ColorTextEdit* obj){{return obj->moveHome();}});
+	LUA_INVOKE_FOOTER("0,1");
+}
+int lua_ImGui_ColorTextEdit_moveLeft(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:moveLeft");
+	LUA_TRY_INVOKE(3, static_cast<void(ImGui::ColorTextEdit::*)(int, bool, bool)>(&ImGui::ColorTextEdit::moveLeft));
+	LUA_TRY_INVOKE(2, [](ImGui::ColorTextEdit* obj, int arg0,bool arg1){{return obj->moveLeft(std::move(arg0),std::move(arg1));}});
+	LUA_TRY_INVOKE(1, [](ImGui::ColorTextEdit* obj, int arg0){{return obj->moveLeft(std::move(arg0));}});
+	LUA_TRY_INVOKE(0, [](ImGui::ColorTextEdit* obj){{return obj->moveLeft();}});
+	LUA_INVOKE_FOOTER("0,1,2,3");
+}
+int lua_ImGui_ColorTextEdit_moveRight(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:moveRight");
+	LUA_TRY_INVOKE(3, static_cast<void(ImGui::ColorTextEdit::*)(int, bool, bool)>(&ImGui::ColorTextEdit::moveRight));
+	LUA_TRY_INVOKE(2, [](ImGui::ColorTextEdit* obj, int arg0,bool arg1){{return obj->moveRight(std::move(arg0),std::move(arg1));}});
+	LUA_TRY_INVOKE(1, [](ImGui::ColorTextEdit* obj, int arg0){{return obj->moveRight(std::move(arg0));}});
+	LUA_TRY_INVOKE(0, [](ImGui::ColorTextEdit* obj){{return obj->moveRight();}});
+	LUA_INVOKE_FOOTER("0,1,2,3");
+}
+int lua_ImGui_ColorTextEdit_moveTop(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:moveTop");
+	LUA_TRY_INVOKE(1, static_cast<void(ImGui::ColorTextEdit::*)(bool)>(&ImGui::ColorTextEdit::moveTop));
+	LUA_TRY_INVOKE(0, [](ImGui::ColorTextEdit* obj){{return obj->moveTop();}});
+	LUA_INVOKE_FOOTER("0,1");
+}
+int lua_ImGui_ColorTextEdit_moveUp(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:moveUp");
+	LUA_TRY_INVOKE(2, static_cast<void(ImGui::ColorTextEdit::*)(int, bool)>(&ImGui::ColorTextEdit::moveUp));
+	LUA_TRY_INVOKE(1, [](ImGui::ColorTextEdit* obj, int arg0){{return obj->moveUp(std::move(arg0));}});
+	LUA_TRY_INVOKE(0, [](ImGui::ColorTextEdit* obj){{return obj->moveUp();}});
+	LUA_INVOKE_FOOTER("0,1,2");
+}
+int lua_ImGui_ColorTextEdit_paste(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:paste");
+	LUA_TRY_INVOKE(0, &ImGui::ColorTextEdit::paste);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_redo(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:redo");
+	LUA_TRY_INVOKE(1, static_cast<void(ImGui::ColorTextEdit::*)(int)>(&ImGui::ColorTextEdit::redo));
+	LUA_TRY_INVOKE(0, [](ImGui::ColorTextEdit* obj){{return obj->redo();}});
+	LUA_INVOKE_FOOTER("0,1");
+}
+int lua_ImGui_ColorTextEdit_render(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:render");
+	LUA_TRY_INVOKE(3, static_cast<void(ImGui::ColorTextEdit::*)(const char*, const cocos2d::Vec2&, bool)>(&ImGui::ColorTextEdit::render));
+	LUA_TRY_INVOKE(2, [](ImGui::ColorTextEdit* obj, const char* arg0,const cocos2d::Vec2& arg1){{return obj->render(arg0,arg1);}});
+	LUA_TRY_INVOKE(1, [](ImGui::ColorTextEdit* obj, const char* arg0){{return obj->render(arg0);}});
+	LUA_INVOKE_FOOTER("1,2,3");
+}
+int lua_ImGui_ColorTextEdit_selectAll(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:selectAll");
+	LUA_TRY_INVOKE(0, &ImGui::ColorTextEdit::selectAll);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_selectWordUnderCursor(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:selectWordUnderCursor");
+	LUA_TRY_INVOKE(0, &ImGui::ColorTextEdit::selectWordUnderCursor);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_setAutoTooltip(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:setAutoTooltip");
+	LUA_TRY_INVOKE(1, &ImGui::ColorTextEdit::setAutoTooltip);
+	LUA_INVOKE_FOOTER("1");
+}
+int lua_ImGui_ColorTextEdit_setBreakpoints(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:setBreakpoints");
+	LUA_TRY_INVOKE(1, &ImGui::ColorTextEdit::setBreakpoints);
+	LUA_INVOKE_FOOTER("1");
+}
+int lua_ImGui_ColorTextEdit_setColorizerEnable(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:setColorizerEnable");
+	LUA_TRY_INVOKE(1, &ImGui::ColorTextEdit::setColorizerEnable);
+	LUA_INVOKE_FOOTER("1");
+}
+int lua_ImGui_ColorTextEdit_setCursorPosition(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:setCursorPosition");
+	LUA_TRY_INVOKE(2, &ImGui::ColorTextEdit::setCursorPosition);
+	LUA_INVOKE_FOOTER("2");
+}
+int lua_ImGui_ColorTextEdit_setErrorMarkers(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:setErrorMarkers");
+	LUA_TRY_INVOKE(1, &ImGui::ColorTextEdit::setErrorMarkers);
+	LUA_INVOKE_FOOTER("1");
+}
+int lua_ImGui_ColorTextEdit_setHandleKeyboardInputs(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:setHandleKeyboardInputs");
+	LUA_TRY_INVOKE(1, &ImGui::ColorTextEdit::setHandleKeyboardInputs);
+	LUA_INVOKE_FOOTER("1");
+}
+int lua_ImGui_ColorTextEdit_setHandleMouseInputs(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:setHandleMouseInputs");
+	LUA_TRY_INVOKE(1, &ImGui::ColorTextEdit::setHandleMouseInputs);
+	LUA_INVOKE_FOOTER("1");
+}
+int lua_ImGui_ColorTextEdit_setImGuiChildIgnored(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:setImGuiChildIgnored");
+	LUA_TRY_INVOKE(1, &ImGui::ColorTextEdit::setImGuiChildIgnored);
+	LUA_INVOKE_FOOTER("1");
+}
+int lua_ImGui_ColorTextEdit_setLanguageAngelScript(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:setLanguageAngelScript");
+	LUA_TRY_INVOKE(0, &ImGui::ColorTextEdit::setLanguageAngelScript);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_setLanguageC(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:setLanguageC");
+	LUA_TRY_INVOKE(0, &ImGui::ColorTextEdit::setLanguageC);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_setLanguageCPlusPlus(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:setLanguageCPlusPlus");
+	LUA_TRY_INVOKE(0, &ImGui::ColorTextEdit::setLanguageCPlusPlus);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_setLanguageDefinition(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:setLanguageDefinition");
+	LUA_TRY_INVOKE(11, static_cast<void(ImGui::ColorTextEdit::*)(const std::string&, const std::unordered_set<std::basic_string<char>>&, const std::unordered_map<std::basic_string<char>, std::basic_string<char>>&, const std::unordered_map<std::basic_string<char>, std::basic_string<char>>&, const std::vector<std::pair<std::basic_string<char>, ImGui::ColorTextEdit::PaletteIndex>>&, const std::string&, const std::string&, const std::string&, const std::string&, bool, bool)>(&ImGui::ColorTextEdit::setLanguageDefinition));
+	LUA_TRY_INVOKE(10, [](ImGui::ColorTextEdit* obj, const std::string& arg0,const std::unordered_set<std::basic_string<char>>& arg1,const std::unordered_map<std::basic_string<char>, std::basic_string<char>>& arg2,const std::unordered_map<std::basic_string<char>, std::basic_string<char>>& arg3,const std::vector<std::pair<std::basic_string<char>, ImGui::ColorTextEdit::PaletteIndex>>& arg4,const std::string& arg5,const std::string& arg6,const std::string& arg7,const std::string& arg8,bool arg9){{return obj->setLanguageDefinition(std::move(arg0),std::move(arg1),std::move(arg2),std::move(arg3),std::move(arg4),std::move(arg5),std::move(arg6),std::move(arg7),std::move(arg8),std::move(arg9));}});
+	LUA_TRY_INVOKE(9, [](ImGui::ColorTextEdit* obj, const std::string& arg0,const std::unordered_set<std::basic_string<char>>& arg1,const std::unordered_map<std::basic_string<char>, std::basic_string<char>>& arg2,const std::unordered_map<std::basic_string<char>, std::basic_string<char>>& arg3,const std::vector<std::pair<std::basic_string<char>, ImGui::ColorTextEdit::PaletteIndex>>& arg4,const std::string& arg5,const std::string& arg6,const std::string& arg7,const std::string& arg8){{return obj->setLanguageDefinition(arg0,arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8);}});
+	LUA_TRY_INVOKE(8, [](ImGui::ColorTextEdit* obj, const std::string& arg0,const std::unordered_set<std::basic_string<char>>& arg1,const std::unordered_map<std::basic_string<char>, std::basic_string<char>>& arg2,const std::unordered_map<std::basic_string<char>, std::basic_string<char>>& arg3,const std::vector<std::pair<std::basic_string<char>, ImGui::ColorTextEdit::PaletteIndex>>& arg4,const std::string& arg5,const std::string& arg6,const std::string& arg7){{return obj->setLanguageDefinition(arg0,arg1,arg2,arg3,arg4,arg5,arg6,arg7);}});
+	LUA_INVOKE_FOOTER("10,11,8,9");
+}
+int lua_ImGui_ColorTextEdit_setLanguageGLSL(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:setLanguageGLSL");
+	LUA_TRY_INVOKE(0, &ImGui::ColorTextEdit::setLanguageGLSL);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_setLanguageHLSL(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:setLanguageHLSL");
+	LUA_TRY_INVOKE(0, &ImGui::ColorTextEdit::setLanguageHLSL);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_setLanguageLua(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:setLanguageLua");
+	LUA_TRY_INVOKE(0, &ImGui::ColorTextEdit::setLanguageLua);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_setLanguageSQL(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:setLanguageSQL");
+	LUA_TRY_INVOKE(0, &ImGui::ColorTextEdit::setLanguageSQL);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_setPalette(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:setPalette");
+	LUA_TRY_INVOKE(1, &ImGui::ColorTextEdit::setPalette);
+	LUA_INVOKE_FOOTER("1");
+}
+int lua_ImGui_ColorTextEdit_setPaletteDark(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:setPaletteDark");
+	LUA_TRY_INVOKE(0, &ImGui::ColorTextEdit::setPaletteDark);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_setPaletteLight(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:setPaletteLight");
+	LUA_TRY_INVOKE(0, &ImGui::ColorTextEdit::setPaletteLight);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_setPaletteRetroBlue(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:setPaletteRetroBlue");
+	LUA_TRY_INVOKE(0, &ImGui::ColorTextEdit::setPaletteRetroBlue);
+	LUA_INVOKE_FOOTER("0");
+}
+int lua_ImGui_ColorTextEdit_setReadOnly(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:setReadOnly");
+	LUA_TRY_INVOKE(1, &ImGui::ColorTextEdit::setReadOnly);
+	LUA_INVOKE_FOOTER("1");
+}
+int lua_ImGui_ColorTextEdit_setSelection(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:setSelection");
+	LUA_TRY_INVOKE(5, static_cast<void(ImGui::ColorTextEdit::*)(int, int, int, int, ImGui::ColorTextEdit::SelectionMode)>(&ImGui::ColorTextEdit::setSelection));
+	LUA_TRY_INVOKE(4, [](ImGui::ColorTextEdit* obj, int arg0,int arg1,int arg2,int arg3){{return obj->setSelection(std::move(arg0),std::move(arg1),std::move(arg2),std::move(arg3));}});
+	LUA_INVOKE_FOOTER("4,5");
+}
+int lua_ImGui_ColorTextEdit_setSelectionEnd(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:setSelectionEnd");
+	LUA_TRY_INVOKE(2, &ImGui::ColorTextEdit::setSelectionEnd);
+	LUA_INVOKE_FOOTER("2");
+}
+int lua_ImGui_ColorTextEdit_setSelectionStart(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:setSelectionStart");
+	LUA_TRY_INVOKE(2, &ImGui::ColorTextEdit::setSelectionStart);
+	LUA_INVOKE_FOOTER("2");
+}
+int lua_ImGui_ColorTextEdit_setShowShortTabGlyphs(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:setShowShortTabGlyphs");
+	LUA_TRY_INVOKE(1, &ImGui::ColorTextEdit::setShowShortTabGlyphs);
+	LUA_INVOKE_FOOTER("1");
+}
+int lua_ImGui_ColorTextEdit_setShowWhitespaces(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:setShowWhitespaces");
+	LUA_TRY_INVOKE(1, &ImGui::ColorTextEdit::setShowWhitespaces);
+	LUA_INVOKE_FOOTER("1");
+}
+int lua_ImGui_ColorTextEdit_setTabSize(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:setTabSize");
+	LUA_TRY_INVOKE(1, &ImGui::ColorTextEdit::setTabSize);
+	LUA_INVOKE_FOOTER("1");
+}
+int lua_ImGui_ColorTextEdit_setText(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:setText");
+	LUA_TRY_INVOKE(1, &ImGui::ColorTextEdit::setText);
+	LUA_INVOKE_FOOTER("1");
+}
+int lua_ImGui_ColorTextEdit_setTextLines(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:setTextLines");
+	LUA_TRY_INVOKE(1, &ImGui::ColorTextEdit::setTextLines);
+	LUA_INVOKE_FOOTER("1");
+}
+int lua_ImGui_ColorTextEdit_undo(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:undo");
+	LUA_TRY_INVOKE(1, static_cast<void(ImGui::ColorTextEdit::*)(int)>(&ImGui::ColorTextEdit::undo));
+	LUA_TRY_INVOKE(0, [](ImGui::ColorTextEdit* obj){{return obj->undo();}});
+	LUA_INVOKE_FOOTER("0,1");
+}
+int lua_ImGui_ColorTextEdit_create(lua_State* lua_S)
+{
+	LUA_SINVOKE_HEADER("imgui.ColorTextEdit", "imgui.ColorTextEdit:create");
+	LUA_TRY_INVOKE_R(0, &ImGui::ColorTextEdit::create);
+	LUA_SINVOKE_FOOTER("0");
+}
+int luaReg_imguiColorTextEdit_imguiColorTextEdit(lua_State* lua_S)
+{
+	LUA_ENTRY("imgui");
+	LUA_CLS_DEF_BASE(ImGui::ColorTextEdit, "ColorTextEdit", "imgui.ColorTextEdit",
+		cocos2d::Node, "imgui.cocos2d.Node",
+		nullptr, nullptr);
+	LUA_METHOD("addLanguageIdentifier", lua_ImGui_ColorTextEdit_addLanguageIdentifier);
+	LUA_METHOD("addLanguagePreprocIdentifier", lua_ImGui_ColorTextEdit_addLanguagePreprocIdentifier);
+	LUA_METHOD("canRedo", lua_ImGui_ColorTextEdit_canRedo);
+	LUA_METHOD("canUndo", lua_ImGui_ColorTextEdit_canUndo);
+	LUA_METHOD("copy", lua_ImGui_ColorTextEdit_copy);
+	LUA_METHOD("cut", lua_ImGui_ColorTextEdit_cut);
+	LUA_METHOD("delete", lua_ImGui_ColorTextEdit_delete);
+	LUA_METHOD("getCurrentLineText", lua_ImGui_ColorTextEdit_getCurrentLineText);
+	LUA_METHOD("getCursorPosition", lua_ImGui_ColorTextEdit_getCursorPosition);
+	LUA_METHOD("getHoveredCoordinates", lua_ImGui_ColorTextEdit_getHoveredCoordinates);
+	LUA_METHOD("getHoveredDeclaration", lua_ImGui_ColorTextEdit_getHoveredDeclaration);
+	LUA_METHOD("getHoveredWord", lua_ImGui_ColorTextEdit_getHoveredWord);
+	LUA_METHOD("getHoveredWordIndex", lua_ImGui_ColorTextEdit_getHoveredWordIndex);
+	LUA_METHOD("getPalette", lua_ImGui_ColorTextEdit_getPalette);
+	LUA_METHOD("getSelectedText", lua_ImGui_ColorTextEdit_getSelectedText);
+	LUA_METHOD("getTabSize", lua_ImGui_ColorTextEdit_getTabSize);
+	LUA_METHOD("getText", lua_ImGui_ColorTextEdit_getText);
+	LUA_METHOD("getTextLines", lua_ImGui_ColorTextEdit_getTextLines);
+	LUA_METHOD("getTotalLines", lua_ImGui_ColorTextEdit_getTotalLines);
+	LUA_METHOD("hasSelection", lua_ImGui_ColorTextEdit_hasSelection);
+	LUA_METHOD("insertText", lua_ImGui_ColorTextEdit_insertText);
+	LUA_METHOD("isAutoTooltip", lua_ImGui_ColorTextEdit_isAutoTooltip);
+	LUA_METHOD("isColorizerEnabled", lua_ImGui_ColorTextEdit_isColorizerEnabled);
+	LUA_METHOD("isCursorPositionChanged", lua_ImGui_ColorTextEdit_isCursorPositionChanged);
+	LUA_METHOD("isHandleKeyboardInputsEnabled", lua_ImGui_ColorTextEdit_isHandleKeyboardInputsEnabled);
+	LUA_METHOD("isHandleMouseInputsEnabled", lua_ImGui_ColorTextEdit_isHandleMouseInputsEnabled);
+	LUA_METHOD("isImGuiChildIgnored", lua_ImGui_ColorTextEdit_isImGuiChildIgnored);
+	LUA_METHOD("isOverwrite", lua_ImGui_ColorTextEdit_isOverwrite);
+	LUA_METHOD("isReadOnly", lua_ImGui_ColorTextEdit_isReadOnly);
+	LUA_METHOD("isShowingShortTabGlyphs", lua_ImGui_ColorTextEdit_isShowingShortTabGlyphs);
+	LUA_METHOD("isShowingWhitespaces", lua_ImGui_ColorTextEdit_isShowingWhitespaces);
+	LUA_METHOD("isTextChanged", lua_ImGui_ColorTextEdit_isTextChanged);
+	LUA_METHOD("moveBottom", lua_ImGui_ColorTextEdit_moveBottom);
+	LUA_METHOD("moveDown", lua_ImGui_ColorTextEdit_moveDown);
+	LUA_METHOD("moveEnd", lua_ImGui_ColorTextEdit_moveEnd);
+	LUA_METHOD("moveHome", lua_ImGui_ColorTextEdit_moveHome);
+	LUA_METHOD("moveLeft", lua_ImGui_ColorTextEdit_moveLeft);
+	LUA_METHOD("moveRight", lua_ImGui_ColorTextEdit_moveRight);
+	LUA_METHOD("moveTop", lua_ImGui_ColorTextEdit_moveTop);
+	LUA_METHOD("moveUp", lua_ImGui_ColorTextEdit_moveUp);
+	LUA_METHOD("paste", lua_ImGui_ColorTextEdit_paste);
+	LUA_METHOD("redo", lua_ImGui_ColorTextEdit_redo);
+	LUA_METHOD("render", lua_ImGui_ColorTextEdit_render);
+	LUA_METHOD("selectAll", lua_ImGui_ColorTextEdit_selectAll);
+	LUA_METHOD("selectWordUnderCursor", lua_ImGui_ColorTextEdit_selectWordUnderCursor);
+	LUA_METHOD("setAutoTooltip", lua_ImGui_ColorTextEdit_setAutoTooltip);
+	LUA_METHOD("setBreakpoints", lua_ImGui_ColorTextEdit_setBreakpoints);
+	LUA_METHOD("setColorizerEnable", lua_ImGui_ColorTextEdit_setColorizerEnable);
+	LUA_METHOD("setCursorPosition", lua_ImGui_ColorTextEdit_setCursorPosition);
+	LUA_METHOD("setErrorMarkers", lua_ImGui_ColorTextEdit_setErrorMarkers);
+	LUA_METHOD("setHandleKeyboardInputs", lua_ImGui_ColorTextEdit_setHandleKeyboardInputs);
+	LUA_METHOD("setHandleMouseInputs", lua_ImGui_ColorTextEdit_setHandleMouseInputs);
+	LUA_METHOD("setImGuiChildIgnored", lua_ImGui_ColorTextEdit_setImGuiChildIgnored);
+	LUA_METHOD("setLanguageAngelScript", lua_ImGui_ColorTextEdit_setLanguageAngelScript);
+	LUA_METHOD("setLanguageC", lua_ImGui_ColorTextEdit_setLanguageC);
+	LUA_METHOD("setLanguageCPlusPlus", lua_ImGui_ColorTextEdit_setLanguageCPlusPlus);
+	LUA_METHOD("setLanguageDefinition", lua_ImGui_ColorTextEdit_setLanguageDefinition);
+	LUA_METHOD("setLanguageGLSL", lua_ImGui_ColorTextEdit_setLanguageGLSL);
+	LUA_METHOD("setLanguageHLSL", lua_ImGui_ColorTextEdit_setLanguageHLSL);
+	LUA_METHOD("setLanguageLua", lua_ImGui_ColorTextEdit_setLanguageLua);
+	LUA_METHOD("setLanguageSQL", lua_ImGui_ColorTextEdit_setLanguageSQL);
+	LUA_METHOD("setPalette", lua_ImGui_ColorTextEdit_setPalette);
+	LUA_METHOD("setPaletteDark", lua_ImGui_ColorTextEdit_setPaletteDark);
+	LUA_METHOD("setPaletteLight", lua_ImGui_ColorTextEdit_setPaletteLight);
+	LUA_METHOD("setPaletteRetroBlue", lua_ImGui_ColorTextEdit_setPaletteRetroBlue);
+	LUA_METHOD("setReadOnly", lua_ImGui_ColorTextEdit_setReadOnly);
+	LUA_METHOD("setSelection", lua_ImGui_ColorTextEdit_setSelection);
+	LUA_METHOD("setSelectionEnd", lua_ImGui_ColorTextEdit_setSelectionEnd);
+	LUA_METHOD("setSelectionStart", lua_ImGui_ColorTextEdit_setSelectionStart);
+	LUA_METHOD("setShowShortTabGlyphs", lua_ImGui_ColorTextEdit_setShowShortTabGlyphs);
+	LUA_METHOD("setShowWhitespaces", lua_ImGui_ColorTextEdit_setShowWhitespaces);
+	LUA_METHOD("setTabSize", lua_ImGui_ColorTextEdit_setTabSize);
+	LUA_METHOD("setText", lua_ImGui_ColorTextEdit_setText);
+	LUA_METHOD("setTextLines", lua_ImGui_ColorTextEdit_setTextLines);
+	LUA_METHOD("undo", lua_ImGui_ColorTextEdit_undo);
+	LUA_METHOD("create", lua_ImGui_ColorTextEdit_create);
+	luaReg_imguiColorTextEdit_imguiColorTextEditPaletteIndex(lua_S);
+	luaReg_imguiColorTextEdit_imguiColorTextEditSelectionMode(lua_S);
+	LUA_CLS_END();
+	LUA_ENTRY_END(1);
+	return 0;
+}

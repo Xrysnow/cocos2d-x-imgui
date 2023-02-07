@@ -1,11 +1,11 @@
 #pragma once
-#ifdef __cplusplus
-extern "C" {
-#endif
-#include "tolua++.h"
-#ifdef __cplusplus
+#include "base/ccConfig.h"
+#include "lua_conversion.hpp"
+
+extern int luaReg_imguiStyle_imguiImGuiStyle(lua_State* lua_S);
+
+inline int luaReg_imguiStyle(lua_State* lua_S)
+{
+	luaReg_imguiStyle_imguiImGuiStyle(lua_S);
+	return 0;
 }
-#endif
-
-int register_all_x_imguiStyle(lua_State* tolua_S);
-
