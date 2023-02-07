@@ -8,12 +8,12 @@
 #ifdef CC_PLATFORM_PC
 // GLFW
 #ifdef _WIN32
-	#include "../external/glfw3/include/win32/glfw3.h"
+	#include "glfw3.h"
 	#undef APIENTRY
 	#ifndef GLFW_EXPOSE_NATIVE_WIN32
 		#define GLFW_EXPOSE_NATIVE_WIN32
 	#endif
-	#include "../external/glfw3/include/win32/glfw3native.h"
+	#include "glfw3native.h"
 #else
 	#include <glfw3.h>
 #endif // _WIN32
@@ -83,7 +83,7 @@ static void ImGui_ImplGlfw_UpdateMonitors();
 
 struct ProgramInfo
 {
-	Program* program = nullptr;
+	cocos2d::backend::Program* program = nullptr;
 	// Uniforms location
 	UniformLocation texture;
 	UniformLocation projection;
@@ -91,7 +91,7 @@ struct ProgramInfo
 	int position = 0;
 	int uv = 0;
 	int color = 0;
-	VertexLayout layout;
+	cocos2d::backend::VertexLayout layout;
 };
 static ProgramInfo g_ProgramInfo;
 static ProgramInfo g_ProgramFontInfo;
@@ -106,11 +106,17 @@ static Vector<ProgramState*> g_ProgramStates;
 static void AddRendererCommand(const std::function<void()>& f)
 {
 	const auto renderer = Director::getInstance()->getRenderer();
+#ifdef CC_VERSION
+	auto cmd = renderer->nextCallbackCommand();
+	cmd->func = f;
+	renderer->addCommand(cmd);
+#else
 	auto cmd = std::make_shared<CallbackCommand>();
 	g_CallbackCommands.push_back(cmd);
 	cmd->init(0.f);
 	cmd->func = f;
 	renderer->addCommand(cmd.get());
+#endif // CC_VERSION
 }
 
 #ifdef CC_PLATFORM_PC
@@ -264,8 +270,10 @@ void ImGui_ImplCocos2dx_RenderDrawData(ImDrawData* draw_data)
 						g_ProgramStates.pushBack(state);
 						auto& desc = cmd->getPipelineDescriptor();
 						desc.programState = state;
+#ifndef CC_USE_GFX
 						// setup attributes for ImDrawVert
 						*desc.programState->getVertexLayout() = pinfo->layout;
+#endif
 						desc.programState->setUniform(pinfo->projection, &g_Projection, sizeof(Mat4));
 						desc.programState->setTexture(pinfo->texture, 0, tex->getBackendTexture());
 						// In order to composite our output buffer we need to preserve alpha
@@ -421,8 +429,13 @@ bool ImGui_ImplCocos2dx_CreateFontsTexture()
 	g_FontTexture = new Texture2D();
 
 	g_FontTexture->setAntiAliasTexParameters();
+#ifdef CC_USE_GFX
+	g_FontTexture->initWithData(pixels, width * height,
+		backend::PixelFormat::A8, width, height);
+#else
 	g_FontTexture->initWithData(pixels, width*height,
 		backend::PixelFormat::A8, width, height, cocos2d::Size(width, height));
+#endif
 	io.Fonts->SetTexID((ImTextureID)g_FontTexture);
 	return true;
 }
@@ -447,8 +460,8 @@ bool ImGui_ImplCocos2dx_CreateDeviceObjects()
 #if __VERSION__ >= 300
 
 layout(location=0) in vec2 a_position;
-layout(location=1) in vec4 a_color;
-layout(location=2) in vec2 a_texCoord;
+layout(location=1) in vec2 a_texCoord;
+layout(location=2) in vec4 a_color;
 layout(std140, binding=0) uniform VSBlock
 {
     mat4 u_MVPMatrix;
@@ -571,11 +584,21 @@ void main()
 	{
 		p->texture = p->program->getUniformLocation(TEXTURE);
 		p->projection = p->program->getUniformLocation(MVP_MATRIX);
+		IM_ASSERT(bool(p->texture));
+		IM_ASSERT(bool(p->projection));
+#ifdef CC_USE_GFX
+		auto layout = p->program->getVertexLayout();
+		layout->setAttribute("a_position", 0,
+			VertexFormat::FLOAT2, 0, false);
+		layout->setAttribute("a_texCoord", 1,
+			VertexFormat::FLOAT2, offsetof(ImDrawVert, uv), false);
+		layout->setAttribute("a_color", 2,
+			VertexFormat::UBYTE4, offsetof(ImDrawVert, col), true);
+		layout->setStride(sizeof(ImDrawVert));
+#else
 		p->position = p->program->getAttributeLocation(POSITION);
 		p->uv = p->program->getAttributeLocation(TEXCOORD);
 		p->color = p->program->getAttributeLocation(COLOR);
-		IM_ASSERT(bool(p->texture));
-		IM_ASSERT(bool(p->projection));
 		IM_ASSERT(p->position >= 0);
 		IM_ASSERT(p->uv >= 0);
 		IM_ASSERT(p->color >= 0);
@@ -587,6 +610,7 @@ void main()
 		layout.setAttribute("a_color", p->color,
 			VertexFormat::UBYTE4, offsetof(ImDrawVert, col), true);
 		layout.setLayout(sizeof(ImDrawVert));
+#endif
 	}
 
 	ImGui_ImplCocos2dx_CreateFontsTexture();
