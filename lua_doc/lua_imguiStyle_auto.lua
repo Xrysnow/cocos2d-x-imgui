@@ -128,6 +128,18 @@ ImGuiStyle.ScrollbarSize = nil
 ---@type ImVec2 (ImVec2)
 ImGuiStyle.SelectableTextAlign = nil
 
+--- Alignment of text within the separator. Defaults to (0.0f, 0.5f) (left aligned, center).
+---@type ImVec2 (ImVec2)
+ImGuiStyle.SeparatorTextAlign = nil
+
+--- Thickkness of border in SeparatorText()
+---@type number (float)
+ImGuiStyle.SeparatorTextBorderSize = nil
+
+--- Horizontal offset of text from each edge of the separator + spacing on other axis. Generally small values. .y is recommended to be == FramePadding.y.
+---@type ImVec2 (ImVec2)
+ImGuiStyle.SeparatorTextPadding = nil
+
 --- Thickness of border around tabs.
 ---@type number (float)
 ImGuiStyle.TabBorderSize = nil

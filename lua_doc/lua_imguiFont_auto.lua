@@ -379,20 +379,32 @@ ImFont.Descent = nil
 ImFont.DirtyLookupTables = nil
 
 --- 
---- Character used for ellipsis rendering (if a single '...' character isn't found)
---- = '.'
---- out
---- 2
----@type ImWchar (ImWchar)
-ImFont.DotChar = nil
-
---- 
---- Character used for ellipsis rendering.
---- = '...'
+--- = '...''.' Character used for ellipsis rendering.
 --- out
 --- 2
 ---@type ImWchar (ImWchar)
 ImFont.EllipsisChar = nil
+
+--- 
+--- 1 or 3
+--- out
+--- 1
+---@type number (short)
+ImFont.EllipsisCharCount = nil
+
+--- 
+--- Step between characters when EllipsisCount > 0
+--- out
+--- 4
+---@type number (float)
+ImFont.EllipsisCharStep = nil
+
+--- 
+--- Width
+--- out
+--- 4
+---@type number (float)
+ImFont.EllipsisWidth = nil
 
 --- 
 --- = FallbackGlyph->AdvanceX

@@ -222,7 +222,7 @@ ImGuiIO.KeyAlt = nil
 ---@type boolean (bool)
 ImGuiIO.KeyCtrl = nil
 
---- Key mods flags (any of ImGuiMod_CtrlImGuiMod_ShiftImGuiMod_AltImGuiMod_Super flags, same as io.KeyCtrlKeyShiftKeyAltKeySuper but merged into flags). Read-only, updated by NewFrame()
+--- Key mods flags (any of ImGuiMod_CtrlImGuiMod_ShiftImGuiMod_AltImGuiMod_Super flags, same as io.KeyCtrlKeyShiftKeyAltKeySuper but merged into flags. DOES NOT CONTAINS ImGuiMod_Shortcut which is pretranslated). Read-only, updated by NewFrame()
 ---@type ImGuiKeyChord (ImGuiKeyChord)
 ImGuiIO.KeyMods = nil
 
@@ -310,11 +310,11 @@ ImGuiIO.MousePos = nil
 ---@type ImVec2 (ImVec2)
 ImGuiIO.MousePosPrev = nil
 
---- Mouse wheel Vertical: 1 unit scrolls about 5 lines text.
+--- Mouse wheel Vertical: 1 unit scrolls about 5 lines text. >0 scrolls Up, <0 scrolls Down. Hold SHIFT to turn vertical scroll into horizontal scroll.
 ---@type number (float)
 ImGuiIO.MouseWheel = nil
 
---- Mouse wheel Horizontal. Most users don't have a mouse with a horizontal wheel, may not be filled by all backends.
+--- Mouse wheel Horizontal. >0 scrolls Left, <0 scrolls Right. Most users don't have a mouse with a horizontal wheel, may not be filled by all backends.
 ---@type number (float)
 ImGuiIO.MouseWheelH = nil
 
@@ -413,11 +413,11 @@ end
 function ImGuiIO:addMouseViewportEvent(id)
 end
 
---- Queue a mouse wheel update
----@param wh_x number @(float)
----@param wh_y number @(float)
+--- Queue a mouse wheel update. wheel_y<0: scroll down, wheel_y>0: scroll up, wheel_x<0: scroll right, wheel_x>0: scroll left.
+---@param wheel_x number @(float)
+---@param wheel_y number @(float)
 ---@return nil @(void)
-function ImGuiIO:addMouseWheelEvent(wh_x, wh_y)
+function ImGuiIO:addMouseWheelEvent(wheel_x, wheel_y)
 end
 
 --- [Internal] Clear the text input buffer manually

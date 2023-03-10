@@ -519,8 +519,8 @@ local ImGuiKey = {
 	ImGuiMod_Shift = 8192,
 	ImGuiMod_Alt = 16384,
 	ImGuiMod_Super = 32768,
-	ImGuiMod_Mask_ = 61440,
-	ImGuiMod_Shortcut = 4096,
+	ImGuiMod_Shortcut = 2048,
+	ImGuiMod_Mask_ = 63488,
 	NamedKey_BEGIN = 512,
 	NamedKey_END = 652,
 	NamedKey_COUNT = 140,
@@ -680,7 +680,10 @@ local ImGuiStyleVar = {
 	TabRounding = 22,
 	ButtonTextAlign = 23,
 	SelectableTextAlign = 24,
-	COUNT = 25,
+	SeparatorTextBorderSize = 25,
+	SeparatorTextAlign = 26,
+	SeparatorTextPadding = 27,
+	COUNT = 28,
 }
 ---
 ---@class imgui.ImGuiStyleVar
@@ -1384,6 +1387,11 @@ end
 function imgui.getID(str_id)
 end
 
+--- get ID of last item (~~ often same ImGui::GetID(label) beforehand)
+---@return number @(ImGuiID)
+function imgui.getItemID()
+end
+
 --- get lower-right bounding rectangle of the last item (screen space)
 ---@return ImVec2 @(ImVec2)
 function imgui.getItemRectMax()
@@ -1424,7 +1432,7 @@ end
 function imgui.getMouseClickedCount(button)
 end
 
---- get desired cursor type, reset in ImGui::NewFrame(), this is updated during the frame. valid before Render(). If you use software rendering by setting io.MouseDrawCursor ImGui will render those for you
+--- get desired mouse cursor shape. Important: reset in ImGui::NewFrame(), this is updated during the frame. valid before Render(). If you use software rendering by setting io.MouseDrawCursor ImGui will render those for you
 ---@return number @(ImGuiMouseCursor)
 function imgui.getMouseCursor()
 end
@@ -2108,6 +2116,12 @@ end
 function imgui.separator()
 end
 
+--- currently: formatted text with an horizontal line
+---@param label string @(const char*)
+---@return nil @(void)
+function imgui.separatorText(label)
+end
+
 ---@param text string @(const char*)
 ---@return nil @(void)
 function imgui.setClipboardText(text)
@@ -2178,7 +2192,7 @@ end
 function imgui.setKeyboardFocusHere()
 end
 
---- set desired cursor type
+--- set desired mouse cursor shape
 ---@param cursor_type number @(ImGuiMouseCursor)
 ---@return nil @(void)
 function imgui.setMouseCursor(cursor_type)
@@ -2277,6 +2291,12 @@ end
 ---@param pos ImVec2 @(ImVec2)
 ---@return nil @(void)
 function imgui.setNextWindowPos(pos)
+end
+
+--- set next window scrolling value (use < 0.0f to not affect a given axis).
+---@param scroll ImVec2 @(ImVec2)
+---@return nil @(void)
+function imgui.setNextWindowScroll(scroll)
 end
 
 --- set next window size. set axis to 0.0f to force an auto-fit on this axis. call before Begin()

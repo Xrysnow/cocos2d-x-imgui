@@ -56,6 +56,10 @@ ImGuiViewport.PlatformRequestMove = nil
 ---@type boolean (bool)
 ImGuiViewport.PlatformRequestResize = nil
 
+--- Platform window has been created (Platform_CreateWindow() has been called). This is false during the first frame where a viewport is being created.
+---@type boolean (bool)
+ImGuiViewport.PlatformWindowCreated = nil
+
 --- Main Area: Position of the viewport (Dear ImGui coordinates are the same as OS desktopnative coordinates)
 ---@type ImVec2 (ImVec2)
 ImGuiViewport.Pos = nil
