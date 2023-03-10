@@ -1,7 +1,7 @@
 local M = {}
 -- use glfw on desktop platforms, use cocos on mobile platforms
 
-local is_desktop = lstg.glfw and true or false
+local is_desktop = require('cocos.framework.device').isDesktop
 local glfw = is_desktop and require('platform.glfw') or {}
 ---@return number
 local function code(c1, c2)
