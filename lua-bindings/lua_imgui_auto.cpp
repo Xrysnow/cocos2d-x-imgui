@@ -68,6 +68,7 @@ int luaReg_imgui_imguiImGuiInputTextFlags(lua_State* lua_S)
 	LUA_ENUM_ENTRY("CallbackResize", ImGuiInputTextFlags_::ImGuiInputTextFlags_CallbackResize);
 	LUA_ENUM_ENTRY("CallbackEdit", ImGuiInputTextFlags_::ImGuiInputTextFlags_CallbackEdit);
 	LUA_ENUM_ENTRY("EscapeClearsAll", ImGuiInputTextFlags_::ImGuiInputTextFlags_EscapeClearsAll);
+	LUA_ENUM_ENTRY("AlwaysInsertMode", ImGuiInputTextFlags_::ImGuiInputTextFlags_AlwaysInsertMode);
 	LUA_ENUM_END();
 	LUA_ENTRY_END(1);
 	return 0;
@@ -558,6 +559,36 @@ int luaReg_imgui_imguiImGuiKey(lua_State* lua_S)
 	LUA_ENUM_ENTRY("NamedKey_COUNT", ImGuiKey::ImGuiKey_NamedKey_COUNT);
 	LUA_ENUM_ENTRY("KeysData_SIZE", ImGuiKey::ImGuiKey_KeysData_SIZE);
 	LUA_ENUM_ENTRY("KeysData_OFFSET", ImGuiKey::ImGuiKey_KeysData_OFFSET);
+	LUA_ENUM_ENTRY("ModCtrl", ImGuiKey::ImGuiKey_ModCtrl);
+	LUA_ENUM_ENTRY("ModShift", ImGuiKey::ImGuiKey_ModShift);
+	LUA_ENUM_ENTRY("ModAlt", ImGuiKey::ImGuiKey_ModAlt);
+	LUA_ENUM_ENTRY("ModSuper", ImGuiKey::ImGuiKey_ModSuper);
+	LUA_ENUM_ENTRY("KeyPadEnter", ImGuiKey::ImGuiKey_KeyPadEnter);
+	LUA_ENUM_END();
+	LUA_ENTRY_END(1);
+	return 0;
+}
+int luaReg_imgui_imguiImGuiNavInput(lua_State* lua_S)
+{
+	LUA_ENTRY("imgui");
+	LUA_ENUM_DEF("ImGuiNavInput");
+	LUA_ENUM_ENTRY("ImGuiNavInput_Activate", ImGuiNavInput::ImGuiNavInput_Activate);
+	LUA_ENUM_ENTRY("ImGuiNavInput_Cancel", ImGuiNavInput::ImGuiNavInput_Cancel);
+	LUA_ENUM_ENTRY("ImGuiNavInput_Input", ImGuiNavInput::ImGuiNavInput_Input);
+	LUA_ENUM_ENTRY("ImGuiNavInput_Menu", ImGuiNavInput::ImGuiNavInput_Menu);
+	LUA_ENUM_ENTRY("ImGuiNavInput_DpadLeft", ImGuiNavInput::ImGuiNavInput_DpadLeft);
+	LUA_ENUM_ENTRY("ImGuiNavInput_DpadRight", ImGuiNavInput::ImGuiNavInput_DpadRight);
+	LUA_ENUM_ENTRY("ImGuiNavInput_DpadUp", ImGuiNavInput::ImGuiNavInput_DpadUp);
+	LUA_ENUM_ENTRY("ImGuiNavInput_DpadDown", ImGuiNavInput::ImGuiNavInput_DpadDown);
+	LUA_ENUM_ENTRY("ImGuiNavInput_LStickLeft", ImGuiNavInput::ImGuiNavInput_LStickLeft);
+	LUA_ENUM_ENTRY("ImGuiNavInput_LStickRight", ImGuiNavInput::ImGuiNavInput_LStickRight);
+	LUA_ENUM_ENTRY("ImGuiNavInput_LStickUp", ImGuiNavInput::ImGuiNavInput_LStickUp);
+	LUA_ENUM_ENTRY("ImGuiNavInput_LStickDown", ImGuiNavInput::ImGuiNavInput_LStickDown);
+	LUA_ENUM_ENTRY("ImGuiNavInput_FocusPrev", ImGuiNavInput::ImGuiNavInput_FocusPrev);
+	LUA_ENUM_ENTRY("ImGuiNavInput_FocusNext", ImGuiNavInput::ImGuiNavInput_FocusNext);
+	LUA_ENUM_ENTRY("ImGuiNavInput_TweakSlow", ImGuiNavInput::ImGuiNavInput_TweakSlow);
+	LUA_ENUM_ENTRY("ImGuiNavInput_TweakFast", ImGuiNavInput::ImGuiNavInput_TweakFast);
+	LUA_ENUM_ENTRY("ImGuiNavInput_COUNT", ImGuiNavInput::ImGuiNavInput_COUNT);
 	LUA_ENUM_END();
 	LUA_ENTRY_END(1);
 	return 0;
@@ -758,6 +789,7 @@ int luaReg_imgui_imguiImGuiSliderFlags(lua_State* lua_S)
 	LUA_ENUM_ENTRY("NoRoundToFormat", ImGuiSliderFlags_::ImGuiSliderFlags_NoRoundToFormat);
 	LUA_ENUM_ENTRY("NoInput", ImGuiSliderFlags_::ImGuiSliderFlags_NoInput);
 	LUA_ENUM_ENTRY("InvalidMask_", ImGuiSliderFlags_::ImGuiSliderFlags_InvalidMask_);
+	LUA_ENUM_ENTRY("ClampOnInput", ImGuiSliderFlags_::ImGuiSliderFlags_ClampOnInput);
 	LUA_ENUM_END();
 	LUA_ENTRY_END(1);
 	return 0;

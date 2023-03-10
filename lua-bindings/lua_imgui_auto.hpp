@@ -22,6 +22,7 @@ extern int luaReg_imgui_imguiImGuiDataType(lua_State* lua_S);
 extern int luaReg_imgui_imguiImGuiDir(lua_State* lua_S);
 extern int luaReg_imgui_imguiImGuiSortDirection(lua_State* lua_S);
 extern int luaReg_imgui_imguiImGuiKey(lua_State* lua_S);
+extern int luaReg_imgui_imguiImGuiNavInput(lua_State* lua_S);
 extern int luaReg_imgui_imguiImGuiConfigFlags(lua_State* lua_S);
 extern int luaReg_imgui_imguiImGuiBackendFlags(lua_State* lua_S);
 extern int luaReg_imgui_imguiImGuiCol(lua_State* lua_S);
@@ -56,6 +57,7 @@ inline int luaReg_imgui(lua_State* lua_S)
 	luaReg_imgui_imguiImGuiDir(lua_S);
 	luaReg_imgui_imguiImGuiSortDirection(lua_S);
 	luaReg_imgui_imguiImGuiKey(lua_S);
+	luaReg_imgui_imguiImGuiNavInput(lua_S);
 	luaReg_imgui_imguiImGuiConfigFlags(lua_S);
 	luaReg_imgui_imguiImGuiBackendFlags(lua_S);
 	luaReg_imgui_imguiImGuiCol(lua_S);

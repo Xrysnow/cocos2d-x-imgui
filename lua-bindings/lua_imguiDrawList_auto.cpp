@@ -72,6 +72,13 @@ int lua_ImDrawList_addBezierCubic(lua_State* lua_S)
 	LUA_TRY_INVOKE(6, [](ImDrawList* obj, const ImVec2& arg0,const ImVec2& arg1,const ImVec2& arg2,const ImVec2& arg3,ImU32 arg4,float arg5){{return obj->AddBezierCubic(std::move(arg0),std::move(arg1),std::move(arg2),std::move(arg3),std::move(arg4),std::move(arg5));}});
 	LUA_INVOKE_FOOTER("6,7");
 }
+int lua_ImDrawList_addBezierCurve(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ImDrawList", "imgui.ImDrawList:addBezierCurve");
+	LUA_TRY_INVOKE(7, static_cast<void(ImDrawList::*)(const ImVec2&, const ImVec2&, const ImVec2&, const ImVec2&, ImU32, float, int)>(&ImDrawList::AddBezierCurve));
+	LUA_TRY_INVOKE(6, [](ImDrawList* obj, const ImVec2& arg0,const ImVec2& arg1,const ImVec2& arg2,const ImVec2& arg3,ImU32 arg4,float arg5){{return obj->AddBezierCurve(arg0,arg1,arg2,arg3,std::move(arg4),std::move(arg5));}});
+	LUA_INVOKE_FOOTER("6,7");
+}
 int lua_ImDrawList_addBezierQuadratic(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("imgui.ImDrawList", "imgui.ImDrawList:addBezierQuadratic");
@@ -225,6 +232,13 @@ int lua_ImDrawList_pathBezierCubicCurveTo(lua_State* lua_S)
 	LUA_TRY_INVOKE(3, [](ImDrawList* obj, const ImVec2& arg0,const ImVec2& arg1,const ImVec2& arg2){{return obj->PathBezierCubicCurveTo(arg0,arg1,arg2);}});
 	LUA_INVOKE_FOOTER("3,4");
 }
+int lua_ImDrawList_pathBezierCurveTo(lua_State* lua_S)
+{
+	LUA_INVOKE_HEADER("imgui.ImDrawList", "imgui.ImDrawList:pathBezierCurveTo");
+	LUA_TRY_INVOKE(4, static_cast<void(ImDrawList::*)(const ImVec2&, const ImVec2&, const ImVec2&, int)>(&ImDrawList::PathBezierCurveTo));
+	LUA_TRY_INVOKE(3, [](ImDrawList* obj, const ImVec2& arg0,const ImVec2& arg1,const ImVec2& arg2){{return obj->PathBezierCurveTo(arg0,arg1,arg2);}});
+	LUA_INVOKE_FOOTER("3,4");
+}
 int lua_ImDrawList_pathBezierQuadraticCurveTo(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("imgui.ImDrawList", "imgui.ImDrawList:pathBezierQuadraticCurveTo");
@@ -353,6 +367,7 @@ int luaReg_imguiDrawList_imguiImDrawList(lua_State* lua_S)
 	LUA_FIELD("Flags", lua_ImDrawList_Flags_getter, lua_ImDrawList_Flags_setter);
 	LUA_FIELD("_OwnerName", lua_ImDrawList__OwnerName_getter, lua_ImDrawList__OwnerName_setter);
 	LUA_METHOD("addBezierCubic", lua_ImDrawList_addBezierCubic);
+	LUA_METHOD("addBezierCurve", lua_ImDrawList_addBezierCurve);
 	LUA_METHOD("addBezierQuadratic", lua_ImDrawList_addBezierQuadratic);
 	LUA_METHOD("addCircle", lua_ImDrawList_addCircle);
 	LUA_METHOD("addCircleFilled", lua_ImDrawList_addCircleFilled);
@@ -376,6 +391,7 @@ int luaReg_imguiDrawList_imguiImDrawList(lua_State* lua_S)
 	LUA_METHOD("pathArcTo", lua_ImDrawList_pathArcTo);
 	LUA_METHOD("pathArcToFast", lua_ImDrawList_pathArcToFast);
 	LUA_METHOD("pathBezierCubicCurveTo", lua_ImDrawList_pathBezierCubicCurveTo);
+	LUA_METHOD("pathBezierCurveTo", lua_ImDrawList_pathBezierCurveTo);
 	LUA_METHOD("pathBezierQuadraticCurveTo", lua_ImDrawList_pathBezierQuadraticCurveTo);
 	LUA_METHOD("pathClear", lua_ImDrawList_pathClear);
 	LUA_METHOD("pathFillConvex", lua_ImDrawList_pathFillConvex);
