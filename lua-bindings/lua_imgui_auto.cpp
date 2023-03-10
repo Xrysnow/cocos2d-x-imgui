@@ -552,8 +552,8 @@ int luaReg_imgui_imguiImGuiKey(lua_State* lua_S)
 	LUA_ENUM_ENTRY("ImGuiMod_Shift", ImGuiKey::ImGuiMod_Shift);
 	LUA_ENUM_ENTRY("ImGuiMod_Alt", ImGuiKey::ImGuiMod_Alt);
 	LUA_ENUM_ENTRY("ImGuiMod_Super", ImGuiKey::ImGuiMod_Super);
-	LUA_ENUM_ENTRY("ImGuiMod_Mask_", ImGuiKey::ImGuiMod_Mask_);
 	LUA_ENUM_ENTRY("ImGuiMod_Shortcut", ImGuiKey::ImGuiMod_Shortcut);
+	LUA_ENUM_ENTRY("ImGuiMod_Mask_", ImGuiKey::ImGuiMod_Mask_);
 	LUA_ENUM_ENTRY("NamedKey_BEGIN", ImGuiKey::ImGuiKey_NamedKey_BEGIN);
 	LUA_ENUM_ENTRY("NamedKey_END", ImGuiKey::ImGuiKey_NamedKey_END);
 	LUA_ENUM_ENTRY("NamedKey_COUNT", ImGuiKey::ImGuiKey_NamedKey_COUNT);
@@ -723,6 +723,9 @@ int luaReg_imgui_imguiImGuiStyleVar(lua_State* lua_S)
 	LUA_ENUM_ENTRY("TabRounding", ImGuiStyleVar_::ImGuiStyleVar_TabRounding);
 	LUA_ENUM_ENTRY("ButtonTextAlign", ImGuiStyleVar_::ImGuiStyleVar_ButtonTextAlign);
 	LUA_ENUM_ENTRY("SelectableTextAlign", ImGuiStyleVar_::ImGuiStyleVar_SelectableTextAlign);
+	LUA_ENUM_ENTRY("SeparatorTextBorderSize", ImGuiStyleVar_::ImGuiStyleVar_SeparatorTextBorderSize);
+	LUA_ENUM_ENTRY("SeparatorTextAlign", ImGuiStyleVar_::ImGuiStyleVar_SeparatorTextAlign);
+	LUA_ENUM_ENTRY("SeparatorTextPadding", ImGuiStyleVar_::ImGuiStyleVar_SeparatorTextPadding);
 	LUA_ENUM_ENTRY("COUNT", ImGuiStyleVar_::ImGuiStyleVar_COUNT);
 	LUA_ENUM_END();
 	LUA_ENTRY_END(1);
@@ -1297,6 +1300,12 @@ int lua_ImGui_getID(lua_State* lua_S)
 	LUA_TRY_INVOKE_R(2, static_cast<unsigned int(*)(const char*, const char*)>(&ImGui::GetID));
 	LUA_TRY_INVOKE_R(1, static_cast<unsigned int(*)(const char*)>(&ImGui::GetID));
 	LUA_GINVOKE_FOOTER("1,2");
+}
+int lua_ImGui_getItemID(lua_State* lua_S)
+{
+	LUA_GINVOKE_HEADER("ImGui", "ImGui.getItemID");
+	LUA_TRY_INVOKE_R(0, &ImGui::GetItemID);
+	LUA_GINVOKE_FOOTER("0");
 }
 int lua_ImGui_getItemRectMax(lua_State* lua_S)
 {
@@ -1924,6 +1933,12 @@ int lua_ImGui_separator(lua_State* lua_S)
 	LUA_TRY_INVOKE(0, &ImGui::Separator);
 	LUA_GINVOKE_FOOTER("0");
 }
+int lua_ImGui_separatorText(lua_State* lua_S)
+{
+	LUA_GINVOKE_HEADER("ImGui", "ImGui.separatorText");
+	LUA_TRY_INVOKE(1, &ImGui::SeparatorText);
+	LUA_GINVOKE_FOOTER("1");
+}
 int lua_ImGui_setClipboardText(lua_State* lua_S)
 {
 	LUA_GINVOKE_HEADER("ImGui", "ImGui.setClipboardText");
@@ -2061,6 +2076,12 @@ int lua_ImGui_setNextWindowPos(lua_State* lua_S)
 	LUA_TRY_INVOKE(2, [](const ImVec2& arg0,ImGuiCond arg1){{return ImGui::SetNextWindowPos(arg0,std::move(arg1));}});
 	LUA_TRY_INVOKE(1, [](const ImVec2& arg0){{return ImGui::SetNextWindowPos(arg0);}});
 	LUA_GINVOKE_FOOTER("1,2,3");
+}
+int lua_ImGui_setNextWindowScroll(lua_State* lua_S)
+{
+	LUA_GINVOKE_HEADER("ImGui", "ImGui.setNextWindowScroll");
+	LUA_TRY_INVOKE(1, &ImGui::SetNextWindowScroll);
+	LUA_GINVOKE_FOOTER("1");
 }
 int lua_ImGui_setNextWindowSize(lua_State* lua_S)
 {
@@ -2448,6 +2469,7 @@ int luaReg_imgui_imgui_global_functions(lua_State* lua_S)
 	LUA_METHOD("getFrameHeight", lua_ImGui_getFrameHeight);
 	LUA_METHOD("getFrameHeightWithSpacing", lua_ImGui_getFrameHeightWithSpacing);
 	LUA_METHOD("getID", lua_ImGui_getID);
+	LUA_METHOD("getItemID", lua_ImGui_getItemID);
 	LUA_METHOD("getItemRectMax", lua_ImGui_getItemRectMax);
 	LUA_METHOD("getItemRectMin", lua_ImGui_getItemRectMin);
 	LUA_METHOD("getItemRectSize", lua_ImGui_getItemRectSize);
@@ -2547,6 +2569,7 @@ int luaReg_imgui_imgui_global_functions(lua_State* lua_S)
 	LUA_METHOD("sameLine", lua_ImGui_sameLine);
 	LUA_METHOD("saveIniSettingsToDisk", lua_ImGui_saveIniSettingsToDisk);
 	LUA_METHOD("separator", lua_ImGui_separator);
+	LUA_METHOD("separatorText", lua_ImGui_separatorText);
 	LUA_METHOD("setClipboardText", lua_ImGui_setClipboardText);
 	LUA_METHOD("setColorEditOptions", lua_ImGui_setColorEditOptions);
 	LUA_METHOD("setColumnOffset", lua_ImGui_setColumnOffset);
@@ -2569,6 +2592,7 @@ int luaReg_imgui_imgui_global_functions(lua_State* lua_S)
 	LUA_METHOD("setNextWindowDockID", lua_ImGui_setNextWindowDockID);
 	LUA_METHOD("setNextWindowFocus", lua_ImGui_setNextWindowFocus);
 	LUA_METHOD("setNextWindowPos", lua_ImGui_setNextWindowPos);
+	LUA_METHOD("setNextWindowScroll", lua_ImGui_setNextWindowScroll);
 	LUA_METHOD("setNextWindowSize", lua_ImGui_setNextWindowSize);
 	LUA_METHOD("setNextWindowSizeConstraints", lua_ImGui_setNextWindowSizeConstraints);
 	LUA_METHOD("setNextWindowViewport", lua_ImGui_setNextWindowViewport);

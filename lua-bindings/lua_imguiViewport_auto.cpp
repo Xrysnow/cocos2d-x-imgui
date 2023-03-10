@@ -122,6 +122,20 @@ int lua_ImGuiViewport_PlatformRequestResize_setter(lua_State* lua_S)
 	LUA_NATIVE_SETTER(cobj->PlatformRequestResize, 2);
 	return 0;
 }
+int lua_ImGuiViewport_PlatformWindowCreated_getter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImGuiViewport.PlatformWindowCreated/getter");
+	auto cobj = LUA_TO_COBJ(ImGuiViewport*, 1);
+	LUA_PUSH_NATIVE(cobj->PlatformWindowCreated);
+	return 1;
+}
+int lua_ImGuiViewport_PlatformWindowCreated_setter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImGuiViewport.PlatformWindowCreated/setter");
+	auto cobj = LUA_TO_COBJ(ImGuiViewport*, 1);
+	LUA_NATIVE_SETTER(cobj->PlatformWindowCreated, 2);
+	return 0;
+}
 int lua_ImGuiViewport_Pos_getter(lua_State* lua_S)
 {
 	LUA_CUR_FNAME("imgui.ImGuiViewport.Pos/getter");
@@ -202,6 +216,7 @@ int luaReg_imguiViewport_imguiImGuiViewport(lua_State* lua_S)
 	LUA_FIELD("PlatformRequestClose", lua_ImGuiViewport_PlatformRequestClose_getter, lua_ImGuiViewport_PlatformRequestClose_setter);
 	LUA_FIELD("PlatformRequestMove", lua_ImGuiViewport_PlatformRequestMove_getter, lua_ImGuiViewport_PlatformRequestMove_setter);
 	LUA_FIELD("PlatformRequestResize", lua_ImGuiViewport_PlatformRequestResize_getter, lua_ImGuiViewport_PlatformRequestResize_setter);
+	LUA_FIELD("PlatformWindowCreated", lua_ImGuiViewport_PlatformWindowCreated_getter, lua_ImGuiViewport_PlatformWindowCreated_setter);
 	LUA_FIELD("Pos", lua_ImGuiViewport_Pos_getter, lua_ImGuiViewport_Pos_setter);
 	LUA_FIELD("Size", lua_ImGuiViewport_Size_getter, lua_ImGuiViewport_Size_setter);
 	LUA_FIELD("WorkPos", lua_ImGuiViewport_WorkPos_getter, lua_ImGuiViewport_WorkPos_setter);

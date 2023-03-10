@@ -422,6 +422,48 @@ int lua_ImGuiStyle_SelectableTextAlign_setter(lua_State* lua_S)
 	LUA_NATIVE_SETTER(cobj->SelectableTextAlign, 2);
 	return 0;
 }
+int lua_ImGuiStyle_SeparatorTextAlign_getter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImGuiStyle.SeparatorTextAlign/getter");
+	auto cobj = LUA_TO_COBJ(ImGuiStyle*, 1);
+	LUA_PUSH_NATIVE(cobj->SeparatorTextAlign);
+	return 1;
+}
+int lua_ImGuiStyle_SeparatorTextAlign_setter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImGuiStyle.SeparatorTextAlign/setter");
+	auto cobj = LUA_TO_COBJ(ImGuiStyle*, 1);
+	LUA_NATIVE_SETTER(cobj->SeparatorTextAlign, 2);
+	return 0;
+}
+int lua_ImGuiStyle_SeparatorTextBorderSize_getter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImGuiStyle.SeparatorTextBorderSize/getter");
+	auto cobj = LUA_TO_COBJ(ImGuiStyle*, 1);
+	LUA_PUSH_NATIVE(cobj->SeparatorTextBorderSize);
+	return 1;
+}
+int lua_ImGuiStyle_SeparatorTextBorderSize_setter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImGuiStyle.SeparatorTextBorderSize/setter");
+	auto cobj = LUA_TO_COBJ(ImGuiStyle*, 1);
+	LUA_NATIVE_SETTER(cobj->SeparatorTextBorderSize, 2);
+	return 0;
+}
+int lua_ImGuiStyle_SeparatorTextPadding_getter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImGuiStyle.SeparatorTextPadding/getter");
+	auto cobj = LUA_TO_COBJ(ImGuiStyle*, 1);
+	LUA_PUSH_NATIVE(cobj->SeparatorTextPadding);
+	return 1;
+}
+int lua_ImGuiStyle_SeparatorTextPadding_setter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImGuiStyle.SeparatorTextPadding/setter");
+	auto cobj = LUA_TO_COBJ(ImGuiStyle*, 1);
+	LUA_NATIVE_SETTER(cobj->SeparatorTextPadding, 2);
+	return 0;
+}
 int lua_ImGuiStyle_TabBorderSize_getter(lua_State* lua_S)
 {
 	LUA_CUR_FNAME("imgui.ImGuiStyle.TabBorderSize/getter");
@@ -603,6 +645,9 @@ int luaReg_imguiStyle_imguiImGuiStyle(lua_State* lua_S)
 	LUA_FIELD("ScrollbarRounding", lua_ImGuiStyle_ScrollbarRounding_getter, lua_ImGuiStyle_ScrollbarRounding_setter);
 	LUA_FIELD("ScrollbarSize", lua_ImGuiStyle_ScrollbarSize_getter, lua_ImGuiStyle_ScrollbarSize_setter);
 	LUA_FIELD("SelectableTextAlign", lua_ImGuiStyle_SelectableTextAlign_getter, lua_ImGuiStyle_SelectableTextAlign_setter);
+	LUA_FIELD("SeparatorTextAlign", lua_ImGuiStyle_SeparatorTextAlign_getter, lua_ImGuiStyle_SeparatorTextAlign_setter);
+	LUA_FIELD("SeparatorTextBorderSize", lua_ImGuiStyle_SeparatorTextBorderSize_getter, lua_ImGuiStyle_SeparatorTextBorderSize_setter);
+	LUA_FIELD("SeparatorTextPadding", lua_ImGuiStyle_SeparatorTextPadding_getter, lua_ImGuiStyle_SeparatorTextPadding_setter);
 	LUA_FIELD("TabBorderSize", lua_ImGuiStyle_TabBorderSize_getter, lua_ImGuiStyle_TabBorderSize_setter);
 	LUA_FIELD("TabMinWidthForCloseButton", lua_ImGuiStyle_TabMinWidthForCloseButton_getter, lua_ImGuiStyle_TabMinWidthForCloseButton_setter);
 	LUA_FIELD("TabRounding", lua_ImGuiStyle_TabRounding_getter, lua_ImGuiStyle_TabRounding_setter);

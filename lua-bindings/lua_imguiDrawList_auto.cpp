@@ -69,36 +69,36 @@ int lua_ImDrawList_addBezierCubic(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("imgui.ImDrawList", "imgui.ImDrawList:addBezierCubic");
 	LUA_TRY_INVOKE(7, static_cast<void(ImDrawList::*)(const ImVec2&, const ImVec2&, const ImVec2&, const ImVec2&, ImU32, float, int)>(&ImDrawList::AddBezierCubic));
-	LUA_TRY_INVOKE(6, [](ImDrawList* obj, const ImVec2& arg0,const ImVec2& arg1,const ImVec2& arg2,const ImVec2& arg3,ImU32 arg4,float arg5){{return obj->AddBezierCubic(std::move(arg0),std::move(arg1),std::move(arg2),std::move(arg3),std::move(arg4),std::move(arg5));}});
+	LUA_TRY_INVOKE(6, [](ImDrawList* obj,const ImVec2& arg0,const ImVec2& arg1,const ImVec2& arg2,const ImVec2& arg3,ImU32 arg4,float arg5){{return obj->AddBezierCubic(arg0,arg1,arg2,arg3,std::move(arg4),std::move(arg5));}});
 	LUA_INVOKE_FOOTER("6,7");
 }
 int lua_ImDrawList_addBezierCurve(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("imgui.ImDrawList", "imgui.ImDrawList:addBezierCurve");
 	LUA_TRY_INVOKE(7, static_cast<void(ImDrawList::*)(const ImVec2&, const ImVec2&, const ImVec2&, const ImVec2&, ImU32, float, int)>(&ImDrawList::AddBezierCurve));
-	LUA_TRY_INVOKE(6, [](ImDrawList* obj, const ImVec2& arg0,const ImVec2& arg1,const ImVec2& arg2,const ImVec2& arg3,ImU32 arg4,float arg5){{return obj->AddBezierCurve(arg0,arg1,arg2,arg3,std::move(arg4),std::move(arg5));}});
+	LUA_TRY_INVOKE(6, [](ImDrawList* obj,const ImVec2& arg0,const ImVec2& arg1,const ImVec2& arg2,const ImVec2& arg3,ImU32 arg4,float arg5){{return obj->AddBezierCurve(arg0,arg1,arg2,arg3,std::move(arg4),std::move(arg5));}});
 	LUA_INVOKE_FOOTER("6,7");
 }
 int lua_ImDrawList_addBezierQuadratic(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("imgui.ImDrawList", "imgui.ImDrawList:addBezierQuadratic");
 	LUA_TRY_INVOKE(6, static_cast<void(ImDrawList::*)(const ImVec2&, const ImVec2&, const ImVec2&, ImU32, float, int)>(&ImDrawList::AddBezierQuadratic));
-	LUA_TRY_INVOKE(5, [](ImDrawList* obj, const ImVec2& arg0,const ImVec2& arg1,const ImVec2& arg2,ImU32 arg3,float arg4){{return obj->AddBezierQuadratic(std::move(arg0),std::move(arg1),std::move(arg2),std::move(arg3),std::move(arg4));}});
+	LUA_TRY_INVOKE(5, [](ImDrawList* obj,const ImVec2& arg0,const ImVec2& arg1,const ImVec2& arg2,ImU32 arg3,float arg4){{return obj->AddBezierQuadratic(arg0,arg1,arg2,std::move(arg3),std::move(arg4));}});
 	LUA_INVOKE_FOOTER("5,6");
 }
 int lua_ImDrawList_addCircle(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("imgui.ImDrawList", "imgui.ImDrawList:addCircle");
 	LUA_TRY_INVOKE(5, static_cast<void(ImDrawList::*)(const ImVec2&, float, ImU32, int, float)>(&ImDrawList::AddCircle));
-	LUA_TRY_INVOKE(4, [](ImDrawList* obj, const ImVec2& arg0,float arg1,ImU32 arg2,int arg3){{return obj->AddCircle(std::move(arg0),std::move(arg1),std::move(arg2),std::move(arg3));}});
-	LUA_TRY_INVOKE(3, [](ImDrawList* obj, const ImVec2& arg0,float arg1,ImU32 arg2){{return obj->AddCircle(std::move(arg0),std::move(arg1),std::move(arg2));}});
+	LUA_TRY_INVOKE(4, [](ImDrawList* obj,const ImVec2& arg0,float arg1,ImU32 arg2,int arg3){{return obj->AddCircle(arg0,std::move(arg1),std::move(arg2),std::move(arg3));}});
+	LUA_TRY_INVOKE(3, [](ImDrawList* obj,const ImVec2& arg0,float arg1,ImU32 arg2){{return obj->AddCircle(arg0,std::move(arg1),std::move(arg2));}});
 	LUA_INVOKE_FOOTER("3,4,5");
 }
 int lua_ImDrawList_addCircleFilled(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("imgui.ImDrawList", "imgui.ImDrawList:addCircleFilled");
 	LUA_TRY_INVOKE(4, static_cast<void(ImDrawList::*)(const ImVec2&, float, ImU32, int)>(&ImDrawList::AddCircleFilled));
-	LUA_TRY_INVOKE(3, [](ImDrawList* obj, const ImVec2& arg0,float arg1,ImU32 arg2){{return obj->AddCircleFilled(std::move(arg0),std::move(arg1),std::move(arg2));}});
+	LUA_TRY_INVOKE(3, [](ImDrawList* obj,const ImVec2& arg0,float arg1,ImU32 arg2){{return obj->AddCircleFilled(arg0,std::move(arg1),std::move(arg2));}});
 	LUA_INVOKE_FOOTER("3,4");
 }
 int lua_ImDrawList_addDrawCmd(lua_State* lua_S)
@@ -111,14 +111,14 @@ int lua_ImDrawList_addLine(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("imgui.ImDrawList", "imgui.ImDrawList:addLine");
 	LUA_TRY_INVOKE(4, static_cast<void(ImDrawList::*)(const ImVec2&, const ImVec2&, ImU32, float)>(&ImDrawList::AddLine));
-	LUA_TRY_INVOKE(3, [](ImDrawList* obj, const ImVec2& arg0,const ImVec2& arg1,ImU32 arg2){{return obj->AddLine(std::move(arg0),std::move(arg1),std::move(arg2));}});
+	LUA_TRY_INVOKE(3, [](ImDrawList* obj,const ImVec2& arg0,const ImVec2& arg1,ImU32 arg2){{return obj->AddLine(arg0,arg1,std::move(arg2));}});
 	LUA_INVOKE_FOOTER("3,4");
 }
 int lua_ImDrawList_addNgon(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("imgui.ImDrawList", "imgui.ImDrawList:addNgon");
 	LUA_TRY_INVOKE(5, static_cast<void(ImDrawList::*)(const ImVec2&, float, ImU32, int, float)>(&ImDrawList::AddNgon));
-	LUA_TRY_INVOKE(4, [](ImDrawList* obj, const ImVec2& arg0,float arg1,ImU32 arg2,int arg3){{return obj->AddNgon(std::move(arg0),std::move(arg1),std::move(arg2),std::move(arg3));}});
+	LUA_TRY_INVOKE(4, [](ImDrawList* obj,const ImVec2& arg0,float arg1,ImU32 arg2,int arg3){{return obj->AddNgon(arg0,std::move(arg1),std::move(arg2),std::move(arg3));}});
 	LUA_INVOKE_FOOTER("4,5");
 }
 int lua_ImDrawList_addNgonFilled(lua_State* lua_S)
@@ -131,7 +131,7 @@ int lua_ImDrawList_addQuad(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("imgui.ImDrawList", "imgui.ImDrawList:addQuad");
 	LUA_TRY_INVOKE(6, static_cast<void(ImDrawList::*)(const ImVec2&, const ImVec2&, const ImVec2&, const ImVec2&, ImU32, float)>(&ImDrawList::AddQuad));
-	LUA_TRY_INVOKE(5, [](ImDrawList* obj, const ImVec2& arg0,const ImVec2& arg1,const ImVec2& arg2,const ImVec2& arg3,ImU32 arg4){{return obj->AddQuad(std::move(arg0),std::move(arg1),std::move(arg2),std::move(arg3),std::move(arg4));}});
+	LUA_TRY_INVOKE(5, [](ImDrawList* obj,const ImVec2& arg0,const ImVec2& arg1,const ImVec2& arg2,const ImVec2& arg3,ImU32 arg4){{return obj->AddQuad(arg0,arg1,arg2,arg3,std::move(arg4));}});
 	LUA_INVOKE_FOOTER("5,6");
 }
 int lua_ImDrawList_addQuadFilled(lua_State* lua_S)
@@ -144,17 +144,17 @@ int lua_ImDrawList_addRect(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("imgui.ImDrawList", "imgui.ImDrawList:addRect");
 	LUA_TRY_INVOKE(6, static_cast<void(ImDrawList::*)(const ImVec2&, const ImVec2&, ImU32, float, ImDrawFlags, float)>(&ImDrawList::AddRect));
-	LUA_TRY_INVOKE(5, [](ImDrawList* obj, const ImVec2& arg0,const ImVec2& arg1,ImU32 arg2,float arg3,ImDrawFlags arg4){{return obj->AddRect(std::move(arg0),std::move(arg1),std::move(arg2),std::move(arg3),std::move(arg4));}});
-	LUA_TRY_INVOKE(4, [](ImDrawList* obj, const ImVec2& arg0,const ImVec2& arg1,ImU32 arg2,float arg3){{return obj->AddRect(std::move(arg0),std::move(arg1),std::move(arg2),std::move(arg3));}});
-	LUA_TRY_INVOKE(3, [](ImDrawList* obj, const ImVec2& arg0,const ImVec2& arg1,ImU32 arg2){{return obj->AddRect(std::move(arg0),std::move(arg1),std::move(arg2));}});
+	LUA_TRY_INVOKE(5, [](ImDrawList* obj,const ImVec2& arg0,const ImVec2& arg1,ImU32 arg2,float arg3,ImDrawFlags arg4){{return obj->AddRect(arg0,arg1,std::move(arg2),std::move(arg3),std::move(arg4));}});
+	LUA_TRY_INVOKE(4, [](ImDrawList* obj,const ImVec2& arg0,const ImVec2& arg1,ImU32 arg2,float arg3){{return obj->AddRect(arg0,arg1,std::move(arg2),std::move(arg3));}});
+	LUA_TRY_INVOKE(3, [](ImDrawList* obj,const ImVec2& arg0,const ImVec2& arg1,ImU32 arg2){{return obj->AddRect(arg0,arg1,std::move(arg2));}});
 	LUA_INVOKE_FOOTER("3,4,5,6");
 }
 int lua_ImDrawList_addRectFilled(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("imgui.ImDrawList", "imgui.ImDrawList:addRectFilled");
 	LUA_TRY_INVOKE(5, static_cast<void(ImDrawList::*)(const ImVec2&, const ImVec2&, ImU32, float, ImDrawFlags)>(&ImDrawList::AddRectFilled));
-	LUA_TRY_INVOKE(4, [](ImDrawList* obj, const ImVec2& arg0,const ImVec2& arg1,ImU32 arg2,float arg3){{return obj->AddRectFilled(std::move(arg0),std::move(arg1),std::move(arg2),std::move(arg3));}});
-	LUA_TRY_INVOKE(3, [](ImDrawList* obj, const ImVec2& arg0,const ImVec2& arg1,ImU32 arg2){{return obj->AddRectFilled(std::move(arg0),std::move(arg1),std::move(arg2));}});
+	LUA_TRY_INVOKE(4, [](ImDrawList* obj,const ImVec2& arg0,const ImVec2& arg1,ImU32 arg2,float arg3){{return obj->AddRectFilled(arg0,arg1,std::move(arg2),std::move(arg3));}});
+	LUA_TRY_INVOKE(3, [](ImDrawList* obj,const ImVec2& arg0,const ImVec2& arg1,ImU32 arg2){{return obj->AddRectFilled(arg0,arg1,std::move(arg2));}});
 	LUA_INVOKE_FOOTER("3,4,5");
 }
 int lua_ImDrawList_addRectFilledMultiColor(lua_State* lua_S)
@@ -167,7 +167,7 @@ int lua_ImDrawList_addTriangle(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("imgui.ImDrawList", "imgui.ImDrawList:addTriangle");
 	LUA_TRY_INVOKE(5, static_cast<void(ImDrawList::*)(const ImVec2&, const ImVec2&, const ImVec2&, ImU32, float)>(&ImDrawList::AddTriangle));
-	LUA_TRY_INVOKE(4, [](ImDrawList* obj, const ImVec2& arg0,const ImVec2& arg1,const ImVec2& arg2,ImU32 arg3){{return obj->AddTriangle(std::move(arg0),std::move(arg1),std::move(arg2),std::move(arg3));}});
+	LUA_TRY_INVOKE(4, [](ImDrawList* obj,const ImVec2& arg0,const ImVec2& arg1,const ImVec2& arg2,ImU32 arg3){{return obj->AddTriangle(arg0,arg1,arg2,std::move(arg3));}});
 	LUA_INVOKE_FOOTER("4,5");
 }
 int lua_ImDrawList_addTriangleFilled(lua_State* lua_S)
@@ -216,7 +216,7 @@ int lua_ImDrawList_pathArcTo(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("imgui.ImDrawList", "imgui.ImDrawList:pathArcTo");
 	LUA_TRY_INVOKE(5, static_cast<void(ImDrawList::*)(const ImVec2&, float, float, float, int)>(&ImDrawList::PathArcTo));
-	LUA_TRY_INVOKE(4, [](ImDrawList* obj, const ImVec2& arg0,float arg1,float arg2,float arg3){{return obj->PathArcTo(std::move(arg0),std::move(arg1),std::move(arg2),std::move(arg3));}});
+	LUA_TRY_INVOKE(4, [](ImDrawList* obj,const ImVec2& arg0,float arg1,float arg2,float arg3){{return obj->PathArcTo(arg0,std::move(arg1),std::move(arg2),std::move(arg3));}});
 	LUA_INVOKE_FOOTER("4,5");
 }
 int lua_ImDrawList_pathArcToFast(lua_State* lua_S)
@@ -229,21 +229,21 @@ int lua_ImDrawList_pathBezierCubicCurveTo(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("imgui.ImDrawList", "imgui.ImDrawList:pathBezierCubicCurveTo");
 	LUA_TRY_INVOKE(4, static_cast<void(ImDrawList::*)(const ImVec2&, const ImVec2&, const ImVec2&, int)>(&ImDrawList::PathBezierCubicCurveTo));
-	LUA_TRY_INVOKE(3, [](ImDrawList* obj, const ImVec2& arg0,const ImVec2& arg1,const ImVec2& arg2){{return obj->PathBezierCubicCurveTo(arg0,arg1,arg2);}});
+	LUA_TRY_INVOKE(3, [](ImDrawList* obj,const ImVec2& arg0,const ImVec2& arg1,const ImVec2& arg2){{return obj->PathBezierCubicCurveTo(arg0,arg1,arg2);}});
 	LUA_INVOKE_FOOTER("3,4");
 }
 int lua_ImDrawList_pathBezierCurveTo(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("imgui.ImDrawList", "imgui.ImDrawList:pathBezierCurveTo");
 	LUA_TRY_INVOKE(4, static_cast<void(ImDrawList::*)(const ImVec2&, const ImVec2&, const ImVec2&, int)>(&ImDrawList::PathBezierCurveTo));
-	LUA_TRY_INVOKE(3, [](ImDrawList* obj, const ImVec2& arg0,const ImVec2& arg1,const ImVec2& arg2){{return obj->PathBezierCurveTo(arg0,arg1,arg2);}});
+	LUA_TRY_INVOKE(3, [](ImDrawList* obj,const ImVec2& arg0,const ImVec2& arg1,const ImVec2& arg2){{return obj->PathBezierCurveTo(arg0,arg1,arg2);}});
 	LUA_INVOKE_FOOTER("3,4");
 }
 int lua_ImDrawList_pathBezierQuadraticCurveTo(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("imgui.ImDrawList", "imgui.ImDrawList:pathBezierQuadraticCurveTo");
 	LUA_TRY_INVOKE(3, static_cast<void(ImDrawList::*)(const ImVec2&, const ImVec2&, int)>(&ImDrawList::PathBezierQuadraticCurveTo));
-	LUA_TRY_INVOKE(2, [](ImDrawList* obj, const ImVec2& arg0,const ImVec2& arg1){{return obj->PathBezierQuadraticCurveTo(arg0,arg1);}});
+	LUA_TRY_INVOKE(2, [](ImDrawList* obj,const ImVec2& arg0,const ImVec2& arg1){{return obj->PathBezierQuadraticCurveTo(arg0,arg1);}});
 	LUA_INVOKE_FOOTER("2,3");
 }
 int lua_ImDrawList_pathClear(lua_State* lua_S)
@@ -274,16 +274,16 @@ int lua_ImDrawList_pathRect(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("imgui.ImDrawList", "imgui.ImDrawList:pathRect");
 	LUA_TRY_INVOKE(4, static_cast<void(ImDrawList::*)(const ImVec2&, const ImVec2&, float, ImDrawFlags)>(&ImDrawList::PathRect));
-	LUA_TRY_INVOKE(3, [](ImDrawList* obj, const ImVec2& arg0,const ImVec2& arg1,float arg2){{return obj->PathRect(std::move(arg0),std::move(arg1),std::move(arg2));}});
-	LUA_TRY_INVOKE(2, [](ImDrawList* obj, const ImVec2& arg0,const ImVec2& arg1){{return obj->PathRect(arg0,arg1);}});
+	LUA_TRY_INVOKE(3, [](ImDrawList* obj,const ImVec2& arg0,const ImVec2& arg1,float arg2){{return obj->PathRect(arg0,arg1,std::move(arg2));}});
+	LUA_TRY_INVOKE(2, [](ImDrawList* obj,const ImVec2& arg0,const ImVec2& arg1){{return obj->PathRect(arg0,arg1);}});
 	LUA_INVOKE_FOOTER("2,3,4");
 }
 int lua_ImDrawList_pathStroke(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("imgui.ImDrawList", "imgui.ImDrawList:pathStroke");
 	LUA_TRY_INVOKE(3, static_cast<void(ImDrawList::*)(ImU32, ImDrawFlags, float)>(&ImDrawList::PathStroke));
-	LUA_TRY_INVOKE(2, [](ImDrawList* obj, ImU32 arg0,ImDrawFlags arg1){{return obj->PathStroke(std::move(arg0),std::move(arg1));}});
-	LUA_TRY_INVOKE(1, [](ImDrawList* obj, ImU32 arg0){{return obj->PathStroke(std::move(arg0));}});
+	LUA_TRY_INVOKE(2, [](ImDrawList* obj,ImU32 arg0,ImDrawFlags arg1){{return obj->PathStroke(std::move(arg0),std::move(arg1));}});
+	LUA_TRY_INVOKE(1, [](ImDrawList* obj,ImU32 arg0){{return obj->PathStroke(std::move(arg0));}});
 	LUA_INVOKE_FOOTER("1,2,3");
 }
 int lua_ImDrawList_popClipRect(lua_State* lua_S)
@@ -350,7 +350,7 @@ int lua_ImDrawList_pushClipRect(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("imgui.ImDrawList", "imgui.ImDrawList:pushClipRect");
 	LUA_TRY_INVOKE(3, static_cast<void(ImDrawList::*)(const ImVec2&, const ImVec2&, bool)>(&ImDrawList::PushClipRect));
-	LUA_TRY_INVOKE(2, [](ImDrawList* obj, const ImVec2& arg0,const ImVec2& arg1){{return obj->PushClipRect(arg0,arg1);}});
+	LUA_TRY_INVOKE(2, [](ImDrawList* obj,const ImVec2& arg0,const ImVec2& arg1){{return obj->PushClipRect(arg0,arg1);}});
 	LUA_INVOKE_FOOTER("2,3");
 }
 int lua_ImDrawList_pushClipRectFullScreen(lua_State* lua_S)

@@ -768,7 +768,7 @@ int lua_ImFontAtlas_addCustomRectFontGlyph(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("imgui.ImFontAtlas", "imgui.ImFontAtlas:addCustomRectFontGlyph");
 	LUA_TRY_INVOKE_R(6, static_cast<int(ImFontAtlas::*)(ImFont*, ImWchar, int, int, float, const ImVec2&)>(&ImFontAtlas::AddCustomRectFontGlyph));
-	LUA_TRY_INVOKE_R(5, [](ImFontAtlas* obj, ImFont* arg0,ImWchar arg1,int arg2,int arg3,float arg4){{return obj->AddCustomRectFontGlyph(std::move(arg0),std::move(arg1),std::move(arg2),std::move(arg3),std::move(arg4));}});
+	LUA_TRY_INVOKE_R(5, [](ImFontAtlas* obj,ImFont* arg0,ImWchar arg1,int arg2,int arg3,float arg4){{return obj->AddCustomRectFontGlyph(arg0,std::move(arg1),std::move(arg2),std::move(arg3),std::move(arg4));}});
 	LUA_INVOKE_FOOTER("5,6");
 }
 int lua_ImFontAtlas_addCustomRectRegular(lua_State* lua_S)
@@ -927,20 +927,6 @@ int lua_ImFont_DirtyLookupTables_setter(lua_State* lua_S)
 	LUA_NATIVE_SETTER(cobj->DirtyLookupTables, 2);
 	return 0;
 }
-int lua_ImFont_DotChar_getter(lua_State* lua_S)
-{
-	LUA_CUR_FNAME("imgui.ImFont.DotChar/getter");
-	auto cobj = LUA_TO_COBJ(ImFont*, 1);
-	LUA_PUSH_NATIVE(cobj->DotChar);
-	return 1;
-}
-int lua_ImFont_DotChar_setter(lua_State* lua_S)
-{
-	LUA_CUR_FNAME("imgui.ImFont.DotChar/setter");
-	auto cobj = LUA_TO_COBJ(ImFont*, 1);
-	LUA_NATIVE_SETTER(cobj->DotChar, 2);
-	return 0;
-}
 int lua_ImFont_EllipsisChar_getter(lua_State* lua_S)
 {
 	LUA_CUR_FNAME("imgui.ImFont.EllipsisChar/getter");
@@ -953,6 +939,48 @@ int lua_ImFont_EllipsisChar_setter(lua_State* lua_S)
 	LUA_CUR_FNAME("imgui.ImFont.EllipsisChar/setter");
 	auto cobj = LUA_TO_COBJ(ImFont*, 1);
 	LUA_NATIVE_SETTER(cobj->EllipsisChar, 2);
+	return 0;
+}
+int lua_ImFont_EllipsisCharCount_getter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImFont.EllipsisCharCount/getter");
+	auto cobj = LUA_TO_COBJ(ImFont*, 1);
+	LUA_PUSH_NATIVE(cobj->EllipsisCharCount);
+	return 1;
+}
+int lua_ImFont_EllipsisCharCount_setter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImFont.EllipsisCharCount/setter");
+	auto cobj = LUA_TO_COBJ(ImFont*, 1);
+	LUA_NATIVE_SETTER(cobj->EllipsisCharCount, 2);
+	return 0;
+}
+int lua_ImFont_EllipsisCharStep_getter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImFont.EllipsisCharStep/getter");
+	auto cobj = LUA_TO_COBJ(ImFont*, 1);
+	LUA_PUSH_NATIVE(cobj->EllipsisCharStep);
+	return 1;
+}
+int lua_ImFont_EllipsisCharStep_setter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImFont.EllipsisCharStep/setter");
+	auto cobj = LUA_TO_COBJ(ImFont*, 1);
+	LUA_NATIVE_SETTER(cobj->EllipsisCharStep, 2);
+	return 0;
+}
+int lua_ImFont_EllipsisWidth_getter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImFont.EllipsisWidth/getter");
+	auto cobj = LUA_TO_COBJ(ImFont*, 1);
+	LUA_PUSH_NATIVE(cobj->EllipsisWidth);
+	return 1;
+}
+int lua_ImFont_EllipsisWidth_setter(lua_State* lua_S)
+{
+	LUA_CUR_FNAME("imgui.ImFont.EllipsisWidth/setter");
+	auto cobj = LUA_TO_COBJ(ImFont*, 1);
+	LUA_NATIVE_SETTER(cobj->EllipsisWidth, 2);
 	return 0;
 }
 int lua_ImFont_FallbackAdvanceX_getter(lua_State* lua_S)
@@ -1079,8 +1107,10 @@ int luaReg_imguiFont_imguiImFont(lua_State* lua_S)
 	LUA_FIELD("ContainerAtlas", lua_ImFont_ContainerAtlas_getter, lua_ImFont_ContainerAtlas_setter);
 	LUA_FIELD("Descent", lua_ImFont_Descent_getter, lua_ImFont_Descent_setter);
 	LUA_FIELD("DirtyLookupTables", lua_ImFont_DirtyLookupTables_getter, lua_ImFont_DirtyLookupTables_setter);
-	LUA_FIELD("DotChar", lua_ImFont_DotChar_getter, lua_ImFont_DotChar_setter);
 	LUA_FIELD("EllipsisChar", lua_ImFont_EllipsisChar_getter, lua_ImFont_EllipsisChar_setter);
+	LUA_FIELD("EllipsisCharCount", lua_ImFont_EllipsisCharCount_getter, lua_ImFont_EllipsisCharCount_setter);
+	LUA_FIELD("EllipsisCharStep", lua_ImFont_EllipsisCharStep_getter, lua_ImFont_EllipsisCharStep_setter);
+	LUA_FIELD("EllipsisWidth", lua_ImFont_EllipsisWidth_getter, lua_ImFont_EllipsisWidth_setter);
 	LUA_FIELD("FallbackAdvanceX", lua_ImFont_FallbackAdvanceX_getter, lua_ImFont_FallbackAdvanceX_setter);
 	LUA_FIELD("FallbackChar", lua_ImFont_FallbackChar_getter, lua_ImFont_FallbackChar_setter);
 	LUA_FIELD("FallbackGlyph", lua_ImFont_FallbackGlyph_getter, lua_ImFont_FallbackGlyph_setter);

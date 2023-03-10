@@ -1050,7 +1050,7 @@ int lua_ImGuiIO_setKeyEventNativeData(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("imgui.ImGuiIO", "imgui.ImGuiIO:setKeyEventNativeData");
 	LUA_TRY_INVOKE(4, static_cast<void(ImGuiIO::*)(ImGuiKey, int, int, int)>(&ImGuiIO::SetKeyEventNativeData));
-	LUA_TRY_INVOKE(3, [](ImGuiIO* obj, ImGuiKey arg0,int arg1,int arg2){{return obj->SetKeyEventNativeData(std::move(arg0),std::move(arg1),std::move(arg2));}});
+	LUA_TRY_INVOKE(3, [](ImGuiIO* obj,ImGuiKey arg0,int arg1,int arg2){{return obj->SetKeyEventNativeData(std::move(arg0),std::move(arg1),std::move(arg2));}});
 	LUA_INVOKE_FOOTER("3,4");
 }
 int luaReg_imguiIO_imguiImGuiIO(lua_State* lua_S)
