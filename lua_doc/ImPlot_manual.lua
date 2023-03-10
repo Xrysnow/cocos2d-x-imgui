@@ -714,6 +714,43 @@ function implot.plotImage(label_id, sprite, bounds_min, bounds_max, tint_col)
 end
 
 -------------------------------------------------------------------------------
+-- Plot Tools
+-------------------------------------------------------------------------------
+
+-- The following functions MUST be called between Begin/EndPlot!
+
+--- Shows a draggable vertical guide line at an x-value. #col defaults to ImGuiCol_Text.
+---@param id string
+---@param x_value number
+---@param show_label boolean @optional, true
+---@param col ImVec4 @optional, IMPLOT_AUTO_COL
+---@param thickness number @optional, 1
+---@return boolean,number
+function implot.dragLineX(id, x_value, show_label, col, thickness)
+end
+
+--- Shows a draggable horizontal guide line at a y-value. #col defaults to ImGuiCol_Text.
+---@param id string
+---@param y_value number
+---@param show_label boolean @optional, true
+---@param col ImVec4 @optional, IMPLOT_AUTO_COL
+---@param thickness number @optional, 1
+---@return boolean,number
+function implot.dragLineY(id, y_value, show_label, col, thickness)
+end
+
+--- Shows a draggable point at x,y. #col defaults to ImGuiCol_Text.
+---@param id string
+---@param x number
+---@param y number
+---@param show_label boolean @optional, true
+---@param col ImVec4 @optional, IMPLOT_AUTO_COL
+---@param radius number @optional, 4
+---@return boolean,number,number
+function implot.dragLinePoint(id, x, y, show_label, col, radius)
+end
+
+-------------------------------------------------------------------------------
 -- Plot Utils
 -------------------------------------------------------------------------------
 
@@ -751,43 +788,6 @@ end
 ---@param show_default boolean @optional
 ---@param y_axis number @optional, ImPlotYAxis
 function implot.setNextPlotTicksY(x_min, x_max, n_ticks, labels, show_default, y_axis)
-end
-
--------------------------------------------------------------------------------
--- Plot Tools
--------------------------------------------------------------------------------
-
--- The following functions MUST be called between Begin/EndPlot!
-
---- Shows a draggable vertical guide line at an x-value. #col defaults to ImGuiCol_Text.
----@param id string
----@param x_value number
----@param show_label boolean @optional, true
----@param col ImVec4 @optional, IMPLOT_AUTO_COL
----@param thickness number @optional, 1
----@return boolean,number
-function imlpot.dragLineX(id, x_value, show_label, col, thickness)
-end
-
---- Shows a draggable horizontal guide line at a y-value. #col defaults to ImGuiCol_Text.
----@param id string
----@param y_value number
----@param show_label boolean @optional, true
----@param col ImVec4 @optional, IMPLOT_AUTO_COL
----@param thickness number @optional, 1
----@return boolean,number
-function imlpot.dragLineY(id, y_value, show_label, col, thickness)
-end
-
---- Shows a draggable point at x,y. #col defaults to ImGuiCol_Text.
----@param id string
----@param x number
----@param y number
----@param show_label boolean @optional, true
----@param col ImVec4 @optional, IMPLOT_AUTO_COL
----@param radius number @optional, 4
----@return boolean,number,number
-function imlpot.dragLinePoint(id, x, y, show_label, col, radius)
 end
 
 -------------------------------------------------------------------------------
