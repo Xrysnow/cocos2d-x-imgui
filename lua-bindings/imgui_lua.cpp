@@ -2885,6 +2885,7 @@ static int implot_annotation(lua_State* L) {
 			_luaval_to_imvec4(L, 3),
 			_luaval_to_imvec2(L, 4),
 			lua_toboolean(L, 5),
+			"%s",
 			luaL_checkstring(L, 6));
 	}
 	else
@@ -2906,6 +2907,7 @@ static int implot_tagX(lua_State* L) {
 		ImPlot::TagX(
 			luaL_checknumber(L, 1),
 			_luaval_to_imvec4(L, 2),
+			"%s",
 			luaL_checkstring(L, 3));
 	}
 	else
@@ -2924,6 +2926,7 @@ static int implot_tagY(lua_State* L) {
 		ImPlot::TagY(
 			luaL_checknumber(L, 1),
 			_luaval_to_imvec4(L, 2),
+			"%s",
 			luaL_checkstring(L, 3));
 	}
 	else
