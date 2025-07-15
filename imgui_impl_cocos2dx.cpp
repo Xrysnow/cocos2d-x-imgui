@@ -1487,10 +1487,6 @@ static void ImGui_ImplGlfw_SetImeInputData(ImGuiViewport* viewport, ImGuiPlatfor
 	}
 }
 
-#else
-
-static void ImGui_ImplGlfw_SetImeInputPos(ImGuiViewport* viewport, ImVec2 pos) {}
-
 #endif
 
 //--------------------------------------------------------------------------------------------------------
@@ -1544,7 +1540,9 @@ static void ImGui_ImplGlfw_InitPlatformInterface()
 #if 0 && GLFW_HAS_VULKAN
 	platform_io.Platform_CreateVkSurface = ImGui_ImplCocos2dx_CreateVkSurface;
 #endif
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
 	ImGui::GetIO().SetPlatformImeDataFn = ImGui_ImplGlfw_SetImeInputData;
+#endif
 
 	// Register main window handle (which is owned by the main application, not by us)
 	// This is mostly for simplicity and consistency, so that our code (e.g. mouse handling etc.) can use same logic for main and secondary viewports.
