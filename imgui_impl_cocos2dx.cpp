@@ -6,6 +6,7 @@
 #endif
 
 #ifdef CC_PLATFORM_PC
+#include "platform/desktop/CCGLViewImpl-desktop.h"
 // GLFW
 #ifdef _WIN32
 	#include "glfw3.h"
