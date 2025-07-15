@@ -11,6 +11,7 @@ set(INCLUDES
     ${COCOS2DX_ROOT_PATH}/external
     ${COCOS2DX_ROOT_PATH}/external/glfw3/include/win32
     ${COCOS2DX_ROOT_PATH}/external/glfw/include/GLFW
+    ${COCOS2DX_ROOT_PATH}/external/jni.hpp/include
     ${COCOS2DX_ROOT_PATH}/external/win32-specific/gles/include/OGLES
 )
 if(BUILD_LUA_LIBS)
